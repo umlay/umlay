@@ -35,13 +35,13 @@ model User @aggregate_root {
 ### 解決: `impl` ブロック
 
 ```prisma
-// shared-models/user.uml (別ファイル)
+// shared-models/user.umlay (別ファイル)
 model User @aggregate_root { /* ... */ }
 
-// auth-module/user-identity.uml (別ファイル)
+// auth-module/user-identity.umlay (別ファイル)
 impl Identifiable for User { }
 
-// audit-module/user-auditable.uml (別ファイル)
+// audit-module/user-auditable.umlay (別ファイル)
 impl Auditable for User {
   fn audit(action: string!) -> void { /* ... */ }
 }
@@ -69,7 +69,7 @@ BoundCondition  ::= Identifier ":" TypeBound
 ```prisma
 namespace shop
 
-import "./shared-models.uml"
+import "./shared-models.umlay"
 
 // 別ファイルから User に Identifiable を適用
 impl Identifiable for shared_models.User {
@@ -146,9 +146,9 @@ Orphan rule 違反は parse error。
 ## サンプル / テスト
 
 - 新サンプル `samples/with-impl-blocks/` ディレクトリ:
-  - `core.uml` で model + protocol を宣言
-  - `feature-a.uml` で impl ブロックを後付け適用
-  - `feature-b.uml` で別の impl を適用
+  - `core.umlay` で model + protocol を宣言
+  - `feature-a.umlay` で impl ブロックを後付け適用
+  - `feature-b.umlay` で別の impl を適用
 - Conformance: orphan rule 違反の error、where 句での bound 解決
 
 ## 受諾時にやること

@@ -1,0 +1,52 @@
+// ast-expr.umlay — 再帰 union variant (RFC 0012) の単独デモ
+//
+// spec 0.4.0:
+//   - RFC 0012: union variant が自身を参照可能 (AST / Tree / List)
+//   - 終端 variant (non-recursive) が最低 1 つ必須
+//
+// 表現する AST: 算術式 (Num / Var / Add / Mul / Let)
+
+@@mode(strict)
+
+namespace lang
+
+// ============================================================================
+// 算術式 AST
+// ============================================================================
+
+union Expr =
+  | Num  { value: int! }                                    /* 終端: 整数リテラル */
+  | Var  { name: string! }                                  /* 終端: 変数参照 */
+  | Add  { left: Expr!, right: Expr! }                      /* 再帰: 二項加算 */
+  | Mul  { left: Expr!, right: Expr! }                      /* 再帰: 二項乗算 */
+  | Neg  { operand: Expr! }                                 /* 再帰: 単項マイナス */
+  | Let  { name: string!, binding: Expr!, body: Expr! }     /* 再帰: let name = binding in body */
+  @intent("シンプルな算術式 AST。終端 Num/Var で再帰が止まる")
+
+// ============================================================================
+// 二分木 (ジェネリクス + 再帰)
+// ============================================================================
+
+union Tree<T> =
+  | Leaf                                                     /* 終端 variant (payload 無し) */
+  | Node { value: T!, left: Tree<T>!, right: Tree<T>! }      /* 再帰: T を値に持つ節 */
+  @intent("ジェネリック二分木。Leaf で再帰終端")
+
+// ============================================================================
+// 評価器の契約 (protocol)
+// ============================================================================
+
+protocol Evaluator @intent("Expr の評価器") {
+  fn eval(expr: Expr!) -> int!
+    @intent("AST を評価して整数を返す (変数未定義時は raises)")
+    @raises(UndefinedVariable)
+}
+
+// ============================================================================
+// Views
+// ============================================================================
+
+view ast-class @class_diagram
+  @intent("Expr union と各 variant の構造") {
+  include: lang.Expr, lang.Tree, lang.Evaluator
+}

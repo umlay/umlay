@@ -212,8 +212,8 @@ function resolveMethodWithOverride(P, m):
 ```
 S13: Cannot apply Repository<Config> to ConfigRepo
   Reason: type argument Config does not satisfy bound Identifiable
-  Context: Repository<T: Identifiable> declared at packages/.../Repository.uml:12
-           Config declared at packages/.../Config.uml:5, missing @@implements(Identifiable)
+  Context: Repository<T: Identifiable> declared at packages/.../Repository.umlay:12
+           Config declared at packages/.../Config.umlay:5, missing @@implements(Identifiable)
   Fix: add `@@implements(Identifiable)` to Config, or choose a different type
 ```
 

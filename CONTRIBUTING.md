@@ -5,7 +5,7 @@ Thanks for your interest. This repository publishes the **Umlay DSL specificatio
 ## Repository layout
 
 - `packages/spec` — DSL grammar + IR JSON Schema (the contract)
-- `packages/examples` — `.uml` sample files
+- `packages/examples` — `.umlay` sample files
 - `skills/` — developer / AI agent oriented skill definitions
 
 ## Quickstart

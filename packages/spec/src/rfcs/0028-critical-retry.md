@@ -120,8 +120,8 @@ critical "DB update" timeout(500ms) retry(5) {
 
 ## サンプル / テスト
 
-- `transfer-critical.uml` の Gateway 呼び出しに retry を追加した拡張版
-- 新サンプル `samples/resilient-external-call.uml`
+- `transfer-critical.umlay` の Gateway 呼び出しに retry を追加した拡張版
+- 新サンプル `samples/resilient-external-call.umlay`
 - Conformance: 4 backoff パターン、attempts 0 の error ケース
 
 ## 受諾時にやること

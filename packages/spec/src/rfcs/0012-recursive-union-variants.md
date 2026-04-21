@@ -100,7 +100,7 @@ union Tree<T> =
 
 ## サンプル / テスト
 
-- 新サンプル `samples/ast-expr.uml`: `Expr` の inline 再帰 variant
+- 新サンプル `samples/ast-expr.umlay`: `Expr` の inline 再帰 variant
 - Conformance: 終端 variant 欠落の検出、相互再帰、ジェネリクス + 再帰 (`Tree<T>`)
 
 ## 受諾時にやること

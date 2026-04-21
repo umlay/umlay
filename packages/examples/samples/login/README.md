@@ -1,6 +1,6 @@
 # Login sample — 画面 + Google OAuth on AWS serverless
 
-Umlay で「画面」「ユーザー操作」「バックエンド」「データ永続化」を一本の `.uml` にまとめ、ログインから `/dashboard` 遷移までを多視点で可視化したサンプル。
+Umlay で「画面」「ユーザー操作」「バックエンド」「データ永続化」を一本の `.umlay` にまとめ、ログインから `/dashboard` 遷移までを多視点で可視化したサンプル。
 
 ## 対象
 
@@ -15,7 +15,7 @@ Umlay で「画面」「ユーザー操作」「バックエンド」「デー�
 
 ## ファイル
 
-- [`login.uml`](./login.uml) — 全モデル + 7 view
+- [`login.umlay`](./login.umlay) — 全モデル + 7 view
 - [`README.md`](./README.md) — 本ファイル
 
 ## 含まれるビュー (7 種、spec 準拠)
@@ -52,7 +52,7 @@ AuthErrorPage (/auth/error)
   └─ <RetryButton> → LoginPage
 ```
 
-各画面の構成コンポーネントは `.uml` 内の `@@doc` ブロックに記載。
+各画面の構成コンポーネントは `.umlay` 内の `@@doc` ブロックに記載。
 
 ## 画面遷移 (`login-screens` @activity_diagram)
 

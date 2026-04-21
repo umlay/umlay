@@ -1,6 +1,6 @@
 # Expected IR (L2 Conformance Fixtures)
 
-各 `.uml` サンプルを spec 準拠パーサに通したときの**期待される正規IR**を JSON 固定値として格納する。
+各 `.umlay` サンプルを spec 準拠パーサに通したときの**期待される正規IR**を JSON 固定値として格納する。
 
 実装 (別リポジトリのパーサ) は自前の parse 結果を本ディレクトリの期待値と比較することで **L2 (IR) レベルの conformance** を検証できる。
 
@@ -22,38 +22,38 @@
 
 | サンプル | 期待 IR | 検証対象の spec 機能 |
 | --- | --- | --- |
-| `hello-order.uml` | [`hello-order.ir.json`](./hello-order.ir.json) | 最小構成 (model + view + @ref + @@id) |
-| `blog.uml` | [`blog.ir.json`](./blog.ir.json) | 基本 ER (User / Post / Comment / Tag、enum + @default + @unique) |
-| `ecommerce.uml` | [`ecommerce.ir.json`](./ecommerce.ir.json) | `type @value_object` + cascade / inverse + `@pattern` |
-| `event-sourcing.uml` | [`event-sourcing.ir.json`](./event-sourcing.ir.json) | RFC 0010 inline payload variant + fn method |
-| `modules-ddd.uml` | [`modules-ddd.ir.json`](./modules-ddd.ir.json) | RFC 0006 / 0010 module + protocol extends |
-| `project-schedule.uml` | [`project-schedule.ir.json`](./project-schedule.ir.json) | RFC 0004 `@@sample` の展開 (抜粋版) |
-| `concurrent-flow.uml` | [`concurrent-flow.ir.json`](./concurrent-flow.ir.json) | RFC 0007 par / opt + RFC 0013 await (labels) |
-| `ast-expr.uml` | [`ast-expr.ir.json`](./ast-expr.ir.json) | RFC 0012 recursive union variant + ジェネリクス Tree<T> |
-| `diamond-protocol.uml` | [`diamond-protocol.ir.json`](./diamond-protocol.ir.json) | RFC 0011 C3 MRO + `@@override` の 4 パターン |
-| `multi-project-schedule/pm-feature-a.uml` | [`multi-project-schedule/pm-feature-a.ir.json`](./multi-project-schedule/pm-feature-a.ir.json) | RFC 0005 cross-ns `@@dependencies` + RFC 0009 `import` |
-| `multi-project-schedule/pm-core.uml` | [`multi-project-schedule/pm-core.ir.json`](./multi-project-schedule/pm-core.ir.json) | cross-ns 依存の参照元 (baseline タスク) |
-| `multi-project-schedule/pm-feature-b.uml` | [`multi-project-schedule/pm-feature-b.ir.json`](./multi-project-schedule/pm-feature-b.ir.json) | 2 namespace への cross-ns 依存 + lag 指定 |
-| `saas-multitenant.uml` | [`saas-multitenant.ir.json`](./saas-multitenant.ir.json) | 複合 PK / `@@unique(a,b)` / `@@index` / enum default |
-| `japanese-domain.uml` | [`japanese-domain.ir.json`](./japanese-domain.ir.json) | Unicode 識別子 + `@codegenName` の IR 保持 |
-| `bounded-generics.uml` | [`bounded-generics.ir.json`](./bounded-generics.ir.json) | RFC 0015 bounded typeParams (`T: Identifiable & Comparable`) |
-| `transfer-critical.uml` | [`transfer-critical.ir.json`](./transfer-critical.ir.json) | RFC 0017 critical + RFC 0007 par/opt + RFC 0013 await 混在 |
-| `reserved-keywords.uml` | [`reserved-keywords.ir.json`](./reserved-keywords.ir.json) | 予約語を identifier として使わない normal case |
-| `with-attachments.uml` | [`with-attachments.ir.json`](./with-attachments.ir.json) | `@@attachments` の object 形、doc ブロック展開 |
-| `with-custom-theme.uml` | [`with-custom-theme.ir.json`](./with-custom-theme.ir.json) | file-level `@@theme` 継承 + view-level theme override |
-| `login/login.uml` | [`login/login.ir.json`](./login/login.ir.json) | 7 view 複合 (sequence with alt/else, state_machine, component_diagram 等) |
-| `with-glob-imports/root.uml` | [`with-glob-imports/root.ir.json`](./with-glob-imports/root.ir.json) | RFC 0014 glob import の `meta.imports.glob` 展開記録 |
-| `with-glob-imports/tasks/sprint-1.uml` | [`with-glob-imports/tasks/sprint-1.ir.json`](./with-glob-imports/tasks/sprint-1.ir.json) | glob 被 import 側 (独立 namespace、sprint 1) |
-| `with-glob-imports/tasks/sprint-2.uml` | [`with-glob-imports/tasks/sprint-2.ir.json`](./with-glob-imports/tasks/sprint-2.ir.json) | glob 被 import 側 (sprint 2) |
-| `with-glob-imports/tasks/sprint-3.uml` | [`with-glob-imports/tasks/sprint-3.ir.json`](./with-glob-imports/tasks/sprint-3.ir.json) | glob 被 import 側 (sprint 3) |
-| `with-impl-blocks/core.uml` | [`with-impl-blocks/core.ir.json`](./with-impl-blocks/core.ir.json) | impl 注入前の protocol + model 宣言のみの状態 |
-| `with-impl-blocks/feature-auth.uml` | [`with-impl-blocks/feature-auth.ir.json`](./with-impl-blocks/feature-auth.ir.json) | impl ブロック宣言側 (`_implApplications` に impl 情報) |
-| `with-impl-blocks/feature-audit.uml` | [`with-impl-blocks/feature-audit.ir.json`](./with-impl-blocks/feature-audit.ir.json) | 追加の impl ブロック (audit 機能側) |
-| `deprecated-migration.uml` | [`deprecated-migration.ir.json`](./deprecated-migration.ir.json) | RFC 0023: `@deprecated` の 5 レベル (attribute/model/protocol/enum value/view) の IR 保持 |
-| `critical-path-demo.uml` | [`critical-path-demo.ir.json`](./critical-path-demo.ir.json) | RFC 0024: `criticalPath: highlight/compute/ignore` 3 view + 期待 CPM 結果 |
-| `with-codegen-hooks.uml` | [`with-codegen-hooks.ir.json`](./with-codegen-hooks.ir.json) | RFC 0025: 6 target × 4 action の混合、model / attribute / deprecated との併用 |
-| `experimental-api.uml` | [`experimental-api.ir.json`](./experimental-api.ir.json) | RFC 0027: `@experimental` (attribute/model/protocol/enum value) + `@deprecated` 併用 |
-| `resilient-external-call.uml` | [`resilient-external-call.ir.json`](./resilient-external-call.ir.json) | RFC 0028: `critical` + `timeout` + `retry` (short / exponential / linear / constant / nested) |
+| `hello-order.umlay` | [`hello-order.ir.json`](./hello-order.ir.json) | 最小構成 (model + view + @ref + @@id) |
+| `blog.umlay` | [`blog.ir.json`](./blog.ir.json) | 基本 ER (User / Post / Comment / Tag、enum + @default + @unique) |
+| `ecommerce.umlay` | [`ecommerce.ir.json`](./ecommerce.ir.json) | `type @value_object` + cascade / inverse + `@pattern` |
+| `event-sourcing.umlay` | [`event-sourcing.ir.json`](./event-sourcing.ir.json) | RFC 0010 inline payload variant + fn method |
+| `modules-ddd.umlay` | [`modules-ddd.ir.json`](./modules-ddd.ir.json) | RFC 0006 / 0010 module + protocol extends |
+| `project-schedule.umlay` | [`project-schedule.ir.json`](./project-schedule.ir.json) | RFC 0004 `@@sample` の展開 (抜粋版) |
+| `concurrent-flow.umlay` | [`concurrent-flow.ir.json`](./concurrent-flow.ir.json) | RFC 0007 par / opt + RFC 0013 await (labels) |
+| `ast-expr.umlay` | [`ast-expr.ir.json`](./ast-expr.ir.json) | RFC 0012 recursive union variant + ジェネリクス Tree<T> |
+| `diamond-protocol.umlay` | [`diamond-protocol.ir.json`](./diamond-protocol.ir.json) | RFC 0011 C3 MRO + `@@override` の 4 パターン |
+| `multi-project-schedule/pm-feature-a.umlay` | [`multi-project-schedule/pm-feature-a.ir.json`](./multi-project-schedule/pm-feature-a.ir.json) | RFC 0005 cross-ns `@@dependencies` + RFC 0009 `import` |
+| `multi-project-schedule/pm-core.umlay` | [`multi-project-schedule/pm-core.ir.json`](./multi-project-schedule/pm-core.ir.json) | cross-ns 依存の参照元 (baseline タスク) |
+| `multi-project-schedule/pm-feature-b.umlay` | [`multi-project-schedule/pm-feature-b.ir.json`](./multi-project-schedule/pm-feature-b.ir.json) | 2 namespace への cross-ns 依存 + lag 指定 |
+| `saas-multitenant.umlay` | [`saas-multitenant.ir.json`](./saas-multitenant.ir.json) | 複合 PK / `@@unique(a,b)` / `@@index` / enum default |
+| `japanese-domain.umlay` | [`japanese-domain.ir.json`](./japanese-domain.ir.json) | Unicode 識別子 + `@codegenName` の IR 保持 |
+| `bounded-generics.umlay` | [`bounded-generics.ir.json`](./bounded-generics.ir.json) | RFC 0015 bounded typeParams (`T: Identifiable & Comparable`) |
+| `transfer-critical.umlay` | [`transfer-critical.ir.json`](./transfer-critical.ir.json) | RFC 0017 critical + RFC 0007 par/opt + RFC 0013 await 混在 |
+| `reserved-keywords.umlay` | [`reserved-keywords.ir.json`](./reserved-keywords.ir.json) | 予約語を identifier として使わない normal case |
+| `with-attachments.umlay` | [`with-attachments.ir.json`](./with-attachments.ir.json) | `@@attachments` の object 形、doc ブロック展開 |
+| `with-custom-theme.umlay` | [`with-custom-theme.ir.json`](./with-custom-theme.ir.json) | file-level `@@theme` 継承 + view-level theme override |
+| `login/login.umlay` | [`login/login.ir.json`](./login/login.ir.json) | 7 view 複合 (sequence with alt/else, state_machine, component_diagram 等) |
+| `with-glob-imports/root.umlay` | [`with-glob-imports/root.ir.json`](./with-glob-imports/root.ir.json) | RFC 0014 glob import の `meta.imports.glob` 展開記録 |
+| `with-glob-imports/tasks/sprint-1.umlay` | [`with-glob-imports/tasks/sprint-1.ir.json`](./with-glob-imports/tasks/sprint-1.ir.json) | glob 被 import 側 (独立 namespace、sprint 1) |
+| `with-glob-imports/tasks/sprint-2.umlay` | [`with-glob-imports/tasks/sprint-2.ir.json`](./with-glob-imports/tasks/sprint-2.ir.json) | glob 被 import 側 (sprint 2) |
+| `with-glob-imports/tasks/sprint-3.umlay` | [`with-glob-imports/tasks/sprint-3.ir.json`](./with-glob-imports/tasks/sprint-3.ir.json) | glob 被 import 側 (sprint 3) |
+| `with-impl-blocks/core.umlay` | [`with-impl-blocks/core.ir.json`](./with-impl-blocks/core.ir.json) | impl 注入前の protocol + model 宣言のみの状態 |
+| `with-impl-blocks/feature-auth.umlay` | [`with-impl-blocks/feature-auth.ir.json`](./with-impl-blocks/feature-auth.ir.json) | impl ブロック宣言側 (`_implApplications` に impl 情報) |
+| `with-impl-blocks/feature-audit.umlay` | [`with-impl-blocks/feature-audit.ir.json`](./with-impl-blocks/feature-audit.ir.json) | 追加の impl ブロック (audit 機能側) |
+| `deprecated-migration.umlay` | [`deprecated-migration.ir.json`](./deprecated-migration.ir.json) | RFC 0023: `@deprecated` の 5 レベル (attribute/model/protocol/enum value/view) の IR 保持 |
+| `critical-path-demo.umlay` | [`critical-path-demo.ir.json`](./critical-path-demo.ir.json) | RFC 0024: `criticalPath: highlight/compute/ignore` 3 view + 期待 CPM 結果 |
+| `with-codegen-hooks.umlay` | [`with-codegen-hooks.ir.json`](./with-codegen-hooks.ir.json) | RFC 0025: 6 target × 4 action の混合、model / attribute / deprecated との併用 |
+| `experimental-api.umlay` | [`experimental-api.ir.json`](./experimental-api.ir.json) | RFC 0027: `@experimental` (attribute/model/protocol/enum value) + `@deprecated` 併用 |
+| `resilient-external-call.umlay` | [`resilient-external-call.ir.json`](./resilient-external-call.ir.json) | RFC 0028: `critical` + `timeout` + `retry` (short / exponential / linear / constant / nested) |
 
 **カバレッジ: 35 / 35 samples (100%)**。参照実装 (`@umlay/core`) の `conformance.test.ts` で全サンプルが `assertIRMatches` をパスすることを CI で検証。
 
@@ -66,7 +66,7 @@ import { readFileSync } from 'fs';
 import { parse } from 'my-parser';
 import { assertIRMatches, formatDiffs } from '@umlay/spec/conformance';
 
-const uml = readFileSync('packages/examples/samples/hello-order.uml', 'utf8');
+const uml = readFileSync('packages/examples/samples/hello-order.umlay', 'utf8');
 const expected = JSON.parse(
   readFileSync('packages/spec/src/conformance/expected-ir/hello-order.ir.json', 'utf8'),
 );

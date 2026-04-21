@@ -18,7 +18,7 @@ change-class: A
 
 ## 背景 / モチベーション
 
-- `project-schedule.uml` で `@default("2026-04-20")` を「インスタンス確定値」として流用している (semantic abuse)
+- `project-schedule.umlay` で `@default("2026-04-20")` を「インスタンス確定値」として流用している (semantic abuse)
 - 本来の `@default` は DB デフォルト。Gantt の「このタスクの開始日」とは意味が違う
 - テストフィクスチャ、Storybook モック、Playground 初期値等の用途にも同じ要求がある
 - インスタンス DSL を独立した手段として提供すべき
@@ -90,14 +90,14 @@ model Task @entity @intent("WBS の最小作業単位") {
 
 ## 代替案
 
-- **案 B: 別ファイル `<name>.uml.fixtures.yaml` に分離** — 却下: DSL と乖離、執筆コスト増
+- **案 B: 別ファイル `<name>.umlay.fixtures.yaml` に分離** — 却下: DSL と乖離、執筆コスト増
 - **案 C: `instance Kickoff of Task { ... }` 宣言構文** — 却下: 宣言トップレベルが肥大化
 - **案 D: `@default` の semantic 拡張** — 却下: DB default と競合
 
 ## サンプル / テスト
 
-- `packages/examples/samples/project-schedule.uml` を `@@sample` ベースに書き換え、`@default` の abuse を解消
-- 新サンプル `with-sample-data.uml` を追加し、テストフィクスチャ用途を示す
+- `packages/examples/samples/project-schedule.umlay` を `@@sample` ベースに書き換え、`@default` の abuse を解消
+- 新サンプル `with-sample-data.umlay` を追加し、テストフィクスチャ用途を示す
 
 ## 受諾時にやること
 
@@ -105,7 +105,7 @@ model Task @entity @intent("WBS の最小作業単位") {
 - [ ] `ir.schema.json` に `model.samples[]` 追加
 - [ ] RFC 0001 の BNF に反映
 - [ ] `docs/{ja,en}/dsl-guide.md` に節追加
-- [ ] `project-schedule.uml` を書き換え、`@default` 依存を除去
+- [ ] `project-schedule.umlay` を書き換え、`@default` 依存を除去
 - [ ] `skills/{ja,en}/codegen-mapping.md` に「samples はコード生成のテストフィクスチャ供給源」の節を追加
 
 ## 未解決事項

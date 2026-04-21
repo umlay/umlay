@@ -126,7 +126,7 @@ model User {
 Error: Cannot apply Repository<Config> to ConfigRepo
   Reason: type argument Config does not satisfy bound Identifiable
   Hint: add `@@implements(Identifiable)` to Config or use a different type
-  Location: packages/examples/.../Config.uml:42
+  Location: packages/examples/.../Config.umlay:42
 ```
 
 ## IR 影響
@@ -153,7 +153,7 @@ optional フィールド `resolved` に bound 解決ステータスを記録可�
 
 ## サンプル / テスト
 
-- `bounded-generics.uml` に bound 違反ケースを追加
+- `bounded-generics.umlay` に bound 違反ケースを追加
 - 新 conformance テスト `type-inference-vectors.yaml`: 各ルールの正例・反例
 - diamond MRO (RFC 0011) との相互作用テスト
 

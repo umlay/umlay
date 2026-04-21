@@ -1,6 +1,6 @@
 # DSL Guide — 実践ガイド
 
-Umlay DSL (`.uml`) の書き方を、カテゴリ別に解説します。文法の正本は [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) です。
+Umlay DSL (`.umlay`) の書き方を、カテゴリ別に解説します。文法の正本は [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) です。
 
 ## 1. 基本要素
 

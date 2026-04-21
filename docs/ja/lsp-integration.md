@@ -14,7 +14,7 @@ Umlay DSL の LSP 実装は、以下のコンポーネントを組み合わせ�
 
 | コンポーネント | 用途 | 本リポジトリの成果物 |
 | --- | --- | --- |
-| **Parser** | `.uml` → AST | `grammar.bnf` に準拠 (別リポジトリ実装) |
+| **Parser** | `.umlay` → AST | `grammar.bnf` に準拠 (別リポジトリ実装) |
 | **IR Builder** | AST → 正規IR | `ir.schema.json` 準拠 |
 | **Resolver** | 参照解決 (@ref / @@dependencies.on / protocol extends) | `skills/*/write-uml.md` の Step 6 / RFC 0005 / 0030 |
 | **Linter** | S / L / R / W / C の各ルール | `skills/*/review-uml.md` + RFC 0029 (lint-rules.md) |
@@ -92,7 +92,7 @@ const diagnostic: Diagnostic = {
 2. 同一 namespace の別ファイル (`import` 経由または暗黙スキャン)
 3. `import <ns>` で取り込んだ namespace
 4. `import "./path" as alias` のエイリアス経由
-5. `import "./glob/**/*.uml"` で展開された全 namespace
+5. `import "./glob/**/*.umlay"` で展開された全 namespace
 
 glob 展開は**ビルド時に実行**する (realtime で file watch)。
 

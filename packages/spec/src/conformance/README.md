@@ -70,9 +70,9 @@ implementation: my-parser@1.2.3
 spec-version: 0.8.0
 level: L2
 samples:
-  - path: hello-order.uml
+  - path: hello-order.umlay
     pass: true
-  - path: login/login.uml
+  - path: login/login.umlay
     pass: false
     reason: "sequence body の alt-else 未対応 (RFC 0003)"
 ```

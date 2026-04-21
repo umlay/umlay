@@ -1,0 +1,29 @@
+// sprint-1.umlay — Sprint 1 のタスク (glob import 対象)
+
+@@mode(strict)
+
+namespace sprint1
+
+enum TaskStatus { PENDING, IN_PROGRESS, DONE }
+
+model Task @aggregate_root @intent("Sprint 1 のタスク") {
+  +id           UUID!        @id
+  +name         string!
+  +plannedStart Date!
+  +plannedEnd   Date!
+  +progress     decimal!     @default(0.0)
+  +status       TaskStatus!  @default(PENDING)
+  +assignee     string!
+
+  @@sample(
+    { id: "s1-kick",    name: "Sprint 1 Kickoff",
+      plannedStart: "2026-04-20", plannedEnd: "2026-04-20",
+      progress: 1.0, status: DONE, assignee: "Alice" },
+    { id: "s1-design",  name: "Architecture Design",
+      plannedStart: "2026-04-21", plannedEnd: "2026-04-28",
+      progress: 1.0, status: DONE, assignee: "Bob" },
+    { id: "s1-demo",    name: "Sprint 1 Demo",
+      plannedStart: "2026-05-01", plannedEnd: "2026-05-01",
+      progress: 1.0, status: DONE, assignee: "Alice" }
+  )
+}

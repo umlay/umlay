@@ -191,13 +191,7 @@
         "OrderStatus": {
           "_id": "16cb0e4994d9",
           "name": "OrderStatus",
-          "values": [
-            "DRAFT",
-            "CONFIRMED",
-            "SHIPPED",
-            "CANCELLED",
-            "EXPIRED"
-          ]
+          "values": ["DRAFT", "CONFIRMED", "SHIPPED", "CANCELLED", "EXPIRED"]
         }
       },
       "reservedBlocks": [],
@@ -251,9 +245,7 @@
     {
       "id": "legacy-er",
       "kind": "er_diagram",
-      "include": [
-        "migrate.LegacyUser"
-      ],
+      "include": ["migrate.LegacyUser"],
       "exclude": [],
       "attachments": [],
       "participants": [],
@@ -263,9 +255,7 @@
     {
       "id": "migrate-er",
       "kind": "er_diagram",
-      "include": [
-        "migrate.User"
-      ],
+      "include": ["migrate.User"],
       "exclude": [],
       "attachments": [],
       "participants": [],

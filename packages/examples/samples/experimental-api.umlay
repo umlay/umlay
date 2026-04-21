@@ -1,0 +1,86 @@
+// experimental-api.umlay — @experimental アノテーションのデモ (RFC 0027)
+//
+// spec 0.8.0: @experimental で「試験導入、将来破壊的変更あり」を明示
+
+@@mode(strict)
+
+namespace experimental_demo
+
+// ============================================================================
+// 1. attribute 単位の experimental
+// ============================================================================
+
+model User @aggregate_root @intent("ユーザー (安定)") {
+  +id    UUID!   @id
+  +email string! @unique
+
+  // 短縮形
+  +mfaEnabled bool! @default(false) @experimental("still refining MFA flows, API may change before 0.9")
+}
+
+// ============================================================================
+// 2. model 単位の完全形
+// ============================================================================
+
+model StreamProcessor @aggregate_root
+  @intent("非同期ストリーム処理")
+  @experimental({
+    since:         "0.8.0",
+    note:          "async interface may change before stabilization",
+    stabilizeIn:   "1.0.0",
+    trackingIssue: "umlay/umlay#456"
+  }) {
+  +id         UUID!   @id
+  +pipeline   string!
+  +throughput int!
+}
+
+// ============================================================================
+// 3. protocol with generics + experimental
+// ============================================================================
+
+protocol ResourcePoolV2<out T>
+  @intent("次世代のリソースプール契約")
+  @experimental({
+    since:         "0.8.0",
+    note:          "retry/backoff behavior and signature may evolve",
+    stabilizeIn:   "1.0.0",
+    trackingIssue: "umlay/umlay#457"
+  }) {
+  fn acquire() -> T!
+  fn release(resource: T!) -> void
+}
+
+// ============================================================================
+// 4. enum value の experimental (部分的な試験機能)
+// ============================================================================
+
+enum LogLevel @intent("ログレベル") {
+  DEBUG,
+  INFO,
+  WARN,
+  ERROR,
+  TRACE @experimental("TRACE level is new, verbosity behavior not finalized")
+}
+
+// ============================================================================
+// 5. deprecated との組み合わせ (experimental → deprecated への遷移)
+// ============================================================================
+
+// 旧: 試験的だったが、正式にならず廃止予定
+model OldStreamProcessor @entity
+  @intent("旧版、deprecated へ移行中")
+  @experimental({ since: "0.6.0", note: "superseded by StreamProcessor" })
+  @deprecated({
+    since:       "0.8.0",
+    removeIn:    "1.0.0",
+    replaceWith: StreamProcessor,
+    message:     "use StreamProcessor instead; was experimental and won't stabilize"
+  }) {
+  +id UUID! @id
+}
+
+view experimental-class @class_diagram
+  @intent("試験導入中の API") {
+  include: experimental_demo.*
+}

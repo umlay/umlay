@@ -102,9 +102,9 @@ IR では常に fully qualified (`<ns>.<Model>`) に正規化される。短縮�
 ## サンプル / テスト
 
 - `packages/examples/samples/multi-project-schedule/` を新設:
-  - `pm-core.uml` (共通インフラタスク)
-  - `pm-feature-a.uml` (機能 A タスク、core に依存)
-  - `pm-feature-b.uml` (機能 B タスク、core + feature-a に依存)
+  - `pm-core.umlay` (共通インフラタスク)
+  - `pm-feature-a.umlay` (機能 A タスク、core に依存)
+  - `pm-feature-b.umlay` (機能 B タスク、core + feature-a に依存)
 - conformance: `@@dependencies(ns.Model)` の解決、解決不能時の S11 挙動
 
 ## 受諾時にやること

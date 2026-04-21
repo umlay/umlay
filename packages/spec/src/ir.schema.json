@@ -18,11 +18,7 @@
         },
         "mode": {
           "type": "string",
-          "enum": [
-            "draft",
-            "beta",
-            "strict"
-          ],
+          "enum": ["draft", "beta", "strict"],
           "default": "draft"
         },
         "meta": {
@@ -47,13 +43,7 @@
                     },
                     "stereotype": {
                       "type": "string",
-                      "enum": [
-                        "entity",
-                        "aggregate_root",
-                        "value_object",
-                        "service",
-                        "interface"
-                      ]
+                      "enum": ["entity", "aggregate_root", "value_object", "service", "interface"]
                     },
                     "identity": {
                       "anyOf": [
@@ -84,24 +74,12 @@
                           },
                           "visibility": {
                             "type": "string",
-                            "enum": [
-                              "public",
-                              "private",
-                              "protected",
-                              "package"
-                            ],
+                            "enum": ["public", "private", "protected", "package"],
                             "default": "public"
                           },
                           "nullable": {
-                            "type": [
-                              "boolean",
-                              "string"
-                            ],
-                            "enum": [
-                              false,
-                              "null",
-                              "undefined"
-                            ],
+                            "type": ["boolean", "string"],
+                            "enum": [false, "null", "undefined"],
                             "default": false
                           },
                           "unique": {
@@ -125,29 +103,17 @@
                               },
                               "onDelete": {
                                 "type": "string",
-                                "enum": [
-                                  "CASCADE",
-                                  "RESTRICT",
-                                  "SET_NULL",
-                                  "NO_ACTION"
-                                ]
+                                "enum": ["CASCADE", "RESTRICT", "SET_NULL", "NO_ACTION"]
                               },
                               "onUpdate": {
                                 "type": "string",
-                                "enum": [
-                                  "CASCADE",
-                                  "RESTRICT",
-                                  "SET_NULL",
-                                  "NO_ACTION"
-                                ]
+                                "enum": ["CASCADE", "RESTRICT", "SET_NULL", "NO_ACTION"]
                               },
                               "inverse": {
                                 "type": "string"
                               }
                             },
-                            "required": [
-                              "target"
-                            ],
+                            "required": ["target"],
                             "additionalProperties": true
                           },
                           "codegenName": {
@@ -172,11 +138,7 @@
                                 },
                                 "status": {
                                   "type": "string",
-                                  "enum": [
-                                    "open",
-                                    "resolved",
-                                    "wontfix"
-                                  ]
+                                  "enum": ["open", "resolved", "wontfix"]
                                 },
                                 "replies": {
                                   "type": "array",
@@ -193,17 +155,13 @@
                                         "type": "string"
                                       }
                                     },
-                                    "required": [
-                                      "text"
-                                    ],
+                                    "required": ["text"],
                                     "additionalProperties": true
                                   },
                                   "default": []
                                 }
                               },
-                              "required": [
-                                "text"
-                              ],
+                              "required": ["text"],
                               "additionalProperties": true
                             },
                             "default": []
@@ -292,10 +250,7 @@
                             "additionalProperties": true
                           }
                         },
-                        "required": [
-                          "name",
-                          "type"
-                        ],
+                        "required": ["name", "type"],
                         "additionalProperties": true
                       }
                     },
@@ -337,10 +292,7 @@
                             "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/attributes/items/properties/rationale"
                           }
                         },
-                        "required": [
-                          "kind",
-                          "target"
-                        ],
+                        "required": ["kind", "target"],
                         "additionalProperties": true
                       },
                       "default": []
@@ -355,10 +307,7 @@
                         "properties": {
                           "kind": {
                             "type": "string",
-                            "enum": [
-                              "image",
-                              "link"
-                            ]
+                            "enum": ["image", "link"]
                           },
                           "src": {
                             "type": "string"
@@ -373,9 +322,7 @@
                             "type": "string"
                           }
                         },
-                        "required": [
-                          "kind"
-                        ],
+                        "required": ["kind"],
                         "additionalProperties": true
                       },
                       "default": []
@@ -412,10 +359,7 @@
                       "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/attributes/items/properties/experimental"
                     }
                   },
-                  "required": [
-                    "name",
-                    "attributes"
-                  ],
+                  "required": ["name", "attributes"],
                   "additionalProperties": true
                 },
                 "default": {}
@@ -442,9 +386,7 @@
                       "default": []
                     }
                   },
-                  "required": [
-                    "name"
-                  ],
+                  "required": ["name"],
                   "additionalProperties": true
                 },
                 "default": {}
@@ -467,10 +409,7 @@
                       }
                     }
                   },
-                  "required": [
-                    "name",
-                    "values"
-                  ],
+                  "required": ["name", "values"],
                   "additionalProperties": true
                 },
                 "default": {}
@@ -490,11 +429,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "keyword",
-                    "name",
-                    "raw"
-                  ],
+                  "required": ["keyword", "name", "raw"],
                   "additionalProperties": true
                 },
                 "default": []
@@ -549,19 +484,13 @@
                             "type": "string"
                           }
                         },
-                        "required": [
-                          "target"
-                        ],
+                        "required": ["target"],
                         "additionalProperties": true
                       },
                       "default": []
                     }
                   },
-                  "required": [
-                    "kind",
-                    "name",
-                    "raw"
-                  ],
+                  "required": ["kind", "name", "raw"],
                   "additionalProperties": true
                 },
                 "default": []
@@ -584,10 +513,7 @@
                           },
                           "variance": {
                             "type": "string",
-                            "enum": [
-                              "out",
-                              "in"
-                            ]
+                            "enum": ["out", "in"]
                           },
                           "bounds": {
                             "type": "array",
@@ -604,16 +530,12 @@
                                   }
                                 }
                               },
-                              "required": [
-                                "ref"
-                              ],
+                              "required": ["ref"],
                               "additionalProperties": true
                             }
                           }
                         },
-                        "required": [
-                          "name"
-                        ],
+                        "required": ["name"],
                         "additionalProperties": true
                       }
                     },
@@ -643,10 +565,7 @@
                                   "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/protocols/items/properties/typeParams/items/properties/bounds/items"
                                 }
                               },
-                              "required": [
-                                "name",
-                                "type"
-                              ],
+                              "required": ["name", "type"],
                               "additionalProperties": true
                             },
                             "default": []
@@ -655,17 +574,13 @@
                             "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/protocols/items/properties/typeParams/items/properties/bounds/items"
                           }
                         },
-                        "required": [
-                          "name"
-                        ],
+                        "required": ["name"],
                         "additionalProperties": true
                       },
                       "default": []
                     }
                   },
-                  "required": [
-                    "name"
-                  ],
+                  "required": ["name"],
                   "additionalProperties": true
                 },
                 "default": []
@@ -704,26 +619,19 @@
                                   "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/protocols/items/properties/typeParams/items/properties/bounds/items"
                                 }
                               },
-                              "required": [
-                                "name",
-                                "type"
-                              ],
+                              "required": ["name", "type"],
                               "additionalProperties": true
                             },
                             "default": []
                           }
                         },
-                        "required": [
-                          "name"
-                        ],
+                        "required": ["name"],
                         "additionalProperties": true
                       },
                       "default": []
                     }
                   },
-                  "required": [
-                    "name"
-                  ],
+                  "required": ["name"],
                   "additionalProperties": true
                 },
                 "default": []
@@ -753,10 +661,7 @@
                       "default": []
                     }
                   },
-                  "required": [
-                    "trait",
-                    "target"
-                  ],
+                  "required": ["trait", "target"],
                   "additionalProperties": true
                 },
                 "default": []
@@ -832,10 +737,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "id",
-                    "label"
-                  ],
+                  "required": ["id", "label"],
                   "additionalProperties": true
                 },
                 "default": []
@@ -856,12 +758,7 @@
                     },
                     "kind": {
                       "type": "string",
-                      "enum": [
-                        "sync",
-                        "async",
-                        "reply",
-                        "self"
-                      ],
+                      "enum": ["sync", "async", "reply", "self"],
                       "default": "sync"
                     },
                     "fragment": {
@@ -871,11 +768,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "from",
-                    "to",
-                    "label"
-                  ],
+                  "required": ["from", "to", "label"],
                   "additionalProperties": true
                 },
                 "default": []
@@ -909,24 +802,13 @@
                             },
                             "arrow": {
                               "type": "string",
-                              "enum": [
-                                "sync",
-                                "async",
-                                "reply",
-                                "self"
-                              ]
+                              "enum": ["sync", "async", "reply", "self"]
                             },
                             "label": {
                               "type": "string"
                             }
                           },
-                          "required": [
-                            "kind",
-                            "from",
-                            "to",
-                            "arrow",
-                            "label"
-                          ],
+                          "required": ["kind", "from", "to", "arrow", "label"],
                           "additionalProperties": true
                         },
                         {
@@ -951,10 +833,7 @@
                                     }
                                   }
                                 },
-                                "required": [
-                                  "condition",
-                                  "body"
-                                ],
+                                "required": ["condition", "body"],
                                 "additionalProperties": true
                               }
                             },
@@ -965,10 +844,7 @@
                               }
                             }
                           },
-                          "required": [
-                            "kind",
-                            "cases"
-                          ],
+                          "required": ["kind", "cases"],
                           "additionalProperties": true
                         },
                         {
@@ -988,10 +864,7 @@
                               }
                             }
                           },
-                          "required": [
-                            "kind",
-                            "body"
-                          ],
+                          "required": ["kind", "body"],
                           "additionalProperties": true
                         },
                         {
@@ -1016,9 +889,7 @@
                                     }
                                   }
                                 },
-                                "required": [
-                                  "body"
-                                ],
+                                "required": ["body"],
                                 "additionalProperties": true
                               }
                             },
@@ -1038,10 +909,7 @@
                               "additionalProperties": true
                             }
                           },
-                          "required": [
-                            "kind",
-                            "branches"
-                          ],
+                          "required": ["kind", "branches"],
                           "additionalProperties": true
                         },
                         {
@@ -1061,9 +929,7 @@
                                   "type": "string"
                                 }
                               },
-                              "required": [
-                                "duration"
-                              ],
+                              "required": ["duration"],
                               "additionalProperties": true
                             },
                             "retry": {
@@ -1074,11 +940,7 @@
                                 },
                                 "backoff": {
                                   "type": "string",
-                                  "enum": [
-                                    "exponential",
-                                    "linear",
-                                    "constant"
-                                  ]
+                                  "enum": ["exponential", "linear", "constant"]
                                 },
                                 "initial": {
                                   "type": "string"
@@ -1090,9 +952,7 @@
                                   "type": "boolean"
                                 }
                               },
-                              "required": [
-                                "attempts"
-                              ],
+                              "required": ["attempts"],
                               "additionalProperties": true
                             },
                             "on": {
@@ -1120,9 +980,7 @@
                                   }
                                 }
                               },
-                              "required": [
-                                "body"
-                              ],
+                              "required": ["body"],
                               "additionalProperties": true
                             },
                             "finallyBlock": {
@@ -1135,17 +993,11 @@
                                   }
                                 }
                               },
-                              "required": [
-                                "body"
-                              ],
+                              "required": ["body"],
                               "additionalProperties": true
                             }
                           },
-                          "required": [
-                            "kind",
-                            "label",
-                            "body"
-                          ],
+                          "required": ["kind", "label", "body"],
                           "additionalProperties": true
                         },
                         {
@@ -1165,10 +1017,7 @@
                               }
                             }
                           },
-                          "required": [
-                            "kind",
-                            "body"
-                          ],
+                          "required": ["kind", "body"],
                           "additionalProperties": true
                         },
                         {
@@ -1188,9 +1037,7 @@
                               "type": "boolean"
                             }
                           },
-                          "required": [
-                            "kind"
-                          ],
+                          "required": ["kind"],
                           "additionalProperties": true
                         }
                       ]
@@ -1218,12 +1065,7 @@
                   },
                   "status": {
                     "type": "string",
-                    "enum": [
-                      "pending",
-                      "in_progress",
-                      "done",
-                      "blocked"
-                    ],
+                    "enum": ["pending", "in_progress", "done", "blocked"],
                     "default": "pending"
                   },
                   "assignee": {
@@ -1233,10 +1075,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "id",
-                  "label"
-                ],
+                "required": ["id", "label"],
                 "additionalProperties": true
               },
               "ganttTasks": {
@@ -1261,12 +1100,7 @@
                     },
                     "status": {
                       "type": "string",
-                      "enum": [
-                        "pending",
-                        "in_progress",
-                        "done",
-                        "blocked"
-                      ],
+                      "enum": ["pending", "in_progress", "done", "blocked"],
                       "default": "pending"
                     },
                     "progress": {
@@ -1307,12 +1141,7 @@
                               },
                               "kind": {
                                 "type": "string",
-                                "enum": [
-                                  "FS",
-                                  "SS",
-                                  "FF",
-                                  "SF"
-                                ],
+                                "enum": ["FS", "SS", "FF", "SF"],
                                 "default": "FS"
                               },
                               "lag": {
@@ -1320,9 +1149,7 @@
                                 "default": 0
                               }
                             },
-                            "required": [
-                              "id"
-                            ],
+                            "required": ["id"],
                             "additionalProperties": true
                           }
                         ]
@@ -1347,37 +1174,23 @@
                       ]
                     }
                   },
-                  "required": [
-                    "id",
-                    "label",
-                    "start"
-                  ],
+                  "required": ["id", "label", "start"],
                   "additionalProperties": true
                 },
                 "default": []
               },
               "criticalPath": {
                 "type": "string",
-                "enum": [
-                  "highlight",
-                  "compute",
-                  "ignore"
-                ]
+                "enum": ["highlight", "compute", "ignore"]
               }
             },
-            "required": [
-              "id",
-              "kind"
-            ],
+            "required": ["id", "kind"],
             "additionalProperties": true
           },
           "default": []
         }
       },
-      "required": [
-        "version",
-        "kind"
-      ],
+      "required": ["version", "kind"],
       "additionalProperties": true
     }
   }

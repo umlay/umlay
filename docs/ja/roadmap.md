@@ -7,7 +7,7 @@
 | パッケージ / ディレクトリ | 内容 | バージョン |
 | --- | --- | --- |
 | `@umlay/spec` | DSL 文法 + 正規IR JSON Schema + 形式文法 (BNF) + conformance (manifest + expected-ir + id-hash-vectors) + 30 RFC accepted | 0.8.0 |
-| `@umlay/examples` | 35 本の `.uml` サンプル (全 RFC 機能のライブデモ含む) | 0.8.0 |
+| `@umlay/examples` | 35 本の `.umlay` サンプル (全 RFC 機能のライブデモ含む) | 0.8.0 |
 | `skills/` | 開発者 / AI 向け skill 定義 (枠組み) | — |
 | `docs/` | 利用者向けドキュメント (本ガイド群) | — |
 
@@ -20,7 +20,7 @@
 - `view <id> @er_diagram | @class_diagram | @sequence_diagram | @component_diagram | @package_diagram | @state_machine | @activity_diagram | @deployment_diagram | @wbs_diagram | @gantt_chart { ... }`
 - アノテーション: `@id`, `@@id(a,b)`, `@ref`, `@unique`, `@index`, `@default`, `@codegenName`
 - ブロック: `@@doc("""...""")`, `@@attachments(...)`, `@@theme("...")`, `@@mode(draft|strict)`, `@@dependencies(...)`, `@@sample(...)` (inline / 外部ファイル), `@@implements(...)`, `@@override(from: ...)` (RFC 0011)
-- 拡張宣言: `protocol<out T: Foo & Bar> extends A, B { ... }` (C3 MRO + variance + bounds、RFC 0015/0019), `union X = A | B { payload: T! } | Recursive { child: X! }`, `module X { ... }`, `import <ns>`/`import "path" as alias`/`import "./glob/**/*.uml"` (RFC 0014)
+- 拡張宣言: `protocol<out T: Foo & Bar> extends A, B { ... }` (C3 MRO + variance + bounds、RFC 0015/0019), `union X = A | B { payload: T! } | Recursive { child: X! }`, `module X { ... }`, `import <ns>`/`import "path" as alias`/`import "./glob/**/*.umlay"` (RFC 0014)
 - `impl` ブロック: `impl<T> P for M where (T: Q) { }` (通常 + blanket、RFC 0016/0020)
 - Sequence 拡張フラグメント: `alt`/`else`/default, `opt`, `par`/`and`/`await all|any|(labels)|all timeout(...)`, `loop`, `critical "X" on (a,b) timeout(5s) { } catch { } finally { }` (RFC 0017/0021)
 - nullability: `!` / `?` / `??`

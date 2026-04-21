@@ -1,0 +1,87 @@
+// with-codegen-hooks.umlay — @@codegen 拡張フックのデモ (RFC 0025)
+//
+// spec 0.7.0:
+//   - model / attribute 単位で target 別 (prisma/sql/ts/openapi/...) の
+//     skip / rename / template / type を指定
+//
+// action の 4 種:
+//   - skip             : そのターゲットで出力を省略
+//   - rename("X")      : 識別子を別名に
+//   - template("...")  : カスタムテンプレートを使用
+//   - type("T")        : 生成型を差し替え
+
+@@mode(strict)
+
+namespace hooked
+
+enum UserRole { OWNER, ADMIN, MEMBER, GUEST }
+
+// ============================================================================
+// model 単位の @@codegen
+// ============================================================================
+
+model User @aggregate_root @intent("User、target 別にカスタマイズ") {
+  @@codegen(
+    prisma: { tableName: "users_v2" },
+    sql:    { tablespace: "users_ts", schema: "app" },
+    ts:     { extend: "DomainEntity<User>" }
+  )
+
+  +id            UUID!   @id
+  +email         string! @unique
+
+  // --- attribute 単位の @@codegen (単一 action) ---
+  +internalCode  string! @@codegen(prisma: skip, openapi: skip)
+  +displayName   string! @@codegen(sql: rename("display_name_v2"))
+  +metadata      string? @@codegen(ts: type("Record<string, unknown>"), prisma: type("Json"))
+  +avatarUrl     string? @@codegen(openapi: rename("avatar_url"))
+
+  // --- attribute 単位の @@codegen (object 形、複数 target) ---
+  +role          UserRole! @default(MEMBER) @@codegen(
+    graphql: { enum: "UserRole" },
+    prisma:  { mapTo: "role_enum" }
+  )
+
+  // --- deprecated と codegen の組み合わせ ---
+  +legacyField   string? @deprecated("use metadata instead")
+                         @@codegen(prisma: skip, sql: skip, ts: skip)
+}
+
+// ============================================================================
+// 特殊ケース: 全 target で skip する model (計算モデル、DB には出さない)
+// ============================================================================
+
+model UserStats @service @intent("集計用ビュー model、DB 出力不要") {
+  @@codegen(
+    prisma:  skip,
+    sql:     skip,
+    openapi: skip
+  )
+  +userId      UUID!   @id
+  +orderCount  int!
+  +totalSpent  decimal!
+}
+
+// ============================================================================
+// template action (実装依存のテンプレート文字列)
+// ============================================================================
+
+model AuditLog @entity @intent("監査ログ、独自 template で挿入時刻を SQL TRIGGER 化") {
+  @@codegen(
+    sql: { template: "audit_log_with_trigger.sql.tmpl" },
+    ts:  { extend:   "AsyncIterable<AuditEntry>" }
+  )
+
+  +id          UUID!      @id
+  +entityType  string!
+  +entityId    UUID!
+  +action      string!
+  +at          Timestamp! @auto
+}
+
+// ============================================================================
+// Views
+// ============================================================================
+
+view hooked-er    @er_diagram    { include: hooked.User, hooked.AuditLog }
+view hooked-class @class_diagram { include: hooked.* }

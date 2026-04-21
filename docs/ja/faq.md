@@ -52,7 +52,7 @@ model 注文 @aggregate_root @codegenName("Order") {
 
 ### 正規IR は直接書いてもよいですか
 
-技術的には可能 (JSON) ですが、執筆は `.uml` DSL を推奨します。IR はツール間連携用であり、人間が書くことは想定していません。
+技術的には可能 (JSON) ですが、執筆は `.umlay` DSL を推奨します。IR はツール間連携用であり、人間が書くことは想定していません。
 
 ### 生成コードの品質はどう担保されますか
 
@@ -77,7 +77,7 @@ Strict モード (`@@mode(strict)`) は、以下を error とします。
 ### どうやって貢献できますか
 
 - **仕様の提案**: Issue を起票後、`packages/spec/src/rfcs/` に RFC を置く
-- **サンプル追加**: `packages/examples/samples/` に `.uml` を追加 + README の表に行を追加
+- **サンプル追加**: `packages/examples/samples/` に `.umlay` を追加 + README の表に行を追加
 - **Skill 追加**: `skills/` に `.md` を追加 (フロントマター + 例付き)
 - **ドキュメント改善**: `docs/ja/` と `docs/en/` の両方を更新 (できれば両言語一括)
 

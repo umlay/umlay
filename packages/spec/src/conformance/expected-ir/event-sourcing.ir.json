@@ -64,9 +64,7 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": [
-                  "total >= 0"
-                ],
+                "invariants": ["total >= 0"],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -86,9 +84,7 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": [
-                  "version >= 0"
-                ],
+                "invariants": ["version >= 0"],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -118,12 +114,7 @@
         "OrderStatus": {
           "_id": "ebfb8ad83408",
           "name": "OrderStatus",
-          "values": [
-            "DRAFT",
-            "CONFIRMED",
-            "SHIPPED",
-            "CANCELLED"
-          ]
+          "values": ["DRAFT", "CONFIRMED", "SHIPPED", "CANCELLED"]
         }
       },
       "reservedBlocks": [],
@@ -277,10 +268,7 @@
     {
       "id": "orders-er",
       "kind": "er_diagram",
-      "include": [
-        "orders.Order",
-        "orders.OrderEvent"
-      ],
+      "include": ["orders.Order", "orders.OrderEvent"],
       "exclude": [],
       "attachments": [],
       "participants": [],
@@ -290,9 +278,7 @@
     {
       "id": "orders-class",
       "kind": "class_diagram",
-      "include": [
-        "orders.*"
-      ],
+      "include": ["orders.*"],
       "exclude": [],
       "attachments": [],
       "participants": [],
@@ -302,10 +288,7 @@
     {
       "id": "order-lifecycle",
       "kind": "state_machine",
-      "include": [
-        "orders.Order",
-        "orders.OrderStatus"
-      ],
+      "include": ["orders.Order", "orders.OrderStatus"],
       "exclude": [],
       "attachments": [],
       "participants": [],

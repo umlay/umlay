@@ -6,9 +6,9 @@ spec 0.5.0 で導入された Rust 風 `impl` ブロックで、**別ファイ�
 
 ```
 with-impl-blocks/
-├── core.uml            (core namespace: protocol + model の宣言のみ)
-├── feature-auth.uml    (auth namespace: 認証用 protocol を core.User に適用)
-└── feature-audit.uml   (audit namespace: 監査用 protocol を core.User/Order に適用)
+├── core.umlay            (core namespace: protocol + model の宣言のみ)
+├── feature-auth.umlay    (auth namespace: 認証用 protocol を core.User に適用)
+└── feature-audit.umlay   (audit namespace: 監査用 protocol を core.User/Order に適用)
 ```
 
 ## Orphan rule
@@ -22,8 +22,8 @@ with-impl-blocks/
 
 ### 本サンプルでの適用
 
-- `feature-auth.uml`: `auth.Authenticatable` を `core.User` に適用 → Authenticatable は auth 所有なので OK
-- `feature-audit.uml`: `audit.Timestamped` を `core.User` / `core.Order` に適用 → Timestamped は audit 所有なので OK
+- `feature-auth.umlay`: `auth.Authenticatable` を `core.User` に適用 → Authenticatable は auth 所有なので OK
+- `feature-audit.umlay`: `audit.Timestamped` を `core.User` / `core.Order` に適用 → Timestamped は audit 所有なので OK
 
 ## where 句 (RFC 0015 との組み合わせ)
 
@@ -39,8 +39,8 @@ impl Cacheable<T> for core.User where (T: Hashable) {
 
 ```jsonc
 "implements": [
-  { "protocol": "auth.Authenticatable", "implSource": { "file": "feature-auth.uml", "namespace": "auth" } },
-  { "protocol": "audit.Timestamped",    "implSource": { "file": "feature-audit.uml", "namespace": "audit" } }
+  { "protocol": "auth.Authenticatable", "implSource": { "file": "feature-auth.umlay", "namespace": "auth" } },
+  { "protocol": "audit.Timestamped",    "implSource": { "file": "feature-audit.umlay", "namespace": "audit" } }
 ]
 ```
 

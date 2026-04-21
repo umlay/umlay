@@ -1,0 +1,22 @@
+// root.umlay — glob import のルート (RFC 0014)
+//
+// spec 0.4.0: `import "./tasks/*.umlay"` で tasks/ 配下を一括取り込み
+
+@@mode(strict)
+
+namespace project_plan
+
+// RFC 0014: 同一ディレクトリ内の全 sprint を glob import
+import "./tasks/*.umlay"
+
+// サマリビュー: glob で取り込まれた全 namespace の tasks を合成表示
+view global-gantt @gantt_chart
+  @intent("全 sprint のタスクを一つの Gantt に") {
+  include: sprint1.Task, sprint2.Task, sprint3.Task
+  layout: direction(LR), engine(elk), spacing(20)
+}
+
+view global-wbs @wbs_diagram
+  @intent("全 sprint の階層") {
+  include: sprint1.Task, sprint2.Task, sprint3.Task
+}

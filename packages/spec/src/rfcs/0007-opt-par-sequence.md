@@ -117,8 +117,8 @@ view save-order @sequence_diagram {
 
 ## サンプル / テスト
 
-- `packages/examples/samples/login/login.uml` の「メール通知」追加シナリオで `opt` を使用
-- 新サンプル `packages/examples/samples/concurrent-save.uml` で `par` を使用
+- `packages/examples/samples/login/login.umlay` の「メール通知」追加シナリオで `opt` を使用
+- 新サンプル `packages/examples/samples/concurrent-save.umlay` で `par` を使用
 - Conformance: `opt` 単体 / `par` 2 分岐以上 / ネスト (`alt` 内 `opt` 等)
 
 ## 受諾時にやること

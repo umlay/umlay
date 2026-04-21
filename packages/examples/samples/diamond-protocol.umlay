@@ -1,0 +1,86 @@
+// diamond-protocol.umlay — C3 linearization + `@@override` デモ (RFC 0011)
+//
+// spec 0.4.0:
+//   - RFC 0010: protocol の多重継承 `extends A, B, ...`
+//   - RFC 0011: diamond での method 解決順序 (C3 MRO) と `@@override(from: X)`
+//
+// 継承グラフ (典型的なダイヤモンド):
+//
+//         Base
+//         /   \
+//      Left   Right
+//         \   /
+//        Diamond
+//
+// C3 MRO: [Diamond, Left, Right, Base]
+// → hello() は Left が採用される (C3 既定)
+// → @@override(from: Right) を付けると Right が採用される
+
+@@mode(strict)
+
+namespace didemo
+
+// ============================================================================
+// Base + Left + Right
+// ============================================================================
+
+protocol Base @intent("共通祖先") {
+  fn hello() -> void
+    @intent("挨拶する")
+  fn describe() -> string!
+    @intent("自己記述")
+}
+
+protocol Left extends Base @intent("左側の派生") {
+  fn hello() -> void
+    @intent("Left 流の挨拶")
+  fn leftOnly() -> void
+    @intent("Left 固有メソッド")
+}
+
+protocol Right extends Base @intent("右側の派生") {
+  fn hello() -> void
+    @intent("Right 流の挨拶")
+  fn rightOnly() -> void
+    @intent("Right 固有メソッド")
+}
+
+// ============================================================================
+// Diamond (4 パターン)
+// ============================================================================
+
+// パターン 1: C3 既定 (Left が勝つ)
+protocol DiamondDefault extends Left, Right
+  @intent("C3 既定: MRO = [DiamondDefault, Left, Right, Base]、hello は Left の実装") {
+  // hello() は MRO 先頭の Left から継承される (宣言不要)
+}
+
+// パターン 2: @@override(from: Right) で明示
+protocol DiamondFromRight extends Left, Right
+  @intent("@@override で Right を選択") {
+  @@override(from: Right)
+  fn hello() -> void
+}
+
+// パターン 3: Diamond 自身で再宣言 (両方と独立)
+protocol DiamondOwn extends Left, Right
+  @intent("Diamond 自身で hello を再宣言") {
+  fn hello() -> void
+    @intent("Diamond 独自の挨拶")
+}
+
+// パターン 4: 継承順変更で Right-first に
+protocol DiamondRightFirst extends Right, Left
+  @intent("継承順を入れ替えて MRO 先頭を Right に") {
+  // MRO = [DiamondRightFirst, Right, Left, Base]、hello は Right の実装
+}
+
+// ============================================================================
+// Views
+// ============================================================================
+
+view diamond-class @class_diagram
+  @intent("継承グラフとメソッド") {
+  include: didemo.*
+  layout: direction(TB), engine(elk)
+}

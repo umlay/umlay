@@ -3,7 +3,7 @@ name: write-uml
 version: 0.8.0
 spec: "@umlay/spec >= 0.8.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer]
-summary: 要件や既存の説明文から Umlay DSL (.uml) を仕様準拠で書き起こす手順
+summary: 要件や既存の説明文から Umlay DSL (.umlay) を仕様準拠で書き起こす手順
 references:
   grammar: ../../packages/spec/src/grammar.md
   schema: ../../packages/spec/src/ir.schema.json
@@ -14,7 +14,7 @@ references:
 
 ## ゴール
 
-自然言語の要件 / スキーマ / 既存コードから、**`@umlay/spec` 準拠**の `.uml` ファイルを生成する。生成物がパーサで受理され、IR (version 1.0) に変換可能であることを保証する。
+自然言語の要件 / スキーマ / 既存コードから、**`@umlay/spec` 準拠**の `.umlay` ファイルを生成する。生成物がパーサで受理され、IR (version 1.0) に変換可能であることを保証する。
 
 ## 前提
 
@@ -27,7 +27,7 @@ references:
 | 項目 | 内容 |
 | --- | --- |
 | 入力 | 要件文、既存 DB スキーマ、既存型定義、ユースケース記述 |
-| 出力 | 1 つ以上の `.uml` ファイル |
+| 出力 | 1 つ以上の `.umlay` ファイル |
 
 ## 手順
 

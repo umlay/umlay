@@ -37,9 +37,7 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": [
-                  "amount > 0"
-                ],
+                "invariants": ["amount > 0"],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -263,12 +261,7 @@
         "PaymentStatus": {
           "_id": "d9e5028d0bde",
           "name": "PaymentStatus",
-          "values": [
-            "PENDING",
-            "COMMITTED",
-            "FAILED",
-            "TIMED_OUT"
-          ]
+          "values": ["PENDING", "COMMITTED", "FAILED", "TIMED_OUT"]
         }
       },
       "reservedBlocks": [],
@@ -379,10 +372,7 @@
             "timeout": {
               "duration": "5s"
             },
-            "on": [
-              "gw",
-              "db"
-            ],
+            "on": ["gw", "db"],
             "body": [
               {
                 "kind": "message",
@@ -559,9 +549,7 @@
             "timeout": {
               "duration": "2s"
             },
-            "on": [
-              "audit"
-            ],
+            "on": ["audit"],
             "body": [
               {
                 "kind": "critical",
@@ -569,9 +557,7 @@
                 "timeout": {
                   "duration": "500ms"
                 },
-                "on": [
-                  "db"
-                ],
+                "on": ["db"],
                 "body": [
                   {
                     "kind": "message",
@@ -628,10 +614,7 @@
     {
       "id": "payment-lifecycle",
       "kind": "state_machine",
-      "include": [
-        "payments.Payment",
-        "payments.PaymentStatus"
-      ],
+      "include": ["payments.Payment", "payments.PaymentStatus"],
       "exclude": [],
       "attachments": [],
       "participants": [],

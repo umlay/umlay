@@ -19,7 +19,7 @@ RFC 0007 で導入した `par "A" { ... } and "B" { ... }` は fire-and-forget �
 
 ## 背景 / モチベーション
 
-`concurrent-flow.uml` の注文 API を例にとると:
+`concurrent-flow.umlay` の注文 API を例にとると:
 
 ```prisma
 par "cache" { api ->> cache : SET }
@@ -138,7 +138,7 @@ await all timeout(500ms)      // ← 0.5 秒で打ち切り
 
 ## サンプル / テスト
 
-- `concurrent-flow.uml` に `await` 各モードの節を追加
+- `concurrent-flow.umlay` に `await` 各モードの節を追加
 - Conformance: await all / any / partial / timeout の parse + IR 化
 
 ## 受諾時にやること
@@ -146,7 +146,7 @@ await all timeout(500ms)      // ← 0.5 秒で打ち切り
 - [ ] `grammar.bnf` / `grammar.md` / `grammar.en.md` §9 更新
 - [ ] `ir.schema.json` の par block に `await` 追加
 - [ ] `skills/ja/write-uml.md` / `en/write-uml.md` に使用例追加
-- [ ] `concurrent-flow.uml` を拡張して await デモを追加
+- [ ] `concurrent-flow.umlay` を拡張して await デモを追加
 - [ ] `SPEC_VERSION` 0.4.0 bump
 
 ## 未解決事項

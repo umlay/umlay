@@ -7,7 +7,7 @@ This repository (`umlay-oss`) publishes the **Umlay DSL spec, samples, developer
 | Package / directory | Contents | Version |
 | --- | --- | --- |
 | `@umlay/spec` | DSL grammar + normalized IR JSON Schema + formal BNF + conformance (manifest + expected-ir + id-hash-vectors) + 30 accepted RFCs | 0.8.0 |
-| `@umlay/examples` | 35 `.uml` samples (live demos of every accepted RFC) | 0.8.0 |
+| `@umlay/examples` | 35 `.umlay` samples (live demos of every accepted RFC) | 0.8.0 |
 | `skills/` | Skill definitions for developers / AI (scaffold) | — |
 | `docs/` | User-facing documentation (this guide set) | — |
 
@@ -20,7 +20,7 @@ This repository (`umlay-oss`) publishes the **Umlay DSL spec, samples, developer
 - `view <id> @er_diagram | @class_diagram | @sequence_diagram | @component_diagram | @package_diagram | @state_machine | @activity_diagram | @deployment_diagram | @wbs_diagram | @gantt_chart { ... }`
 - Annotations: `@id`, `@@id(a,b)`, `@ref`, `@unique`, `@index`, `@default`, `@codegenName`
 - Blocks: `@@doc("""...""")`, `@@attachments(...)`, `@@theme("...")`, `@@mode(draft|strict)`, `@@dependencies(...)`, `@@sample(...)` (inline / external file), `@@implements(...)`, `@@override(from: ...)` (RFC 0011)
-- Extended declarations: `protocol<out T: Foo & Bar> extends A, B { ... }` (C3 MRO + variance + bounds, RFC 0015/0019), `union X = A | B { payload: T! } | Recursive { child: X! }`, `module X { ... }`, `import <ns>` / `import "path" as alias` / `import "./glob/**/*.uml"` (RFC 0014)
+- Extended declarations: `protocol<out T: Foo & Bar> extends A, B { ... }` (C3 MRO + variance + bounds, RFC 0015/0019), `union X = A | B { payload: T! } | Recursive { child: X! }`, `module X { ... }`, `import <ns>` / `import "path" as alias` / `import "./glob/**/*.umlay"` (RFC 0014)
 - `impl` blocks: `impl<T> P for M where (T: Q) { }` (regular + blanket, RFC 0016/0020)
 - Sequence fragments: `alt`/`else`/default, `opt`, `par`/`and`/`await all|any|(labels)|all timeout(...)`, `loop`, `critical "X" on (a,b) timeout(5s) { } catch { } finally { }` (RFC 0017/0021)
 - Nullability: `!` / `?` / `??`

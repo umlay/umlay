@@ -1,4 +1,4 @@
-# Getting Started — 最初の `.uml` を書く
+# Getting Started — 最初の `.umlay` を書く
 
 本書は、Umlay DSL をまだ書いたことがない人向けに、最小のサンプルから手を動かすためのガイドです。
 
@@ -24,23 +24,23 @@ pnpm typecheck
 
 ## 2. サンプルを眺める
 
-`packages/examples/samples/` に、難易度順の `.uml` が置いてあります。
+`packages/examples/samples/` に、難易度順の `.umlay` が置いてあります。
 
 | # | ファイル | ねらい |
 | --- | --- | --- |
-| 1 | `hello-order.uml` | 最小サンプル |
-| 2 | `blog.uml` | Users / Posts / Comments / Tags |
-| 3 | `ecommerce.uml` | cascade / inverse デモ |
-| 4 | `saas-multitenant.uml` | Orgs / Users / Teams / Invitations |
-| 5 | `japanese-domain.uml` | 日本語識別子 + `@codegenName` |
-| 6 | `with-attachments.uml` | 画像添付デモ |
-| 7 | `with-custom-theme.uml` | 外部 CSS テーマ適用デモ |
-| 8 | `reserved-keywords.uml` | 将来予約語 (function / queue / component) を含む |
-| 9 | `project-schedule.uml` | WBS / ガント用スケジュール |
+| 1 | `hello-order.umlay` | 最小サンプル |
+| 2 | `blog.umlay` | Users / Posts / Comments / Tags |
+| 3 | `ecommerce.umlay` | cascade / inverse デモ |
+| 4 | `saas-multitenant.umlay` | Orgs / Users / Teams / Invitations |
+| 5 | `japanese-domain.umlay` | 日本語識別子 + `@codegenName` |
+| 6 | `with-attachments.umlay` | 画像添付デモ |
+| 7 | `with-custom-theme.umlay` | 外部 CSS テーマ適用デモ |
+| 8 | `reserved-keywords.umlay` | 将来予約語 (function / queue / component) を含む |
+| 9 | `project-schedule.umlay` | WBS / ガント用スケジュール |
 
-## 3. 最小の `.uml` を書く
+## 3. 最小の `.umlay` を書く
 
-次の内容を `hello.uml` として保存してみます。
+次の内容を `hello.umlay` として保存してみます。
 
 ```prisma
 namespace shop

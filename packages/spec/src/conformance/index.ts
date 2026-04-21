@@ -142,11 +142,11 @@ export function coverageMatrix(manifest: ConformanceManifest): Record<string, nu
   for (const sample of manifest.samples) {
     const f = sample.features;
     const all: string[] = [
-      ...(f.declarations ?? []).map(x => `decl:${x}`),
-      ...(f.blocks ?? []).map(x => `block:${x}`),
-      ...(f.annotations ?? []).map(x => `anno:${x}`),
-      ...(f['view-kinds'] ?? []).map(x => `view:${x}`),
-      ...(f.stereotypes ?? []).map(x => `stereo:${x}`),
+      ...(f.declarations ?? []).map((x) => `decl:${x}`),
+      ...(f.blocks ?? []).map((x) => `block:${x}`),
+      ...(f.annotations ?? []).map((x) => `anno:${x}`),
+      ...(f['view-kinds'] ?? []).map((x) => `view:${x}`),
+      ...(f.stereotypes ?? []).map((x) => `stereo:${x}`),
     ];
     for (const item of all) counts[item] = (counts[item] ?? 0) + 1;
   }

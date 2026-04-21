@@ -1,0 +1,41 @@
+// core.umlay — core モジュール (protocol + model の宣言のみ)
+//
+// spec 0.5.0 (RFC 0016): impl ブロックによる後付け protocol 適用のデモ。
+// このファイルでは protocol と model を宣言するだけ。
+// 実装は別ファイル (feature-*.umlay) から impl ブロックで注入する。
+
+@@mode(strict)
+
+namespace core
+
+// ============================================================================
+// Protocol (他 module から実装される契約)
+// ============================================================================
+
+protocol Identifiable @intent("id を持つ") {
+  fn getId() -> UUID!
+}
+
+protocol Auditable @intent("監査ログ記録") {
+  fn audit(action: string!) -> void
+}
+
+protocol Serializable @intent("シリアライズ可能") {
+  fn toJson() -> string!
+}
+
+// ============================================================================
+// 素の Model (protocol 非実装の状態)
+// ============================================================================
+
+model User @aggregate_root @intent("ユーザー (core で型を宣言、契約は別ファイル)") {
+  +id       UUID!   @id
+  +email    string! @unique
+  +username string!
+}
+
+model Order @aggregate_root @intent("注文 (core で型を宣言、契約は別ファイル)") {
+  +id         UUID!    @id
+  +customerId UUID!    @ref(User.id)
+  +total      decimal!
+}

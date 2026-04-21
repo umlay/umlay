@@ -14,7 +14,7 @@ references:
 
 ## Goal
 
-Introduce meaningful changes to an existing `.uml` / IR while minimizing impact on downstream IR consumers (renderers, code generators, stored review records).
+Introduce meaningful changes to an existing `.umlay` / IR while minimizing impact on downstream IR consumers (renderers, code generators, stored review records).
 
 ## Preconditions
 

@@ -555,9 +555,7 @@
                 "timeout": {
                   "duration": "1s"
                 },
-                "on": [
-                  "db"
-                ],
+                "on": ["db"],
                 "body": [
                   {
                     "kind": "message",

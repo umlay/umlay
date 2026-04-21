@@ -21,15 +21,15 @@ Umlay はこれらを、**「正本を 1 つだけ持ち、そこから複数の
 
 ```
 ┌──────────────────────────────────────────────┐
-│ 執筆用 DSL   (.uml)     Prisma 風、人間が書く   │
+│ 執筆用 DSL   (.umlay)     Prisma 風、人間が書く   │
 ├──────────────────────────────────────────────┤
-│ 正規IR       (.uml.json) ツール内部・レビュー用  │
+│ 正規IR       (.umlay.json) ツール内部・レビュー用  │
 ├──────────────────────────────────────────────┤
-│ 相互運用     (.uml.yaml) AI / 外部ツール連携用   │
+│ 相互運用     (.umlay.yaml) AI / 外部ツール連携用   │
 └──────────────────────────────────────────────┘
 ```
 
-- **単一の正本**: `.uml` (Prisma 風 DSL) を人間が書き、ツールは内部で正規IR (JSON) として扱う
+- **単一の正本**: `.umlay` (Prisma 風 DSL) を人間が書き、ツールは内部で正規IR (JSON) として扱う
 - **複数ビュー**: 1 つのモデルから ER 図、クラス図、シーケンス図、コンポーネント図、WBS、ガントなどを派生
 - **意味論を載せる**: 型、多重度、不変条件、意図 (`@intent`) を DSL 上で表現し、AI によるコード生成・レビューに使う
 - **Git / PR 親和**: 差分レビュー可能なテキスト形式。指摘・修正を属性単位の注釈として管理
@@ -41,7 +41,7 @@ Umlay はこれらを、**「正本を 1 つだけ持ち、そこから複数の
 | コンポーネント | 内容 |
 | --- | --- |
 | [`packages/spec`](../../packages/spec/) | DSL 文法 + 正規IR の JSON Schema |
-| [`packages/examples`](../../packages/examples/) | `.uml` サンプル集 |
+| [`packages/examples`](../../packages/examples/) | `.umlay` サンプル集 |
 | [`skills/`](../../skills/) | 開発者 / AI エージェント向けの skill 定義 |
 | [`docs/`](../../docs/) | 本ドキュメント群 |
 
@@ -59,6 +59,6 @@ Umlay はこれらを、**「正本を 1 つだけ持ち、そこから複数の
 
 ## さらに読む
 
-- [getting-started.md](./getting-started.md) — 最初の `.uml` を書く
+- [getting-started.md](./getting-started.md) — 最初の `.umlay` を書く
 - [dsl-guide.md](./dsl-guide.md) — DSL 文法
 - [design-principles.md](./design-principles.md) — North Star 6 原則

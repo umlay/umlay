@@ -28,7 +28,7 @@ rfcs/
 | [0011](./0011-diamond-inheritance-mro.md) | diamond-inheritance-mro | Diamond 継承の C3 linearization / `@@override` | **accepted** | 0.4.0 | A |
 | [0012](./0012-recursive-union-variants.md) | recursive-union-variants | `union` の再帰 variant (AST / Tree) | **accepted** | 0.4.0 | A |
 | [0013](./0013-par-branch-sync.md) | par-branch-sync | `par` ブランチ同期 `await all/any/partial/timeout` | **accepted** | 0.4.0 | A |
-| [0014](./0014-wildcard-import.md) | wildcard-import | Glob import (`import "./tasks/*.uml"`) | **accepted** | 0.4.0 | A |
+| [0014](./0014-wildcard-import.md) | wildcard-import | Glob import (`import "./tasks/*.umlay"`) | **accepted** | 0.4.0 | A |
 | [0015](./0015-type-parameter-bounds.md) | type-parameter-bounds | 型パラメータ制約 `<T: Foo & Bar>` | **accepted** | 0.5.0 | A |
 | [0016](./0016-impl-blocks.md) | impl-blocks | Rust 風 `impl` ブロック | **accepted** | 0.5.0 | A |
 | [0017](./0017-critical-sequence-region.md) | critical-sequence-region | Sequence の `critical` リージョン | **accepted** | 0.5.0 | A |

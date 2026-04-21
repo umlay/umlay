@@ -1,0 +1,35 @@
+// japanese-domain.umlay — 日本語識別子 + @codegenName
+//
+// 日本語識別子を使う際は @codegenName を必ず付ける (codegen-mapping skill 参照)。
+// SQL 列名 / TS 識別子の安定性を担保するため。
+@@mode(strict)
+
+namespace 受発注
+
+enum 注文状態 @intent("注文のライフサイクル") {
+  下書き, 確定, 出荷済, 取消
+}
+
+model 顧客 @aggregate_root @codegenName("Customer") @intent("顧客マスター") {
+  +id     UUID!   @id
+  +メール string! @unique @codegenName("email")
+  +氏名   string!         @codegenName("name")
+}
+
+model 注文 @aggregate_root @codegenName("Order") @intent("顧客からの注文") {
+  +id     UUID!      @id
+  +顧客ID UUID!      @ref(顧客.id, inverse: "注文一覧") @codegenName("customerId")
+  +合計額 decimal!                                      @codegenName("total")
+  +状態   注文状態!  @default(下書き)                   @codegenName("status")
+}
+
+model 注文明細 @entity @codegenName("OrderLine") @intent("注文明細行") {
+  @@id(注文ID, 行番号)
+  +注文ID UUID! @ref(注文.id, onDelete: CASCADE) @codegenName("orderId")
+  +行番号 int!                                    @codegenName("lineNo")
+  +数量   int!                                    @codegenName("qty")
+}
+
+view er @er_diagram @intent("日本語ドメインの ER") {
+  include: 受発注.*
+}

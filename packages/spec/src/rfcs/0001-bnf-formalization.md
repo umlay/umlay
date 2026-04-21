@@ -248,7 +248,7 @@ Whitespace      ::= " " | "\t" | Newline | Comment
 
 ## 後方互換性
 
-**Class A (additive)**: 既存の合法な `.uml` はすべて本 BNF にも合致する。既存パーサ実装が寛容に受理していた曖昧な形 (例: `alt` 後の label 引用符省略) のうち、BNF で拒否される形があれば実装側で修正が必要。
+**Class A (additive)**: 既存の合法な `.umlay` はすべて本 BNF にも合致する。既存パーサ実装が寛容に受理していた曖昧な形 (例: `alt` 後の label 引用符省略) のうち、BNF で拒否される形があれば実装側で修正が必要。
 
 ## 代替案
 
@@ -258,7 +258,7 @@ Whitespace      ::= " " | "\t" | Newline | Comment
 
 ## サンプル / テスト
 
-- `packages/examples/samples/*.uml` の全 10 サンプルが本 BNF に合致することを `spec/conformance/` で回帰テスト (別途 RFC)
+- `packages/examples/samples/*.umlay` の全 10 サンプルが本 BNF に合致することを `spec/conformance/` で回帰テスト (別途 RFC)
 - 反例集 (parse error となる形) を `packages/spec/src/rfcs/0001-counter-examples/` にまとめる
 
 ## 受諾時にやること

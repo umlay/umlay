@@ -21,15 +21,15 @@ Umlay reframes this by holding **a single source of truth** and deriving multipl
 
 ```
 ┌──────────────────────────────────────────────────┐
-│ Authoring DSL (.uml)     Prisma-flavored, human  │
+│ Authoring DSL (.umlay)     Prisma-flavored, human  │
 ├──────────────────────────────────────────────────┤
-│ Normalized IR (.uml.json) internal, for review    │
+│ Normalized IR (.umlay.json) internal, for review    │
 ├──────────────────────────────────────────────────┤
-│ Interop       (.uml.yaml) for AI / external tools │
+│ Interop       (.umlay.yaml) for AI / external tools │
 └──────────────────────────────────────────────────┘
 ```
 
-- **Single source of truth** — humans write `.uml` (Prisma-flavored DSL); tools operate on the normalized IR (JSON) internally
+- **Single source of truth** — humans write `.umlay` (Prisma-flavored DSL); tools operate on the normalized IR (JSON) internally
 - **Multiple views** — ER, class, sequence, component, WBS, and Gantt are derived from one model
 - **Semantics baked in** — types, multiplicity, invariants, and `@intent` live in the DSL so AI can generate faithful code
 - **Git / PR native** — text-first, diff-friendly; review comments attach at the attribute level
@@ -41,7 +41,7 @@ This repository (`umlay-oss`) publishes:
 | Component | Contents |
 | --- | --- |
 | [`packages/spec`](../../packages/spec/) | DSL grammar + normalized IR JSON Schema |
-| [`packages/examples`](../../packages/examples/) | `.uml` sample collection |
+| [`packages/examples`](../../packages/examples/) | `.umlay` sample collection |
 | [`skills/`](../../skills/) | Skill definitions for developers and AI agents |
 | [`docs/`](../../docs/) | These documents |
 
@@ -59,6 +59,6 @@ This repository (`umlay-oss`) publishes:
 
 ## Further reading
 
-- [getting-started.md](./getting-started.md) — write your first `.uml`
+- [getting-started.md](./getting-started.md) — write your first `.umlay`
 - [dsl-guide.md](./dsl-guide.md) — DSL reference
 - [design-principles.md](./design-principles.md) — the 6 North Star principles

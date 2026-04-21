@@ -98,7 +98,7 @@ protocol Diamond extends Left, Right {
 
 ## 後方互換性
 
-**Class A (additive)**: 現状 RFC 0010 では diamond を許可しつつ挙動未定義だった。本 RFC で挙動を固定するが、既存サンプル (modules-ddd.uml) は diamond を含まないため無影響。
+**Class A (additive)**: 現状 RFC 0010 では diamond を許可しつつ挙動未定義だった。本 RFC で挙動を固定するが、既存サンプル (modules-ddd.umlay) は diamond を含まないため無影響。
 
 ## 代替案
 
@@ -108,7 +108,7 @@ protocol Diamond extends Left, Right {
 
 ## サンプル / テスト
 
-- 新サンプル `samples/diamond-protocol.uml`: Base / Left / Right / Diamond で C3 の結果を検証
+- 新サンプル `samples/diamond-protocol.umlay`: Base / Left / Right / Diamond で C3 の結果を検証
 - Conformance: 3 / 4 / 5 階層の MRO 生成、`@@override(from:)` の各ケース
 
 ## 受諾時にやること

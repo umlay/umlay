@@ -52,7 +52,7 @@ model 注文 @aggregate_root @codegenName("Order") {
 
 ### Can I write the IR directly?
 
-Technically yes (it's JSON), but we recommend authoring in the `.uml` DSL. The IR is for tool interop, not humans.
+Technically yes (it's JSON), but we recommend authoring in the `.umlay` DSL. The IR is for tool interop, not humans.
 
 ### How is the quality of generated code ensured?
 
@@ -77,7 +77,7 @@ See [dsl-guide.md §9](./dsl-guide.md) for details.
 ### How do I contribute?
 
 - **Propose a spec change** — open an issue, then add an RFC under `packages/spec/src/rfcs/`
-- **Add a sample** — drop a `.uml` into `packages/examples/samples/` and extend the README table
+- **Add a sample** — drop a `.umlay` into `packages/examples/samples/` and extend the README table
 - **Add a skill** — add a `.md` under `skills/` with front matter and examples
 - **Improve documentation** — update both `docs/ja/` and `docs/en/` in the same PR when possible
 

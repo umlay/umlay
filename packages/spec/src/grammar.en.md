@@ -24,13 +24,13 @@ This file + [`grammar.bnf`](./grammar.bnf) + [`ir.schema.json`](./ir.schema.json
 namespace pm_feature_a
 
 import pm_core                                 // same-project namespace
-import "./shared/infra.uml" as infra          // relative path with alias
+import "./shared/infra.umlay" as infra          // relative path with alias
 import "@umlay/examples/samples/..." as ext   // npm package (future)
 
 // RFC 0014: glob patterns (alias not allowed)
-import "./tasks/*.uml"
-import "./phases/**/*.uml"
-import "./modules/{core,shared}/*.uml"
+import "./tasks/*.umlay"
+import "./phases/**/*.umlay"
+import "./modules/{core,shared}/*.umlay"
 ```
 
 - Without an import, cross-namespace references (`pm_core.X`) are a parse error.

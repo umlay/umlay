@@ -14,7 +14,7 @@ A Umlay DSL LSP implementation typically composes:
 
 | Component | Purpose | Source in this repo |
 | --- | --- | --- |
-| **Parser** | `.uml` → AST | `grammar.bnf` conformant (implemented in a separate repo) |
+| **Parser** | `.umlay` → AST | `grammar.bnf` conformant (implemented in a separate repo) |
 | **IR Builder** | AST → normalized IR | `ir.schema.json` conformant |
 | **Resolver** | Reference resolution (@ref / @@dependencies.on / protocol extends) | `skills/*/write-uml.md` Step 6 / RFC 0005 / 0030 |
 | **Linter** | S / L / R / W / C rules | `skills/*/review-uml.md` + RFC 0029 (lint-rules.md) |
@@ -91,7 +91,7 @@ Resolution order:
 2. Same-namespace other files (via `import` or implicit scan)
 3. `import <ns>` imported namespaces
 4. `import "./path" as alias` aliased imports
-5. `import "./glob/**/*.uml"` expanded namespaces
+5. `import "./glob/**/*.umlay"` expanded namespaces
 
 Glob expansion runs at build time with file-watch integration.
 

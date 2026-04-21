@@ -1,0 +1,120 @@
+// critical-path-demo.umlay — Gantt の Critical Path Method (CPM) デモ (RFC 0024)
+//
+// spec 0.7.0:
+//   - view に `criticalPath: highlight | compute | ignore` を指定
+//   - Task の `_cpm` フィールドに ES/EF/LS/LF/totalFloat/onCriticalPath が入る
+//
+// シナリオ: 並行タスクが分岐 → 合流する典型構造。
+//   Start → (A || B) → Merge → (C || D) → End
+// 意図的に 2 つの critical path が発生するケース
+
+@@mode(strict)
+
+namespace cpm
+
+enum TaskStatus { PENDING, IN_PROGRESS, DONE }
+
+model Task @aggregate_root @intent("CPM デモ用タスク") {
+  +id           UUID!        @id
+  +name         string!
+  +plannedStart Date!
+  +plannedEnd   Date!        @inv("plannedEnd >= plannedStart")
+  +progress     decimal!     @default(0.0)
+  +status       TaskStatus!  @default(PENDING)
+
+  @@sample(
+    // フェーズ 1: 開始
+    { id: "t-start", name: "Start (milestone)",
+      plannedStart: "2026-05-01", plannedEnd: "2026-05-01",
+      progress: 1.0, status: DONE },
+
+    // フェーズ 2: 並行 A (5 日) vs B (7 日) — B がクリティカル
+    { id: "t-a", name: "Branch A (5 days)",
+      plannedStart: "2026-05-02", plannedEnd: "2026-05-06",
+      progress: 0.0, status: PENDING },
+    { id: "t-b", name: "Branch B (7 days)",
+      plannedStart: "2026-05-02", plannedEnd: "2026-05-08",
+      progress: 0.0, status: PENDING },
+
+    // フェーズ 3: マージ
+    { id: "t-merge", name: "Merge (milestone)",
+      plannedStart: "2026-05-09", plannedEnd: "2026-05-09",
+      progress: 0.0, status: PENDING },
+
+    // フェーズ 4: 並行 C (4 日) vs D (4 日) — 両方クリティカル
+    { id: "t-c", name: "Branch C (4 days)",
+      plannedStart: "2026-05-10", plannedEnd: "2026-05-13",
+      progress: 0.0, status: PENDING },
+    { id: "t-d", name: "Branch D (4 days)",
+      plannedStart: "2026-05-10", plannedEnd: "2026-05-13",
+      progress: 0.0, status: PENDING },
+
+    // フェーズ 5: 終了
+    { id: "t-end", name: "End (milestone)",
+      plannedStart: "2026-05-14", plannedEnd: "2026-05-14",
+      progress: 0.0, status: PENDING }
+  )
+}
+
+model TaskDependency @entity {
+  @@id(fromId, toId)
+  +fromId UUID! @ref(Task.id, onDelete: CASCADE)
+  +toId   UUID! @ref(Task.id, onDelete: CASCADE)
+
+  @@sample(
+    // Start → A / B
+    { fromId: "t-start", toId: "t-a" },
+    { fromId: "t-start", toId: "t-b" },
+    // A / B → Merge
+    { fromId: "t-a",     toId: "t-merge" },
+    { fromId: "t-b",     toId: "t-merge" },
+    // Merge → C / D
+    { fromId: "t-merge", toId: "t-c" },
+    { fromId: "t-merge", toId: "t-d" },
+    // C / D → End
+    { fromId: "t-c",     toId: "t-end" },
+    { fromId: "t-d",     toId: "t-end" }
+  )
+}
+
+// ============================================================================
+// Views: criticalPath strategy の 3 パターン
+// ============================================================================
+
+view gantt-highlight @gantt_chart
+  @intent("CPM 計算 + クリティカルパスを赤色等でハイライト") {
+  include: cpm.Task, cpm.TaskDependency
+  layout: direction(LR), engine(elk)
+  criticalPath: highlight
+}
+
+view gantt-compute @gantt_chart
+  @intent("CPM 計算のみ実行 (visual 強調なし)、下流ツールでの利用用") {
+  include: cpm.Task, cpm.TaskDependency
+  criticalPath: compute
+}
+
+view gantt-ignore @gantt_chart
+  @intent("CPM 計算を明示的に無効化 (高速レンダリング用)") {
+  include: cpm.Task, cpm.TaskDependency
+  criticalPath: ignore
+}
+
+// ============================================================================
+// 期待される CPM 結果 (参考、IR に出力される):
+//
+//   Critical path 1: Start → B → Merge → C → End (total: 12 days)
+//   Critical path 2: Start → B → Merge → D → End (total: 12 days)
+//   (A は Merge への総所要 5 日、B は 7 日なので B がクリティカル)
+//   (C / D は共に 4 日で並ぶ)
+//
+//   Task       | ES  | EF  | LS  | LF  | Float | OnCP |
+//   -----------|-----|-----|-----|-----|-------|------|
+//   Start      | 5/1 | 5/1 | 5/1 | 5/1 | 0     | ✓    |
+//   A          | 5/2 | 5/6 | 5/4 | 5/8 | 2     | ✗    |
+//   B          | 5/2 | 5/8 | 5/2 | 5/8 | 0     | ✓    |
+//   Merge      | 5/9 | 5/9 | 5/9 | 5/9 | 0     | ✓    |
+//   C          | 5/10| 5/13| 5/10| 5/13| 0     | ✓    |
+//   D          | 5/10| 5/13| 5/10| 5/13| 0     | ✓    |
+//   End        | 5/14| 5/14| 5/14| 5/14| 0     | ✓    |
+// ============================================================================

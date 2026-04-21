@@ -108,7 +108,7 @@ Blanket impl は IR 上では **該当する全 concrete model の `implements[]
 
 ## サンプル / テスト
 
-- 新サンプル `samples/blanket-impl.uml`: Display + ToString の blanket impl で複数型に自動適用
+- 新サンプル `samples/blanket-impl.umlay`: Display + ToString の blanket impl で複数型に自動適用
 - Conformance: 衝突検出、orphan rule 緩和版の境界ケース
 
 ## 受諾時にやること

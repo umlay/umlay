@@ -174,9 +174,7 @@ export function assertIRMatches(
 /** Format a MatchResult for human display. */
 export function formatDiffs(result: MatchResult, maxDiffs = 20): string {
   if (result.ok) return `✓ IR matches (${result.skipped.length} paths skipped)`;
-  const lines: string[] = [
-    `✗ ${result.diffs.length} diff(s):`,
-  ];
+  const lines: string[] = [`✗ ${result.diffs.length} diff(s):`];
   for (const d of result.diffs.slice(0, maxDiffs)) {
     lines.push(`  [${d.kind}] ${d.path}: ${d.message}`);
   }

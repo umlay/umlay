@@ -49,7 +49,7 @@ skills/ja/evolve-schema.md の分類に照らし、A / B / C のいずれか。
 
 ## サンプル / テスト
 
-- 追加するサンプル: `packages/examples/samples/<name>.uml`
+- 追加するサンプル: `packages/examples/samples/<name>.umlay`
 - conformance テスト (該当時)
 
 ## 受諾時にやること

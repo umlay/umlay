@@ -19,7 +19,7 @@ RFC 0017 の `critical "label" on (a, b) { ... }` にタイムアウト指定 (`
 
 ## 背景 / モチベーション
 
-`transfer-critical.uml` のような分散ロック下の処理で、実務では以下が必須:
+`transfer-critical.umlay` のような分散ロック下の処理で、実務では以下が必須:
 
 - **タイムアウト**: ロック取得 / 処理が長時間ブロックしない保証
 - **失敗ハンドリング**: タイムアウト時のロールバック / ログ
@@ -114,8 +114,8 @@ spec 自体は**意図表現**のみを規定し、実装側 (parser / renderer 
 
 ## サンプル / テスト
 
-- `transfer-critical.uml` に timeout + catch + finally を追加した拡張版
-- 新サンプル `samples/distributed-lock-with-timeout.uml`
+- `transfer-critical.umlay` に timeout + catch + finally を追加した拡張版
+- 新サンプル `samples/distributed-lock-with-timeout.umlay`
 - Conformance: timeout 単独、catch 単独、finally 単独、全部入り、ネスト
 
 ## 受諾時にやること

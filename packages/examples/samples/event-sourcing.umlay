@@ -1,0 +1,81 @@
+// event-sourcing.umlay — union によるイベントソーシング
+//
+// spec 0.3.0:
+//   - RFC 0006: `union` で代数的データ型を表現
+//   - RFC 0010: inline payload variant で model を 1 つにまとめられる
+
+@@mode(strict)
+
+namespace orders
+
+// ============================================================================
+// Aggregate root と状態
+// ============================================================================
+
+enum OrderStatus @intent("Order のライフサイクル") {
+  DRAFT, CONFIRMED, SHIPPED, CANCELLED
+}
+
+model Order @aggregate_root @intent("注文 (Event Sourcing 集約)") {
+  +id          UUID!         @id
+  +customerId  UUID!
+  +status      OrderStatus!  @default(DRAFT)
+  +total       decimal!      @inv("total >= 0")
+  +version     int!          @default(0)
+                             @inv("version >= 0")
+
+  fn apply(event: OrderEvent!) -> void
+    @intent("イベントを state に反映 (event sourcing の再生)")
+
+  fn confirm() -> void
+    @pre("status == DRAFT")
+    @post("status == CONFIRMED")
+    @intent("Confirmed variant を発行")
+}
+
+// ============================================================================
+// Union with inline payload variant (RFC 0010)
+// 4 イベントを inline で宣言。別 model を切り出さずに済む。
+// 生成される合成 model 名: OrderEvent_Created / OrderEvent_Confirmed 等。
+// ============================================================================
+
+union OrderEvent =
+  | Created   { eventId: UUID! @id,
+                orderId: UUID! @ref(Order.id, onDelete: CASCADE),
+                occurredAt: Timestamp! @auto,
+                customerId: UUID!,
+                total: decimal! @inv("total >= 0") }
+  | Confirmed { eventId: UUID! @id,
+                orderId: UUID! @ref(Order.id, onDelete: CASCADE),
+                occurredAt: Timestamp! @auto,
+                confirmedBy: UUID! }
+  | Shipped   { eventId: UUID! @id,
+                orderId: UUID! @ref(Order.id, onDelete: CASCADE),
+                occurredAt: Timestamp! @auto,
+                trackingNumber: string! @maxLength(64),
+                carrier: string! }
+  | Cancelled { eventId: UUID! @id,
+                orderId: UUID! @ref(Order.id, onDelete: CASCADE),
+                occurredAt: Timestamp! @auto,
+                reason: string! @maxLength(500),
+                cancelledBy: UUID! }
+  @intent("Order ドメインで発生しうる全イベント (RFC 0010 inline variant)")
+
+// ============================================================================
+// Views
+// ============================================================================
+
+view orders-er @er_diagram
+  @intent("Order + OrderEvent union (inline variants が展開される)") {
+  include: orders.Order, orders.OrderEvent
+}
+
+view orders-class @class_diagram
+  @intent("ドメイン構造 (Order + OrderStatus + OrderEvent union)") {
+  include: orders.*
+}
+
+view order-lifecycle @state_machine
+  @intent("OrderStatus の状態遷移") {
+  include: orders.Order, orders.OrderStatus
+}

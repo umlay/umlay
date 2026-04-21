@@ -19,15 +19,15 @@ RFC 0009 の `import` を拡張し、ワイルドカード (`*`) や glob patter
 
 ## 背景 / モチベーション
 
-大規模プロジェクトでは複数の `.uml` ファイルを 1 ディレクトリにまとめることが多い (例: `tasks/*.uml`)。現状は 1 ファイルずつ `import "./tasks/sprint-1.uml"` と書く必要があり、ファイル追加ごとに import リストの更新が必要。
+大規模プロジェクトでは複数の `.umlay` ファイルを 1 ディレクトリにまとめることが多い (例: `tasks/*.umlay`)。現状は 1 ファイルずつ `import "./tasks/sprint-1.umlay"` と書く必要があり、ファイル追加ごとに import リストの更新が必要。
 
 glob import があれば:
 
 ```prisma
-import "./tasks/*.uml"
+import "./tasks/*.umlay"
 ```
 
-で tasks ディレクトリ内の全 `.uml` を一括取り込み。
+で tasks ディレクトリ内の全 `.umlay` を一括取り込み。
 
 ## 提案内容
 
@@ -49,14 +49,14 @@ ImportTarget ::= String            (* パス: glob 対応 *)
 ```prisma
 namespace planning
 
-// 同一ディレクトリ内の全 .uml を再帰 import
-import "./tasks/**/*.uml"
+// 同一ディレクトリ内の全 .umlay を再帰 import
+import "./tasks/**/*.umlay"
 
 // 特定パターン
-import "./phases/{design,build,test}/*.uml"
+import "./phases/{design,build,test}/*.umlay"
 
 // alias なし (glob ではファイル数が可変のため alias 非対応)
-import "./deps/*.uml"
+import "./deps/*.umlay"
 ```
 
 ### 制約
@@ -75,7 +75,7 @@ import "./deps/*.uml"
 ### セキュリティ考慮
 
 - glob が外部ディレクトリを指す場合 (`**` の使い過ぎ) は sandbox 警告
-- npm package スコープでの glob (`@umlay/shared/**/*.uml`) は将来検討
+- npm package スコープでの glob (`@umlay/shared/**/*.umlay`) は将来検討
 
 ## IR 影響
 
@@ -111,8 +111,8 @@ import "./deps/*.uml"
 ## サンプル / テスト
 
 - 新サンプル `samples/with-glob-imports/` ディレクトリ:
-  - 親: `planning.uml` が `import "./tasks/*.uml"`
-  - 子: `tasks/sprint-1.uml` / `tasks/sprint-2.uml` / `tasks/sprint-3.uml`
+  - 親: `planning.umlay` が `import "./tasks/*.umlay"`
+  - 子: `tasks/sprint-1.umlay` / `tasks/sprint-2.umlay` / `tasks/sprint-3.umlay`
 - Conformance: glob 展開、重複 namespace 検出、0 マッチ warning
 
 ## 受諾時にやること
@@ -126,5 +126,5 @@ import "./deps/*.uml"
 ## 未解決事項
 
 - `{a,b}` / `**` のサポート必須レベル (minimum spec か optional か)
-- npm package 内の glob (`@scope/pkg/**/*.uml`) の resolve 順序
+- npm package 内の glob (`@scope/pkg/**/*.umlay`) の resolve 順序
 - Symlink 展開ポリシー

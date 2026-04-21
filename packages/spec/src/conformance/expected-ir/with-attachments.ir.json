@@ -43,13 +43,13 @@
           "attachments": [
             {
               "kind": "image",
-              "src": ".uml/attachments/order-wireframe.png",
+              "src": ".umlay/attachments/order-wireframe.png",
               "caption": "注文画面ワイヤフレーム (2026-04-10 打合)",
               "role": "wireframe"
             },
             {
               "kind": "image",
-              "src": ".uml/attachments/whiteboard.jpg",
+              "src": ".umlay/attachments/whiteboard.jpg",
               "caption": "ブレスト結果",
               "role": "memo"
             },
@@ -88,9 +88,7 @@
     {
       "id": "er",
       "kind": "er_diagram",
-      "include": [
-        "ordering.*"
-      ],
+      "include": ["ordering.*"],
       "exclude": [],
       "attachments": [],
       "participants": [],

@@ -1,5 +1,5 @@
 /**
- * Conformance CLI — runs a user-supplied parser against all `.uml` samples,
+ * Conformance CLI — runs a user-supplied parser against all `.umlay` samples,
  * compares results to `expected-ir/*.ir.json`, and reports L1 (parse) + L2 (IR)
  * conformance levels.
  *
@@ -14,11 +14,12 @@
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
-import { assertIRMatches, formatDiffs, type MatchOptions } from './match.js';
+import { type MatchOptions, assertIRMatches } from './match.js';
 
-export interface ParseFn {
-  (source: string): { diagnostics: Array<{ severity: string; message: string }>; ir: unknown };
-}
+export type ParseFn = (source: string) => {
+  diagnostics: Array<{ severity: string; message: string }>;
+  ir: unknown;
+};
 
 export interface ConformanceInput {
   /** The implementation's parse function. */
@@ -31,7 +32,7 @@ export interface ConformanceInput {
 
 export interface SampleReport {
   path: string;
-  l1Errors: number;  // parse errors
+  l1Errors: number; // parse errors
   l1Pass: boolean;
   l2Matched: boolean;
   l2Diffs: number;
@@ -52,7 +53,7 @@ function walkUml(dir: string): string[] {
       const p = join(dir, name);
       const s = statSync(p);
       if (s.isDirectory()) out.push(...walkUml(p));
-      else if (name.endsWith('.uml')) out.push(p);
+      else if (name.endsWith('.umlay')) out.push(p);
     }
   } catch {
     /* missing dir — empty result */
@@ -62,12 +63,12 @@ function walkUml(dir: string): string[] {
 
 /**
  * Find the matching expected-ir fixture for a sample. The path is mirrored:
- *   packages/examples/samples/login/login.uml
+ *   packages/examples/samples/login/login.umlay
  *   → packages/spec/src/conformance/expected-ir/login/login.ir.json
  */
 function fixtureFor(sampleAbs: string, samplesRoot: string, fixturesRoot: string): string {
   const rel = relative(samplesRoot, sampleAbs);
-  return join(fixturesRoot, rel.replace(/\.uml$/, '.ir.json'));
+  return join(fixturesRoot, rel.replace(/\.umlay$/, '.ir.json'));
 }
 
 export async function runConformance(input: ConformanceInput): Promise<ConformanceReport> {
@@ -116,20 +117,24 @@ export async function runConformance(input: ConformanceInput): Promise<Conforman
 
 export function formatReport(report: ConformanceReport): string {
   const lines: string[] = [
-    `Umlay conformance report`,
-    `========================`,
+    'Umlay conformance report',
+    '========================',
     `L1 (parse):   ${report.l1Pass} / ${report.total}`,
     `L2 (IR):      ${report.l2Pass} / ${report.total}`,
-    ``,
+    '',
   ];
   const failures = report.samples.filter((s) => !s.l1Pass || (!s.l2Matched && s.l2Diffs > 0));
   if (failures.length === 0) {
-    lines.push(`All samples pass.`);
+    lines.push('All samples pass.');
   } else {
-    lines.push(`Failures:`);
+    lines.push('Failures:');
     for (const s of failures.slice(0, 30)) {
       const l1 = s.l1Pass ? '✓' : `✗ (${s.l1Errors} errors)`;
-      const l2 = s.l2Matched ? '✓' : s.l2Diffs > 0 ? `✗ (${s.l2Diffs} diffs, first: ${s.l2FirstDiffPath})` : 'n/a';
+      const l2 = s.l2Matched
+        ? '✓'
+        : s.l2Diffs > 0
+          ? `✗ (${s.l2Diffs} diffs, first: ${s.l2FirstDiffPath})`
+          : 'n/a';
       lines.push(`  ${s.path}  L1=${l1}  L2=${l2}`);
     }
     if (failures.length > 30) lines.push(`  ... and ${failures.length - 30} more`);

@@ -20,7 +20,7 @@ RFC 0005 で cross-namespace `@@dependencies` を解禁した。実際に複数�
 
 ## 背景 / モチベーション
 
-- 現行: ファイル内に書いた `@@dependencies(pm_core.Task)` の解決は「同一ディレクトリ or 同一プロジェクト内の全 .uml を暗黙スキャン」
+- 現行: ファイル内に書いた `@@dependencies(pm_core.Task)` の解決は「同一ディレクトリ or 同一プロジェクト内の全 .umlay を暗黙スキャン」
 - 暗黙スキャンは規模が大きくなると曖昧 / 遅い / 依存関係が不明瞭
 - `multi-project-schedule/` サンプルは現状「ディレクトリ内の 3 ファイルが互いに見える」前提。明示 import が望ましい
 - Python / TS のパッケージ管理との整合性
@@ -42,14 +42,14 @@ ImportTarget    ::= String      (* ファイルパス or パッケージ名 *)
 ```prisma
 namespace pm_feature_a
 
-// 同一プロジェクト内の別 namespace (pm-core.uml の pm_core) を取り込み
+// 同一プロジェクト内の別 namespace (pm-core.umlay の pm_core) を取り込み
 import pm_core
 
 // ファイルパス指定 + エイリアス
-import "./shared/infra.uml" as infra
+import "./shared/infra.umlay" as infra
 
 // npm パッケージ (将来)
-import "@umlay/examples/samples/multi-project-schedule/pm-core.uml" as ext_core
+import "@umlay/examples/samples/multi-project-schedule/pm-core.umlay" as ext_core
 
 model Task @entity {
   @@dependencies(pm_core.Task)           /* 同一プロジェクト、import 経由 */
@@ -109,4 +109,4 @@ IR には import の解決結果のみ反映 (参照先 namespace が同一 IR t
 
 - ワークスペース root をどう発見するか (`@umlay.config.json` 等の presence?)
 - model / enum 単位の部分 import (`from pm_core import Task`)
-- glob import (`import "./tasks/*.uml"`)
+- glob import (`import "./tasks/*.umlay"`)

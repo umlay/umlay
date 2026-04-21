@@ -133,8 +133,8 @@ parser は `wellFounded: false` を持つ union を IR 化できない (必ず e
 
 ## サンプル / テスト
 
-- `ast-expr.uml` の `Expr` / `Tree` が well-founded であることの conformance テスト
-- 新サンプル `samples/invalid-recursive-union.uml`: 意図的に non-well-founded な union を書き、parse error になることを確認
+- `ast-expr.umlay` の `Expr` / `Tree` が well-founded であることの conformance テスト
+- 新サンプル `samples/invalid-recursive-union.umlay`: 意図的に non-well-founded な union を書き、parse error になることを確認
 
 ## 受諾時にやること
 

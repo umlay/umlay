@@ -23,7 +23,7 @@ RFC 0004 の `@@sample(...)` を拡張し、**外部ファイル** (JSON / JSONL
 - 現行 `@@sample(...)` は DSL 内に直書き。行数 N が多い (50+) と可読性が落ち、DSL が肥大化
 - 実プロジェクトのシードデータは JSON / CSV で持つことが多い
 - テストフィクスチャ、Storybook モック、Playground 初期値など用途が多様化
-- `project-schedule.uml` の 13 タスクですら `@@sample` が 60+ 行。100 タスク規模なら外部化必須
+- `project-schedule.umlay` の 13 タスクですら `@@sample` が 60+ 行。100 タスク規模なら外部化必須
 
 ## 提案内容
 
@@ -111,7 +111,7 @@ IR 内では常に展開済みのデータ配列として保持 (外部ファイ
 
 ## サンプル / テスト
 
-- `packages/examples/samples/project-schedule.uml` の 13 タスクを外部 JSONL に分離し、対比サンプルとして提示
+- `packages/examples/samples/project-schedule.umlay` の 13 タスクを外部 JSONL に分離し、対比サンプルとして提示
 - 新サンプル `packages/examples/samples/with-fixtures/` ディレクトリで JSON + JSONL + CSV の全対応を示す
 
 ## 受諾時にやること

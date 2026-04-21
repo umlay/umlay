@@ -1,6 +1,6 @@
 # DSL Guide — a practical walkthrough
 
-How to write Umlay DSL (`.uml`), organized by category. The canonical grammar is [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md).
+How to write Umlay DSL (`.umlay`), organized by category. The canonical grammar is [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md).
 
 ## 1. Basic elements
 

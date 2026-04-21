@@ -1,0 +1,93 @@
+// concurrent-flow.umlay — `opt` / `par` / `await` シーケンスの単独デモ
+//
+// spec 0.4.0:
+//   - RFC 0007: `opt "label" { ... }`, `par "P1" { ... } and "P2" { ... }`
+//   - RFC 0013: `par ... await all | any | (labels) | all timeout(N ms)`
+//
+// シナリオ: 注文確定 API が受けてから以下を実行する:
+//   1. DB に Order を書く
+//   2. 並行 (par): キャッシュ更新 + イベント発行 (必須待機) + アナリティクス (fire-and-forget)
+//      → await ("cache-update", "event-publish") で analytics は待たない
+//   3. オプショナル (opt): userEmail があれば確認メール送信
+//   4. 最終ステータス更新 → レスポンス
+
+@@mode(strict)
+
+namespace orders
+
+enum OrderStatus @intent("注文ステータス") {
+  DRAFT, PLACED, COMPLETED, FAILED
+}
+
+model Order @aggregate_root @intent("注文") {
+  +id        UUID!         @id
+  +userId    UUID!
+  +userEmail string?
+  +total     decimal!      @inv("total >= 0")
+  +status    OrderStatus!  @default(DRAFT)
+  +createdAt Timestamp!    @auto
+}
+
+// sequence diagram の participant として参照される service model 群
+model Client       @service @intent("API 呼び出し元")       { +id string! @id }
+model API          @service @intent("HTTP API エンドポイント") { +id string! @id }
+model DB           @service @intent("永続化 (RDB)")           { +id string! @id }
+model CacheSvc     @service @intent("Redis 等のキャッシュ")    { +id string! @id }
+model QueueSvc     @service @intent("メッセージキュー")       { +id string! @id }
+model EmailSvc     @service @intent("メール配送サービス")     { +id string! @id }
+model AnalyticsSvc @service @intent("分析イベント収集")        { +id string! @id }
+
+// ============================================================================
+// メインシーケンス: opt と par を組み合わせた実用的なフロー
+// ============================================================================
+
+view order-placement @sequence_diagram
+  @intent("注文確定 API フロー。並行書き込み (par) + 条件付きメール (opt)") {
+  participants:
+    Client       as c,
+    API          as api,
+    DB           as db,
+    CacheSvc     as cache,
+    QueueSvc     as queue,
+    AnalyticsSvc as analytics,
+    EmailSvc     as email
+
+  seq {
+    // 1. 受信
+    c   ->> api : "POST /orders (userId, items[])"
+    api ->> db  : "insert Order (status=DRAFT)"
+    db  -.> api : "Order { id }"
+
+    // 2. 並行処理 (RFC 0007 par + RFC 0013 await)
+    //    - cache-update と event-publish は必須 → await で待機
+    //    - analytics は fire-and-forget → await 対象外
+    par "cache-update" {
+      api   ->> cache : "SET order:<id>"
+      cache -.> api   : "ok"
+    } and "event-publish" {
+      api   ->> queue : "publish OrderPlaced"
+      queue -.> api   : "ack"
+    } and "analytics" {
+      api ->> analytics : "track(\"order_placed\", { orderId })"
+    }
+    await ("cache-update", "event-publish")
+
+    // 3. オプショナル処理 (RFC 0007: opt)
+    opt "userEmail が指定されている場合のみ送信" {
+      api   ->> email : "sendConfirmation(orderId, userEmail)"
+      email -.> api   : "queued"
+    }
+
+    // 4. 最終ステータス更新
+    api ->> db  : "update Order (status=PLACED)"
+    db  -.> api : "ok"
+
+    // 5. レスポンス
+    api -.> c : "201 Created { orderId }"
+  }
+}
+
+view order-lifecycle @state_machine
+  @intent("Order.status の状態遷移") {
+  include: orders.Order, orders.OrderStatus
+}

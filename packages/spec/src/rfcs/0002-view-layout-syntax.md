@@ -89,7 +89,7 @@ view class-overview @class_diagram {
 
 ## サンプル / テスト
 
-- `packages/examples/samples/with-custom-theme.uml` に `layout: direction(LR)` を追加
+- `packages/examples/samples/with-custom-theme.umlay` に `layout: direction(LR)` を追加
 - conformance テスト: 全 enum 値、無効値の parse error
 
 ## 受諾時にやること

@@ -1,0 +1,34 @@
+// with-attachments.umlay — 画像添付デモ (北極星原則 #6)
+//
+// モデルの構造情報 (IR) は汚さず、ワイヤフレームやホワイトボード写真を
+// 補足資料として添付する。@@attachments ブロックは IR 側では別管理され、
+// SVG 本体には埋め込まれない。
+
+namespace ordering
+
+model Order @aggregate_root @intent("顧客発注。実装前にワイヤフレームを参照のこと") {
+  +id    UUID!    @id
+  +total decimal!
+
+  @@doc("""
+    ## 概要
+    顧客発注のアグリゲート。
+    詳細は添付のワイヤフレーム + Figma マスターを参照。
+  """)
+  @@attachments(
+    { kind: image, src: ".umlay/attachments/order-wireframe.png",
+      caption: "注文画面ワイヤフレーム (2026-04-10 打合)", role: wireframe },
+    { kind: image, src: ".umlay/attachments/whiteboard.jpg",
+      caption: "ブレスト結果",                                role: memo },
+    { kind: link,  url: "https://figma.com/file/xxxx",
+      caption: "Figma マスター" }
+  )
+}
+
+view er @er_diagram @intent("ER 図 + 現行システムの添付") {
+  include: ordering.*
+  @@attachments(
+    { kind: image, src: ".umlay/attachments/legacy-er.png",
+      caption: "現行システムの ER 図 (移行元)", role: legacy_reference }
+  )
+}

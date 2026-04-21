@@ -1,6 +1,6 @@
 # IR Guide — for tool authors
 
-The **normalized IR** (Intermediate Representation) is the internal form after a `.uml` file is parsed. Although the `.uml` → IR conversion lives in the implementation (separate repository), the IR structure itself is canonical in this repository's JSON Schema.
+The **normalized IR** (Intermediate Representation) is the internal form after a `.umlay` file is parsed. Although the `.umlay` → IR conversion lives in the implementation (separate repository), the IR structure itself is canonical in this repository's JSON Schema.
 
 - JSON Schema: [`../../packages/spec/src/ir.schema.json`](../../packages/spec/src/ir.schema.json) (Draft 2020-12)
 - Version: `1.0`
@@ -8,7 +8,7 @@ The **normalized IR** (Intermediate Representation) is the internal form after a
 ## Where the IR fits
 
 ```
-.uml ─ parse ─▶ Normalized IR (JSON) ─ consume ─┬─▶ SVG renderer
+.umlay ─ parse ─▶ Normalized IR (JSON) ─ consume ─┬─▶ SVG renderer
                                                  ├─▶ Prisma / SQL / TS generators
                                                  ├─▶ Lint / scoring / risk detection
                                                  └─▶ Review / diff / annotation
@@ -18,7 +18,7 @@ Regardless of how the DSL evolves, once a model reaches the IR it has a uniform 
 
 ## Example
 
-`.uml`:
+`.umlay`:
 
 ```prisma
 model Order @aggregate_root @intent("Customer order aggregate") {
@@ -167,8 +167,8 @@ Structured participants + statement tree for sequence diagrams:
   "meta": {
     "imports": [
       { "kind": "ns",   "value": "pm_core" },
-      { "kind": "path", "value": "./tasks/sprint-1.uml", "alias": "sprint1" },
-      { "kind": "path", "value": "./tasks/*.uml" }
+      { "kind": "path", "value": "./tasks/sprint-1.umlay", "alias": "sprint1" },
+      { "kind": "path", "value": "./tasks/*.umlay" }
     ]
   }
 }

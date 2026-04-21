@@ -14,7 +14,7 @@ references:
 
 ## Goal
 
-Given a `.uml` file (or IR JSON), detect issues across three layers:
+Given a `.umlay` file (or IR JSON), detect issues across three layers:
 
 1. **Spec violations** — rejected by parser or IR schema
 2. **Lint violations** — syntactically fine but missing / vague
@@ -24,7 +24,7 @@ Given a `.uml` file (or IR JSON), detect issues across three layers:
 
 | Item | Content |
 | --- | --- |
-| Input | `.uml` text or IR JSON (version 1.0) |
+| Input | `.umlay` text or IR JSON (version 1.0) |
 | Output | List of findings (severity / location / rule ID / suggested fix) |
 
 ## Rule Catalog (single source of truth)
@@ -64,7 +64,7 @@ All rules used for review are normatively defined in [`packages/spec/src/lint-ru
 
 ### Step 1 — Spec conformance
 
-1. Parse the `.uml` (or inspect the syntax)
+1. Parse the `.umlay` (or inspect the syntax)
 2. Validate the IR JSON against the schema (Draft 2020-12)
 3. Walk through `lint-rules.md` S section (S01–S17)
 4. **If even one violation exists, return them as blockers without proceeding to later layers**

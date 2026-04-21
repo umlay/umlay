@@ -7,7 +7,7 @@ Umlay DSL / 正規IR / 設計原則などの公開ドキュメント。Public do
 | # | ドキュメント | 内容 |
 | --- | --- | --- |
 | 1 | [overview.md](./ja/overview.md) | Umlay とは / 解く問題 / 他ツールとの関係 |
-| 2 | [getting-started.md](./ja/getting-started.md) | 最初の `.uml` を書く最短ルート |
+| 2 | [getting-started.md](./ja/getting-started.md) | 最初の `.umlay` を書く最短ルート |
 | 3 | [dsl-guide.md](./ja/dsl-guide.md) | DSL 文法の実践ガイド |
 | 4 | [ir-guide.md](./ja/ir-guide.md) | 正規IR の構造とツール開発者向けガイド |
 | 5 | [design-principles.md](./ja/design-principles.md) | North Star 6 原則 |
@@ -22,7 +22,7 @@ Umlay DSL / 正規IR / 設計原則などの公開ドキュメント。Public do
 | # | Document | Content |
 | --- | --- | --- |
 | 1 | [overview.md](./en/overview.md) | What Umlay is, the problem it solves, related tools |
-| 2 | [getting-started.md](./en/getting-started.md) | Shortest path to your first `.uml` file |
+| 2 | [getting-started.md](./en/getting-started.md) | Shortest path to your first `.umlay` file |
 | 3 | [dsl-guide.md](./en/dsl-guide.md) | Practical DSL guide |
 | 4 | [ir-guide.md](./en/ir-guide.md) | Normalized IR reference for tool authors |
 | 5 | [design-principles.md](./en/design-principles.md) | The 6 North Star principles |

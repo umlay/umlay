@@ -14,7 +14,7 @@ references:
 
 ## ゴール
 
-IR 1.0 に準拠した JSON (または `.uml` をパースした結果) から、以下の 3 ターゲットに**決定論的** (LLM 不使用) な変換を行うためのマッピング規則を提供する。
+IR 1.0 に準拠した JSON (または `.umlay` をパースした結果) から、以下の 3 ターゲットに**決定論的** (LLM 不使用) な変換を行うためのマッピング規則を提供する。
 
 - Prisma schema (`schema.prisma`)
 - PostgreSQL DDL (`CREATE TABLE`)

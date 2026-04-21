@@ -13,13 +13,7 @@
     "./conformance": "./src/conformance/index.ts",
     "./conformance-manifest": "./src/conformance/manifest.yaml"
   },
-  "files": [
-    "src",
-    "README.md",
-    "LICENSE",
-    "src/grammar.bnf",
-    "src/conformance"
-  ],
+  "files": ["src", "README.md", "LICENSE", "src/grammar.bnf", "src/conformance"],
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc",

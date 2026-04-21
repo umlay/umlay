@@ -24,13 +24,13 @@
 namespace pm_feature_a
 
 import pm_core                                 // 同一プロジェクトの namespace を取り込み
-import "./shared/infra.uml" as infra          // 相対パス + エイリアス
+import "./shared/infra.umlay" as infra          // 相対パス + エイリアス
 import "@umlay/examples/samples/..." as ext   // npm パッケージ (将来)
 
 // RFC 0014: glob pattern (as 不可)
-import "./tasks/*.uml"
-import "./phases/**/*.uml"
-import "./modules/{core,shared}/*.uml"
+import "./tasks/*.umlay"
+import "./phases/**/*.umlay"
+import "./modules/{core,shared}/*.umlay"
 ```
 
 - import しないと cross-namespace 参照 (`pm_core.X`) は parse error

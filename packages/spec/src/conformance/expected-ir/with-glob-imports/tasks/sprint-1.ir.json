@@ -156,11 +156,7 @@
         "TaskStatus": {
           "_id": "1bc6d16111d4",
           "name": "TaskStatus",
-          "values": [
-            "PENDING",
-            "IN_PROGRESS",
-            "DONE"
-          ]
+          "values": ["PENDING", "IN_PROGRESS", "DONE"]
         }
       },
       "reservedBlocks": [],

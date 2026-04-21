@@ -28,7 +28,7 @@ describe('assertIRMatches', () => {
     const expected = { _id: 'xyz', name: 'User' };
     const result = assertIRMatches(actual, expected, { strictIds: true });
     expect(result.ok).toBe(false);
-    expect(result.diffs[0]!.path).toBe('_id');
+    expect(result.diffs[0]?.path).toBe('_id');
   });
 
   it('detects missing field in actual', () => {
@@ -36,8 +36,8 @@ describe('assertIRMatches', () => {
     const expected = { name: 'User', stereotype: 'entity' };
     const result = assertIRMatches(actual, expected);
     expect(result.ok).toBe(false);
-    expect(result.diffs[0]!.kind).toBe('missing-in-actual');
-    expect(result.diffs[0]!.path).toBe('stereotype');
+    expect(result.diffs[0]?.kind).toBe('missing-in-actual');
+    expect(result.diffs[0]?.path).toBe('stereotype');
   });
 
   it('allows aspirational fields in expected not present in actual — wait, strictExtras:false means actual extras are OK', () => {
@@ -55,15 +55,15 @@ describe('assertIRMatches', () => {
     const expected = { name: 'User' };
     const result = assertIRMatches(actual, expected, { strictExtras: true });
     expect(result.ok).toBe(false);
-    expect(result.diffs[0]!.kind).toBe('missing-in-expected');
+    expect(result.diffs[0]?.kind).toBe('missing-in-expected');
   });
 
   it('detects value mismatch in primitives', () => {
     const result = assertIRMatches({ a: 1 }, { a: 2 });
     expect(result.ok).toBe(false);
-    expect(result.diffs[0]!.kind).toBe('value-mismatch');
-    expect(result.diffs[0]!.actual).toBe(1);
-    expect(result.diffs[0]!.expected).toBe(2);
+    expect(result.diffs[0]?.kind).toBe('value-mismatch');
+    expect(result.diffs[0]?.actual).toBe(1);
+    expect(result.diffs[0]?.expected).toBe(2);
   });
 
   it('walks nested objects + arrays', () => {
@@ -75,7 +75,7 @@ describe('assertIRMatches', () => {
     };
     const result = assertIRMatches(actual, expected);
     expect(result.ok).toBe(false);
-    expect(result.diffs[0]!.path).toBe('namespaces.ns1.models.User.attributes[0].name');
+    expect(result.diffs[0]?.path).toBe('namespaces.ns1.models.User.attributes[0].name');
   });
 
   it('respects ignorePaths', () => {

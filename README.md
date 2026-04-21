@@ -10,7 +10,7 @@ Umlay は、UML / ER をテキスト DSL として記述し、Git/PR でレビ�
 umlay-oss/
 ├── packages/
 │   ├── spec/       # DSL 文法 + 正規IR の JSON Schema (契約)
-│   └── examples/   # サンプル .uml ファイル
+│   └── examples/   # サンプル .umlay ファイル
 ├── skills/         # 開発者 / AI エージェント向けの skill 定義
 └── docs/           # 公開向けドキュメント (日本語 / English)
 ```
@@ -27,7 +27,7 @@ umlay-oss/
 
 ## サンプル
 
-[`packages/examples/samples/`](./packages/examples/samples/) に最小例からマルチテナント、Gantt までの `.uml` ファイルを用意しています。
+[`packages/examples/samples/`](./packages/examples/samples/) に最小例からマルチテナント、Gantt までの `.umlay` ファイルを用意しています。
 
 ## Skills (開発者 / AI 向け仕様)
 

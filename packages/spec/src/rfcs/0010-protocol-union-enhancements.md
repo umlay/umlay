@@ -159,8 +159,8 @@ inline variant は型チェッカー内部で合成 model として展開され�
 
 ## サンプル / テスト
 
-- `modules-ddd.uml` に `UserRepository extends Repository<User>, Auditable` を追加
-- `event-sourcing.uml` を inline variant 版で再記述 (4 model が 1 union で済む)
+- `modules-ddd.umlay` に `UserRepository extends Repository<User>, Auditable` を追加
+- `event-sourcing.umlay` を inline variant 版で再記述 (4 model が 1 union で済む)
 - Conformance:
   - 多重継承: 2 / 3 / 5 の合成、同名メソッド衝突検出
   - Payload: mixed-variant、payload 内参照、循環禁止
@@ -171,7 +171,7 @@ inline variant は型チェッカー内部で合成 model として展開され�
 - [ ] `grammar.bnf` の `ProtocolDecl` / `UnionDecl` / `UnionVariant` を拡張
 - [ ] `ir.schema.json` の `protocol.extends[]` / `union.variants[]` を拡張
 - [ ] `docs/{ja,en}/dsl-guide.md` に例を追加
-- [ ] `event-sourcing.uml` / `modules-ddd.uml` を新構文で書き換え
+- [ ] `event-sourcing.umlay` / `modules-ddd.umlay` を新構文で書き換え
 - [ ] `SPEC_VERSION` 0.3.0 bump
 
 ## 未解決事項

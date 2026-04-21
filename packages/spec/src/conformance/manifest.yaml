@@ -8,7 +8,7 @@ spec-version: 1.0.0
 updated: 2026-04-22
 
 samples:
-  - path: ../../../examples/samples/hello-order.uml
+  - path: ../../../examples/samples/hello-order.umlay
     summary: 最小サンプル (model 2 + view 2)
     min-spec-version: 0.1.0
     features:
@@ -19,7 +19,7 @@ samples:
       view-kinds: [class_diagram, er_diagram]
       visibility: ["+"]
 
-  - path: ../../../examples/samples/blog.uml
+  - path: ../../../examples/samples/blog.umlay
     summary: Users / Posts / Comments / Tags ブログドメイン
     min-spec-version: 0.1.0
     features:
@@ -30,7 +30,7 @@ samples:
       view-kinds: [er_diagram]
       modes: [strict]
 
-  - path: ../../../examples/samples/ecommerce.uml
+  - path: ../../../examples/samples/ecommerce.umlay
     summary: cascade / inverse + 値オブジェクト (Money)
     min-spec-version: 0.1.0
     features:
@@ -41,7 +41,7 @@ samples:
       ref-options: [onDelete, inverse]
       modes: [strict]
 
-  - path: ../../../examples/samples/saas-multitenant.uml
+  - path: ../../../examples/samples/saas-multitenant.umlay
     summary: Orgs / Teams / Memberships / Invitations
     min-spec-version: 0.1.0
     features:
@@ -51,7 +51,7 @@ samples:
       blocks: [mode, id, unique, index]
       modes: [strict]
 
-  - path: ../../../examples/samples/japanese-domain.uml
+  - path: ../../../examples/samples/japanese-domain.umlay
     summary: 日本語識別子 + @codegenName
     min-spec-version: 0.1.0
     features:
@@ -62,7 +62,7 @@ samples:
       special: [unicode-identifiers]
       modes: [strict]
 
-  - path: ../../../examples/samples/with-attachments.uml
+  - path: ../../../examples/samples/with-attachments.umlay
     summary: 画像添付デモ (北極星 #6)
     min-spec-version: 0.1.0
     features:
@@ -71,7 +71,7 @@ samples:
       annotations: [id, intent]
       blocks: [doc, attachments]
 
-  - path: ../../../examples/samples/with-custom-theme.uml
+  - path: ../../../examples/samples/with-custom-theme.umlay
     summary: 外部 CSS テーマ (北極星 #5)
     min-spec-version: 0.1.0
     features:
@@ -82,7 +82,7 @@ samples:
       view-features: [theme]
       modes: [strict]
 
-  - path: ../../../examples/samples/reserved-keywords.uml
+  - path: ../../../examples/samples/reserved-keywords.umlay
     summary: 予約語の扱い (禁止例 + 将来構文コメント)
     min-spec-version: 0.1.0
     features:
@@ -93,7 +93,7 @@ samples:
       reserved-demo: true
       modes: [strict]
 
-  - path: ../../../examples/samples/project-schedule.uml
+  - path: ../../../examples/samples/project-schedule.umlay
     summary: WBS / Gantt - 13 タスクを @@sample で宣言
     min-spec-version: 0.2.0
     features:
@@ -107,7 +107,7 @@ samples:
       rfcs: [0002, 0004]
       modes: [strict]
 
-  - path: ../../../examples/samples/login/login.uml
+  - path: ../../../examples/samples/login/login.umlay
     summary: Google OAuth + AWS serverless login (multi-view)
     min-spec-version: 0.2.0
     features:
@@ -122,7 +122,7 @@ samples:
       rfcs: [0003]
       modes: [strict]
 
-  - path: ../../../examples/samples/event-sourcing.uml
+  - path: ../../../examples/samples/event-sourcing.umlay
     summary: Union (RFC 0006) + inline payload variant (RFC 0010)
     min-spec-version: 0.3.0
     features:
@@ -137,7 +137,7 @@ samples:
       union-inline-variants: true
       modes: [strict]
 
-  - path: ../../../examples/samples/modules-ddd.uml
+  - path: ../../../examples/samples/modules-ddd.umlay
     summary: module + protocol<T> + 多重継承 (RFC 0006 + 0010)
     min-spec-version: 0.3.0
     features:
@@ -152,7 +152,7 @@ samples:
       rfcs: [0006, 0010]
       modes: [strict]
 
-  - path: ../../../examples/samples/multi-project-schedule/pm-core.uml
+  - path: ../../../examples/samples/multi-project-schedule/pm-core.umlay
     summary: Cross-ns 依存の参照元 (RFC 0005)
     min-spec-version: 0.2.0
     features:
@@ -162,7 +162,7 @@ samples:
       rfcs: [0004, 0005]
       modes: [strict]
 
-  - path: ../../../examples/samples/multi-project-schedule/pm-feature-a.uml
+  - path: ../../../examples/samples/multi-project-schedule/pm-feature-a.umlay
     summary: Cross-ns 依存 + import (RFC 0005 + 0009)
     min-spec-version: 0.3.0
     features:
@@ -172,7 +172,7 @@ samples:
       rfcs: [0004, 0005, 0009]
       modes: [strict]
 
-  - path: ../../../examples/samples/multi-project-schedule/pm-feature-b.uml
+  - path: ../../../examples/samples/multi-project-schedule/pm-feature-b.umlay
     summary: Cross-ns 依存 (pm_core + pm_feature_a) + 複数 import (RFC 0005 + 0009)
     min-spec-version: 0.3.0
     features:
@@ -183,7 +183,7 @@ samples:
       rfcs: [0004, 0005, 0009]
       modes: [strict]
 
-  - path: ../../../examples/samples/concurrent-flow.uml
+  - path: ../../../examples/samples/concurrent-flow.umlay
     summary: opt / par / await シーケンスの単独デモ (RFC 0007 + 0013)
     min-spec-version: 0.4.0
     features:
@@ -196,7 +196,7 @@ samples:
       rfcs: [0007, 0013]
       modes: [strict]
 
-  - path: ../../../examples/samples/ast-expr.uml
+  - path: ../../../examples/samples/ast-expr.umlay
     summary: Recursive union variant + generics (RFC 0012)
     min-spec-version: 0.4.0
     features:

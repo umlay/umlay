@@ -230,10 +230,7 @@
           "_id": "7d59dc8863d2",
           "name": "OrderLine",
           "stereotype": "entity",
-          "identity": [
-            "orderId",
-            "lineNo"
-          ],
+          "identity": ["orderId", "lineNo"],
           "attributes": [
             {
               "_id": "6b9aad7874a8",
@@ -367,12 +364,7 @@
         "OrderStatus": {
           "_id": "22e0a6eaa734",
           "name": "OrderStatus",
-          "values": [
-            "DRAFT",
-            "CONFIRMED",
-            "SHIPPED",
-            "CANCELLED"
-          ]
+          "values": ["DRAFT", "CONFIRMED", "SHIPPED", "CANCELLED"]
         }
       },
       "reservedBlocks": [],
@@ -386,9 +378,7 @@
     {
       "id": "er",
       "kind": "er_diagram",
-      "include": [
-        "shop.*"
-      ],
+      "include": ["shop.*"],
       "exclude": [],
       "attachments": [],
       "participants": [],

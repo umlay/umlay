@@ -70,41 +70,41 @@ level-claim: L2
 
 | Sample | L1 | L2 | Notes |
 | --- | --- | --- | --- |
-| `hello-order.uml` | ✅ | ✅ | |
-| `blog.uml` | ✅ | ✅ | |
-| `ecommerce.uml` | ✅ | ✅ | |
-| `saas-multitenant.uml` | ✅ | ✅ | |
-| `japanese-domain.uml` | ✅ | ✅ | Unicode identifier OK |
-| `with-attachments.uml` | ✅ | ⚠ | `@@attachments` の object 形が未対応 (旧 string 形のみ) |
-| `with-custom-theme.uml` | ✅ | ✅ | |
-| `reserved-keywords.uml` | ✅ | ✅ | |
+| `hello-order.umlay` | ✅ | ✅ | |
+| `blog.umlay` | ✅ | ✅ | |
+| `ecommerce.umlay` | ✅ | ✅ | |
+| `saas-multitenant.umlay` | ✅ | ✅ | |
+| `japanese-domain.umlay` | ✅ | ✅ | Unicode identifier OK |
+| `with-attachments.umlay` | ✅ | ⚠ | `@@attachments` の object 形が未対応 (旧 string 形のみ) |
+| `with-custom-theme.umlay` | ✅ | ✅ | |
+| `reserved-keywords.umlay` | ✅ | ✅ | |
 
 ### 機能デモサンプル
 
 | Sample | L1 | L2 | Notes |
 | --- | --- | --- | --- |
-| `project-schedule.uml` | ✅ | ✅ | @@sample 13 rows 展開 OK |
-| `login/login.uml` | ✅ | ✅ | 4 分岐 alt/else/default 対応 |
-| `event-sourcing.uml` | ✅ | ✅ | inline variant 4 種対応 |
-| `modules-ddd.uml` | ✅ | ⚠ | `UserRepository extends` の MRO 計算は現状 simple linearization |
-| `concurrent-flow.uml` | ✅ | ✅ | par + opt + await labels 対応 |
-| `ast-expr.uml` | ✅ | ❌ | well-foundedness 検査未実装 (RFC 0018)、parse は通る |
-| `diamond-protocol.uml` | ✅ | ⚠ | `@@override(from: ...)` は parse OK、IR `overrides[]` マッピング未 |
-| `bounded-generics.uml` | ✅ | ⚠ | 単一 bound OK、intersection (`&`) は未 |
-| `transfer-critical.uml` | ✅ | ✅ | |
+| `project-schedule.umlay` | ✅ | ✅ | @@sample 13 rows 展開 OK |
+| `login/login.umlay` | ✅ | ✅ | 4 分岐 alt/else/default 対応 |
+| `event-sourcing.umlay` | ✅ | ✅ | inline variant 4 種対応 |
+| `modules-ddd.umlay` | ✅ | ⚠ | `UserRepository extends` の MRO 計算は現状 simple linearization |
+| `concurrent-flow.umlay` | ✅ | ✅ | par + opt + await labels 対応 |
+| `ast-expr.umlay` | ✅ | ❌ | well-foundedness 検査未実装 (RFC 0018)、parse は通る |
+| `diamond-protocol.umlay` | ✅ | ⚠ | `@@override(from: ...)` は parse OK、IR `overrides[]` マッピング未 |
+| `bounded-generics.umlay` | ✅ | ⚠ | 単一 bound OK、intersection (`&`) は未 |
+| `transfer-critical.umlay` | ✅ | ✅ | |
 
 ### 複数ファイルサンプル
 
 | Sample | L1 | L2 | Notes |
 | --- | --- | --- | --- |
-| `multi-project-schedule/pm-core.uml` | ✅ | ✅ | |
-| `multi-project-schedule/pm-feature-a.uml` | ✅ | ✅ | import OK |
-| `multi-project-schedule/pm-feature-b.uml` | ✅ | ✅ | 複数 import OK |
-| `with-glob-imports/root.uml` | ⚠ | ⚠ | `*.uml` の glob OK、`**/*.uml` は未 |
-| `with-glob-imports/tasks/sprint-*.uml` | ✅ | ✅ | |
-| `with-impl-blocks/core.uml` | ✅ | ✅ | |
-| `with-impl-blocks/feature-auth.uml` | ✅ | ⚠ | impl block parse OK、IR `implSource` 未 |
-| `with-impl-blocks/feature-audit.uml` | ✅ | ⚠ | 同上 |
+| `multi-project-schedule/pm-core.umlay` | ✅ | ✅ | |
+| `multi-project-schedule/pm-feature-a.umlay` | ✅ | ✅ | import OK |
+| `multi-project-schedule/pm-feature-b.umlay` | ✅ | ✅ | 複数 import OK |
+| `with-glob-imports/root.umlay` | ⚠ | ⚠ | `*.umlay` の glob OK、`**/*.umlay` は未 |
+| `with-glob-imports/tasks/sprint-*.umlay` | ✅ | ✅ | |
+| `with-impl-blocks/core.umlay` | ✅ | ✅ | |
+| `with-impl-blocks/feature-auth.umlay` | ✅ | ⚠ | impl block parse OK、IR `implSource` 未 |
+| `with-impl-blocks/feature-audit.umlay` | ✅ | ⚠ | 同上 |
 
 ## 既知の制約 / 今後のロードマップ
 

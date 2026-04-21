@@ -7,7 +7,7 @@
   "main": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./samples/*": "./samples/*.uml"
+    "./samples/*": "./samples/*.umlay"
   },
   "files": ["src", "samples", "README.md", "LICENSE"],
   "scripts": {

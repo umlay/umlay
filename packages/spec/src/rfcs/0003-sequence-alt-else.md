@@ -19,7 +19,7 @@ change-class: A
 ## 背景 / モチベーション
 
 - OAuth / 認証フローで「成功時」「失敗時」「キャンセル時」のような複数分岐を描きたい
-- `login.uml` サンプルで `alt "Deny"` のみ表現しており「Allow」のフローが暗黙
+- `login.umlay` サンプルで `alt "Deny"` のみ表現しており「Allow」のフローが暗黙
 - 既存の if-else セマンティクスを素直に表現する構文が必要
 
 ## 提案内容
@@ -100,7 +100,7 @@ view login-flow @sequence_diagram {
 
 ## サンプル / テスト
 
-- `packages/examples/samples/login/login.uml` の Google OAuth Deny 分岐を `else` で拡張
+- `packages/examples/samples/login/login.umlay` の Google OAuth Deny 分岐を `else` で拡張
 - conformance: `alt` 単独、`alt + else + label`、`alt + else (default)`、ネスト
 
 ## 受諾時にやること
@@ -109,7 +109,7 @@ view login-flow @sequence_diagram {
 - [ ] `ir.schema.json` に `altBlocks` 構造追加 (view.body 内)
 - [ ] RFC 0001 の BNF に反映
 - [ ] `docs/{ja,en}/dsl-guide.md` のシーケンス節に追記
-- [ ] `login/login.uml` の sequence view を else 節に書き換え
+- [ ] `login/login.umlay` の sequence view を else 節に書き換え
 
 ## 未解決事項
 

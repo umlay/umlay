@@ -136,8 +136,8 @@ protocol Comparable {
 
 ## サンプル / テスト
 
-- `modules-ddd.uml` の `Repository<T>` を `Repository<T: Identifiable>` に書き換え
-- 新サンプル `samples/bounded-generics.uml`: Comparable / Hashable / IndexedCache のデモ
+- `modules-ddd.umlay` の `Repository<T>` を `Repository<T: Identifiable>` に書き換え
+- 新サンプル `samples/bounded-generics.umlay`: Comparable / Hashable / IndexedCache のデモ
 - Conformance: 制約違反 (`@@implements(Repository<Foo>)` で Foo が Identifiable 非準拠) の検出
 
 ## 受諾時にやること

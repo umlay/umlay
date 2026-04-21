@@ -3,7 +3,7 @@ name: write-uml
 version: 0.8.0
 spec: "@umlay/spec >= 0.8.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer]
-summary: Produce spec-conformant Umlay DSL (.uml) from requirements or existing descriptions
+summary: Produce spec-conformant Umlay DSL (.umlay) from requirements or existing descriptions
 references:
   grammar: ../../packages/spec/src/grammar.md
   schema: ../../packages/spec/src/ir.schema.json
@@ -14,7 +14,7 @@ references:
 
 ## Goal
 
-Given natural-language requirements, an existing schema, or existing code, produce a `.uml` file that is **conformant with `@umlay/spec`**. The output must parse and transform into IR version 1.0.
+Given natural-language requirements, an existing schema, or existing code, produce a `.umlay` file that is **conformant with `@umlay/spec`**. The output must parse and transform into IR version 1.0.
 
 ## Preconditions
 
@@ -27,7 +27,7 @@ Given natural-language requirements, an existing schema, or existing code, produ
 | Item | Content |
 | --- | --- |
 | Input | Requirements text, existing DB schema, existing type definitions, use-case description |
-| Output | One or more `.uml` files |
+| Output | One or more `.umlay` files |
 
 ## Procedure
 

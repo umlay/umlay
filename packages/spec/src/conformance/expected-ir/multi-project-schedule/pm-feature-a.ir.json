@@ -171,10 +171,7 @@
           "_id": "1ac5cad2641e",
           "name": "TaskDependency",
           "stereotype": "entity",
-          "identity": [
-            "fromId",
-            "toId"
-          ],
+          "identity": ["fromId", "toId"],
           "attributes": [
             {
               "_id": "aa69263c0a5b",
@@ -325,12 +322,7 @@
         "TaskStatus": {
           "_id": "6421e5ce9f3e",
           "name": "TaskStatus",
-          "values": [
-            "PENDING",
-            "IN_PROGRESS",
-            "DONE",
-            "BLOCKED"
-          ]
+          "values": ["PENDING", "IN_PROGRESS", "DONE", "BLOCKED"]
         }
       },
       "reservedBlocks": [],
@@ -344,9 +336,7 @@
     {
       "id": "feature-a-wbs",
       "kind": "wbs_diagram",
-      "include": [
-        "pm_feature_a.Task"
-      ],
+      "include": ["pm_feature_a.Task"],
       "exclude": [],
       "attachments": [],
       "participants": [],
@@ -356,10 +346,7 @@
     {
       "id": "feature-a-gantt",
       "kind": "gantt_chart",
-      "include": [
-        "pm_feature_a.Task",
-        "pm_feature_a.TaskDependency"
-      ],
+      "include": ["pm_feature_a.Task", "pm_feature_a.TaskDependency"],
       "exclude": [],
       "attachments": [],
       "participants": [],

@@ -14,7 +14,7 @@ references:
 
 ## Goal
 
-Provide a mapping ruleset that **deterministically** (no LLM) transforms IR 1.0-conformant JSON (or a parsed `.uml`) into these three targets:
+Provide a mapping ruleset that **deterministically** (no LLM) transforms IR 1.0-conformant JSON (or a parsed `.umlay`) into these three targets:
 
 - Prisma schema (`schema.prisma`)
 - PostgreSQL DDL (`CREATE TABLE`)

@@ -330,11 +330,7 @@
         "PostStatus": {
           "_id": "2eab264d9367",
           "name": "PostStatus",
-          "values": [
-            "DRAFT",
-            "PUBLISHED",
-            "ARCHIVED"
-          ]
+          "values": ["DRAFT", "PUBLISHED", "ARCHIVED"]
         }
       },
       "reservedBlocks": [],
@@ -348,9 +344,7 @@
     {
       "id": "er",
       "kind": "er_diagram",
-      "include": [
-        "blog.*"
-      ],
+      "include": ["blog.*"],
       "exclude": [],
       "attachments": [],
       "participants": [],

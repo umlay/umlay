@@ -1,0 +1,156 @@
+// modules-ddd.umlay — module + protocol<T> による DDD バウンディッドコンテキスト
+//
+// spec 0.3.0:
+//   - RFC 0006: `protocol<T>` / `module` / `@@implements(Protocol<T>)`
+//   - RFC 0010: `protocol X extends A, B<T>, C` による多重継承合成
+
+@@mode(strict)
+
+namespace shop
+
+// ============================================================================
+// 全モジュール共通のプロトコル (契約)
+// ============================================================================
+
+protocol Repository<T> @intent("永続化の汎用契約 (DDD の Repository)") {
+  fn get(id: UUID!)    -> T?
+    @intent("ID で単体取得")
+  fn save(entity: T!)  -> void
+    @post("get(entity.id) != null")
+    @intent("upsert")
+  fn delete(id: UUID!) -> bool!
+    @intent("削除、対象存在時 true")
+}
+
+protocol EventPublisher<E> @intent("ドメインイベントの発行契約") {
+  fn publish(event: E!) -> void
+    @intent("購読者に event を配送")
+}
+
+protocol Auditable @intent("操作ログ記録 (RFC 0010 多重継承の合成元)") {
+  fn audit(action: string!) -> void
+    @intent("操作ログに 1 行追記")
+}
+
+protocol Cacheable<T> @intent("キャッシュ可能 (RFC 0010 多重継承の合成元)") {
+  fn cacheKey(entity: T!) -> string!
+    @intent("キャッシュキーを生成")
+  fn invalidate(id: UUID!) -> void
+    @intent("指定 ID のキャッシュを無効化")
+}
+
+// RFC 0010: 多重継承による契約合成
+protocol UserRepository extends Repository<User>, Auditable, Cacheable<User>
+  @intent("User 専用 + 監査 + キャッシュ対応の Repository") {
+  fn findByEmail(email: string!) -> User?
+    @intent("メールアドレスで単体取得")
+}
+
+// ============================================================================
+// Module: catalog (商品カタログのサブドメイン)
+// ============================================================================
+
+module catalog @intent("商品カタログのバウンディッドコンテキスト") {
+
+  enum StockStatus { IN_STOCK, LOW_STOCK, OUT_OF_STOCK, DISCONTINUED }
+
+  model Product @aggregate_root @intent("販売商品") {
+    +id          UUID!         @id
+    +sku         string!       @unique @maxLength(64)
+    +name        string!
+    +price       decimal!      @inv("price >= 0")
+    +stockStatus StockStatus!  @default(IN_STOCK)
+  }
+
+  model Category @entity @intent("商品カテゴリ") {
+    +id       UUID!  @id
+    +name     string! @unique
+    +parentId UUID?  @ref(Category.id, onDelete: SET_NULL, inverse: "children")
+  }
+
+  // Repository 実装宣言 (契約準拠)
+  model ProductRepository @service
+    @intent("Product 専用 Repository (Repository<Product> 準拠)") {
+    @@implements(Repository<Product>)
+    +id UUID! @id
+  }
+
+  model CategoryRepository @service
+    @intent("Category 専用 Repository") {
+    @@implements(Repository<Category>)
+    +id UUID! @id
+  }
+}
+
+// ============================================================================
+// Module: checkout (注文処理のサブドメイン)
+// ============================================================================
+
+module checkout @intent("注文処理のバウンディッドコンテキスト") {
+
+  enum OrderStatus { DRAFT, PLACED, PAID, FULFILLED, CANCELLED }
+
+  model User @aggregate_root @intent("顧客ユーザー") {
+    +id    UUID!   @id
+    +email string! @unique
+    +name  string!
+  }
+
+  model Order @aggregate_root @intent("顧客注文") {
+    +id         UUID!         @id
+    +customerId UUID!         @ref(User.id, onDelete: RESTRICT)
+    +status     OrderStatus!  @default(DRAFT)
+    +total      decimal!      @inv("total >= 0")
+  }
+
+  model Payment @entity @intent("支払い明細") {
+    +id      UUID!    @id
+    +orderId UUID!    @ref(Order.id, onDelete: CASCADE, inverse: "payments")
+    +amount  decimal! @inv("amount > 0")
+    +method  string!
+  }
+
+  model OrderRepository @service
+    @intent("Order 専用 Repository") {
+    @@implements(Repository<Order>)
+    +id UUID! @id
+  }
+
+  model OrderEventPublisher @service
+    @intent("Order 関連イベントの配送") {
+    @@implements(EventPublisher<Order>)
+    +id UUID! @id
+  }
+
+  // RFC 0010: 多重継承 protocol を実装 (3 契約を合成)
+  model UserRepositoryImpl @service
+    @intent("UserRepository 準拠 — Repository + Auditable + Cacheable の合成") {
+    @@implements(UserRepository)
+    +id UUID! @id
+  }
+}
+
+// ============================================================================
+// Views
+// ============================================================================
+
+view shop-class @class_diagram
+  @intent("全モジュール + 共通 protocol の構造") {
+  include: shop.*
+  layout: direction(LR), engine(elk)
+}
+
+view catalog-er @er_diagram
+  @intent("catalog モジュール内の永続化スキーマ") {
+  include: shop.catalog.*
+}
+
+view checkout-er @er_diagram
+  @intent("checkout モジュール内の永続化スキーマ") {
+  include: shop.checkout.*
+}
+
+view shop-modules @package_diagram
+  @intent("サブドメイン境界 (module) の俯瞰") {
+  include: shop.catalog.*, shop.checkout.*
+}

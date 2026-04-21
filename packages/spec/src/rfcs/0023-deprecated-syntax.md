@@ -94,7 +94,7 @@ attribute / model / protocol / union / enum / view 各 IR 要素に optional で
 
 ## サンプル / テスト
 
-- 新サンプル `samples/deprecated-migration.uml`: `@deprecated` の 4 パターン
+- 新サンプル `samples/deprecated-migration.umlay`: `@deprecated` の 4 パターン
 - Conformance: since / removeIn の semver 検証、replaceWith 解決
 
 ## 受諾時にやること

@@ -115,7 +115,7 @@ model / attribute / enum / view / protocol / union 各要素に optional で付�
 
 ## サンプル / テスト
 
-- 新サンプル `samples/with-codegen-hooks.uml`: 各ターゲットの各 action デモ
+- 新サンプル `samples/with-codegen-hooks.umlay`: 各ターゲットの各 action デモ
 - Conformance: 未知ターゲット名の warning、object 形の parse
 
 ## 受諾時にやること

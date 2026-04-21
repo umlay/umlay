@@ -99,7 +99,7 @@ attribute / model / protocol / union / enum / view 各要素に optional。
 
 ## サンプル / テスト
 
-- 新サンプル `samples/experimental-api.uml`
+- 新サンプル `samples/experimental-api.umlay`
 - Conformance: experimental + deprecated の組み合わせ (experimental から deprecated への遷移)
 
 ## 受諾時にやること

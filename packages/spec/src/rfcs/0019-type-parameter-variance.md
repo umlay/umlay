@@ -104,8 +104,8 @@ Repository<T>: (invariant)
 
 ## サンプル / テスト
 
-- `modules-ddd.uml` の Repository を `Repository<out T: Identifiable>` に拡張した版
-- 新サンプル `samples/variance-demo.uml`: Producer / Consumer / Collection
+- `modules-ddd.umlay` の Repository を `Repository<out T: Identifiable>` に拡張した版
+- 新サンプル `samples/variance-demo.umlay`: Producer / Consumer / Collection
 - Conformance: 使用位置違反 (in T を return に使う等) の error 検出
 
 ## 受諾時にやること

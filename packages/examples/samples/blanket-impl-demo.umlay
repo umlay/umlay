@@ -1,0 +1,93 @@
+// blanket-impl-demo.umlay — Blanket impl のデモ (RFC 0020)
+//
+// spec 0.6.0:
+//   - `impl<T> P for T where (T: Q)` で制約を満たす全型に自動実装
+//   - orphan rule 緩和: P を所有する namespace でのみ書ける
+
+@@mode(strict)
+
+namespace blanket_demo
+
+// ============================================================================
+// 基礎 protocol
+// ============================================================================
+
+protocol Display @intent("整形可能") {
+  fn format() -> string!
+}
+
+protocol Hashable @intent("hash 可能") {
+  fn hash() -> bigint!
+}
+
+protocol Identifiable @intent("id を持つ") {
+  fn getId() -> UUID!
+}
+
+// ============================================================================
+// 高水準 protocol (他から自動適用される側)
+// ============================================================================
+
+protocol ToString @intent("toString を提供") {
+  fn toString() -> string!
+}
+
+protocol SortKey @intent("ソート用のキー文字列を提供") {
+  fn sortKey() -> string!
+}
+
+protocol CacheKey @intent("キャッシュキー生成") {
+  fn cacheKey() -> string!
+}
+
+// ============================================================================
+// Blanket impl: Display を実装する全型に ToString を自動供給
+// ============================================================================
+
+impl<T> ToString for T where (T: Display) {
+  fn toString() -> string! {
+    // return self.format()
+  }
+}
+
+// ============================================================================
+// Blanket impl: 複数制約 (Identifiable + Hashable + Display)
+// ============================================================================
+
+impl<T> SortKey for T where (T: Identifiable & Display) {
+  fn sortKey() -> string! {
+    // format() + getId() を組み合わせて安定キー生成
+  }
+}
+
+impl<T> CacheKey for T where (T: Hashable & Identifiable) {
+  fn cacheKey() -> string! {
+    // hash() と id を組み合わせた一意キー
+  }
+}
+
+// ============================================================================
+// 具体型 — blanket impl が自動適用される
+// ============================================================================
+
+model User @aggregate_root @intent("User は Display / Hashable / Identifiable を実装 → 自動で ToString / SortKey / CacheKey も取得") {
+  @@implements(Display)
+  @@implements(Hashable)
+  @@implements(Identifiable)
+
+  +id       UUID!   @id
+  +username string!
+}
+
+model Product @aggregate_root @intent("Product は Identifiable + Display のみ → ToString / SortKey 自動取得 (CacheKey は取得されない、Hashable 未実装)") {
+  @@implements(Display)
+  @@implements(Identifiable)
+
+  +id   UUID!   @id
+  +name string!
+}
+
+view blanket-class @class_diagram @intent("Blanket impl による自動適用の関係") {
+  include: blanket_demo.*
+  layout: direction(LR), engine(elk)
+}

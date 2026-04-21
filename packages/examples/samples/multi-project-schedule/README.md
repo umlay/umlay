@@ -6,9 +6,9 @@
 
 | ファイル | namespace | 役割 |
 | --- | --- | --- |
-| [`pm-core.uml`](./pm-core.uml) | `pm_core` | 全プロジェクト共通のインフラ系タスク |
-| [`pm-feature-a.uml`](./pm-feature-a.uml) | `pm_feature_a` | 機能 A。`pm_core` に依存 |
-| [`pm-feature-b.uml`](./pm-feature-b.uml) | `pm_feature_b` | 機能 B。`pm_core` + `pm_feature_a` に依存 |
+| [`pm-core.umlay`](./pm-core.umlay) | `pm_core` | 全プロジェクト共通のインフラ系タスク |
+| [`pm-feature-a.umlay`](./pm-feature-a.umlay) | `pm_feature_a` | 機能 A。`pm_core` に依存 |
+| [`pm-feature-b.umlay`](./pm-feature-b.umlay) | `pm_feature_b` | 機能 B。`pm_core` + `pm_feature_a` に依存 |
 
 ## 依存グラフ
 
@@ -32,7 +32,7 @@ pm_feature_b
 
 ## Cross-namespace 構文デモ
 
-### 短縮形 (pm-feature-a.uml より)
+### 短縮形 (pm-feature-a.umlay より)
 
 ```prisma
 model FeatureACoreDependency @entity {
@@ -40,7 +40,7 @@ model FeatureACoreDependency @entity {
 }
 ```
 
-### 完全形 (pm-feature-b.uml より)
+### 完全形 (pm-feature-b.umlay より)
 
 ```prisma
 model FeatureBCrossDeps @entity {

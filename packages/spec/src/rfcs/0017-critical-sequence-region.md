@@ -117,8 +117,8 @@ view transfer @sequence_diagram
 
 ## サンプル / テスト
 
-- 新サンプル `samples/transfer-critical.uml`: 口座送金の critical 区間
-- `concurrent-flow.uml` に critical 節を追加し、Order の status 更新を保護
+- 新サンプル `samples/transfer-critical.umlay`: 口座送金の critical 区間
+- `concurrent-flow.umlay` に critical 節を追加し、Order の status 更新を保護
 
 ## 受諾時にやること
 

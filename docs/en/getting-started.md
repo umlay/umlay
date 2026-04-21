@@ -1,4 +1,4 @@
-# Getting Started — your first `.uml`
+# Getting Started — your first `.umlay`
 
 A short guide for people who have never written Umlay DSL, starting from the smallest possible example.
 
@@ -24,23 +24,23 @@ This repository ships **spec, examples, and skills** only. Implementations (pars
 
 ## 2. Browse the samples
 
-`packages/examples/samples/` contains `.uml` files ordered roughly by complexity.
+`packages/examples/samples/` contains `.umlay` files ordered roughly by complexity.
 
 | # | File | What it demonstrates |
 | --- | --- | --- |
-| 1 | `hello-order.uml` | Smallest sample |
-| 2 | `blog.uml` | Users / Posts / Comments / Tags |
-| 3 | `ecommerce.uml` | cascade / inverse demo |
-| 4 | `saas-multitenant.uml` | Orgs / Users / Teams / Invitations |
-| 5 | `japanese-domain.uml` | Non-Latin identifiers + `@codegenName` |
-| 6 | `with-attachments.uml` | Image attachment demo |
-| 7 | `with-custom-theme.uml` | External CSS theme demo |
-| 8 | `reserved-keywords.uml` | Future keywords (function / queue / component) |
-| 9 | `project-schedule.uml` | Schedule material for WBS / Gantt |
+| 1 | `hello-order.umlay` | Smallest sample |
+| 2 | `blog.umlay` | Users / Posts / Comments / Tags |
+| 3 | `ecommerce.umlay` | cascade / inverse demo |
+| 4 | `saas-multitenant.umlay` | Orgs / Users / Teams / Invitations |
+| 5 | `japanese-domain.umlay` | Non-Latin identifiers + `@codegenName` |
+| 6 | `with-attachments.umlay` | Image attachment demo |
+| 7 | `with-custom-theme.umlay` | External CSS theme demo |
+| 8 | `reserved-keywords.umlay` | Future keywords (function / queue / component) |
+| 9 | `project-schedule.umlay` | Schedule material for WBS / Gantt |
 
-## 3. Write a minimal `.uml`
+## 3. Write a minimal `.umlay`
 
-Save the following as `hello.uml`:
+Save the following as `hello.umlay`:
 
 ```prisma
 namespace shop

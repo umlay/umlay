@@ -1,0 +1,42 @@
+// blog.umlay — 一般的なブログドメイン
+@@mode(strict)
+
+namespace blog
+
+enum PostStatus @intent("投稿のライフサイクル") {
+  DRAFT, PUBLISHED, ARCHIVED
+}
+
+model User @aggregate_root @intent("ブログの著者 / 読者") {
+  +id        UUID!      @id
+  +email     string!    @unique
+  +name      string!
+  +createdAt Timestamp!
+}
+
+model Post @entity @intent("ブログ記事") {
+  +id        UUID!        @id
+  +authorId  UUID!        @ref(User.id, onDelete: CASCADE, inverse: "posts")
+  +title     string!
+  +body      string!
+  +status    PostStatus!  @default(DRAFT)
+  +createdAt Timestamp!
+
+  @@index(authorId)
+}
+
+model Comment @entity @intent("記事へのコメント") {
+  +id       UUID!   @id
+  +postId   UUID!   @ref(Post.id, onDelete: CASCADE, inverse: "comments")
+  +authorId UUID!   @ref(User.id, onDelete: CASCADE)
+  +body     string!
+}
+
+model Tag @value_object @intent("記事の分類ラベル") {
+  +id   UUID!   @id
+  +name string! @unique
+}
+
+view er @er_diagram @intent("ブログドメインの ER") {
+  include: blog.*
+}

@@ -1,0 +1,48 @@
+// ecommerce.umlay — cascade / inverse デモ
+@@mode(strict)
+
+namespace shop
+
+type Money @value_object @intent("金額 + 通貨の値オブジェクト") {
+  +amount   decimal!
+  +currency string! @pattern("^[A-Z]{3}$")
+}
+
+enum OrderStatus @intent("注文のライフサイクル") {
+  DRAFT, CONFIRMED, SHIPPED, CANCELLED
+}
+
+model Customer @aggregate_root @intent("購入顧客") {
+  +id    UUID!   @id
+  +email string! @unique
+  +name  string!
+}
+
+model Product @entity @intent("販売商品") {
+  +id    UUID!   @id
+  +sku   string! @unique
+  +name  string!
+  +price Money!
+}
+
+model Order @aggregate_root @intent("顧客の購入注文") {
+  +id         UUID!         @id
+  +customerId UUID!         @ref(Customer.id, onDelete: RESTRICT, inverse: "orders")
+  +total      Money!
+  +status     OrderStatus!  @default(DRAFT)
+
+  @@index(customerId, status)
+}
+
+model OrderLine @entity @intent("注文明細の 1 行") {
+  @@id(orderId, lineNo)
+  +orderId   UUID!  @ref(Order.id,   onDelete: CASCADE, inverse: "lines")
+  +lineNo    int!
+  +productId UUID!  @ref(Product.id, onDelete: RESTRICT)
+  +qty       int!
+  +price     Money!
+}
+
+view er @er_diagram @intent("EC ドメインの ER") {
+  include: shop.*
+}

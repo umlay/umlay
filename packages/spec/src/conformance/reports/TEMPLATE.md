@@ -27,7 +27,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 
 ## Per-sample results
 
-### `hello-order.uml`
+### `hello-order.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -35,7 +35,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | ✅ pass | IR matches `expected-ir/hello-order.ir.json` |
 | L3 render| ✅ pass | |
 
-### `blog.uml`
+### `blog.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -43,7 +43,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | ✅ pass | |
 | L3 render| ⏭ skip | renderer が ER のみ対応、class は対象外 |
 
-### `ecommerce.uml`
+### `ecommerce.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -51,7 +51,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | ❌ fail | `@pattern` の IR マッピングが未実装 |
 | L3 render| ✅ pass | |
 
-### `saas-multitenant.uml`
+### `saas-multitenant.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -59,7 +59,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | ✅ pass | |
 | L3 render| ✅ pass | |
 
-### `japanese-domain.uml`
+### `japanese-domain.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -67,7 +67,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | ✅ pass | `@codegenName` が IR に保持 |
 | L3 render| ✅ pass | |
 
-### `with-attachments.uml`
+### `with-attachments.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -75,7 +75,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | ✅ pass | |
 | L3 render| ⏭ skip | 添付画像のパネル表示は renderer 依存 |
 
-### `with-custom-theme.uml`
+### `with-custom-theme.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -83,7 +83,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | ✅ pass | |
 | L3 render| ✅ pass | |
 
-### `reserved-keywords.uml`
+### `reserved-keywords.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -91,7 +91,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | ✅ pass | |
 | L3 render| ✅ pass | |
 
-### `project-schedule.uml`
+### `project-schedule.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -99,7 +99,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | ❌ fail | `@@sample` 行数が期待と異なる (XX vs 13) |
 | L3 render| ❌ fail | Gantt renderer が未実装 |
 
-### `login/login.uml`
+### `login/login.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -107,7 +107,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | ✅ pass | |
 | L3 render| ⏭ skip | sequence renderer 未実装 |
 
-### `event-sourcing.uml`
+### `event-sourcing.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -115,7 +115,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | — | L1 fail のため未評価 |
 | L3 render| — | |
 
-### `modules-ddd.uml`
+### `modules-ddd.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -123,7 +123,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | ❌ fail | `extends A, B, C` の mro 計算未実装 |
 | L3 render| ❌ fail | |
 
-### `multi-project-schedule/pm-core.uml`
+### `multi-project-schedule/pm-core.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -131,7 +131,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | ✅ pass | |
 | L3 render| ❌ fail | Gantt renderer 未実装 |
 
-### `multi-project-schedule/pm-feature-a.uml`
+### `multi-project-schedule/pm-feature-a.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -139,7 +139,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | — | |
 | L3 render| — | |
 
-### `multi-project-schedule/pm-feature-b.uml`
+### `multi-project-schedule/pm-feature-b.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -147,7 +147,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | — | |
 | L3 render| — | |
 
-### `concurrent-flow.uml`
+### `concurrent-flow.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -155,7 +155,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | — | |
 | L3 render| — | |
 
-### `ast-expr.uml`
+### `ast-expr.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -163,7 +163,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | — | |
 | L3 render| — | |
 
-### `diamond-protocol.uml`
+### `diamond-protocol.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |
@@ -171,7 +171,7 @@ level-claim: L1     # L1 / L2 / L3 (実装が目指すレベル)
 | L2 IR    | ❌ fail | RFC 0011 C3 MRO / `@@override` の IR 化未対応 |
 | L3 render| ❌ fail | |
 
-### `with-glob-imports/*.uml`
+### `with-glob-imports/*.umlay`
 
 | Level | Status | Notes |
 | --- | --- | --- |

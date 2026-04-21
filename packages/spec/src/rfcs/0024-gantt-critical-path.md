@@ -100,8 +100,8 @@ View 側にも:
 
 ## サンプル / テスト
 
-- `project-schedule.uml` の `pm-gantt` view に `criticalPath: highlight` を追加した expected-ir を新規作成
-- 新サンプル `samples/critical-path-demo.uml`: 意図的に 2 つのクリティカルパスを持つケース
+- `project-schedule.umlay` の `pm-gantt` view に `criticalPath: highlight` を追加した expected-ir を新規作成
+- 新サンプル `samples/critical-path-demo.umlay`: 意図的に 2 つのクリティカルパスを持つケース
 - Conformance: CPM 結果の構造検証 (実装が計算を実施するかは任意、計算する場合は仕様準拠)
 
 ## 受諾時にやること

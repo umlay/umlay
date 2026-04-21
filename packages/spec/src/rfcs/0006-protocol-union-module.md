@@ -131,7 +131,7 @@ module checkout @intent("注文処理のサブドメイン") {
 
 ## 後方互換性
 
-**Class A (additive)**: 既存 `.uml` は無影響。ただし `protocol` / `union` / `module` を識別子として使っていたコードはすでに **現行 Phase 1 でも parse error** (予約語のため)、本 RFC で状況悪化なし。
+**Class A (additive)**: 既存 `.umlay` は無影響。ただし `protocol` / `union` / `module` を識別子として使っていたコードはすでに **現行 Phase 1 でも parse error** (予約語のため)、本 RFC で状況悪化なし。
 
 ## 代替案
 
@@ -141,8 +141,8 @@ module checkout @intent("注文処理のサブドメイン") {
 
 ## サンプル / テスト
 
-- 新サンプル `packages/examples/samples/event-sourcing.uml` で `union` の使用例
-- 新サンプル `packages/examples/samples/modules-ddd.uml` で `module` + `protocol` の組み合わせ
+- 新サンプル `packages/examples/samples/event-sourcing.umlay` で `union` の使用例
+- 新サンプル `packages/examples/samples/modules-ddd.umlay` で `module` + `protocol` の組み合わせ
 - conformance: `protocol<T>` のジェネリクス解決、`union` variant の model 実在性、`module` の入れ子
 
 ## 受諾時にやること

@@ -8,7 +8,7 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 
 | Skill | 目的 (JA) | Purpose (EN) |
 | --- | --- | --- |
-| `write-uml` | 要件から `.uml` を書き起こす | Produce a spec-conformant `.uml` from requirements |
+| `write-uml` | 要件から `.umlay` を書き起こす | Produce a spec-conformant `.umlay` from requirements |
 | `review-uml` | DSL / IR を spec + lint + リスクでレビュー | Review DSL / IR across spec / lint / risk layers |
 | `evolve-schema` | 既存 DSL を後方互換性を守って拡張 | Safely evolve existing DSL |
 | `codegen-mapping` | IR を Prisma / SQL / TS へ決定論的に変換 | Deterministic IR → Prisma / SQL / TS mapping |
@@ -79,12 +79,12 @@ ln -s ../../vendor/umlay/umlay-oss/skills/ja/write-uml.md .claude/skills/write-u
 
 ```
 /write-uml 「ECサイトで商品・カート・注文を扱う最小 DSL を書いて」
-/review-uml 現在開いている .uml ファイルをレビューして
+/review-uml 現在開いている .umlay ファイルをレビューして
 /evolve-schema User モデルに role: UserRole を追加したい
 /codegen-mapping この IR を Prisma schema に変換して
 ```
 
-各 skill は `@umlay/spec` の grammar.md / ir.schema.json を正本として参照するため、**CLI ツールのインストールは不要**です。`.uml` のパーサ / lint / レンダリングを併用したい場合のみ、以下を追加インストールしてください:
+各 skill は `@umlay/spec` の grammar.md / ir.schema.json を正本として参照するため、**CLI ツールのインストールは不要**です。`.umlay` のパーサ / lint / レンダリングを併用したい場合のみ、以下を追加インストールしてください:
 
 ```sh
 pnpm add -D @umlay/core @umlay/lint @umlay/renderer-er

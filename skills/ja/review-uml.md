@@ -14,7 +14,7 @@ references:
 
 ## ゴール
 
-`.uml` ファイル (または IR JSON) を受け取り、以下の 3 レイヤで問題を検出する。
+`.umlay` ファイル (または IR JSON) を受け取り、以下の 3 レイヤで問題を検出する。
 
 1. **Spec 違反** — パーサ / IR スキーマが受理しない形
 2. **Lint 違反** — spec は通るが書き忘れや命名の問題
@@ -24,7 +24,7 @@ references:
 
 | 項目 | 内容 |
 | --- | --- |
-| 入力 | `.uml` テキスト または IR JSON (version 1.0) |
+| 入力 | `.umlay` テキスト または IR JSON (version 1.0) |
 | 出力 | 指摘リスト (severity / 位置 / ルール ID / 修正候補) |
 
 ## ルールカタログ (正本参照)
@@ -64,7 +64,7 @@ references:
 
 ### Step 1 — Spec 準拠性チェック
 
-1. `.uml` をパーサに通す (または構文を目視)
+1. `.umlay` をパーサに通す (または構文を目視)
 2. IR JSON を schema validation (Draft 2020-12) に通す
 3. `lint-rules.md` S 節 (S01〜S17) を順にチェック
 4. **1 件でも違反があれば以降の Layer に進まず、blocker として返す**

@@ -130,12 +130,12 @@ protocol TypedRepository<T: Identifiable & SoftDeletable, out K>
 
 ## 9. L1g: Extending Gantt / WBS (RFC 0004 / 0005 / 0014)
 
-Build on `project-schedule.uml` / `with-glob-imports/`:
+Build on `project-schedule.umlay` / `with-glob-imports/`:
 
 ```prisma
 namespace myapp.planning
 
-import "./tasks/*.uml"    // glob-aggregate sprint files
+import "./tasks/*.umlay"    // glob-aggregate sprint files
 
 view global-roadmap @gantt_chart {
   include: sprint_q1.Task, sprint_q2.Task, sprint_q3.Task, sprint_q4.Task

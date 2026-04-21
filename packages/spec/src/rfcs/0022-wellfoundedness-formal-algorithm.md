@@ -138,9 +138,9 @@ Error: Non-well-founded union(s): X, Y
 
 ## サンプル / テスト
 
-- 既存の `ast-expr.uml` が本アルゴリズムで well-founded と判定されることの conformance テスト
-- 新サンプル `samples/mutual-recursive-union.uml`: 相互再帰 SCC の境界ケース
-- 新サンプル `samples/invalid-union-no-base.uml`: 意図的な non-well-founded を parse error にする
+- 既存の `ast-expr.umlay` が本アルゴリズムで well-founded と判定されることの conformance テスト
+- 新サンプル `samples/mutual-recursive-union.umlay`: 相互再帰 SCC の境界ケース
+- 新サンプル `samples/invalid-union-no-base.umlay`: 意図的な non-well-founded を parse error にする
 
 ## 受諾時にやること
 

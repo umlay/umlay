@@ -202,9 +202,7 @@
     {
       "id": "presentation",
       "kind": "er_diagram",
-      "include": [
-        "shop.*"
-      ],
+      "include": ["shop.*"],
       "exclude": [],
       "attachments": [],
       "participants": [],
@@ -214,9 +212,7 @@
     {
       "id": "er",
       "kind": "er_diagram",
-      "include": [
-        "shop.*"
-      ],
+      "include": ["shop.*"],
       "exclude": [],
       "attachments": [],
       "participants": [],

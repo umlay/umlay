@@ -1,6 +1,6 @@
 # IR Guide — ツール開発者向け
 
-Umlay の**正規IR (Intermediate Representation)** は、DSL をパースした後のツール内部表現です。`.uml` → 正規IR の変換は実装側 (別リポジトリ) が担いますが、IR の構造自体は本リポジトリの JSON Schema が正本です。
+Umlay の**正規IR (Intermediate Representation)** は、DSL をパースした後のツール内部表現です。`.umlay` → 正規IR の変換は実装側 (別リポジトリ) が担いますが、IR の構造自体は本リポジトリの JSON Schema が正本です。
 
 - JSON Schema: [`../../packages/spec/src/ir.schema.json`](../../packages/spec/src/ir.schema.json) (Draft 2020-12)
 - バージョン: `1.0`
@@ -8,7 +8,7 @@ Umlay の**正規IR (Intermediate Representation)** は、DSL をパースした
 ## IR の位置づけ
 
 ```
-.uml ─ parse ─▶ 正規IR (JSON) ─ consume ─┬─▶ SVG レンダラー
+.umlay ─ parse ─▶ 正規IR (JSON) ─ consume ─┬─▶ SVG レンダラー
                                           ├─▶ Prisma / SQL / TS 生成
                                           ├─▶ Lint / スコア / リスク検出
                                           └─▶ レビュー / diff / 注釈付与
@@ -18,7 +18,7 @@ DSL の表現方法が変わっても、IR に到達した時点で形が揃い�
 
 ## 例
 
-`.uml`:
+`.umlay`:
 
 ```prisma
 model Order @aggregate_root @intent("顧客発注のアグリゲート") {
@@ -175,8 +175,8 @@ Layout ヒント (renderer 任意で尊重):
   "meta": {
     "imports": [
       { "kind": "ns",   "value": "pm_core" },
-      { "kind": "path", "value": "./tasks/sprint-1.uml", "alias": "sprint1" },
-      { "kind": "path", "value": "./tasks/*.uml" }
+      { "kind": "path", "value": "./tasks/sprint-1.umlay", "alias": "sprint1" },
+      { "kind": "path", "value": "./tasks/*.umlay" }
     ]
   }
 }

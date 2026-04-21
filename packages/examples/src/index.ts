@@ -1,14 +1,14 @@
 /** File names of bundled samples (relative to the `samples/` directory). */
 export const SAMPLES = [
-  'hello-order.uml',
-  'blog.uml',
-  'ecommerce.uml',
-  'saas-multitenant.uml',
-  'japanese-domain.uml',
-  'with-attachments.uml',
-  'with-custom-theme.uml',
-  'reserved-keywords.uml',
-  'project-schedule.uml',
+  'hello-order.umlay',
+  'blog.umlay',
+  'ecommerce.umlay',
+  'saas-multitenant.umlay',
+  'japanese-domain.umlay',
+  'with-attachments.umlay',
+  'with-custom-theme.umlay',
+  'reserved-keywords.umlay',
+  'project-schedule.umlay',
 ] as const;
 
 export type SampleName = (typeof SAMPLES)[number];
