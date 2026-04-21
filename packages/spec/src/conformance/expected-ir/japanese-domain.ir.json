@@ -1,0 +1,265 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "受発注": {
+      "models": {
+        "顧客": {
+          "_id": "2e023efe3606",
+          "name": "顧客",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "6d3fe6a10519",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "95cc3bec8161",
+              "name": "メール",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": true,
+              "pk": false,
+              "index": false,
+              "codegenName": "email",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "f763bfaad9f4",
+              "name": "氏名",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegenName": "name",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "顧客マスター",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "注文": {
+          "_id": "ffe35f86bd68",
+          "name": "注文",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "6d3fe6a10519",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "c039f8816754",
+              "name": "顧客ID",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "顧客.id",
+                "inverse": "注文一覧"
+              },
+              "codegenName": "customerId",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "22968932fd27",
+              "name": "合計額",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegenName": "total",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "2d278f9c3950",
+              "name": "状態",
+              "type": "注文状態",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "下書き",
+              "codegenName": "status",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "顧客からの注文",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "注文明細": {
+          "_id": "7c0fe42e99ed",
+          "name": "注文明細",
+          "stereotype": "entity",
+          "identity": [
+            "注文ID",
+            "行番号"
+          ],
+          "attributes": [
+            {
+              "_id": "5f7342234eb8",
+              "name": "注文ID",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "注文.id",
+                "onDelete": "CASCADE"
+              },
+              "codegenName": "orderId",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "540b19daabc2",
+              "name": "行番号",
+              "type": "int",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegenName": "lineNo",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "d0a7659db6d8",
+              "name": "数量",
+              "type": "int",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegenName": "qty",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "注文明細行",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "注文状態": {
+          "_id": "bcaa56e745a4",
+          "name": "注文状態",
+          "values": [
+            "下書き",
+            "確定",
+            "出荷済",
+            "取消"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "er",
+      "kind": "er_diagram",
+      "include": [
+        "受発注.*"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

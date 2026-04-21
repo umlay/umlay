@@ -1,0 +1,197 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "lang": {
+      "models": {},
+      "types": {},
+      "enums": {},
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [
+        {
+          "name": "Evaluator",
+          "extends": [],
+          "methods": [
+            {
+              "name": "eval",
+              "params": [
+                {
+                  "name": "expr",
+                  "type": {
+                    "ref": "Expr"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "int"
+              }
+            }
+          ]
+        }
+      ],
+      "unions": [
+        {
+          "name": "Expr",
+          "variants": [
+            {
+              "name": "Num",
+              "fields": [
+                {
+                  "name": "value",
+                  "type": {
+                    "ref": "int"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Var",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": {
+                    "ref": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Add",
+              "fields": [
+                {
+                  "name": "left",
+                  "type": {
+                    "ref": "Expr"
+                  }
+                },
+                {
+                  "name": "right",
+                  "type": {
+                    "ref": "Expr"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Mul",
+              "fields": [
+                {
+                  "name": "left",
+                  "type": {
+                    "ref": "Expr"
+                  }
+                },
+                {
+                  "name": "right",
+                  "type": {
+                    "ref": "Expr"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Neg",
+              "fields": [
+                {
+                  "name": "operand",
+                  "type": {
+                    "ref": "Expr"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Let",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": {
+                    "ref": "string"
+                  }
+                },
+                {
+                  "name": "binding",
+                  "type": {
+                    "ref": "Expr"
+                  }
+                },
+                {
+                  "name": "body",
+                  "type": {
+                    "ref": "Expr"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Tree",
+          "typeParams": [
+            {
+              "name": "T"
+            }
+          ],
+          "variants": [
+            {
+              "name": "Leaf",
+              "fields": []
+            },
+            {
+              "name": "Node",
+              "fields": [
+                {
+                  "name": "value",
+                  "type": {
+                    "ref": "T"
+                  }
+                },
+                {
+                  "name": "left",
+                  "type": {
+                    "ref": "Tree",
+                    "args": [
+                      {
+                        "ref": "T"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "right",
+                  "type": {
+                    "ref": "Tree",
+                    "args": [
+                      {
+                        "ref": "T"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "ast-class",
+      "kind": "class_diagram",
+      "include": [
+        "lang.Expr",
+        "lang.Tree",
+        "lang.Evaluator"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

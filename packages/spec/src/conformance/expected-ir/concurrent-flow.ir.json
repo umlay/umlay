@@ -1,0 +1,624 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "orders": {
+      "models": {
+        "Order": {
+          "_id": "2e6fca7b9211",
+          "name": "Order",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "f7f7740fb72a",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "9729448c0df5",
+              "name": "userId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "d4cf31c2b917",
+              "name": "userEmail",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "213b307c8f79",
+              "name": "total",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "total >= 0"
+                ],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            },
+            {
+              "_id": "5c0fb0db7c5a",
+              "name": "status",
+              "type": "OrderStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "DRAFT",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "3353595878bf",
+              "name": "createdAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "注文",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "Client": {
+          "_id": "cb4944a0180b",
+          "name": "Client",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "f7f7740fb72a",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "API 呼び出し元",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "API": {
+          "_id": "e1623a26bebe",
+          "name": "API",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "f7f7740fb72a",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "HTTP API エンドポイント",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "DB": {
+          "_id": "570a91a5ef44",
+          "name": "DB",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "f7f7740fb72a",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "永続化 (RDB)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "CacheSvc": {
+          "_id": "a12cf7956122",
+          "name": "CacheSvc",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "f7f7740fb72a",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Redis 等のキャッシュ",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "QueueSvc": {
+          "_id": "da37db1fb8db",
+          "name": "QueueSvc",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "f7f7740fb72a",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "メッセージキュー",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "EmailSvc": {
+          "_id": "3bc25412fcb2",
+          "name": "EmailSvc",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "f7f7740fb72a",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "メール配送サービス",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "AnalyticsSvc": {
+          "_id": "62afbbc9d518",
+          "name": "AnalyticsSvc",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "f7f7740fb72a",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "分析イベント収集",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "OrderStatus": {
+          "_id": "ebfb8ad83408",
+          "name": "OrderStatus",
+          "values": [
+            "DRAFT",
+            "PLACED",
+            "COMPLETED",
+            "FAILED"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "order-placement",
+      "kind": "sequence_diagram",
+      "include": [],
+      "exclude": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "c",
+          "label": "Client",
+          "ref": "Client"
+        },
+        {
+          "id": "api",
+          "label": "API",
+          "ref": "API"
+        },
+        {
+          "id": "db",
+          "label": "DB",
+          "ref": "DB"
+        },
+        {
+          "id": "cache",
+          "label": "CacheSvc",
+          "ref": "CacheSvc"
+        },
+        {
+          "id": "queue",
+          "label": "QueueSvc",
+          "ref": "QueueSvc"
+        },
+        {
+          "id": "analytics",
+          "label": "AnalyticsSvc",
+          "ref": "AnalyticsSvc"
+        },
+        {
+          "id": "email",
+          "label": "EmailSvc",
+          "ref": "EmailSvc"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "c",
+            "label": "Client",
+            "ref": "Client"
+          },
+          {
+            "id": "api",
+            "label": "API",
+            "ref": "API"
+          },
+          {
+            "id": "db",
+            "label": "DB",
+            "ref": "DB"
+          },
+          {
+            "id": "cache",
+            "label": "CacheSvc",
+            "ref": "CacheSvc"
+          },
+          {
+            "id": "queue",
+            "label": "QueueSvc",
+            "ref": "QueueSvc"
+          },
+          {
+            "id": "analytics",
+            "label": "AnalyticsSvc",
+            "ref": "AnalyticsSvc"
+          },
+          {
+            "id": "email",
+            "label": "EmailSvc",
+            "ref": "EmailSvc"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "message",
+            "from": "c",
+            "to": "api",
+            "arrow": "sync",
+            "label": "POST /orders (userId, items[])"
+          },
+          {
+            "kind": "message",
+            "from": "api",
+            "to": "db",
+            "arrow": "sync",
+            "label": "insert Order (status=DRAFT)"
+          },
+          {
+            "kind": "message",
+            "from": "db",
+            "to": "api",
+            "arrow": "reply",
+            "label": "Order { id }"
+          },
+          {
+            "kind": "par",
+            "branches": [
+              {
+                "label": "cache-update",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "cache",
+                    "arrow": "sync",
+                    "label": "SET order:<id>"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "cache",
+                    "to": "api",
+                    "arrow": "reply",
+                    "label": "ok"
+                  }
+                ]
+              },
+              {
+                "label": "event-publish",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "queue",
+                    "arrow": "sync",
+                    "label": "publish OrderPlaced"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "queue",
+                    "to": "api",
+                    "arrow": "reply",
+                    "label": "ack"
+                  }
+                ]
+              },
+              {
+                "label": "analytics",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "analytics",
+                    "arrow": "sync",
+                    "label": "track(\\\"order_placed\\\", { orderId })"
+                  }
+                ]
+              }
+            ],
+            "awaitSpec": {
+              "labels": [
+                "cache-update",
+                "event-publish"
+              ]
+            }
+          },
+          {
+            "kind": "opt",
+            "condition": "userEmail が指定されている場合のみ送信",
+            "body": [
+              {
+                "kind": "message",
+                "from": "api",
+                "to": "email",
+                "arrow": "sync",
+                "label": "sendConfirmation(orderId, userEmail)"
+              },
+              {
+                "kind": "message",
+                "from": "email",
+                "to": "api",
+                "arrow": "reply",
+                "label": "queued"
+              }
+            ]
+          },
+          {
+            "kind": "message",
+            "from": "api",
+            "to": "db",
+            "arrow": "sync",
+            "label": "update Order (status=PLACED)"
+          },
+          {
+            "kind": "message",
+            "from": "db",
+            "to": "api",
+            "arrow": "reply",
+            "label": "ok"
+          },
+          {
+            "kind": "message",
+            "from": "api",
+            "to": "c",
+            "arrow": "reply",
+            "label": "201 Created { orderId }"
+          }
+        ]
+      },
+      "ganttTasks": []
+    },
+    {
+      "id": "order-lifecycle",
+      "kind": "state_machine",
+      "include": [
+        "orders.Order",
+        "orders.OrderStatus"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

@@ -1,0 +1,287 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "blanket_demo": {
+      "models": {
+        "User": {
+          "_id": "862505d0d701",
+          "name": "User",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "c0d8144e456d",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "710cf3470ce7",
+              "name": "username",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "User は Display / Hashable / Identifiable を実装 → 自動で ToString / SortKey / CacheKey も取得",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [
+            {
+              "ref": "Display"
+            },
+            {
+              "ref": "Hashable"
+            },
+            {
+              "ref": "Identifiable"
+            }
+          ]
+        },
+        "Product": {
+          "_id": "67da85a7776a",
+          "name": "Product",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "c0d8144e456d",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "8981de5ea41c",
+              "name": "name",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Product は Identifiable + Display のみ → ToString / SortKey 自動取得 (CacheKey は取得されない、Hashable 未実装)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [
+            {
+              "ref": "Display"
+            },
+            {
+              "ref": "Identifiable"
+            }
+          ]
+        }
+      },
+      "types": {},
+      "enums": {},
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [
+        {
+          "name": "Display",
+          "extends": [],
+          "methods": [
+            {
+              "name": "format",
+              "params": [],
+              "returns": {
+                "ref": "string"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Hashable",
+          "extends": [],
+          "methods": [
+            {
+              "name": "hash",
+              "params": [],
+              "returns": {
+                "ref": "bigint"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Identifiable",
+          "extends": [],
+          "methods": [
+            {
+              "name": "getId",
+              "params": [],
+              "returns": {
+                "ref": "UUID"
+              }
+            }
+          ]
+        },
+        {
+          "name": "ToString",
+          "extends": [],
+          "methods": [
+            {
+              "name": "toString",
+              "params": [],
+              "returns": {
+                "ref": "string"
+              }
+            }
+          ]
+        },
+        {
+          "name": "SortKey",
+          "extends": [],
+          "methods": [
+            {
+              "name": "sortKey",
+              "params": [],
+              "returns": {
+                "ref": "string"
+              }
+            }
+          ]
+        },
+        {
+          "name": "CacheKey",
+          "extends": [],
+          "methods": [
+            {
+              "name": "cacheKey",
+              "params": [],
+              "returns": {
+                "ref": "string"
+              }
+            }
+          ]
+        }
+      ],
+      "unions": [],
+      "impls": [
+        {
+          "trait": "ToString",
+          "target": "T",
+          "typeParams": [
+            {
+              "name": "T"
+            }
+          ],
+          "methods": [
+            {
+              "name": "toString",
+              "params": [],
+              "returns": {
+                "ref": "string"
+              }
+            }
+          ]
+        },
+        {
+          "trait": "SortKey",
+          "target": "T",
+          "typeParams": [
+            {
+              "name": "T"
+            }
+          ],
+          "methods": [
+            {
+              "name": "sortKey",
+              "params": [],
+              "returns": {
+                "ref": "string"
+              }
+            }
+          ]
+        },
+        {
+          "trait": "CacheKey",
+          "target": "T",
+          "typeParams": [
+            {
+              "name": "T"
+            }
+          ],
+          "methods": [
+            {
+              "name": "cacheKey",
+              "params": [],
+              "returns": {
+                "ref": "string"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "views": [
+    {
+      "id": "blanket-class",
+      "kind": "class_diagram",
+      "include": [
+        "blanket_demo.*"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "LR",
+        "engine": "elk"
+      },
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

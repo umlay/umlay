@@ -1,0 +1,24 @@
+{
+  "name": "@umlay/examples",
+  "version": "0.8.0",
+  "description": "Sample Umlay DSL files for onboarding and testing.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./samples/*": "./samples/*.uml"
+  },
+  "files": ["src", "samples", "README.md", "LICENSE"],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "echo 'no build needed'",
+    "test": "echo 'no tests yet'"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

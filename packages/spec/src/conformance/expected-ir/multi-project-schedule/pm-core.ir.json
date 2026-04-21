@@ -1,0 +1,208 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "pm_core": {
+      "models": {
+        "Task": {
+          "_id": "fa942cf8c862",
+          "name": "Task",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "577791333962",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "c89284e06d4c",
+              "name": "name",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "9d4fff8c3587",
+              "name": "plannedStart",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "8c652b20b362",
+              "name": "plannedEnd",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "plannedEnd >= plannedStart"
+                ],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            },
+            {
+              "_id": "3009150ac53b",
+              "name": "progress",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "0.0",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "df54c4bfccc3",
+              "name": "status",
+              "type": "TaskStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "PENDING",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "574bc042b342",
+              "name": "assignee",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "core インフラ側のタスク。feature 側から cross-ns で依存される",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [
+            {
+              "id": "c-infra",
+              "name": "Infrastructure Setup",
+              "plannedStart": "2026-04-20",
+              "plannedEnd": "2026-05-03",
+              "progress": 1,
+              "status": "DONE",
+              "assignee": "Eve"
+            },
+            {
+              "id": "c-auth",
+              "name": "Auth Service (OIDC)",
+              "plannedStart": "2026-05-04",
+              "plannedEnd": "2026-05-17",
+              "progress": 0.7,
+              "status": "IN_PROGRESS",
+              "assignee": "Frank"
+            },
+            {
+              "id": "c-db",
+              "name": "Shared DB Schema Baseline",
+              "plannedStart": "2026-05-04",
+              "plannedEnd": "2026-05-10",
+              "progress": 0.9,
+              "status": "IN_PROGRESS",
+              "assignee": "Eve"
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "TaskStatus": {
+          "_id": "efb7ce68d8c6",
+          "name": "TaskStatus",
+          "values": [
+            "PENDING",
+            "IN_PROGRESS",
+            "DONE",
+            "BLOCKED"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "core-wbs",
+      "kind": "wbs_diagram",
+      "include": [
+        "pm_core.Task"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "core-gantt",
+      "kind": "gantt_chart",
+      "include": [
+        "pm_core.Task"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

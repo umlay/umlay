@@ -1,0 +1,36 @@
+{
+  "name": "@umlay/spec",
+  "version": "1.0.0",
+  "description": "Umlay DSL specification, grammar, and JSON Schema for the IR.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/ir.schema.json",
+    "./grammar": "./src/grammar.md",
+    "./grammar-bnf": "./src/grammar.bnf",
+    "./conformance": "./src/conformance/index.ts",
+    "./conformance-manifest": "./src/conformance/manifest.yaml"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE",
+    "src/grammar.bnf",
+    "src/conformance"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

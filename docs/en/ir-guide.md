@@ -1,0 +1,194 @@
+# IR Guide — for tool authors
+
+The **normalized IR** (Intermediate Representation) is the internal form after a `.uml` file is parsed. Although the `.uml` → IR conversion lives in the implementation (separate repository), the IR structure itself is canonical in this repository's JSON Schema.
+
+- JSON Schema: [`../../packages/spec/src/ir.schema.json`](../../packages/spec/src/ir.schema.json) (Draft 2020-12)
+- Version: `1.0`
+
+## Where the IR fits
+
+```
+.uml ─ parse ─▶ Normalized IR (JSON) ─ consume ─┬─▶ SVG renderer
+                                                 ├─▶ Prisma / SQL / TS generators
+                                                 ├─▶ Lint / scoring / risk detection
+                                                 └─▶ Review / diff / annotation
+```
+
+Regardless of how the DSL evolves, once a model reaches the IR it has a uniform shape. All downstream processing (render / generate / lint / review) targets the IR.
+
+## Example
+
+`.uml`:
+
+```prisma
+model Order @aggregate_root @intent("Customer order aggregate") {
+  id          UUID! @id
+  customerId  UUID! @ref(Customer.id)
+  -> composition 1..* lines: OrderLine
+}
+```
+
+IR (excerpt):
+
+```jsonc
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "namespaces": {
+    "ordering": {
+      "models": {
+        "Order": {
+          "_id": "sha1:ordering.Order",
+          "stereotype": "aggregate_root",
+          "intent": "Customer order aggregate",
+          "identity": ["id"],
+          "attributes": [
+            {
+              "_id": "sha1:ordering.Order.id",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "pk": true
+            }
+          ],
+          "relations": [
+            {
+              "kind": "composition",
+              "target": "ordering.OrderLine",
+              "multiplicity": "1..*",
+              "role": "lines"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "views": []
+}
+```
+
+## Design principles
+
+### 1. Stable IDs (`_id`)
+
+Every model, attribute, and relation carries a content-derived stable ID (`sha1:...`).
+
+- Renaming an identifier leaves `_id` unchanged as long as the structure is unchanged, so IR diffs can surface renames
+- Review annotations (`@review`, `@fix`) bind to `_id`, giving rename resilience
+
+### 2. Required fields
+
+By the time a model reaches the IR, the following are always populated (enforced at DSL time in Strict mode, filled with defaults in Draft mode):
+
+- `visibility` — `public` / `private` / `protected`
+- `nullable` — boolean
+- `multiplicity` — for relations: `"1"`, `"0..1"`, `"1..*"`, `"0..*"`, ...
+
+### 3. References are fully qualified
+
+All references (`@ref`, view `include`) are normalized to `<namespace>.<name>` in the IR.
+
+### 4. Views never duplicate models
+
+`views[]` hold **projections** only. `include` patterns select which models to draw, and view-scoped attributes (layout, participant aliasing, etc.) attach here.
+
+## Recommendations for IR consumers
+
+| Goal | Suggested approach |
+| --- | --- |
+| Visualization | Pick one `views[]` entry, resolve referenced `namespaces[*].models[*]`, and render |
+| Code generation | Use template conversion for deterministic output (types / DDL / OpenAPI); feed IR + `intent` + contracts to the LLM for non-deterministic parts |
+| Diff / review | Use `_id` to classify changes (new / removed / renamed) |
+| Lint / risk | Feed `attributes[*].nullable`, `relations[*].multiplicity`, etc. into the rule engine |
+
+## Version compatibility
+
+- Additive changes under `version: "1.0"` are **backward compatible**
+- Breaking changes bump to `version: "2.0"` with a published migration guide
+- Schema changes go through the RFC process in `packages/spec` (see [CONTRIBUTING.md](../../CONTRIBUTING.md))
+
+## Fields added in spec 0.8.0
+
+All optional; legacy 0.x IRs remain valid.
+
+### view.sequenceBody (RFC 0007 / 0017 / 0021 / 0028)
+
+Structured participants + statement tree for sequence diagrams:
+
+```json
+{
+  "kind": "sequence_diagram",
+  "sequenceBody": {
+    "participants": [{ "id": "api", "label": "API", "ref": "auth.AuthAPI" }],
+    "statements": [
+      { "kind": "message", "from": "api", "to": "db", "arrow": "sync", "label": "SELECT user" },
+      {
+        "kind": "critical", "label": "external call",
+        "timeout": { "duration": "3s" },
+        "retry": { "attempts": 3, "backoff": "exponential", "initial": "100ms", "jitter": true },
+        "body": [ /* statements */ ],
+        "catchBlock": { "label": "exhausted", "body": [ /* */ ] },
+        "finallyBlock": { "body": [ /* */ ] }
+      },
+      { "kind": "alt", "cases": [{ "condition": "ok", "body": [...] }], "elseBody": [...] },
+      { "kind": "opt", "condition": "debug", "body": [...] },
+      { "kind": "par", "branches": [{ "label": "cache", "body": [...] }], "awaitSpec": { "labels": ["cache"] } },
+      { "kind": "loop", "condition": "more rows", "body": [...] },
+      { "kind": "await", "labels": ["cache", "log"] }
+    ]
+  }
+}
+```
+
+### view.layout (RFC 0002)
+
+```json
+{ "layout": { "direction": "LR", "engine": "elk", "spacing": 40, "align": "center" } }
+```
+
+### GanttTask.dependsOn — PMBOK form (RFC 0024)
+
+```json
+{
+  "dependsOn": [
+    "task-a",                                              // short: FS + lag=0
+    { "id": "task-b", "kind": "SS", "lag": 2 },
+    { "id": "task-c", "kind": "FF", "lag": 0 },
+    { "id": "task-d", "kind": "SF", "lag": -1 }
+  ]
+}
+```
+
+### ir.meta.imports (RFC 0009 / 0014)
+
+```json
+{
+  "meta": {
+    "imports": [
+      { "kind": "ns",   "value": "pm_core" },
+      { "kind": "path", "value": "./tasks/sprint-1.uml", "alias": "sprint1" },
+      { "kind": "path", "value": "./tasks/*.uml" }
+    ]
+  }
+}
+```
+
+## Fields arriving in spec 1.0 RC
+
+Accepted RFCs not yet in `ir.schema.json` (Zod-generated):
+
+- `namespace.protocols[]` / `namespace.unions[]` / `namespace.impls[]` (RFC 0006 / 0010 / 0016 / 0020)
+- `model.sampleSources[]` (RFC 0004 / 0008)
+- `view.criticalPath` (RFC 0024)
+- `attribute.deprecated` / `attribute.experimental` (RFC 0023 / 0027)
+
+See [`migration-guide-1.0.md`](./migration-guide-1.0.md) §4.
+
+## See also
+
+- [`packages/spec/src/ir.schema.json`](../../packages/spec/src/ir.schema.json) — auto-generated via `pnpm --filter @umlay/core gen:ir-schema`
+- [DSL Guide](./dsl-guide.md)
+- [Design Principles](./design-principles.md)
+- [Lint Rules](../../packages/spec/src/lint-rules.md)
+- [Conformance helper](../../packages/spec/src/conformance/match.ts) — `assertIRMatches`

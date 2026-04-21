@@ -1,0 +1,29 @@
+// sprint-2.uml — Sprint 2 のタスク (glob import 対象)
+
+@@mode(strict)
+
+namespace sprint2
+
+enum TaskStatus { PENDING, IN_PROGRESS, DONE }
+
+model Task @aggregate_root @intent("Sprint 2 のタスク") {
+  +id           UUID!        @id
+  +name         string!
+  +plannedStart Date!
+  +plannedEnd   Date!
+  +progress     decimal!     @default(0.0)
+  +status       TaskStatus!  @default(PENDING)
+  +assignee     string!
+
+  @@sample(
+    { id: "s2-backend",  name: "Backend MVP",
+      plannedStart: "2026-05-04", plannedEnd: "2026-05-18",
+      progress: 0.6, status: IN_PROGRESS, assignee: "Bob" },
+    { id: "s2-frontend", name: "Frontend MVP",
+      plannedStart: "2026-05-04", plannedEnd: "2026-05-18",
+      progress: 0.4, status: IN_PROGRESS, assignee: "Dave" },
+    { id: "s2-demo",     name: "Sprint 2 Demo",
+      plannedStart: "2026-05-22", plannedEnd: "2026-05-22",
+      progress: 0.0, status: PENDING, assignee: "Alice" }
+  )
+}

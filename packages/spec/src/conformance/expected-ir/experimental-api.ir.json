@@ -1,0 +1,261 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "experimental_demo": {
+      "models": {
+        "User": {
+          "_id": "4fb127dc4933",
+          "name": "User",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "35955fbdc13a",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "ac2650fc0d73",
+              "name": "email",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": true,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "e595ad650c4d",
+              "name": "mfaEnabled",
+              "type": "bool",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "experimental": {
+                "message": "still refining MFA flows, API may change before 0.9"
+              }
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "ユーザー (安定)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "StreamProcessor": {
+          "_id": "90d7b7c9776f",
+          "name": "StreamProcessor",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "35955fbdc13a",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "cff4f6a69d57",
+              "name": "pipeline",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "ebde7ed56304",
+              "name": "throughput",
+              "type": "int",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "非同期ストリーム処理",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "experimental": {
+            "since": "0.8.0",
+            "note": "async interface may change before stabilization",
+            "stabilizeIn": "1.0.0",
+            "trackingIssue": "umlay/umlay#456"
+          }
+        },
+        "OldStreamProcessor": {
+          "_id": "d8f3c70cb2db",
+          "name": "OldStreamProcessor",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "35955fbdc13a",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "旧版、deprecated へ移行中",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "deprecated": {
+            "message": "use StreamProcessor instead; was experimental and won't stabilize",
+            "since": "0.8.0",
+            "removeIn": "1.0.0",
+            "replaceWith": "StreamProcessor"
+          },
+          "experimental": {
+            "since": "0.6.0",
+            "note": "superseded by StreamProcessor"
+          }
+        }
+      },
+      "types": {},
+      "enums": {
+        "LogLevel": {
+          "_id": "f4c35b4c8cd0",
+          "name": "LogLevel",
+          "values": [
+            "DEBUG",
+            "INFO",
+            "WARN",
+            "ERROR",
+            "TRACE"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [
+        {
+          "name": "ResourcePoolV2",
+          "typeParams": [
+            {
+              "name": "T",
+              "variance": "out"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "acquire",
+              "params": [],
+              "returns": {
+                "ref": "T"
+              }
+            },
+            {
+              "name": "release",
+              "params": [
+                {
+                  "name": "resource",
+                  "type": {
+                    "ref": "T"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        }
+      ],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "experimental-class",
+      "kind": "class_diagram",
+      "include": [
+        "experimental_demo.*"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

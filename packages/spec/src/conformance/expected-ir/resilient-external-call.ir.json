@@ -1,0 +1,612 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "resilient": {
+      "models": {
+        "Service": {
+          "_id": "6371a52bf115",
+          "name": "Service",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "080cdef64b00",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "API": {
+          "_id": "9d38d00efe3d",
+          "name": "API",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "080cdef64b00",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "Remote": {
+          "_id": "8aa9078add6c",
+          "name": "Remote",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "080cdef64b00",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "DB": {
+          "_id": "1dea61a60784",
+          "name": "DB",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "080cdef64b00",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "Metrics": {
+          "_id": "f3aa39de7c4c",
+          "name": "Metrics",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "080cdef64b00",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {},
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "simple-retry",
+      "kind": "sequence_diagram",
+      "include": [],
+      "exclude": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "api",
+          "label": "API",
+          "ref": "API"
+        },
+        {
+          "id": "r",
+          "label": "Remote",
+          "ref": "Remote"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "api",
+            "label": "API",
+            "ref": "API"
+          },
+          {
+            "id": "r",
+            "label": "Remote",
+            "ref": "Remote"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "critical",
+            "label": "外部 API 呼び出し",
+            "timeout": {
+              "duration": "1s"
+            },
+            "retry": {
+              "attempts": 3
+            },
+            "body": [
+              {
+                "kind": "message",
+                "from": "api",
+                "to": "r",
+                "arrow": "sync",
+                "label": "GET /resource"
+              },
+              {
+                "kind": "message",
+                "from": "r",
+                "to": "api",
+                "arrow": "reply",
+                "label": "200 { payload }"
+              }
+            ],
+            "catchBlock": {
+              "label": "exhausted",
+              "body": [
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "api",
+                  "arrow": "self",
+                  "label": "log(\\\"all 3 attempts failed\\\")"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "ganttTasks": []
+    },
+    {
+      "id": "exponential-retry",
+      "kind": "sequence_diagram",
+      "include": [],
+      "exclude": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "api",
+          "label": "API",
+          "ref": "API"
+        },
+        {
+          "id": "r",
+          "label": "Remote",
+          "ref": "Remote"
+        },
+        {
+          "id": "m",
+          "label": "Metrics",
+          "ref": "Metrics"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "api",
+            "label": "API",
+            "ref": "API"
+          },
+          {
+            "id": "r",
+            "label": "Remote",
+            "ref": "Remote"
+          },
+          {
+            "id": "m",
+            "label": "Metrics",
+            "ref": "Metrics"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "critical",
+            "label": "冪等な外部 API",
+            "timeout": {
+              "duration": "3s"
+            },
+            "retry": {
+              "attempts": 5,
+              "backoff": "exponential",
+              "initial": "100ms",
+              "max": "5s",
+              "jitter": true
+            },
+            "body": [
+              {
+                "kind": "message",
+                "from": "api",
+                "to": "r",
+                "arrow": "sync",
+                "label": "POST /idempotent-op"
+              },
+              {
+                "kind": "message",
+                "from": "r",
+                "to": "api",
+                "arrow": "reply",
+                "label": "200 { result }"
+              }
+            ],
+            "catchBlock": {
+              "label": "final failure",
+              "body": [
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "m",
+                  "arrow": "sync",
+                  "label": "track(\\\"external.call.failed\\\", { attempts: 5 })"
+                }
+              ]
+            },
+            "finallyBlock": {
+              "body": [
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "m",
+                  "arrow": "sync",
+                  "label": "track(\\\"external.call.completed\\\")"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "ganttTasks": []
+    },
+    {
+      "id": "linear-retry",
+      "kind": "sequence_diagram",
+      "include": [],
+      "exclude": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "api",
+          "label": "API",
+          "ref": "API"
+        },
+        {
+          "id": "db",
+          "label": "DB",
+          "ref": "DB"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "api",
+            "label": "API",
+            "ref": "API"
+          },
+          {
+            "id": "db",
+            "label": "DB",
+            "ref": "DB"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "critical",
+            "label": "DB 楽観ロック更新",
+            "timeout": {
+              "duration": "500ms"
+            },
+            "retry": {
+              "attempts": 3,
+              "backoff": "linear",
+              "initial": "1s"
+            },
+            "body": [
+              {
+                "kind": "message",
+                "from": "api",
+                "to": "db",
+                "arrow": "sync",
+                "label": "UPDATE ... WHERE version = @v"
+              },
+              {
+                "kind": "message",
+                "from": "db",
+                "to": "api",
+                "arrow": "reply",
+                "label": "1 row updated"
+              }
+            ],
+            "catchBlock": {
+              "label": "conflict exhausted",
+              "body": [
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "api",
+                  "arrow": "self",
+                  "label": "log(\\\"optimistic lock conflict after 3 retries\\\")"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "ganttTasks": []
+    },
+    {
+      "id": "constant-retry",
+      "kind": "sequence_diagram",
+      "include": [],
+      "exclude": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "api",
+          "label": "API",
+          "ref": "API"
+        },
+        {
+          "id": "r",
+          "label": "Remote",
+          "ref": "Remote"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "api",
+            "label": "API",
+            "ref": "API"
+          },
+          {
+            "id": "r",
+            "label": "Remote",
+            "ref": "Remote"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "critical",
+            "label": "軽量 API",
+            "timeout": {
+              "duration": "2s"
+            },
+            "retry": {
+              "attempts": 10,
+              "backoff": "constant",
+              "initial": "50ms",
+              "jitter": true
+            },
+            "body": [
+              {
+                "kind": "message",
+                "from": "api",
+                "to": "r",
+                "arrow": "sync",
+                "label": "ping"
+              },
+              {
+                "kind": "message",
+                "from": "r",
+                "to": "api",
+                "arrow": "reply",
+                "label": "pong"
+              }
+            ],
+            "catchBlock": {
+              "label": "unreachable",
+              "body": [
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "api",
+                  "arrow": "self",
+                  "label": "circuit_breaker.open()"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "ganttTasks": []
+    },
+    {
+      "id": "nested-retry",
+      "kind": "sequence_diagram",
+      "include": [],
+      "exclude": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "api",
+          "label": "API",
+          "ref": "API"
+        },
+        {
+          "id": "db",
+          "label": "DB",
+          "ref": "DB"
+        },
+        {
+          "id": "r",
+          "label": "Remote",
+          "ref": "Remote"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "api",
+            "label": "API",
+            "ref": "API"
+          },
+          {
+            "id": "db",
+            "label": "DB",
+            "ref": "DB"
+          },
+          {
+            "id": "r",
+            "label": "Remote",
+            "ref": "Remote"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "critical",
+            "label": "外側: 全体の流れ",
+            "timeout": {
+              "duration": "10s"
+            },
+            "retry": {
+              "attempts": 2
+            },
+            "body": [
+              {
+                "kind": "critical",
+                "label": "DB トランザクション (retry 禁止)",
+                "timeout": {
+                  "duration": "1s"
+                },
+                "on": [
+                  "db"
+                ],
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "db",
+                    "arrow": "sync",
+                    "label": "BEGIN"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "db",
+                    "arrow": "sync",
+                    "label": "UPDATE"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "db",
+                    "arrow": "sync",
+                    "label": "COMMIT"
+                  }
+                ]
+              },
+              {
+                "kind": "critical",
+                "label": "外部 API (retry OK)",
+                "timeout": {
+                  "duration": "3s"
+                },
+                "retry": {
+                  "attempts": 3,
+                  "backoff": "exponential"
+                },
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "r",
+                    "arrow": "sync",
+                    "label": "POST /notify"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ganttTasks": []
+    }
+  ]
+}

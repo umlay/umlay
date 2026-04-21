@@ -1,0 +1,276 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "migrate": {
+      "models": {
+        "User": {
+          "_id": "175e0dfdc466",
+          "name": "User",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "dc4dc5bd4386",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "b8214cbfaee2",
+              "name": "email",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": true,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "413045c0e4eb",
+              "name": "username",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "deprecated": {
+                "message": "use displayName instead since 0.3"
+              }
+            },
+            {
+              "_id": "f438d06917c0",
+              "name": "displayName",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "6d341518c390",
+              "name": "fullName",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "deprecated": {
+                "message": "split into givenName + familyName",
+                "since": "0.5.0",
+                "removeIn": "1.0.0",
+                "replaceWith": "User.displayName"
+              }
+            },
+            {
+              "_id": "64358f67bf86",
+              "name": "givenName",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "64d8b76cbe04",
+              "name": "familyName",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "ユーザー (移行中の model)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "LegacyUser": {
+          "_id": "db728921611d",
+          "name": "LegacyUser",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "dc4dc5bd4386",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "b8214cbfaee2",
+              "name": "email",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "旧 User モデル、移行完了次第削除",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "deprecated": {
+            "message": "migrated to User",
+            "since": "0.3.0",
+            "removeIn": "1.0.0",
+            "replaceWith": "User"
+          }
+        }
+      },
+      "types": {},
+      "enums": {
+        "OrderStatus": {
+          "_id": "16cb0e4994d9",
+          "name": "OrderStatus",
+          "values": [
+            "DRAFT",
+            "CONFIRMED",
+            "SHIPPED",
+            "CANCELLED",
+            "EXPIRED"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [
+        {
+          "name": "LegacyRepository",
+          "typeParams": [
+            {
+              "name": "T"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "find",
+              "params": [
+                {
+                  "name": "id",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "T"
+              }
+            },
+            {
+              "name": "put",
+              "params": [
+                {
+                  "name": "entity",
+                  "type": {
+                    "ref": "T"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        }
+      ],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "legacy-er",
+      "kind": "er_diagram",
+      "include": [
+        "migrate.LegacyUser"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "migrate-er",
+      "kind": "er_diagram",
+      "include": [
+        "migrate.User"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

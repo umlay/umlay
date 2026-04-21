@@ -1,0 +1,32 @@
+node_modules/
+dist/
+build/
+.turbo/
+.cache/
+*.tsbuildinfo
+.DS_Store
+
+# env
+.env
+.env.local
+.env.*.local
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# editor
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+
+# test
+coverage/
+
+# claude
+.claude/
+
+# OS
+Thumbs.db

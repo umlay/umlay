@@ -1,0 +1,174 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "sprint3": {
+      "models": {
+        "Task": {
+          "_id": "fd2c7eee194b",
+          "name": "Task",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "5d8c124e4836",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "8a12caae9e9c",
+              "name": "name",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "313bd0b482c0",
+              "name": "plannedStart",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "2cdc77ae9be0",
+              "name": "plannedEnd",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "b2990e8eb18f",
+              "name": "progress",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "0.0",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "69f28a2b39a8",
+              "name": "status",
+              "type": "TaskStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "PENDING",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "c967ea2edd6b",
+              "name": "assignee",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Sprint 3 のタスク",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [
+            {
+              "id": "s3-integration",
+              "name": "Integration + Hardening",
+              "plannedStart": "2026-05-25",
+              "plannedEnd": "2026-06-05",
+              "progress": 0,
+              "status": "PENDING",
+              "assignee": "Bob"
+            },
+            {
+              "id": "s3-qa",
+              "name": "QA + Release Prep",
+              "plannedStart": "2026-06-08",
+              "plannedEnd": "2026-06-15",
+              "progress": 0,
+              "status": "PENDING",
+              "assignee": "Carol"
+            },
+            {
+              "id": "s3-release",
+              "name": "Production Release",
+              "plannedStart": "2026-06-16",
+              "plannedEnd": "2026-06-16",
+              "progress": 0,
+              "status": "PENDING",
+              "assignee": "Alice"
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "TaskStatus": {
+          "_id": "74734b273a90",
+          "name": "TaskStatus",
+          "values": [
+            "PENDING",
+            "IN_PROGRESS",
+            "DONE"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": []
+}

@@ -1,0 +1,261 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "shop": {
+      "models": {},
+      "types": {},
+      "enums": {},
+      "reservedBlocks": [
+        {
+          "keyword": "module",
+          "name": "catalog",
+          "raw": "catalog @ intent ( \"商品カタログのバウンディッドコンテキスト\" )"
+        },
+        {
+          "keyword": "module",
+          "name": "checkout",
+          "raw": "checkout @ intent ( \"注文処理のバウンディッドコンテキスト\" )"
+        }
+      ],
+      "cloudPrimitives": [],
+      "protocols": [
+        {
+          "name": "Repository",
+          "typeParams": [
+            {
+              "name": "T"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "get",
+              "params": [
+                {
+                  "name": "id",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "T"
+              }
+            },
+            {
+              "name": "save",
+              "params": [
+                {
+                  "name": "entity",
+                  "type": {
+                    "ref": "T"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            },
+            {
+              "name": "delete",
+              "params": [
+                {
+                  "name": "id",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "bool"
+              }
+            }
+          ]
+        },
+        {
+          "name": "EventPublisher",
+          "typeParams": [
+            {
+              "name": "E"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "publish",
+              "params": [
+                {
+                  "name": "event",
+                  "type": {
+                    "ref": "E"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Auditable",
+          "extends": [],
+          "methods": [
+            {
+              "name": "audit",
+              "params": [
+                {
+                  "name": "action",
+                  "type": {
+                    "ref": "string"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cacheable",
+          "typeParams": [
+            {
+              "name": "T"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "cacheKey",
+              "params": [
+                {
+                  "name": "entity",
+                  "type": {
+                    "ref": "T"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "string"
+              }
+            },
+            {
+              "name": "invalidate",
+              "params": [
+                {
+                  "name": "id",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "UserRepository",
+          "extends": [
+            {
+              "ref": "Repository",
+              "args": [
+                {
+                  "ref": "User"
+                }
+              ]
+            },
+            {
+              "ref": "Auditable"
+            },
+            {
+              "ref": "Cacheable",
+              "args": [
+                {
+                  "ref": "User"
+                }
+              ]
+            }
+          ],
+          "methods": [
+            {
+              "name": "findByEmail",
+              "params": [
+                {
+                  "name": "email",
+                  "type": {
+                    "ref": "string"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "User"
+              }
+            }
+          ]
+        }
+      ],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "shop-class",
+      "kind": "class_diagram",
+      "include": [
+        "shop.*"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "LR",
+        "engine": "elk"
+      },
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "catalog-er",
+      "kind": "er_diagram",
+      "include": [
+        "shop.catalog.*"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "checkout-er",
+      "kind": "er_diagram",
+      "include": [
+        "shop.checkout.*"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "shop-modules",
+      "kind": "package_diagram",
+      "include": [
+        "shop.catalog.*",
+        "shop.checkout.*"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

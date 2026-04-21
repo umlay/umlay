@@ -1,0 +1,60 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "meta": {
+    "imports": [
+      {
+        "kind": "path",
+        "value": "./tasks/*.uml"
+      }
+    ]
+  },
+  "namespaces": {
+    "project_plan": {
+      "models": {},
+      "types": {},
+      "enums": {},
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "global-gantt",
+      "kind": "gantt_chart",
+      "include": [
+        "sprint1.Task",
+        "sprint2.Task",
+        "sprint3.Task"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "LR",
+        "engine": "elk",
+        "spacing": 20
+      },
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "global-wbs",
+      "kind": "wbs_diagram",
+      "include": [
+        "sprint1.Task",
+        "sprint2.Task",
+        "sprint3.Task"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

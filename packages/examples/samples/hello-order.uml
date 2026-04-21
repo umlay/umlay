@@ -1,0 +1,21 @@
+// hello-order.uml — 最小サンプル
+//
+// Umlay の最小単位: namespace 1 + model 2 + view 2。
+// 可視性を明示し、@ref で外部参照を張る。
+
+namespace shop
+
+model Order @aggregate_root @intent("最小の顧客発注") {
+  +id    UUID!    @id
+  +total decimal!
+}
+
+model OrderLine @entity @intent("注文明細 (複合主キー)") {
+  @@id(orderId, lineNo)
+  +orderId UUID! @ref(Order.id, onDelete: CASCADE)
+  +lineNo  int!
+  +qty     int!
+}
+
+view cls @class_diagram @intent("クラス構造") { include: shop.* }
+view er  @er_diagram    @intent("ER 図")      { include: shop.* }

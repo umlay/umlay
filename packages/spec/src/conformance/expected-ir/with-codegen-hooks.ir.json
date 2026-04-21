@@ -1,0 +1,472 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "hooked": {
+      "models": {
+        "User": {
+          "_id": "690ca86ca64d",
+          "name": "User",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "57825ffc322c",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "ac2b3f21c2a3",
+              "name": "email",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": true,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "aa74c6fbfccb",
+              "name": "internalCode",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [
+                {
+                  "target": "prisma",
+                  "action": "skip"
+                },
+                {
+                  "target": "openapi",
+                  "action": "skip"
+                }
+              ],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "b283d2a5bca6",
+              "name": "displayName",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [
+                {
+                  "target": "sql",
+                  "action": {
+                    "kind": "rename",
+                    "value": "display_name_v2"
+                  }
+                }
+              ],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "eccab44bab92",
+              "name": "metadata",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [
+                {
+                  "target": "ts",
+                  "action": {
+                    "kind": "type",
+                    "value": "Record<string, unknown>"
+                  }
+                },
+                {
+                  "target": "prisma",
+                  "action": {
+                    "kind": "type",
+                    "value": "Json"
+                  }
+                }
+              ],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "d9c0ad18cf6a",
+              "name": "avatarUrl",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [
+                {
+                  "target": "openapi",
+                  "action": {
+                    "kind": "rename",
+                    "value": "avatar_url"
+                  }
+                }
+              ],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "acccecdbd669",
+              "name": "role",
+              "type": "UserRole",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "MEMBER",
+              "codegen": [
+                {
+                  "target": "graphql",
+                  "action": {
+                    "kind": "object",
+                    "fields": {
+                      "enum": "UserRole"
+                    }
+                  }
+                },
+                {
+                  "target": "prisma",
+                  "action": {
+                    "kind": "object",
+                    "fields": {
+                      "mapTo": "role_enum"
+                    }
+                  }
+                }
+              ],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "988f359c555f",
+              "name": "legacyField",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "deprecated": {
+                "message": "use metadata instead"
+              }
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "User、target 別にカスタマイズ",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [
+            {
+              "target": "prisma",
+              "action": {
+                "kind": "object",
+                "fields": {
+                  "tableName": "users_v2"
+                }
+              }
+            },
+            {
+              "target": "sql",
+              "action": {
+                "kind": "object",
+                "fields": {
+                  "tablespace": "users_ts",
+                  "schema": "app"
+                }
+              }
+            },
+            {
+              "target": "ts",
+              "action": {
+                "kind": "object",
+                "fields": {
+                  "extend": "DomainEntity<User>"
+                }
+              }
+            },
+            {
+              "target": "prisma",
+              "action": "skip"
+            },
+            {
+              "target": "sql",
+              "action": "skip"
+            },
+            {
+              "target": "ts",
+              "action": "skip"
+            }
+          ],
+          "implements": []
+        },
+        "UserStats": {
+          "_id": "b8939008e268",
+          "name": "UserStats",
+          "stereotype": "service",
+          "identity": "userId",
+          "attributes": [
+            {
+              "_id": "336c0cbe8e70",
+              "name": "userId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "eab9e5acc924",
+              "name": "orderCount",
+              "type": "int",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "2c8aebd61fd9",
+              "name": "totalSpent",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "集計用ビュー model、DB 出力不要",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [
+            {
+              "target": "prisma",
+              "action": "skip"
+            },
+            {
+              "target": "sql",
+              "action": "skip"
+            },
+            {
+              "target": "openapi",
+              "action": "skip"
+            }
+          ],
+          "implements": []
+        },
+        "AuditLog": {
+          "_id": "ac914af01fe0",
+          "name": "AuditLog",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "57825ffc322c",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "46c17a3fd535",
+              "name": "entityType",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "d3d794d367f7",
+              "name": "entityId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "4a2e416e1d58",
+              "name": "action",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "807966dd716f",
+              "name": "at",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "監査ログ、独自 template で挿入時刻を SQL TRIGGER 化",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [
+            {
+              "target": "sql",
+              "action": {
+                "kind": "object",
+                "fields": {
+                  "template": "audit_log_with_trigger.sql.tmpl"
+                }
+              }
+            },
+            {
+              "target": "ts",
+              "action": {
+                "kind": "object",
+                "fields": {
+                  "extend": "AsyncIterable<AuditEntry>"
+                }
+              }
+            }
+          ],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "UserRole": {
+          "_id": "47d5381341c8",
+          "name": "UserRole",
+          "values": [
+            "OWNER",
+            "ADMIN",
+            "MEMBER",
+            "GUEST"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "hooked-er",
+      "kind": "er_diagram",
+      "include": [
+        "hooked.User",
+        "hooked.AuditLog"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "hooked-class",
+      "kind": "class_diagram",
+      "include": [
+        "hooked.*"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

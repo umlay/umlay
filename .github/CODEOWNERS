@@ -1,0 +1,9 @@
+# Default owner for everything
+*                         @kigi
+
+# Spec and examples
+/packages/spec/           @kigi
+/packages/examples/       @kigi
+
+# Developer / AI skills
+/skills/                  @kigi

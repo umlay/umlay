@@ -1,0 +1,332 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "cpm": {
+      "models": {
+        "Task": {
+          "_id": "7626237e616f",
+          "name": "Task",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "b1a957f0bb37",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "3d18029b2174",
+              "name": "name",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "d109a7d17969",
+              "name": "plannedStart",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "050b8940cea5",
+              "name": "plannedEnd",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "plannedEnd >= plannedStart"
+                ],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            },
+            {
+              "_id": "aac39ae99fb2",
+              "name": "progress",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "0.0",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "601c42419da6",
+              "name": "status",
+              "type": "TaskStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "PENDING",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "CPM デモ用タスク",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [
+            {
+              "id": "t-start",
+              "name": "Start (milestone)",
+              "plannedStart": "2026-05-01",
+              "plannedEnd": "2026-05-01",
+              "progress": 1,
+              "status": "DONE"
+            },
+            {
+              "id": "t-a",
+              "name": "Branch A (5 days)",
+              "plannedStart": "2026-05-02",
+              "plannedEnd": "2026-05-06",
+              "progress": 0,
+              "status": "PENDING"
+            },
+            {
+              "id": "t-b",
+              "name": "Branch B (7 days)",
+              "plannedStart": "2026-05-02",
+              "plannedEnd": "2026-05-08",
+              "progress": 0,
+              "status": "PENDING"
+            },
+            {
+              "id": "t-merge",
+              "name": "Merge (milestone)",
+              "plannedStart": "2026-05-09",
+              "plannedEnd": "2026-05-09",
+              "progress": 0,
+              "status": "PENDING"
+            },
+            {
+              "id": "t-c",
+              "name": "Branch C (4 days)",
+              "plannedStart": "2026-05-10",
+              "plannedEnd": "2026-05-13",
+              "progress": 0,
+              "status": "PENDING"
+            },
+            {
+              "id": "t-d",
+              "name": "Branch D (4 days)",
+              "plannedStart": "2026-05-10",
+              "plannedEnd": "2026-05-13",
+              "progress": 0,
+              "status": "PENDING"
+            },
+            {
+              "id": "t-end",
+              "name": "End (milestone)",
+              "plannedStart": "2026-05-14",
+              "plannedEnd": "2026-05-14",
+              "progress": 0,
+              "status": "PENDING"
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "TaskDependency": {
+          "_id": "2b2fb2a47cd5",
+          "name": "TaskDependency",
+          "stereotype": "entity",
+          "identity": [
+            "fromId",
+            "toId"
+          ],
+          "attributes": [
+            {
+              "_id": "4a4cc99fecbd",
+              "name": "fromId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Task.id",
+                "onDelete": "CASCADE"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "07aa81f7b11f",
+              "name": "toId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Task.id",
+                "onDelete": "CASCADE"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "sampleSources": [
+            {
+              "fromId": "t-start",
+              "toId": "t-a"
+            },
+            {
+              "fromId": "t-start",
+              "toId": "t-b"
+            },
+            {
+              "fromId": "t-a",
+              "toId": "t-merge"
+            },
+            {
+              "fromId": "t-b",
+              "toId": "t-merge"
+            },
+            {
+              "fromId": "t-merge",
+              "toId": "t-c"
+            },
+            {
+              "fromId": "t-merge",
+              "toId": "t-d"
+            },
+            {
+              "fromId": "t-c",
+              "toId": "t-end"
+            },
+            {
+              "fromId": "t-d",
+              "toId": "t-end"
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "TaskStatus": {
+          "_id": "2bc12f0dc1ba",
+          "name": "TaskStatus",
+          "values": [
+            "PENDING",
+            "IN_PROGRESS",
+            "DONE"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "gantt-highlight",
+      "kind": "gantt_chart",
+      "include": [
+        "cpm.Task",
+        "cpm.TaskDependency"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "LR",
+        "engine": "elk"
+      },
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": [],
+      "criticalPath": "highlight"
+    },
+    {
+      "id": "gantt-compute",
+      "kind": "gantt_chart",
+      "include": [
+        "cpm.Task",
+        "cpm.TaskDependency"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": [],
+      "criticalPath": "compute"
+    },
+    {
+      "id": "gantt-ignore",
+      "kind": "gantt_chart",
+      "include": [
+        "cpm.Task",
+        "cpm.TaskDependency"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": [],
+      "criticalPath": "ignore"
+    }
+  ]
+}

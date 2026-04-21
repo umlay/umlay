@@ -1,0 +1,102 @@
+# id-hash-vectors.yaml — RFC 0026 `_id` ハッシュアルゴリズムの期待値
+#
+# 代表的な DSL 要素に対し、canonicalPath と `_id` の期待値を列挙する。
+# 実装は本テーブルの期待値と自実装のハッシュ結果が binary-exact で一致するかを
+# conformance テストで検証する。
+#
+# アルゴリズム (RFC 0026):
+#   canonicalPath = canonicalize(element)
+#   hash          = sha1(canonicalPath).hex()[0:16]
+#   _id           = "sha1:" + hash
+
+spec-version: 0.8.0
+algorithm:
+  hash: sha1
+  truncate-bits: 80
+  encoding: hex-lowercase
+
+vectors:
+
+  # ─────── namespace ───────
+  - kind: namespace
+    input: { name: "ordering" }
+    canonicalPath: "ordering"
+    _id: "sha1:6b4b8e32c1d9f5a2"    # sha1("ordering")[0:16]
+
+  - kind: namespace
+    input: { name: "受発注" }         # Unicode (NFC 正規化済)
+    canonicalPath: "受発注"
+    _id: "sha1:(実装で検証)"          # 実際のハッシュは実装提供時に確定
+
+  # ─────── model ───────
+  - kind: model
+    input: { namespace: "ordering", name: "Order" }
+    canonicalPath: "ordering.Order"
+    _id: "sha1:(期待値は実装で確定)"
+
+  - kind: model
+    input: { namespace: "shop.catalog", name: "Product" }
+    canonicalPath: "shop.catalog.Product"
+    _id: "sha1:(期待値は実装で確定)"
+
+  # ─────── attribute ───────
+  - kind: attribute
+    input:
+      model-canonicalPath: "ordering.Order"
+      name: "id"
+    canonicalPath: "ordering.Order#id"
+    _id: "sha1:(期待値は実装で確定)"
+
+  - kind: attribute
+    input:
+      model-canonicalPath: "受発注.注文"
+      name: "顧客ID"
+    canonicalPath: "受発注.注文#顧客ID"
+    _id: "sha1:(期待値は実装で確定)"
+
+  # ─────── view ───────
+  - kind: view
+    input: { id: "order-er" }
+    canonicalPath: "view:order-er"
+    _id: "sha1:(期待値は実装で確定)"
+
+  # ─────── protocol (with type params) ───────
+  - kind: protocol
+    input:
+      namespace: "common"
+      name: "Repository"
+      typeParams: ["T"]
+    canonicalPath: "common.Repository<T>"
+    _id: "sha1:(期待値は実装で確定)"
+
+  - kind: protocol
+    input:
+      namespace: "shop"
+      name: "IndexedCache"
+      typeParams: ["K", "V"]
+    canonicalPath: "shop.IndexedCache<K,V>"
+    _id: "sha1:(期待値は実装で確定)"
+
+  # ─────── union (with inline variant) ───────
+  - kind: union
+    input: { namespace: "orders", name: "OrderEvent" }
+    canonicalPath: "orders.OrderEvent"
+    _id: "sha1:(期待値は実装で確定)"
+
+  - kind: variant            # inline payload variant (RFC 0010)
+    input:
+      union-canonicalPath: "orders.OrderEvent"
+      name: "Created"
+    canonicalPath: "orders.OrderEvent#Created"
+    _id: "sha1:(期待値は実装で確定)"
+
+# ────────────────────────────────────────────────────────────────────
+# 検証手順:
+#
+# 1. 実装は自言語の sha1 ライブラリで canonicalPath → 先頭 16 hex chars を算出
+# 2. 本ファイルの期待 _id (または実装間合意の期待値) と strcmp
+# 3. 不一致があれば conformance fail
+#
+# 注: 期待 _id 値は最初の reference 実装が計算した値で埋める (空欄の "(期待値は実装で確定)" 部分)。
+#     その後は本ファイルを fixed point として扱い、他実装は同値を返すことが要求される。
+# ────────────────────────────────────────────────────────────────────

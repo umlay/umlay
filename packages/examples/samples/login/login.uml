@@ -1,0 +1,373 @@
+// login.uml — Google OAuth ログインフロー on AWS serverless
+//
+// スタック:
+//   - エッジ: CloudFront (CDN) + S3 (Next.js 静的エクスポートのホスト)
+//   - API:  API Gateway (HTTP API) + Lambda (authStart / authCallback)
+//   - データ: DynamoDB (User / OAuthAccount / Session 単一テーブル設計)
+//   - 認証: Google OAuth 2.0 / OIDC (scope=openid email profile)
+//
+// 本ファイルは @@mode(strict) で書かれている。全属性に visibility を明示。
+// 適用した skill: skills/ja/write-uml.md (Step 1〜9)
+
+@@mode(strict)
+
+namespace login
+
+// ============================================================================
+// Value objects
+// ============================================================================
+
+type OAuthToken @value_object
+  @intent("OAuth 2.0 認可結果のトークンセット。accessToken/idToken は短命、refreshToken は保存検討対象") {
+  +accessToken  string!
+  +idToken      string?
+  -refreshToken string??
+  +expiresAt    Timestamp!
+}
+
+type JwtSessionToken @value_object
+  @intent("自社発行の JWT セッショントークン。Cookie (HttpOnly + Secure + SameSite=Lax) で渡す") {
+  -token     string!
+  +issuedAt  Timestamp!
+  +expiresAt Timestamp!
+}
+
+// ============================================================================
+// Enums
+// ============================================================================
+
+enum AuthProvider @intent("対応する外部 ID プロバイダ。現時点では Google のみ") {
+  GOOGLE
+}
+
+enum SessionStatus @intent("セッションのライフサイクル状態") {
+  ACTIVE, EXPIRED, REVOKED
+}
+
+// ============================================================================
+// Domain entities — DynamoDB に永続化される
+// ============================================================================
+
+model User @aggregate_root
+  @intent("認証されたエンドユーザー。emails は一意 (Google の verified email 前提)") {
+  +id           UUID!       @id
+  +email        string!     @unique
+  +displayName  string!
+  +avatarUrl    string??
+  +createdAt    Timestamp!  @default(now)
+  +lastLoginAt  Timestamp?
+
+  -> composition 0..* accounts: OAuthAccount
+  -> association 0..* sessions: Session
+}
+
+model OAuthAccount @entity
+  @intent("User と外部 OAuth プロバイダの紐付け。同一 provider に対して多重ログイン不可") {
+  @@id(userId, provider)
+  @@unique(provider, providerId)
+
+  +userId         UUID!         @ref(User.id, onDelete: CASCADE, inverse: "accounts")
+  +provider       AuthProvider!
+  +providerId     string!
+  +providerEmail  string!
+  +linkedAt       Timestamp!    @default(now)
+}
+
+model Session @aggregate_root
+  @intent("ログイン成功後に発行されるアクティブセッション。JWT は private 属性") {
+  +id           UUID!            @id
+  +userId       UUID!            @ref(User.id, onDelete: CASCADE, inverse: "sessions")
+  +status       SessionStatus!   @default(ACTIVE)
+  -sessionToken JwtSessionToken! @inv("sessionToken.expiresAt > sessionToken.issuedAt")
+  +userAgent    string?
+  +ipAddress    string?
+  +createdAt    Timestamp!       @default(now)
+  +revokedAt    Timestamp?
+
+  @@index(userId)
+
+  fn revoke() -> void
+    @pre("status == ACTIVE")
+    @post("status == REVOKED")
+    @intent("セッションを手動失効させる")
+
+  fn isExpired() -> bool
+    @intent("expiresAt < now を返す純粋関数")
+}
+
+// ============================================================================
+// Architecture components — AWS サービス / 外部 IdP / クライアント
+// 将来的には `function` / `gateway` / `cdn` / `store` 予約語の専用構文で
+// 置き換え予定だが、Phase 1 では @service stereotype で表現する。
+// ============================================================================
+
+model Browser @service
+  @intent("エンドユーザーのブラウザ / SPA ランタイム") {
+  +userAgent string! @id
+}
+
+model CloudFront @service
+  @intent("エッジ CDN。/ は S3 オリジン、/api/* は API Gateway オリジンにルーティング") {
+  +distributionId string! @id
+  +domain         string! @unique
+}
+
+model S3Bucket @service
+  @intent("Next.js 静的エクスポート (out/) のホスト。OAC 経由で CloudFront からのみアクセス可") {
+  +bucketName string! @id
+  +region     string!
+}
+
+model ApiGateway @service
+  @intent("HTTP API。/api/auth/google と /api/auth/google/callback の 2 ルートを持つ") {
+  +apiId string! @id
+  +stage string! @default("prod")
+}
+
+model LambdaAuthStart @service
+  @intent("GET /api/auth/google を処理。state / nonce を生成し Google 認可エンドポイントへ 302") {
+  +functionName string! @id
+  +runtime      string! @default("nodejs22.x")
+  +handler      string! @default("authStart.handler")
+}
+
+model LambdaAuthCallback @service
+  @intent("GET /api/auth/google/callback を処理。code 交換 → userinfo → User/Session を upsert") {
+  +functionName string! @id
+  +runtime      string! @default("nodejs22.x")
+  +handler      string! @default("authCallback.handler")
+}
+
+model DynamoDBTable @service
+  @intent("単一テーブル設計。PK=`USER#{userId}` SK=`PROFILE` / `OAUTH#{provider}` / `SESSION#{sessionId}`") {
+  +tableName    string! @id
+  +partitionKey string! @default("PK")
+  +sortKey      string? @default("SK")
+}
+
+model GoogleOAuth @service
+  @intent("外部 IdP (Google)。Authorization Code + PKCE フローを用いる") {
+  +clientId    string! @id
+  +scope       string! @default("openid email profile")
+  +authUrl     string! @default("https://accounts.google.com/o/oauth2/v2/auth")
+  +tokenUrl    string! @default("https://oauth2.googleapis.com/token")
+  +userinfoUrl string! @default("https://openidconnect.googleapis.com/v1/userinfo")
+}
+
+// ============================================================================
+// UI Screens (画面モデル)
+// 将来の `page` / `component` / `layout` 予約語で置き換え予定。
+// Phase 1 では @service stereotype で表現し、@@doc に構成要素を記載する。
+// ============================================================================
+
+model LoginPage @service
+  @intent("ログイン画面 (/)。認証前のユーザーに 'Sign in with Google' を提示する") {
+  +path         string! @id
+  +title        string! @default("Sign in — Umlay")
+  +requiresAuth bool!   @default(false)
+  +ssr          bool!   @default(false)
+
+  -> association 1    servedBy: S3Bucket
+  -> association 0..* actions:  LoginAction
+
+  @@doc("""
+    構成コンポーネント:
+      <AppHeader>        ロゴ + テーマ切替
+      <HeroSection>      プロダクト紹介コピー
+      <SignInWithGoogleButton>
+        クリック → GET /api/auth/google
+      <LegalFootnote>    Privacy Policy / Terms へのリンク
+  """)
+}
+
+model GoogleConsentScreen @service
+  @intent("Google 側の OAuth 2.0 同意画面 (外部)。scope=openid email profile を確認") {
+  +url     string! @id
+  +external bool!  @default(true)
+
+  -> association 1 providedBy: GoogleOAuth
+
+  @@doc("""
+    Google 所有ドメイン (accounts.google.com) で表示される画面。
+    ユーザーは Allow / Deny を選択可能。
+  """)
+}
+
+model DashboardPage @service
+  @intent("ログイン後のダッシュボード (/dashboard)。認証必須") {
+  +path         string! @id
+  +title        string! @default("Dashboard — Umlay")
+  +requiresAuth bool!   @default(true)
+  +ssr          bool!   @default(false)
+
+  -> association 1 servedBy: S3Bucket
+  -> association 1 readsSession: Session
+
+  @@doc("""
+    構成コンポーネント:
+      <AppHeader>        ロゴ + <UserMenu> (avatar + displayName + Logout)
+      <WelcomeBanner>    "Welcome back, {displayName}"
+      <ProjectList>      プロジェクト一覧
+      <ActivityFeed>     最近のアクティビティ
+
+    未ログイン時は 302 → / (LoginPage)。
+  """)
+}
+
+model AuthErrorPage @service
+  @intent("認可失敗時の画面 (/auth/error)。state mismatch / user denied consent / token 交換失敗など") {
+  +path         string! @id
+  +title        string! @default("Sign-in failed")
+  +requiresAuth bool!   @default(false)
+
+  -> association 1 servedBy: S3Bucket
+
+  @@doc("""
+    構成コンポーネント:
+      <ErrorBanner reason={query.reason}>
+      <RetryButton> → / (LoginPage) へ戻る
+      <SupportLink>
+  """)
+}
+
+// ============================================================================
+// UI Actions — ユーザー操作。将来 `action` 予約語で置き換え予定。
+// ============================================================================
+
+model LoginAction @service
+  @intent("LoginPage 上のユーザー操作") {
+  +id          string! @id
+  +label       string!
+  +httpMethod  string!
+  +endpoint    string!
+
+  @@doc("""
+    現時点のアクション:
+      id="signin-google", label="Sign in with Google", GET /api/auth/google
+  """)
+}
+
+// ============================================================================
+// Views
+// ============================================================================
+
+view login-er @er_diagram
+  @intent("DynamoDB に永続化するデータモデルの ER") {
+  include: login.User, login.OAuthAccount, login.Session
+}
+
+view login-class @class_diagram
+  @intent("ドメイン層のクラス構造 (value object / enum 含む)") {
+  include: login.User, login.OAuthAccount, login.Session,
+           login.OAuthToken, login.JwtSessionToken,
+           login.AuthProvider, login.SessionStatus
+}
+
+view login-arch @component_diagram
+  @intent("AWS 構成図。Browser → CloudFront → (S3 | API Gateway → Lambda) → DynamoDB / Google") {
+  include: login.Browser, login.CloudFront, login.S3Bucket,
+           login.ApiGateway, login.LambdaAuthStart, login.LambdaAuthCallback,
+           login.DynamoDBTable, login.GoogleOAuth
+}
+
+view login-ui @component_diagram
+  @intent("画面と配信経路。S3 から静的配信される 3 画面 + 外部 Google 同意画面") {
+  include: login.Browser, login.LoginPage, login.DashboardPage, login.AuthErrorPage,
+           login.GoogleConsentScreen, login.S3Bucket, login.CloudFront,
+           login.GoogleOAuth, login.LoginAction
+}
+
+view login-screens @activity_diagram
+  @intent("画面遷移フロー: LoginPage → GoogleConsentScreen → DashboardPage (成功時) / AuthErrorPage (失敗時)") {
+  include: login.LoginPage, login.GoogleConsentScreen,
+           login.DashboardPage, login.AuthErrorPage, login.LoginAction
+}
+
+view login-flow @sequence_diagram
+  @intent("Google OAuth ログイン開始から /dashboard 遷移までの完全フロー (画面遷移 + API 呼び出し)") {
+  participants:
+    Browser             as browser,
+    LoginPage           as login_pg,
+    GoogleConsentScreen as consent,
+    DashboardPage       as dash_pg,
+    AuthErrorPage       as error_pg,
+    CloudFront          as cf,
+    S3Bucket            as s3,
+    ApiGateway          as api,
+    LambdaAuthStart     as fn_start,
+    LambdaAuthCallback  as fn_cb,
+    GoogleOAuth         as google,
+    DynamoDBTable       as ddb
+
+  seq {
+    // 1. 初期ロード → LoginPage 表示
+    browser  ->> cf      : "GET /"
+    cf       ->> s3      : "GET /index.html"
+    s3       -.> cf      : "200 HTML + JS bundle"
+    cf       -.> browser : "200 HTML + JS bundle"
+    browser  ->> login_pg: "render LoginPage (path=\"/\")"
+
+    // 2. ユーザーが <SignInWithGoogleButton> をクリック
+    login_pg ->> browser : "dispatch LoginAction(id=\"signin-google\")"
+    browser  ->> cf      : "GET /api/auth/google"
+    cf       ->> api     : "/api/auth/google"
+    api      ->> fn_start: "invoke authStart"
+    fn_start -.> browser : "302 Location: accounts.google.com/o/oauth2/v2/auth?... (state+nonce+code_challenge)"
+
+    // 3. Google 同意画面 (外部) → Allow / Deny / Timeout で分岐 (RFC 0003)
+    browser  ->> google  : "GET /o/oauth2/v2/auth"
+    google   ->> consent : "render GoogleConsentScreen"
+
+    alt "User が Allow" {
+      consent  -.> browser : "302 Location: /api/auth/google/callback?code=...&state=..."
+
+      // 4. コールバック → トークン交換 → userinfo
+      browser  ->> cf      : "GET /api/auth/google/callback?code=..."
+      cf       ->> api     : "/api/auth/google/callback"
+      api      ->> fn_cb   : "invoke authCallback"
+      fn_cb    ->> google  : "POST /token (code + code_verifier)"
+      google   -.> fn_cb   : "{ access_token, id_token, expires_in }"
+      fn_cb    ->> google  : "GET /userinfo (Authorization: Bearer access_token)"
+      google   -.> fn_cb   : "{ sub, email, name, picture }"
+
+      // 5. User upsert / OAuthAccount 紐付け
+      fn_cb    ->> ddb     : "GetItem USER#<email-hash> / PROFILE"
+      ddb      -.> fn_cb   : "User | null"
+      alt "未登録ユーザー" {
+        fn_cb ->> ddb : "PutItem User (PROFILE)"
+        fn_cb ->> ddb : "PutItem OAuthAccount (OAUTH#GOOGLE)"
+      }
+
+      // 6. Session 発行 + Cookie
+      fn_cb    ->> ddb     : "PutItem Session (SESSION#<sessionId>, status=ACTIVE)"
+      ddb      -.> fn_cb   : "ok"
+      fn_cb    -.> browser : "302 Location: /dashboard  Set-Cookie: session=<JWT>; Secure; HttpOnly; SameSite=Lax"
+
+      // 7. DashboardPage 表示
+      browser  ->> cf      : "GET /dashboard (Cookie: session=<JWT>)"
+      cf       ->> s3      : "GET /dashboard/index.html"
+      s3       -.> browser : "200 HTML (認証済 UI)"
+      browser  ->> dash_pg : "render DashboardPage (path=\"/dashboard\", session=active)"
+    } else "User が Deny" {
+      consent  -.> browser : "302 Location: /auth/error?reason=access_denied"
+      browser  ->> cf      : "GET /auth/error"
+      cf       ->> s3      : "GET /auth/error.html"
+      s3       -.> browser : "200 HTML"
+      browser  ->> error_pg: "render AuthErrorPage"
+    } else "タイムアウト / 閉じる" {
+      consent  -.> browser : "(画面閉じる / セッション失効)"
+    } else {
+      // default 分岐: 上記以外の想定外エラー
+      consent  -.> browser : "302 Location: /auth/error?reason=unknown"
+      browser  ->> cf      : "GET /auth/error"
+      cf       ->> s3      : "GET /auth/error.html"
+      s3       -.> browser : "200 HTML"
+      browser  ->> error_pg: "render AuthErrorPage"
+    }
+  }
+}
+
+view session-lifecycle @state_machine
+  @intent("Session.status (ACTIVE / EXPIRED / REVOKED) のライフサイクル") {
+  include: login.Session, login.SessionStatus
+}

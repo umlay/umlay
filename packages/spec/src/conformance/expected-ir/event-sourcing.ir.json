@@ -1,0 +1,316 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "orders": {
+      "models": {
+        "Order": {
+          "_id": "2e6fca7b9211",
+          "name": "Order",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "f7f7740fb72a",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "c49ddec513d7",
+              "name": "customerId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "5c0fb0db7c5a",
+              "name": "status",
+              "type": "OrderStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "DRAFT",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "213b307c8f79",
+              "name": "total",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "total >= 0"
+                ],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            },
+            {
+              "_id": "3cbd979e4539",
+              "name": "version",
+              "type": "int",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "0",
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "version >= 0"
+                ],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "注文 (Event Sourcing 集約)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "OrderStatus": {
+          "_id": "ebfb8ad83408",
+          "name": "OrderStatus",
+          "values": [
+            "DRAFT",
+            "CONFIRMED",
+            "SHIPPED",
+            "CANCELLED"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [
+        {
+          "name": "OrderEvent",
+          "variants": [
+            {
+              "name": "Created",
+              "fields": [
+                {
+                  "name": "eventId",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                },
+                {
+                  "name": "orderId",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                },
+                {
+                  "name": "occurredAt",
+                  "type": {
+                    "ref": "Timestamp"
+                  }
+                },
+                {
+                  "name": "customerId",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                },
+                {
+                  "name": "total",
+                  "type": {
+                    "ref": "decimal"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Confirmed",
+              "fields": [
+                {
+                  "name": "eventId",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                },
+                {
+                  "name": "orderId",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                },
+                {
+                  "name": "occurredAt",
+                  "type": {
+                    "ref": "Timestamp"
+                  }
+                },
+                {
+                  "name": "confirmedBy",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Shipped",
+              "fields": [
+                {
+                  "name": "eventId",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                },
+                {
+                  "name": "orderId",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                },
+                {
+                  "name": "occurredAt",
+                  "type": {
+                    "ref": "Timestamp"
+                  }
+                },
+                {
+                  "name": "trackingNumber",
+                  "type": {
+                    "ref": "string"
+                  }
+                },
+                {
+                  "name": "carrier",
+                  "type": {
+                    "ref": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Cancelled",
+              "fields": [
+                {
+                  "name": "eventId",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                },
+                {
+                  "name": "orderId",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                },
+                {
+                  "name": "occurredAt",
+                  "type": {
+                    "ref": "Timestamp"
+                  }
+                },
+                {
+                  "name": "reason",
+                  "type": {
+                    "ref": "string"
+                  }
+                },
+                {
+                  "name": "cancelledBy",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "orders-er",
+      "kind": "er_diagram",
+      "include": [
+        "orders.Order",
+        "orders.OrderEvent"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "orders-class",
+      "kind": "class_diagram",
+      "include": [
+        "orders.*"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "order-lifecycle",
+      "kind": "state_machine",
+      "include": [
+        "orders.Order",
+        "orders.OrderStatus"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

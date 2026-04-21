@@ -1,0 +1,44 @@
+name: Feature request
+description: Propose a DSL extension, IR schema change, new sample, or new skill
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Significant DSL or IR changes should go through an RFC — see CONTRIBUTING.md.
+        Use this template for smaller proposals, new samples, or new skills.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - DSL syntax
+        - IR / schema
+        - Sample (@umlay/examples)
+        - Skill (skills/)
+        - Docs
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / motivation
+      description: What can't you do today, or what's awkward?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: |
+        Describe the shape. For DSL additions, show example syntax.
+        For skills, show the intended workflow and usage example.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false

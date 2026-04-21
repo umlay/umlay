@@ -1,0 +1,317 @@
+# DSL Guide — a practical walkthrough
+
+How to write Umlay DSL (`.uml`), organized by category. The canonical grammar is [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md).
+
+## 1. Basic elements
+
+### namespace
+
+Logical package boundary. Declare at the top of the file.
+
+```prisma
+namespace ordering
+```
+
+### type (value object)
+
+A value object composed of multiple primitive fields.
+
+```prisma
+type Money @value_object {
+  amount   decimal @scale(2)
+  currency string  @pattern("^[A-Z]{3}$")
+}
+```
+
+### enum
+
+```prisma
+enum OrderStatus { DRAFT, CONFIRMED, SHIPPED, CANCELLED }
+```
+
+### model (entity / aggregate)
+
+Core domain concept. Stereotypes clarify the role.
+
+```prisma
+model Order @aggregate_root @intent("Customer order aggregate") {
+  id          UUID!      @id
+  customerId  UUID!      @ref(Customer.id)
+  total       Money!     @inv("total >= 0")
+  status      OrderStatus = DRAFT
+  #createdAt  Timestamp! @auto
+
+  -> composition 1..* lines: OrderLine
+}
+```
+
+## 2. Nullability
+
+| Symbol | Meaning |
+| --- | --- |
+| `!` | NOT NULL (required) |
+| `?` | NULL allowed (explicit) |
+| `??` | NULL allowed, default is NULL |
+
+## 3. Key annotations
+
+| Annotation | Purpose |
+| --- | --- |
+| `@id` | Single-column primary key |
+| `@@id(a, b)` | Composite primary key |
+| `@ref(X.y, onDelete?, onUpdate?, inverse?)` | Foreign key |
+| `@unique` | Unique constraint |
+| `@index` | Index |
+| `@default(value)` | Default value |
+| `@codegenName("Foo")` | English name mapping for code generation |
+| `@inv("expr")` | Invariant |
+| `@pre("...")` / `@post("...")` | Pre / post-conditions (on methods) |
+| `@intent("...")` | Intent — hints for AI generation / review |
+| `@aggregate_root` / `@entity` / `@value_object` / `@service` | Stereotypes |
+
+## 4. Visibility prefixes
+
+Apply at the start of a field or method; defaults to `public` if omitted.
+
+| Symbol | Meaning |
+| --- | --- |
+| `+` | public (default) |
+| `-` | private |
+| `#` | protected |
+
+## 5. Relations
+
+```prisma
+model Order {
+  -> composition 1..* lines: OrderLine     // composition (cascade-capable)
+  -> aggregation 0..* tags: Tag            // aggregation (weak ownership)
+  -> association 1    customer: Customer   // plain association
+  -> inheritance AuditableEntity           // inheritance
+}
+```
+
+Multiplicity supports `1`, `0..1`, `1..*`, `0..*`, `n..m`.
+
+## 6. Block directives
+
+### `@@doc`
+
+```prisma
+@@doc("""
+  Order is the fundamental unit for booking revenue.
+  ...
+""")
+```
+
+### `@@attachments`
+
+Attach images as supplementary material (never embedded in the SVG).
+
+```prisma
+@@attachments("wireframe.png", "board-photo.jpg")
+```
+
+### `@@theme`
+
+Specify an external CSS theme.
+
+```prisma
+@@theme("themes/dark.css")
+```
+
+### `@@mode`
+
+Switch validation mode at the file level.
+
+```prisma
+@@mode(strict)   // Strict: unset fields become errors
+@@mode(draft)    // Draft (default): unset fields get defaults
+```
+
+### `@@dependencies` (Gantt / WBS)
+
+Declare multiple predecessor relationships at the model level. Drives Gantt arrows and WBS ordering.
+
+```prisma
+// Short form (FS / lag 0)
+@@dependencies(BackendDev, FrontendDev)
+
+// Full form (explicit kind / lag)
+@@dependencies(
+  { on: UnitTesting, kind: FS, lag: 0 },
+  { on: E2EUAT,      kind: FS, lag: 2 }
+)
+```
+
+- `kind` — `FS` / `SS` / `FF` / `SF` (PMBOK, defaults to `FS`)
+- `lag` — integer days; negative = lead (defaults to `0`)
+
+## 7. Views
+
+Views project one or more models into a diagram. To avoid duplicate model definitions, **views reference models only** — they cannot contain model bodies.
+
+```prisma
+view order-er @er_diagram {
+  include: ordering.*, customer.Customer
+}
+
+view class-overview @class_diagram {
+  include: ordering.*
+  layout: direction(LR), hint("Order @center")
+}
+
+view confirm-flow @sequence_diagram {
+  participants: Customer as cust, Order as order, OrderLine as line
+  seq {
+    cust ->> order : confirm()
+    loop "for each line" { order ->> line : validate() }
+    order -.> cust  : OrderConfirmed
+  }
+}
+```
+
+Supported view kinds (per IR schema): `@er_diagram`, `@class_diagram`, `@sequence_diagram`, `@component_diagram`, `@package_diagram`, `@state_machine`, `@activity_diagram`, `@deployment_diagram`, `@wbs_diagram`, `@gantt_chart`.
+
+## 8. Non-Latin identifiers
+
+The DSL allows identifiers in any Unicode letter class. Use `@codegenName` when code generation needs an English-safe name.
+
+```prisma
+model 注文 @aggregate_root @codegenName("Order") {
+  id UUID! @id
+}
+```
+
+## 9. Draft vs Strict mode
+
+| Mode | Unset fields | Use case |
+| --- | --- | --- |
+| **Draft** (default) | Filled with defaults; `@intent` optional | Sketching, drafting |
+| **Strict** | Missing multiplicity / visibility / `@intent` raise errors | Pre-merge, production promotion |
+
+## 10. Advanced features (spec 0.3.0 → 0.8.0)
+
+Everything above is the Phase 1 core DSL. The following are accepted RFCs layered on top. See [`grammar.md`](../../packages/spec/src/grammar.md) for full BNF, [`ir.schema.json`](../../packages/spec/src/ir.schema.json) for IR shape, and [`packages/spec/src/rfcs/`](../../packages/spec/src/rfcs/) for rationale.
+
+### 10.1 protocol / union / module (RFC 0006, spec 0.3.0)
+
+```
+protocol Printable  @intent("something we can print") {
+  fn print() -> string
+}
+
+union Result<T, E> =
+  | Ok<T>(value: T)
+  | Err<E>(error: E)
+
+module shop.catalog {
+  model Product @entity { ... }
+}
+```
+
+### 10.2 Generics + Variance + Bounded (RFC 0015 / 0019)
+
+```
+protocol Repository<T: Entity>  @intent("CRUD for T") {
+  fn save(entity: T!) -> T!
+  fn findById(id: UUID!) -> T?
+}
+
+protocol Supplier<out T>  @intent("covariant: read side of T") { fn get() -> T! }
+protocol Consumer<in  T>  @intent("contravariant: write side of T") { fn put(x: T!) -> void }
+```
+
+- `T: Entity` adds a bound (any stereotype / protocol / union / model)
+- `<out T>` = covariance, `<in T>` = contravariance (see type-inference.md for the use-site checks)
+
+### 10.3 impl / blanket impl / @@override (RFC 0011 / 0016 / 0020)
+
+```
+impl<T> Repository<T> for SqlRepo<T> where (T: AggregateRoot) {
+  fn save(entity: T!) -> T! { /* codegen target */ }
+  fn findById(id: UUID!) -> T?  { /* codegen target */ }
+}
+
+// blanket: every T with Q automatically gets P
+impl<T> Printable for T where (T: Debug) {
+  fn print() -> string { "<debug>" }
+}
+
+// diamond MRO ambiguity is unresolvable by C3, so make the override explicit
+protocol Named  { fn name() -> string }
+protocol Titled { fn name() -> string }
+model Book implements Named, Titled {
+  @@override(name from: Titled)
+  fn name() -> string { "title" }
+}
+```
+
+### 10.4 critical / timeout / retry / catch / finally (RFC 0017 / 0021 / 0028)
+
+```
+seq {
+  critical "payment flow" timeout(3s) retry({ attempts: 3, backoff: exponential, initial: 100ms, jitter: true }) {
+    api ->> pg : POST /charge
+    pg  -.> api: 200 { txnId }
+  } catch "exhausted" {
+    api ->> m : track("payment.failed")
+  } finally {
+    api ->> m : track("payment.completed")
+  }
+}
+```
+
+- `timeout(N)`: overall limit (ms/s/m/h)
+- `retry(N)` or `retry({ attempts, backoff: exponential|linear|constant, initial, max, jitter })`
+- `catch` / `finally` for failure / completion notifications
+
+### 10.5 CPM (Critical Path Method) on Gantt (RFC 0024)
+
+```
+view schedule @gantt_chart {
+  include: pm.Task, pm.TaskDependency
+  // The renderer auto-computes CPM (forward / backward pass)
+  // and highlights tasks with slack = 0 as the critical path (red).
+}
+```
+
+- Currently FS (Finish-to-Start) + lag = 0 only. PMBOK's SS / FF / SF + lag support is a planned follow-up to RFC 0024.
+- CPM calculation is exposed as `computeCpm` from `@umlay/renderer-er` (with unit tests).
+
+### 10.6 @@codegen hooks (RFC 0025)
+
+```
+model User @aggregate_root {
+  @@codegen(
+    { target: "prisma",    emit: "prisma/schema.prisma" },
+    { target: "typescript", emit: "src/types/User.ts" }
+  )
+  ...
+}
+```
+
+Each target is produced by an external codegen plugin that reads the IR. Official target examples live in [`skills/en/codegen-mapping.md`](../skills/en/codegen-mapping.md).
+
+### 10.7 @deprecated / @experimental (RFC 0023 / 0027)
+
+```
+model LegacyUser @entity
+  @deprecated({ since: "0.6.0", removeIn: "1.0.0", replaceWith: User,
+                message: "use User with the new auth flow" }) { ... }
+
+model StreamProcessor @aggregate_root
+  @experimental({ since: "0.8.0", stabilizeIn: "1.0.0",
+                  trackingIssue: "umlay/umlay#456" }) { ... }
+```
+
+- `@deprecated` surfaces call sites via lint W001
+- `@experimental` surfaces via lint W002 and is a candidate for the migration-guide-1.0.md tables
+
+## 11. References
+
+- [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) — canonical grammar
+- [`packages/spec/src/ir.schema.json`](../../packages/spec/src/ir.schema.json) — IR JSON Schema
+- [`packages/spec/src/lint-rules.md`](../../packages/spec/src/lint-rules.md) — Lint rule catalog
+- [`packages/spec/src/type-inference.md`](../../packages/spec/src/type-inference.md) — variance / bound / diamond MRO rules
+- [`packages/spec/src/rfcs/`](../../packages/spec/src/rfcs/) — accepted RFCs (0001–0030)
+- [`packages/examples/samples/`](../../packages/examples/samples/) — real examples

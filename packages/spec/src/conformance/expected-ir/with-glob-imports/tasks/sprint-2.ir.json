@@ -1,0 +1,174 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "sprint2": {
+      "models": {
+        "Task": {
+          "_id": "01f3a121a276",
+          "name": "Task",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "10d9ad0c933b",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "9552519cf280",
+              "name": "name",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "9075d596aa01",
+              "name": "plannedStart",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "e69a60f697c1",
+              "name": "plannedEnd",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "cb19152e35e1",
+              "name": "progress",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "0.0",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "db419cf80c0b",
+              "name": "status",
+              "type": "TaskStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "PENDING",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "50b1d9df7e85",
+              "name": "assignee",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Sprint 2 のタスク",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [
+            {
+              "id": "s2-backend",
+              "name": "Backend MVP",
+              "plannedStart": "2026-05-04",
+              "plannedEnd": "2026-05-18",
+              "progress": 0.6,
+              "status": "IN_PROGRESS",
+              "assignee": "Bob"
+            },
+            {
+              "id": "s2-frontend",
+              "name": "Frontend MVP",
+              "plannedStart": "2026-05-04",
+              "plannedEnd": "2026-05-18",
+              "progress": 0.4,
+              "status": "IN_PROGRESS",
+              "assignee": "Dave"
+            },
+            {
+              "id": "s2-demo",
+              "name": "Sprint 2 Demo",
+              "plannedStart": "2026-05-22",
+              "plannedEnd": "2026-05-22",
+              "progress": 0,
+              "status": "PENDING",
+              "assignee": "Alice"
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "TaskStatus": {
+          "_id": "de4d6db6ea1f",
+          "name": "TaskStatus",
+          "values": [
+            "PENDING",
+            "IN_PROGRESS",
+            "DONE"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": []
+}

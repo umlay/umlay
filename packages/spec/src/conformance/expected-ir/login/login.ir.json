@@ -1,0 +1,1934 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "login": {
+      "models": {
+        "User": {
+          "_id": "0dc7a7c0b0b7",
+          "name": "User",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "e9289db298af",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "a54aed7cabc6",
+              "name": "email",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": true,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "174983262425",
+              "name": "displayName",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "42923ceda233",
+              "name": "avatarUrl",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "undefined",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "5265d2c61eca",
+              "name": "createdAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "now",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "52f07fad23b2",
+              "name": "lastLoginAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [
+            {
+              "kind": "composition",
+              "target": "OAuthAccount",
+              "multiplicity": "0..*",
+              "role": "accounts"
+            },
+            {
+              "kind": "association",
+              "target": "Session",
+              "multiplicity": "0..*",
+              "role": "sessions"
+            }
+          ],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "認証されたエンドユーザー。emails は一意 (Google の verified email 前提)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "OAuthAccount": {
+          "_id": "36e05106122c",
+          "name": "OAuthAccount",
+          "stereotype": "entity",
+          "identity": [
+            "userId",
+            "provider"
+          ],
+          "attributes": [
+            {
+              "_id": "11121e5287b1",
+              "name": "userId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "User.id",
+                "onDelete": "CASCADE",
+                "inverse": "accounts"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "33138634c7de",
+              "name": "provider",
+              "type": "AuthProvider",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "f5d0f2ef12e0",
+              "name": "providerId",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "a561109c5bba",
+              "name": "providerEmail",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "df5c980366d7",
+              "name": "linkedAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "now",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "User と外部 OAuth プロバイダの紐付け。同一 provider に対して多重ログイン不可",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "Session": {
+          "_id": "cb1707802f79",
+          "name": "Session",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "e9289db298af",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "11121e5287b1",
+              "name": "userId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "User.id",
+                "onDelete": "CASCADE",
+                "inverse": "sessions"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "b4bf85a8ab07",
+              "name": "status",
+              "type": "SessionStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "ACTIVE",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "4d1cad808d13",
+              "name": "sessionToken",
+              "type": "JwtSessionToken",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "sessionToken.expiresAt > sessionToken.issuedAt"
+                ],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            },
+            {
+              "_id": "eea2701f0da3",
+              "name": "userAgent",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "420390c4e0e7",
+              "name": "ipAddress",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "5265d2c61eca",
+              "name": "createdAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "now",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "6081afbea7b6",
+              "name": "revokedAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "ログイン成功後に発行されるアクティブセッション。JWT は private 属性",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "Browser": {
+          "_id": "62a65985ca4f",
+          "name": "Browser",
+          "stereotype": "service",
+          "identity": "userAgent",
+          "attributes": [
+            {
+              "_id": "eea2701f0da3",
+              "name": "userAgent",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "エンドユーザーのブラウザ / SPA ランタイム",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "CloudFront": {
+          "_id": "4f92a2251764",
+          "name": "CloudFront",
+          "stereotype": "service",
+          "identity": "distributionId",
+          "attributes": [
+            {
+              "_id": "5a1e4ea0effd",
+              "name": "distributionId",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "5909bc1938ec",
+              "name": "domain",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": true,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "エッジ CDN。/ は S3 オリジン、/api/* は API Gateway オリジンにルーティング",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "S3Bucket": {
+          "_id": "07ec487806df",
+          "name": "S3Bucket",
+          "stereotype": "service",
+          "identity": "bucketName",
+          "attributes": [
+            {
+              "_id": "d7b2de9feafb",
+              "name": "bucketName",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "e53a553ad9fd",
+              "name": "region",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Next.js 静的エクスポート (out/) のホスト。OAC 経由で CloudFront からのみアクセス可",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "ApiGateway": {
+          "_id": "6f0b59a5c179",
+          "name": "ApiGateway",
+          "stereotype": "service",
+          "identity": "apiId",
+          "attributes": [
+            {
+              "_id": "54dd1e627aa5",
+              "name": "apiId",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "95e0fdaa0f25",
+              "name": "stage",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "prod",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "HTTP API。/api/auth/google と /api/auth/google/callback の 2 ルートを持つ",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "LambdaAuthStart": {
+          "_id": "4e4962d44fb1",
+          "name": "LambdaAuthStart",
+          "stereotype": "service",
+          "identity": "functionName",
+          "attributes": [
+            {
+              "_id": "2b8fb8f52950",
+              "name": "functionName",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "89646e69e63b",
+              "name": "runtime",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "nodejs22.x",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "6cd0a8fff1b5",
+              "name": "handler",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "authStart.handler",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "GET /api/auth/google を処理。state / nonce を生成し Google 認可エンドポイントへ 302",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "LambdaAuthCallback": {
+          "_id": "bccf5920aa32",
+          "name": "LambdaAuthCallback",
+          "stereotype": "service",
+          "identity": "functionName",
+          "attributes": [
+            {
+              "_id": "2b8fb8f52950",
+              "name": "functionName",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "89646e69e63b",
+              "name": "runtime",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "nodejs22.x",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "6cd0a8fff1b5",
+              "name": "handler",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "authCallback.handler",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "GET /api/auth/google/callback を処理。code 交換 → userinfo → User/Session を upsert",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "DynamoDBTable": {
+          "_id": "5cb695191de5",
+          "name": "DynamoDBTable",
+          "stereotype": "service",
+          "identity": "tableName",
+          "attributes": [
+            {
+              "_id": "6e1a11cafc8f",
+              "name": "tableName",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "5387afe82adf",
+              "name": "partitionKey",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "PK",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "80353813c9de",
+              "name": "sortKey",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "SK",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "単一テーブル設計。PK=`USER#{userId}` SK=`PROFILE` / `OAUTH#{provider}` / `SESSION#{sessionId}`",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "GoogleOAuth": {
+          "_id": "c019e0a1c9e1",
+          "name": "GoogleOAuth",
+          "stereotype": "service",
+          "identity": "clientId",
+          "attributes": [
+            {
+              "_id": "2081c437f9fc",
+              "name": "clientId",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "a6d6628ea7c9",
+              "name": "scope",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "openid email profile",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "ed57bfa63d39",
+              "name": "authUrl",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "https://accounts.google.com/o/oauth2/v2/auth",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "25375255f5c4",
+              "name": "tokenUrl",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "https://oauth2.googleapis.com/token",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "5986c6da760e",
+              "name": "userinfoUrl",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "https://openidconnect.googleapis.com/v1/userinfo",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "外部 IdP (Google)。Authorization Code + PKCE フローを用いる",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "LoginPage": {
+          "_id": "ad67be652512",
+          "name": "LoginPage",
+          "stereotype": "service",
+          "identity": "path",
+          "attributes": [
+            {
+              "_id": "25074a3fbe0d",
+              "name": "path",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "f23d0c44fcf1",
+              "name": "title",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "Sign in — Umlay",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "4ca1db43db9c",
+              "name": "requiresAuth",
+              "type": "bool",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "36f6af70b5e4",
+              "name": "ssr",
+              "type": "bool",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [
+            {
+              "kind": "association",
+              "target": "S3Bucket",
+              "multiplicity": "1",
+              "role": "servedBy"
+            },
+            {
+              "kind": "association",
+              "target": "LoginAction",
+              "multiplicity": "0..*",
+              "role": "actions"
+            }
+          ],
+          "doc": "構成コンポーネント:\n      <AppHeader>        ロゴ + テーマ切替\n      <HeroSection>      プロダクト紹介コピー\n      <SignInWithGoogleButton>\n        クリック → GET /api/auth/google\n      <LegalFootnote>    Privacy Policy / Terms へのリンク",
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "ログイン画面 (/)。認証前のユーザーに 'Sign in with Google' を提示する",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "GoogleConsentScreen": {
+          "_id": "88c05f7308ea",
+          "name": "GoogleConsentScreen",
+          "stereotype": "service",
+          "identity": "url",
+          "attributes": [
+            {
+              "_id": "ad3a1c4c0608",
+              "name": "url",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "693413c73bcc",
+              "name": "external",
+              "type": "bool",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": true,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [
+            {
+              "kind": "association",
+              "target": "GoogleOAuth",
+              "multiplicity": "1",
+              "role": "providedBy"
+            }
+          ],
+          "doc": "Google 所有ドメイン (accounts.google.com) で表示される画面。\n    ユーザーは Allow / Deny を選択可能。",
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Google 側の OAuth 2.0 同意画面 (外部)。scope=openid email profile を確認",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "DashboardPage": {
+          "_id": "e5af054cc0ca",
+          "name": "DashboardPage",
+          "stereotype": "service",
+          "identity": "path",
+          "attributes": [
+            {
+              "_id": "25074a3fbe0d",
+              "name": "path",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "f23d0c44fcf1",
+              "name": "title",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "Dashboard — Umlay",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "4ca1db43db9c",
+              "name": "requiresAuth",
+              "type": "bool",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": true,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "36f6af70b5e4",
+              "name": "ssr",
+              "type": "bool",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [
+            {
+              "kind": "association",
+              "target": "S3Bucket",
+              "multiplicity": "1",
+              "role": "servedBy"
+            },
+            {
+              "kind": "association",
+              "target": "Session",
+              "multiplicity": "1",
+              "role": "readsSession"
+            }
+          ],
+          "doc": "構成コンポーネント:\n      <AppHeader>        ロゴ + <UserMenu> (avatar + displayName + Logout)\n      <WelcomeBanner>    \"Welcome back, {displayName}\"\n      <ProjectList>      プロジェクト一覧\n      <ActivityFeed>     最近のアクティビティ\n\n    未ログイン時は 302 → / (LoginPage)。",
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "ログイン後のダッシュボード (/dashboard)。認証必須",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "AuthErrorPage": {
+          "_id": "34733e679917",
+          "name": "AuthErrorPage",
+          "stereotype": "service",
+          "identity": "path",
+          "attributes": [
+            {
+              "_id": "25074a3fbe0d",
+              "name": "path",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "f23d0c44fcf1",
+              "name": "title",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "Sign-in failed",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "4ca1db43db9c",
+              "name": "requiresAuth",
+              "type": "bool",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [
+            {
+              "kind": "association",
+              "target": "S3Bucket",
+              "multiplicity": "1",
+              "role": "servedBy"
+            }
+          ],
+          "doc": "構成コンポーネント:\n      <ErrorBanner reason={query.reason}>\n      <RetryButton> → / (LoginPage) へ戻る\n      <SupportLink>",
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "認可失敗時の画面 (/auth/error)。state mismatch / user denied consent / token 交換失敗など",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "LoginAction": {
+          "_id": "40533dc23495",
+          "name": "LoginAction",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "e9289db298af",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "927e06e149db",
+              "name": "label",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "2f606502afb9",
+              "name": "httpMethod",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "f05da1972b4a",
+              "name": "endpoint",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "doc": "現時点のアクション:\n      id=\"signin-google\", label=\"Sign in with Google\", GET /api/auth/google",
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "LoginPage 上のユーザー操作",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {
+        "OAuthToken": {
+          "_id": "c79545c0f48f",
+          "name": "OAuthToken",
+          "stereotype": "value_object",
+          "fields": [
+            {
+              "_id": "0627791fca9c",
+              "name": "accessToken",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "9c8bfb0f83e7",
+              "name": "idToken",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "5d3a7dddf6c6",
+              "name": "refreshToken",
+              "type": "string",
+              "visibility": "private",
+              "nullable": "undefined",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "423e439e80bb",
+              "name": "expiresAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ]
+        },
+        "JwtSessionToken": {
+          "_id": "8cbd0ce99043",
+          "name": "JwtSessionToken",
+          "stereotype": "value_object",
+          "fields": [
+            {
+              "_id": "b36dff6b22d2",
+              "name": "token",
+              "type": "string",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "1913fd983afe",
+              "name": "issuedAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "423e439e80bb",
+              "name": "expiresAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ]
+        }
+      },
+      "enums": {
+        "AuthProvider": {
+          "_id": "2b132954aa66",
+          "name": "AuthProvider",
+          "values": [
+            "GOOGLE"
+          ]
+        },
+        "SessionStatus": {
+          "_id": "470f66304e5d",
+          "name": "SessionStatus",
+          "values": [
+            "ACTIVE",
+            "EXPIRED",
+            "REVOKED"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "login-er",
+      "kind": "er_diagram",
+      "include": [
+        "login.User",
+        "login.OAuthAccount",
+        "login.Session"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "login-class",
+      "kind": "class_diagram",
+      "include": [
+        "login.User",
+        "login.OAuthAccount",
+        "login.Session",
+        "login.OAuthToken",
+        "login.JwtSessionToken",
+        "login.AuthProvider",
+        "login.SessionStatus"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "login-arch",
+      "kind": "component_diagram",
+      "include": [
+        "login.Browser",
+        "login.CloudFront",
+        "login.S3Bucket",
+        "login.ApiGateway",
+        "login.LambdaAuthStart",
+        "login.LambdaAuthCallback",
+        "login.DynamoDBTable",
+        "login.GoogleOAuth"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "login-ui",
+      "kind": "component_diagram",
+      "include": [
+        "login.Browser",
+        "login.LoginPage",
+        "login.DashboardPage",
+        "login.AuthErrorPage",
+        "login.GoogleConsentScreen",
+        "login.S3Bucket",
+        "login.CloudFront",
+        "login.GoogleOAuth",
+        "login.LoginAction"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "login-screens",
+      "kind": "activity_diagram",
+      "include": [
+        "login.LoginPage",
+        "login.GoogleConsentScreen",
+        "login.DashboardPage",
+        "login.AuthErrorPage",
+        "login.LoginAction"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "login-flow",
+      "kind": "sequence_diagram",
+      "include": [],
+      "exclude": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "browser",
+          "label": "Browser",
+          "ref": "Browser"
+        },
+        {
+          "id": "login_pg",
+          "label": "LoginPage",
+          "ref": "LoginPage"
+        },
+        {
+          "id": "consent",
+          "label": "GoogleConsentScreen",
+          "ref": "GoogleConsentScreen"
+        },
+        {
+          "id": "dash_pg",
+          "label": "DashboardPage",
+          "ref": "DashboardPage"
+        },
+        {
+          "id": "error_pg",
+          "label": "AuthErrorPage",
+          "ref": "AuthErrorPage"
+        },
+        {
+          "id": "cf",
+          "label": "CloudFront",
+          "ref": "CloudFront"
+        },
+        {
+          "id": "s3",
+          "label": "S3Bucket",
+          "ref": "S3Bucket"
+        },
+        {
+          "id": "api",
+          "label": "ApiGateway",
+          "ref": "ApiGateway"
+        },
+        {
+          "id": "fn_start",
+          "label": "LambdaAuthStart",
+          "ref": "LambdaAuthStart"
+        },
+        {
+          "id": "fn_cb",
+          "label": "LambdaAuthCallback",
+          "ref": "LambdaAuthCallback"
+        },
+        {
+          "id": "google",
+          "label": "GoogleOAuth",
+          "ref": "GoogleOAuth"
+        },
+        {
+          "id": "ddb",
+          "label": "DynamoDBTable",
+          "ref": "DynamoDBTable"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "browser",
+            "label": "Browser",
+            "ref": "Browser"
+          },
+          {
+            "id": "login_pg",
+            "label": "LoginPage",
+            "ref": "LoginPage"
+          },
+          {
+            "id": "consent",
+            "label": "GoogleConsentScreen",
+            "ref": "GoogleConsentScreen"
+          },
+          {
+            "id": "dash_pg",
+            "label": "DashboardPage",
+            "ref": "DashboardPage"
+          },
+          {
+            "id": "error_pg",
+            "label": "AuthErrorPage",
+            "ref": "AuthErrorPage"
+          },
+          {
+            "id": "cf",
+            "label": "CloudFront",
+            "ref": "CloudFront"
+          },
+          {
+            "id": "s3",
+            "label": "S3Bucket",
+            "ref": "S3Bucket"
+          },
+          {
+            "id": "api",
+            "label": "ApiGateway",
+            "ref": "ApiGateway"
+          },
+          {
+            "id": "fn_start",
+            "label": "LambdaAuthStart",
+            "ref": "LambdaAuthStart"
+          },
+          {
+            "id": "fn_cb",
+            "label": "LambdaAuthCallback",
+            "ref": "LambdaAuthCallback"
+          },
+          {
+            "id": "google",
+            "label": "GoogleOAuth",
+            "ref": "GoogleOAuth"
+          },
+          {
+            "id": "ddb",
+            "label": "DynamoDBTable",
+            "ref": "DynamoDBTable"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "message",
+            "from": "browser",
+            "to": "cf",
+            "arrow": "sync",
+            "label": "GET /"
+          },
+          {
+            "kind": "message",
+            "from": "cf",
+            "to": "s3",
+            "arrow": "sync",
+            "label": "GET /index.html"
+          },
+          {
+            "kind": "message",
+            "from": "s3",
+            "to": "cf",
+            "arrow": "reply",
+            "label": "200 HTML + JS bundle"
+          },
+          {
+            "kind": "message",
+            "from": "cf",
+            "to": "browser",
+            "arrow": "reply",
+            "label": "200 HTML + JS bundle"
+          },
+          {
+            "kind": "message",
+            "from": "browser",
+            "to": "login_pg",
+            "arrow": "sync",
+            "label": "render LoginPage (path=\\\"/\\\")"
+          },
+          {
+            "kind": "message",
+            "from": "login_pg",
+            "to": "browser",
+            "arrow": "sync",
+            "label": "dispatch LoginAction(id=\\\"signin-google\\\")"
+          },
+          {
+            "kind": "message",
+            "from": "browser",
+            "to": "cf",
+            "arrow": "sync",
+            "label": "GET /api/auth/google"
+          },
+          {
+            "kind": "message",
+            "from": "cf",
+            "to": "api",
+            "arrow": "sync",
+            "label": "/api/auth/google"
+          },
+          {
+            "kind": "message",
+            "from": "api",
+            "to": "fn_start",
+            "arrow": "sync",
+            "label": "invoke authStart"
+          },
+          {
+            "kind": "message",
+            "from": "fn_start",
+            "to": "browser",
+            "arrow": "reply",
+            "label": "302 Location: accounts.google.com/o/oauth2/v2/auth?... (state+nonce+code_challenge)"
+          },
+          {
+            "kind": "message",
+            "from": "browser",
+            "to": "google",
+            "arrow": "sync",
+            "label": "GET /o/oauth2/v2/auth"
+          },
+          {
+            "kind": "message",
+            "from": "google",
+            "to": "consent",
+            "arrow": "sync",
+            "label": "render GoogleConsentScreen"
+          },
+          {
+            "kind": "alt",
+            "cases": [
+              {
+                "condition": "User が Allow",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "consent",
+                    "to": "browser",
+                    "arrow": "reply",
+                    "label": "302 Location: /api/auth/google/callback?code=...&state=..."
+                  },
+                  {
+                    "kind": "message",
+                    "from": "browser",
+                    "to": "cf",
+                    "arrow": "sync",
+                    "label": "GET /api/auth/google/callback?code=..."
+                  },
+                  {
+                    "kind": "message",
+                    "from": "cf",
+                    "to": "api",
+                    "arrow": "sync",
+                    "label": "/api/auth/google/callback"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "fn_cb",
+                    "arrow": "sync",
+                    "label": "invoke authCallback"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "fn_cb",
+                    "to": "google",
+                    "arrow": "sync",
+                    "label": "POST /token (code + code_verifier)"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "google",
+                    "to": "fn_cb",
+                    "arrow": "reply",
+                    "label": "{ access_token, id_token, expires_in }"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "fn_cb",
+                    "to": "google",
+                    "arrow": "sync",
+                    "label": "GET /userinfo (Authorization: Bearer access_token)"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "google",
+                    "to": "fn_cb",
+                    "arrow": "reply",
+                    "label": "{ sub, email, name, picture }"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "fn_cb",
+                    "to": "ddb",
+                    "arrow": "sync",
+                    "label": "GetItem USER#<email-hash> / PROFILE"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "ddb",
+                    "to": "fn_cb",
+                    "arrow": "reply",
+                    "label": "User | null"
+                  },
+                  {
+                    "kind": "alt",
+                    "cases": [
+                      {
+                        "condition": "未登録ユーザー",
+                        "body": [
+                          {
+                            "kind": "message",
+                            "from": "fn_cb",
+                            "to": "ddb",
+                            "arrow": "sync",
+                            "label": "PutItem User (PROFILE)"
+                          },
+                          {
+                            "kind": "message",
+                            "from": "fn_cb",
+                            "to": "ddb",
+                            "arrow": "sync",
+                            "label": "PutItem OAuthAccount (OAUTH#GOOGLE)"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "message",
+                    "from": "fn_cb",
+                    "to": "ddb",
+                    "arrow": "sync",
+                    "label": "PutItem Session (SESSION#<sessionId>, status=ACTIVE)"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "ddb",
+                    "to": "fn_cb",
+                    "arrow": "reply",
+                    "label": "ok"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "fn_cb",
+                    "to": "browser",
+                    "arrow": "reply",
+                    "label": "302 Location: /dashboard  Set-Cookie: session=<JWT>; Secure; HttpOnly; SameSite=Lax"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "browser",
+                    "to": "cf",
+                    "arrow": "sync",
+                    "label": "GET /dashboard (Cookie: session=<JWT>)"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "cf",
+                    "to": "s3",
+                    "arrow": "sync",
+                    "label": "GET /dashboard/index.html"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "s3",
+                    "to": "browser",
+                    "arrow": "reply",
+                    "label": "200 HTML (認証済 UI)"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "browser",
+                    "to": "dash_pg",
+                    "arrow": "sync",
+                    "label": "render DashboardPage (path=\\\"/dashboard\\\", session=active)"
+                  }
+                ]
+              },
+              {
+                "condition": "User が Deny",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "consent",
+                    "to": "browser",
+                    "arrow": "reply",
+                    "label": "302 Location: /auth/error?reason=access_denied"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "browser",
+                    "to": "cf",
+                    "arrow": "sync",
+                    "label": "GET /auth/error"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "cf",
+                    "to": "s3",
+                    "arrow": "sync",
+                    "label": "GET /auth/error.html"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "s3",
+                    "to": "browser",
+                    "arrow": "reply",
+                    "label": "200 HTML"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "browser",
+                    "to": "error_pg",
+                    "arrow": "sync",
+                    "label": "render AuthErrorPage"
+                  }
+                ]
+              },
+              {
+                "condition": "タイムアウト / 閉じる",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "consent",
+                    "to": "browser",
+                    "arrow": "reply",
+                    "label": "(画面閉じる / セッション失効)"
+                  }
+                ]
+              }
+            ],
+            "elseBody": [
+              {
+                "kind": "message",
+                "from": "consent",
+                "to": "browser",
+                "arrow": "reply",
+                "label": "302 Location: /auth/error?reason=unknown"
+              },
+              {
+                "kind": "message",
+                "from": "browser",
+                "to": "cf",
+                "arrow": "sync",
+                "label": "GET /auth/error"
+              },
+              {
+                "kind": "message",
+                "from": "cf",
+                "to": "s3",
+                "arrow": "sync",
+                "label": "GET /auth/error.html"
+              },
+              {
+                "kind": "message",
+                "from": "s3",
+                "to": "browser",
+                "arrow": "reply",
+                "label": "200 HTML"
+              },
+              {
+                "kind": "message",
+                "from": "browser",
+                "to": "error_pg",
+                "arrow": "sync",
+                "label": "render AuthErrorPage"
+              }
+            ]
+          }
+        ]
+      },
+      "ganttTasks": []
+    },
+    {
+      "id": "session-lifecycle",
+      "kind": "state_machine",
+      "include": [
+        "login.Session",
+        "login.SessionStatus"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

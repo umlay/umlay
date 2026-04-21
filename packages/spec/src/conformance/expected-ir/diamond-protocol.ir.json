@@ -1,0 +1,168 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "didemo": {
+      "models": {},
+      "types": {},
+      "enums": {},
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [
+        {
+          "name": "Base",
+          "extends": [],
+          "methods": [
+            {
+              "name": "hello",
+              "params": [],
+              "returns": {
+                "ref": "void"
+              }
+            },
+            {
+              "name": "describe",
+              "params": [],
+              "returns": {
+                "ref": "string"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Left",
+          "extends": [
+            {
+              "ref": "Base"
+            }
+          ],
+          "methods": [
+            {
+              "name": "hello",
+              "params": [],
+              "returns": {
+                "ref": "void"
+              }
+            },
+            {
+              "name": "leftOnly",
+              "params": [],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Right",
+          "extends": [
+            {
+              "ref": "Base"
+            }
+          ],
+          "methods": [
+            {
+              "name": "hello",
+              "params": [],
+              "returns": {
+                "ref": "void"
+              }
+            },
+            {
+              "name": "rightOnly",
+              "params": [],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "DiamondDefault",
+          "extends": [
+            {
+              "ref": "Left"
+            },
+            {
+              "ref": "Right"
+            }
+          ],
+          "methods": []
+        },
+        {
+          "name": "DiamondFromRight",
+          "extends": [
+            {
+              "ref": "Left"
+            },
+            {
+              "ref": "Right"
+            }
+          ],
+          "methods": [
+            {
+              "name": "hello",
+              "params": [],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "DiamondOwn",
+          "extends": [
+            {
+              "ref": "Left"
+            },
+            {
+              "ref": "Right"
+            }
+          ],
+          "methods": [
+            {
+              "name": "hello",
+              "params": [],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "DiamondRightFirst",
+          "extends": [
+            {
+              "ref": "Right"
+            },
+            {
+              "ref": "Left"
+            }
+          ],
+          "methods": []
+        }
+      ],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "diamond-class",
+      "kind": "class_diagram",
+      "include": [
+        "didemo.*"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "TB",
+        "engine": "elk"
+      },
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

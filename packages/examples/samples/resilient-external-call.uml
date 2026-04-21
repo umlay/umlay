@@ -1,0 +1,128 @@
+// resilient-external-call.uml — critical + retry のデモ (RFC 0028)
+//
+// spec 0.8.0:
+//   - retry({ attempts, backoff, initial, max, jitter }) で自動再試行
+//   - retry(3) の短縮形
+//   - timeout / retry / catch / finally の完全組み合わせ
+
+@@mode(strict)
+
+namespace resilient
+
+model Service  @service { +id string! @id }
+model API      @service { +id string! @id }
+model Remote   @service { +id string! @id }
+model DB       @service { +id string! @id }
+model Metrics  @service { +id string! @id }
+
+// ============================================================================
+// ケース 1: 短縮形 retry(3) — attempts のみ指定
+// ============================================================================
+
+view simple-retry @sequence_diagram
+  @intent("3 回までリトライ (backoff 既定)") {
+  participants: API as api, Remote as r
+
+  seq {
+    critical "外部 API 呼び出し" timeout(1s) retry(3) {
+      api ->> r : "GET /resource"
+      r  -.> api: "200 { payload }"
+    } catch "exhausted" {
+      api ->> api : "log(\"all 3 attempts failed\")"
+    }
+  }
+}
+
+// ============================================================================
+// ケース 2: 完全形 exponential backoff + jitter
+// ============================================================================
+
+view exponential-retry @sequence_diagram
+  @intent("exponential backoff: 100ms → 200ms → 400ms → 800ms (jitter ±20%)") {
+  participants: API as api, Remote as r, Metrics as m
+
+  seq {
+    critical "冪等な外部 API" timeout(3s) retry({
+      attempts: 5,
+      backoff:  exponential,
+      initial:  100ms,
+      max:      5s,
+      jitter:   true
+    }) {
+      api ->> r : "POST /idempotent-op"
+      r  -.> api: "200 { result }"
+    } catch "final failure" {
+      api ->> m : "track(\"external.call.failed\", { attempts: 5 })"
+    } finally {
+      api ->> m : "track(\"external.call.completed\")"
+    }
+  }
+}
+
+// ============================================================================
+// ケース 3: linear backoff (一定間隔で再試行)
+// ============================================================================
+
+view linear-retry @sequence_diagram
+  @intent("1 秒間隔で 3 回まで (linear backoff)") {
+  participants: API as api, DB as db
+
+  seq {
+    critical "DB 楽観ロック更新" timeout(500ms) retry({
+      attempts: 3,
+      backoff:  linear,
+      initial:  1s
+    }) {
+      api ->> db : "UPDATE ... WHERE version = @v"
+      db  -.> api: "1 row updated"
+    } catch "conflict exhausted" {
+      api ->> api : "log(\"optimistic lock conflict after 3 retries\")"
+    }
+  }
+}
+
+// ============================================================================
+// ケース 4: constant backoff (即時リトライ、ジッターのみ)
+// ============================================================================
+
+view constant-retry @sequence_diagram
+  @intent("高速リトライ (constant 50ms)") {
+  participants: API as api, Remote as r
+
+  seq {
+    critical "軽量 API" timeout(2s) retry({
+      attempts: 10,
+      backoff:  constant,
+      initial:  50ms,
+      jitter:   true
+    }) {
+      api ->> r : "ping"
+      r  -.> api: "pong"
+    } catch "unreachable" {
+      api ->> api : "circuit_breaker.open()"
+    }
+  }
+}
+
+// ============================================================================
+// ケース 5: ネスト — 外側 critical 内で retry + 内側 critical は timeout のみ
+// ============================================================================
+
+view nested-retry @sequence_diagram
+  @intent("外側で retry、内側で critical (retry なし)") {
+  participants: API as api, DB as db, Remote as r
+
+  seq {
+    critical "外側: 全体の流れ" timeout(10s) retry(2) {
+      critical "DB トランザクション (retry 禁止)" on (db) timeout(1s) {
+        api ->> db : "BEGIN"
+        api ->> db : "UPDATE"
+        api ->> db : "COMMIT"
+      }
+
+      critical "外部 API (retry OK)" timeout(3s) retry({ attempts: 3, backoff: exponential }) {
+        api ->> r : "POST /notify"
+      }
+    }
+  }
+}

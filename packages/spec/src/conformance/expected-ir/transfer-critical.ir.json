@@ -1,0 +1,734 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "banking": {
+      "models": {
+        "Account": {
+          "_id": "b9c856c8551f",
+          "name": "Account",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "8558170f7bea",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "2f72d195843c",
+              "name": "owner",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "644edcd48f18",
+              "name": "balance",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "balance >= 0"
+                ],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            },
+            {
+              "_id": "93944add3dc9",
+              "name": "status",
+              "type": "AccountStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "ACTIVE",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "銀行口座",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "Transfer": {
+          "_id": "6e3f6d314cd5",
+          "name": "Transfer",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "8558170f7bea",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "9b00db18d912",
+              "name": "fromId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Account.id"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "0d605405edec",
+              "name": "toId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Account.id"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "e9a03c6dcf51",
+              "name": "amount",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "amount > 0"
+                ],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            },
+            {
+              "_id": "93944add3dc9",
+              "name": "status",
+              "type": "TxStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "PENDING",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "f7264abcceb1",
+              "name": "createdAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "口座間送金トランザクション",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "API": {
+          "_id": "d9a3ffa4fb57",
+          "name": "API",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "8558170f7bea",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "送金 API",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "LockSvc": {
+          "_id": "77f92b85a3fd",
+          "name": "LockSvc",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "8558170f7bea",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "分散ロックサービス",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "DB": {
+          "_id": "fee1fe46e276",
+          "name": "DB",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "8558170f7bea",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "永続化",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "AccountA": {
+          "_id": "5170bf5214db",
+          "name": "AccountA",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "8558170f7bea",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "送金元口座アクセサ",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "AccountB": {
+          "_id": "1f0c1bbc338d",
+          "name": "AccountB",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "8558170f7bea",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "送金先口座アクセサ",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "AuditLog": {
+          "_id": "909fa87c7bd4",
+          "name": "AuditLog",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "8558170f7bea",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "監査ログ",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "AccountStatus": {
+          "_id": "084fdf7cb020",
+          "name": "AccountStatus",
+          "values": [
+            "ACTIVE",
+            "FROZEN",
+            "CLOSED"
+          ]
+        },
+        "TxStatus": {
+          "_id": "06a9976c516d",
+          "name": "TxStatus",
+          "values": [
+            "PENDING",
+            "COMMITTED",
+            "REVERTED"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "transfer-flow",
+      "kind": "sequence_diagram",
+      "include": [],
+      "exclude": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "api",
+          "label": "API",
+          "ref": "API"
+        },
+        {
+          "id": "lock",
+          "label": "LockSvc",
+          "ref": "LockSvc"
+        },
+        {
+          "id": "db",
+          "label": "DB",
+          "ref": "DB"
+        },
+        {
+          "id": "a",
+          "label": "AccountA",
+          "ref": "AccountA"
+        },
+        {
+          "id": "b",
+          "label": "AccountB",
+          "ref": "AccountB"
+        },
+        {
+          "id": "audit",
+          "label": "AuditLog",
+          "ref": "AuditLog"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "api",
+            "label": "API",
+            "ref": "API"
+          },
+          {
+            "id": "lock",
+            "label": "LockSvc",
+            "ref": "LockSvc"
+          },
+          {
+            "id": "db",
+            "label": "DB",
+            "ref": "DB"
+          },
+          {
+            "id": "a",
+            "label": "AccountA",
+            "ref": "AccountA"
+          },
+          {
+            "id": "b",
+            "label": "AccountB",
+            "ref": "AccountB"
+          },
+          {
+            "id": "audit",
+            "label": "AuditLog",
+            "ref": "AuditLog"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "message",
+            "from": "api",
+            "to": "lock",
+            "arrow": "sync",
+            "label": "acquire(\\\"account-pair:{fromId},{toId}\\\")"
+          },
+          {
+            "kind": "message",
+            "from": "lock",
+            "to": "api",
+            "arrow": "reply",
+            "label": "acquired"
+          },
+          {
+            "kind": "critical",
+            "label": "残高チェックと資金移動",
+            "on": [
+              "a",
+              "b"
+            ],
+            "body": [
+              {
+                "kind": "message",
+                "from": "api",
+                "to": "a",
+                "arrow": "sync",
+                "label": "read balance"
+              },
+              {
+                "kind": "message",
+                "from": "a",
+                "to": "api",
+                "arrow": "reply",
+                "label": "{ balance }"
+              },
+              {
+                "kind": "message",
+                "from": "api",
+                "to": "b",
+                "arrow": "sync",
+                "label": "read balance"
+              },
+              {
+                "kind": "message",
+                "from": "b",
+                "to": "api",
+                "arrow": "reply",
+                "label": "{ balance }"
+              },
+              {
+                "kind": "alt",
+                "cases": [
+                  {
+                    "condition": "残高不足",
+                    "body": [
+                      {
+                        "kind": "message",
+                        "from": "api",
+                        "to": "lock",
+                        "arrow": "reply",
+                        "label": "release()"
+                      },
+                      {
+                        "kind": "message",
+                        "from": "api",
+                        "to": "audit",
+                        "arrow": "sync",
+                        "label": "log(\\\"transfer rejected: insufficient funds\\\")"
+                      }
+                    ]
+                  }
+                ],
+                "elseBody": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "a",
+                    "arrow": "sync",
+                    "label": "debit(amount)"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "a",
+                    "to": "api",
+                    "arrow": "reply",
+                    "label": "ok"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "b",
+                    "arrow": "sync",
+                    "label": "credit(amount)"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "b",
+                    "to": "api",
+                    "arrow": "reply",
+                    "label": "ok"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "db",
+                    "arrow": "sync",
+                    "label": "commit transaction"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "db",
+                    "to": "api",
+                    "arrow": "reply",
+                    "label": "ok"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "par",
+            "branches": [
+              {
+                "label": "ロック解放",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "lock",
+                    "arrow": "sync",
+                    "label": "release()"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "lock",
+                    "to": "api",
+                    "arrow": "reply",
+                    "label": "released"
+                  }
+                ]
+              },
+              {
+                "label": "監査ログ (fire-and-forget)",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "audit",
+                    "arrow": "sync",
+                    "label": "log(\\\"transfer committed\\\", { transferId })"
+                  }
+                ]
+              }
+            ],
+            "awaitSpec": {
+              "labels": [
+                "ロック解放"
+              ]
+            }
+          },
+          {
+            "kind": "opt",
+            "condition": "高額送金 (amount > 1000000) の場合",
+            "body": [
+              {
+                "kind": "message",
+                "from": "api",
+                "to": "audit",
+                "arrow": "sync",
+                "label": "notify_compliance_team({ transferId, amount })"
+              }
+            ]
+          },
+          {
+            "kind": "message",
+            "from": "api",
+            "to": "a",
+            "arrow": "reply",
+            "label": "200 OK"
+          }
+        ]
+      },
+      "ganttTasks": []
+    },
+    {
+      "id": "account-lifecycle",
+      "kind": "state_machine",
+      "include": [
+        "banking.Account",
+        "banking.AccountStatus"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

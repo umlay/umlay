@@ -1,0 +1,370 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "meta": {
+    "imports": [
+      {
+        "kind": "ns",
+        "value": "pm_core"
+      }
+    ]
+  },
+  "namespaces": {
+    "pm_feature_a": {
+      "models": {
+        "Task": {
+          "_id": "b5b12f6c020f",
+          "name": "Task",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "cb87bdcecb4e",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "b8f6b9c3c9de",
+              "name": "name",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "0708d6928f8e",
+              "name": "plannedStart",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "00c8fb525731",
+              "name": "plannedEnd",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "767fe5549e93",
+              "name": "progress",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "0.0",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "1cb7e4ce6671",
+              "name": "status",
+              "type": "TaskStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "PENDING",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "6cfd63ace943",
+              "name": "assignee",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "機能 A のタスク。一部タスクは pm_core に依存",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [
+            {
+              "id": "a-design",
+              "name": "Feature A Design",
+              "plannedStart": "2026-05-11",
+              "plannedEnd": "2026-05-17",
+              "progress": 0.5,
+              "status": "IN_PROGRESS",
+              "assignee": "Alice"
+            },
+            {
+              "id": "a-backend",
+              "name": "Feature A Backend",
+              "plannedStart": "2026-05-18",
+              "plannedEnd": "2026-06-07",
+              "progress": 0,
+              "status": "PENDING",
+              "assignee": "Bob"
+            },
+            {
+              "id": "a-frontend",
+              "name": "Feature A Frontend",
+              "plannedStart": "2026-05-18",
+              "plannedEnd": "2026-06-07",
+              "progress": 0,
+              "status": "PENDING",
+              "assignee": "Dave"
+            },
+            {
+              "id": "a-release",
+              "name": "Feature A Release",
+              "plannedStart": "2026-06-10",
+              "plannedEnd": "2026-06-10",
+              "progress": 0,
+              "status": "PENDING",
+              "assignee": "Alice"
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "TaskDependency": {
+          "_id": "1ac5cad2641e",
+          "name": "TaskDependency",
+          "stereotype": "entity",
+          "identity": [
+            "fromId",
+            "toId"
+          ],
+          "attributes": [
+            {
+              "_id": "aa69263c0a5b",
+              "name": "fromId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Task.id",
+                "onDelete": "CASCADE"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "091f74fb7114",
+              "name": "toId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Task.id",
+                "onDelete": "CASCADE"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "b543bf61a8c6",
+              "name": "kind",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "FS",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "4f6f382ed7bc",
+              "name": "lag",
+              "type": "int",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "0",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "feature A 内の先行関係 (cross-ns の on を許容)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [
+            {
+              "fromId": "a-design",
+              "toId": "a-backend"
+            },
+            {
+              "fromId": "a-design",
+              "toId": "a-frontend"
+            },
+            {
+              "fromId": "a-backend",
+              "toId": "a-release"
+            },
+            {
+              "fromId": "a-frontend",
+              "toId": "a-release"
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "FeatureACoreDependency": {
+          "_id": "7dc1022fe1c2",
+          "name": "FeatureACoreDependency",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "cb87bdcecb4e",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "cross-namespace の代表依存 (pm_core.Task → Feature A)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [
+            {
+              "on": "pm_core.Task"
+            },
+            {
+              "on": "pm_core.Task",
+              "kind": "FS",
+              "lag": "1"
+            }
+          ],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "TaskStatus": {
+          "_id": "6421e5ce9f3e",
+          "name": "TaskStatus",
+          "values": [
+            "PENDING",
+            "IN_PROGRESS",
+            "DONE",
+            "BLOCKED"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "feature-a-wbs",
+      "kind": "wbs_diagram",
+      "include": [
+        "pm_feature_a.Task"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "feature-a-gantt",
+      "kind": "gantt_chart",
+      "include": [
+        "pm_feature_a.Task",
+        "pm_feature_a.TaskDependency"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

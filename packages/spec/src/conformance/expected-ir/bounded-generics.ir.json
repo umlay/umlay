@@ -1,0 +1,394 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "demo": {
+      "models": {
+        "User": {
+          "_id": "bb67d15d7595",
+          "name": "User",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "c33327fc2afa",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "fbe0834c0ec0",
+              "name": "email",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": true,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "5713c3a185a0",
+              "name": "username",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Identifiable + Comparable 準拠ユーザー",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [
+            {
+              "ref": "Identifiable"
+            },
+            {
+              "ref": "Comparable"
+            }
+          ]
+        },
+        "UserRepository": {
+          "_id": "66d9b956a685",
+          "name": "UserRepository",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "c33327fc2afa",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Repository<User> の具象実装。User が Identifiable 準拠なので受理される",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [
+            {
+              "ref": "Repository",
+              "args": [
+                "User"
+              ]
+            }
+          ]
+        }
+      },
+      "types": {},
+      "enums": {},
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [
+        {
+          "name": "Identifiable",
+          "extends": [],
+          "methods": [
+            {
+              "name": "getId",
+              "params": [],
+              "returns": {
+                "ref": "UUID"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Comparable",
+          "extends": [],
+          "methods": [
+            {
+              "name": "compareTo",
+              "params": [
+                {
+                  "name": "other",
+                  "type": {
+                    "ref": "Self"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "int"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Hashable",
+          "extends": [],
+          "methods": [
+            {
+              "name": "hash",
+              "params": [],
+              "returns": {
+                "ref": "bigint"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Serializable",
+          "typeParams": [
+            {
+              "name": "F"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "serialize",
+              "params": [],
+              "returns": {
+                "ref": "F"
+              }
+            },
+            {
+              "name": "deserialize",
+              "params": [
+                {
+                  "name": "data",
+                  "type": {
+                    "ref": "F"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "Self"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Repository",
+          "typeParams": [
+            {
+              "name": "T",
+              "bounds": [
+                {
+                  "ref": "Identifiable"
+                }
+              ]
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "get",
+              "params": [
+                {
+                  "name": "id",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "T"
+              }
+            },
+            {
+              "name": "save",
+              "params": [
+                {
+                  "name": "entity",
+                  "type": {
+                    "ref": "T"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            },
+            {
+              "name": "delete",
+              "params": [
+                {
+                  "name": "id",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "bool"
+              }
+            }
+          ]
+        },
+        {
+          "name": "IndexedCache",
+          "typeParams": [
+            {
+              "name": "K",
+              "bounds": [
+                {
+                  "ref": "Hashable"
+                },
+                {
+                  "ref": "Comparable"
+                }
+              ]
+            },
+            {
+              "name": "V"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "put",
+              "params": [
+                {
+                  "name": "k",
+                  "type": {
+                    "ref": "K"
+                  }
+                },
+                {
+                  "name": "v",
+                  "type": {
+                    "ref": "V"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            },
+            {
+              "name": "get",
+              "params": [
+                {
+                  "name": "k",
+                  "type": {
+                    "ref": "K"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "V"
+              }
+            },
+            {
+              "name": "range",
+              "params": [
+                {
+                  "name": "from",
+                  "type": {
+                    "ref": "K"
+                  }
+                },
+                {
+                  "name": "to",
+                  "type": {
+                    "ref": "K"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "string"
+              }
+            }
+          ]
+        },
+        {
+          "name": "SortableStore",
+          "typeParams": [
+            {
+              "name": "T",
+              "bounds": [
+                {
+                  "ref": "Identifiable"
+                },
+                {
+                  "ref": "Comparable"
+                },
+                {
+                  "ref": "Serializable",
+                  "args": [
+                    {
+                      "ref": "string"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "store",
+              "params": [
+                {
+                  "name": "items",
+                  "type": {
+                    "ref": "T"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            },
+            {
+              "name": "loadSorted",
+              "params": [],
+              "returns": {
+                "ref": "T"
+              }
+            }
+          ]
+        }
+      ],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": []
+}

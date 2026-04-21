@@ -1,0 +1,88 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "meta": {
+    "imports": [
+      {
+        "kind": "ns",
+        "value": "core"
+      }
+    ]
+  },
+  "namespaces": {
+    "audit": {
+      "models": {},
+      "types": {},
+      "enums": {},
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [
+        {
+          "name": "Timestamped",
+          "extends": [],
+          "methods": [
+            {
+              "name": "createdAt",
+              "params": [],
+              "returns": {
+                "ref": "Timestamp"
+              }
+            },
+            {
+              "name": "updatedAt",
+              "params": [],
+              "returns": {
+                "ref": "Timestamp"
+              }
+            }
+          ]
+        }
+      ],
+      "unions": [],
+      "impls": [
+        {
+          "trait": "Timestamped",
+          "target": "core.User",
+          "methods": [
+            {
+              "name": "createdAt",
+              "params": [],
+              "returns": {
+                "ref": "Timestamp"
+              }
+            },
+            {
+              "name": "updatedAt",
+              "params": [],
+              "returns": {
+                "ref": "Timestamp"
+              }
+            }
+          ]
+        },
+        {
+          "trait": "Timestamped",
+          "target": "core.Order",
+          "methods": [
+            {
+              "name": "createdAt",
+              "params": [],
+              "returns": {
+                "ref": "Timestamp"
+              }
+            },
+            {
+              "name": "updatedAt",
+              "params": [],
+              "returns": {
+                "ref": "Timestamp"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "views": []
+}

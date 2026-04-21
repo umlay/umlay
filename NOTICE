@@ -1,0 +1,12 @@
+Umlay
+Copyright 2026 Keydrop / Umlay contributors
+
+This product includes software developed at Keydrop (https://www.keydrop.net).
+
+Packages in this repository are distributed under the following licenses:
+- `@umlay/spec`     — Apache License 2.0
+- `@umlay/examples` — MIT License
+- `skills/`         — CC-BY 4.0 (unless otherwise stated in each file)
+
+Umlay implementations (parser, lint, renderer, web editor) are developed in
+separate repositories and are not covered by this NOTICE.

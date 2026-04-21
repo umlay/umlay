@@ -1,0 +1,436 @@
+(*
+ * Umlay DSL — Formal Grammar
+ *
+ * 本ファイルは DSL 文法の機械可読な正本。散文解説は grammar.md 参照。
+ * spec version: 0.8.0 (RFC 0001〜0030 accepted)
+ *
+ * 記法: W3C EBNF (XML 1.0 準拠)
+ *   ::=     生成規則
+ *   |       選択
+ *   ?       0 または 1
+ *   *       0 回以上
+ *   +       1 回以上
+ *   ( ... ) グループ化
+ *   "..."   終端記号
+ *   (* ... *) コメント
+ *)
+
+(* ─────────────── ファイル構造 ─────────────── *)
+
+File            ::= FileDirective* NamespaceDecl ImportDecl* TopLevel*
+NamespaceDecl   ::= "namespace" Identifier
+TopLevel        ::= TypeDecl | EnumDecl | ModelDecl | ViewDecl
+                  | ProtocolDecl | UnionDecl | ModuleDecl
+                  | ImplBlock                           (* RFC 0016 *)
+                  | FileDirective
+
+(* RFC 0016: impl ブロック + RFC 0020: blanket impl 対応 *)
+ImplBlock       ::= "impl" TypeParams? ProtocolRef "for" ImplTarget
+                    WhereClause?
+                    "{" ImplMember* "}"
+ImplTarget      ::= QualifiedName                  (* 具体型 (RFC 0016) *)
+                  | Identifier                     (* 型変数 (RFC 0020 blanket) *)
+ImplMember      ::= FnMethod | Field
+WhereClause     ::= "where" "(" BoundCondition ("," BoundCondition)* ")"
+BoundCondition  ::= Identifier ":" TypeBound
+
+(* RFC 0009 + 0014: import (glob 対応) *)
+ImportDecl      ::= "import" ImportTarget ("as" Identifier)? ";"?
+ImportTarget    ::= String         (* ファイルパス / パッケージ名 / glob pattern (RFC 0014) *)
+                  | Identifier     (* 同一プロジェクトの namespace *)
+
+(*
+ * RFC 0014: glob import は String リテラル内に以下の meta 文字を持つ:
+ *   *     任意の 1 セグメント
+ *   **    再帰ディレクトリ
+ *   ?     任意の 1 文字
+ *   [abc] 文字クラス
+ *   {a,b} 選択 (optional for minimum spec)
+ * glob pattern を使った import は "as" 不可 (展開結果が可変のため)。
+ *)
+
+FileDirective   ::= ModeDirective | ThemeDirective
+ModeDirective   ::= "@@mode" "(" ("draft" | "strict") ")"
+ThemeDirective  ::= "@@theme" "(" String ")"
+
+(* ─────────────── 宣言 ─────────────── *)
+
+TypeDecl        ::= "type" Identifier "@value_object" ModelAnnotation*
+                    "{" (Field | BlockDirective)* "}"
+
+EnumDecl        ::= "enum" Identifier ModelAnnotation*
+                    "{" EnumValue ("," EnumValue)* ","? "}"
+EnumValue       ::= Identifier
+
+ModelDecl       ::= "model" Identifier Stereotype ModelAnnotation*
+                    "{" ModelMember* "}"
+Stereotype      ::= "@entity" | "@aggregate_root" | "@value_object"
+                  | "@service" | "@interface"
+ModelMember     ::= Field | Relation | FnMethod | BlockDirective
+ModelAnnotation ::= IntentAnnotation | CodegenNameAnnotation | ImplementsAnnotation
+
+(* RFC 0006: protocol / union / module *)
+
+(* RFC 0010: protocol 多重継承 + RFC 0015 型パラメータ制約 *)
+ProtocolDecl    ::= "protocol" Identifier TypeParams?
+                    ("extends" ProtocolRef ("," ProtocolRef)*)?
+                    IntentAnnotation?
+                    "{" ProtocolMember* "}"
+ProtocolRef     ::= QualifiedName ("<" TypeArgs ">")?
+
+(* RFC 0015: 型パラメータに制約 (bound) + RFC 0019: variance 修飾子 *)
+TypeParams      ::= "<" TypeParam ("," TypeParam)* ">"
+TypeParam       ::= VarianceModifier? Identifier (":" TypeBound)?
+VarianceModifier ::= "out"         (* 共変 (RFC 0019) *)
+                   | "in"          (* 反変 (RFC 0019) *)
+                                   (* 省略時: 不変 (invariant) *)
+TypeBound       ::= ProtocolRef ("&" ProtocolRef)*
+
+TypeArgs        ::= QualifiedName ("," QualifiedName)*
+ProtocolMember  ::= FnMethod | Field
+
+(* RFC 0010: union に inline payload variant を許可 *)
+UnionDecl       ::= "union" Identifier "=" UnionVariant ("|" UnionVariant)+
+                    IntentAnnotation?
+UnionVariant    ::= Identifier                                 (* model 名参照 *)
+                  | Identifier "{" Field ("," Field)* "}"      (* inline payload *)
+
+ModuleDecl      ::= "module" Identifier ModelAnnotation?
+                    "{" ModuleBody "}"
+ModuleBody      ::= (TypeDecl | EnumDecl | ModelDecl | ViewDecl
+                   | ProtocolDecl | UnionDecl | ModuleDecl)*
+
+ImplementsAnnotation ::= "@@implements" "(" QualifiedName
+                          ("<" QualifiedName ("," QualifiedName)* ">")? ")"
+
+(* ─────────────── 属性 (field) ─────────────── *)
+
+Field           ::= Visibility? Identifier Type Nullability FieldAnnotation*
+Visibility      ::= "+" | "-" | "#"
+Nullability     ::= "!" | "?" | "??"
+Type            ::= QualifiedName
+QualifiedName   ::= Identifier ("." Identifier)*
+
+FieldAnnotation ::= IdAnnotation
+                  | RefAnnotation
+                  | UniqueAnnotation
+                  | IndexAnnotation
+                  | DefaultAnnotation
+                  | CodegenNameAnnotation
+                  | MaxLengthAnnotation
+                  | PatternAnnotation
+                  | ScaleAnnotation
+                  | IntentAnnotation
+                  | InvAnnotation
+                  | AutoAnnotation
+                  | DeprecatedAnnotation
+
+IdAnnotation         ::= "@id"
+RefAnnotation        ::= "@ref" "(" RefTarget ("," RefOption)* ")"
+RefTarget            ::= Identifier "." Identifier
+RefOption            ::= ("onDelete" | "onUpdate") ":" RefAction
+                       | "inverse" ":" String
+RefAction            ::= "CASCADE" | "RESTRICT" | "SET_NULL" | "NO_ACTION"
+UniqueAnnotation     ::= "@unique"
+IndexAnnotation      ::= "@index"
+DefaultAnnotation    ::= "@default" "(" Expr ")"
+CodegenNameAnnotation ::= "@codegenName" "(" String ")"
+MaxLengthAnnotation  ::= "@maxLength" "(" Integer ")"
+PatternAnnotation    ::= "@pattern" "(" String ")"
+ScaleAnnotation      ::= "@scale" "(" Integer ")"
+IntentAnnotation     ::= "@intent" "(" String ")"
+InvAnnotation        ::= "@inv" "(" String ")"
+AutoAnnotation       ::= "@auto"
+(* RFC 0023: @deprecated を object 形に拡張 *)
+DeprecatedAnnotation ::= "@deprecated" "(" DeprecatedArgs ")"
+DeprecatedArgs       ::= String                                 (* 短縮形: message *)
+                       | "{" DeprecatedField ("," DeprecatedField)* "}"
+DeprecatedField      ::= "message"     ":" String
+                       | "since"       ":" String               (* semver *)
+                       | "removeIn"    ":" String               (* semver *)
+                       | "replaceWith" ":" QualifiedName
+
+(* ─────────────── リレーション ─────────────── *)
+
+Relation        ::= "->" RelationKind Multiplicity Identifier ":" QualifiedName
+RelationKind    ::= "composition" | "aggregation" | "association" | "inheritance"
+Multiplicity    ::= "1" | "0..1" | "1..*" | "0..*"
+                  | Integer ".." (Integer | "*")
+
+(* ─────────────── fn メソッド ─────────────── *)
+
+FnMethod        ::= "fn" Identifier "(" FnParams? ")" "->" ReturnType
+                    MethodAnnotation*
+FnParams        ::= FnParam ("," FnParam)*
+FnParam         ::= Identifier ":" Type Nullability?
+ReturnType      ::= "void" | Type Nullability?
+MethodAnnotation ::= "@pre"    "(" String ")"
+                   | "@post"   "(" String ")"
+                   | "@raises" "(" Identifier ")"
+                   | "@intent" "(" String ")"
+
+(* ─────────────── ブロックディレクティブ ─────────────── *)
+
+BlockDirective       ::= CompositeIdBlock
+                       | CompositeUniqueBlock
+                       | CompositeIndexBlock
+                       | DocBlock
+                       | AttachmentsBlock
+                       | DependenciesBlock
+                       | SampleBlock
+                       | OverrideBlock
+                       | CodegenBlock                         (* RFC 0025 *)
+                       | ThemeDirective
+
+(* RFC 0025: コード生成ターゲット別の拡張フック *)
+CodegenBlock         ::= "@@codegen" "(" CodegenSpec ("," CodegenSpec)* ")"
+CodegenSpec          ::= TargetName ":" CodegenAction
+TargetName           ::= "prisma" | "sql" | "ts" | "openapi"
+                       | "graphql" | "zod" | Identifier       (* 任意 target *)
+CodegenAction        ::= "skip"
+                       | "rename"   "(" String ")"
+                       | "template" "(" String ")"
+                       | "type"     "(" String ")"
+                       | "{" CodegenField ("," CodegenField)* "}"
+CodegenField         ::= Identifier ":" (Expr | Identifier)
+
+(* RFC 0011: protocol の method 解決を明示的に指定 *)
+OverrideBlock        ::= "@@override" "(" "from" ":" QualifiedName ")"
+
+CompositeIdBlock     ::= "@@id"     "(" IdentifierList ")"
+CompositeUniqueBlock ::= "@@unique" "(" IdentifierList ")"
+CompositeIndexBlock  ::= "@@index"  "(" IdentifierList ")"
+
+DocBlock             ::= "@@doc" "(" TripleQuotedString ")"
+
+AttachmentsBlock     ::= "@@attachments" "(" AttachmentItem
+                         ("," AttachmentItem)* ")"
+AttachmentItem       ::= "{" ObjectField ("," ObjectField)* "}"
+
+(* RFC 0005: DependencyItem の on は QualifiedName に拡張 *)
+DependenciesBlock    ::= "@@dependencies" "(" DependencyItem
+                         ("," DependencyItem)* ")"
+DependencyItem       ::= QualifiedName                              (* 短縮形 *)
+                       | "{" DepField ("," DepField)* "}"            (* 完全形 *)
+DepField             ::= "on"   ":" QualifiedName
+                       | "kind" ":" ("FS" | "SS" | "FF" | "SF")
+                       | "lag"  ":" SignedInteger
+
+(* RFC 0004 + 0008: @@sample (inline + 外部ファイル) *)
+SampleBlock          ::= "@@sample" "(" SampleRow ("," SampleRow)* ")"
+                       | "@@sample" "(" "from" ":" String
+                          ("," SampleOption)* ")"
+SampleRow            ::= "{" SampleField ("," SampleField)* "}"
+SampleField          ::= Identifier ":" (Expr | Identifier)
+SampleOption         ::= "format"   ":" SampleFormat
+                       | "encoding" ":" String
+                       | "limit"    ":" Integer
+SampleFormat         ::= "json" | "jsonl" | "yaml" | "csv"
+
+IdentifierList       ::= Identifier ("," Identifier)*
+
+(* ─────────────── view ─────────────── *)
+
+ViewDecl        ::= "view" Identifier ViewKind ModelAnnotation*
+                    "{" ViewBody "}"
+ViewKind        ::= "@er_diagram"        | "@class_diagram"
+                  | "@sequence_diagram"  | "@component_diagram"
+                  | "@package_diagram"   | "@state_machine"
+                  | "@activity_diagram"  | "@deployment_diagram"
+                  | "@wbs_diagram"       | "@gantt_chart"
+
+ViewBody        ::= IncludeClause ExcludeClause? LayoutClause?
+                    CriticalPathClause? ThemeDirective? SequenceBody?
+
+IncludeClause   ::= "include" ":" ModelPatternList
+ExcludeClause   ::= "exclude" ":" ModelPatternList
+ModelPatternList ::= ModelPattern ("," ModelPattern)*
+ModelPattern    ::= QualifiedName (".*")?
+
+(* RFC 0002: layout 具体構文 *)
+LayoutClause    ::= "layout" ":" LayoutOption ("," LayoutOption)*
+LayoutOption    ::= "direction" "(" Direction ")"
+                  | "engine"    "(" Engine ")"
+                  | "hint"      "(" String ")"
+                  | "spacing"   "(" Integer ")"
+                  | "align"     "(" Align ")"
+Direction       ::= "TB" | "BT" | "LR" | "RL"
+Engine          ::= "elk" | "dagre" | "grid" | "manual"
+Align           ::= "start" | "center" | "end"
+
+(* RFC 0024: Gantt の critical path hint *)
+CriticalPathClause ::= "criticalPath" ":" CriticalPathStrategy
+CriticalPathStrategy ::= "highlight" | "compute" | "ignore"
+
+(* ─────────────── sequence diagram 本体 ─────────────── *)
+
+SequenceBody    ::= ParticipantsDecl SeqBlock
+ParticipantsDecl ::= "participants" ":" Participant ("," Participant)*
+Participant     ::= Identifier ("as" Identifier)?
+SeqBlock        ::= "seq" "{" SeqStatement* "}"
+SeqStatement    ::= SeqMessage | AltBlock | LoopBlock | OptBlock | ParBlock
+                  | CriticalBlock                                  (* RFC 0017 *)
+
+(* RFC 0017: critical リージョン + RFC 0021: timeout / catch / finally *)
+CriticalBlock   ::= "critical" String "{" SeqStatement* "}"
+                    ("on" LockTarget)?
+                    ("timeout" "(" Duration ")")?                  (* RFC 0021 *)
+                    ("catch" String "{" SeqStatement* "}")?        (* RFC 0021 *)
+                    ("finally"       "{" SeqStatement* "}")?       (* RFC 0021 *)
+LockTarget      ::= Identifier                                     (* 単一参加者 *)
+                  | "(" Identifier ("," Identifier)* ")"           (* 複数参加者 *)
+(* Duration は ParBlock と共通 (RFC 0013 で定義済み) *)
+SeqMessage      ::= Identifier Arrow Identifier ":" MessageLabel
+Arrow           ::= "->>" | "-.>"
+MessageLabel    ::= LineText
+
+(* RFC 0003: AltBlock に else / default 分岐追加 *)
+AltBlock        ::= "alt" String "{" SeqStatement* "}"
+                    ("else" String "{" SeqStatement* "}")*
+                    ("else"        "{" SeqStatement* "}")?   (* 無条件 default *)
+LoopBlock       ::= "loop" String "{" SeqStatement* "}"
+
+(* RFC 0007: opt (単一オプショナル) / par (並行、2 ブロック以上) *)
+OptBlock        ::= "opt" String "{" SeqStatement* "}"
+
+(* RFC 0007 + 0013: par にブランチ同期 await を追加 *)
+ParBlock        ::= "par" String "{" SeqStatement* "}"
+                    ("and" String "{" SeqStatement* "}")+
+                    ("await" AwaitSpec)?
+AwaitSpec       ::= "all"                                       (* 全ブランチ待機、既定 *)
+                  | "any"                                       (* 最初の完了で進む *)
+                  | "(" String ("," String)* ")"                (* 指定ラベルのみ *)
+                  | "all" "timeout" "(" Duration ")"            (* タイムアウト付き全待機 *)
+Duration        ::= Integer ("ms" | "s" | "m")
+
+(* ─────────────── 式 (アノテーション引数) ─────────────── *)
+
+Expr            ::= Literal | Identifier | FunctionCall
+FunctionCall    ::= Identifier "(" (Expr ("," Expr)*)? ")"
+Literal         ::= Integer | Float | String | Boolean | Null
+SignedInteger   ::= "-"? Integer
+Boolean         ::= "true" | "false"
+Null            ::= "null"
+
+ObjectField     ::= Identifier ":" (Expr | Identifier)
+
+(* ─────────────── 語彙 (字句) ─────────────── *)
+
+Identifier      ::= IdStart IdCont*
+IdStart         ::= UnicodeLetter | "_"                 (* 日本語許容 *)
+IdCont          ::= IdStart | Digit
+
+String              ::= '"' (StringChar | EscapeSeq)* '"'
+TripleQuotedString  ::= '"""' (AnyChar)* '"""'          (* 非貪欲 *)
+StringChar          ::= AnyChar - ('"' | '\' | Newline)
+EscapeSeq           ::= "\" ('"' | '\' | 'n' | 't' | 'r'
+                      | 'u' HexDigit HexDigit HexDigit HexDigit)
+
+Integer         ::= Digit+
+Float           ::= Digit+ "." Digit+
+Digit           ::= [0-9]
+HexDigit        ::= Digit | [a-f] | [A-F]
+UnicodeLetter   ::= (* Unicode category L 全般 *)
+Newline         ::= "\n" | "\r\n"
+
+LineText        ::= (AnyChar - Newline)*
+AnyChar         ::= (* any Unicode code point *)
+
+(* ─────────────── コメント / 空白 ─────────────── *)
+
+Comment         ::= LineComment | BlockComment
+LineComment     ::= "//" LineText Newline
+BlockComment    ::= "/*" AnyChar* "*/"
+Whitespace      ::= " " | "\t" | Newline | Comment
+
+(* ─────────────── コンテキスト依存の解決ルール ─────────────── *)
+
+(*
+ * 以下のキーワードは RESERVED_KEYWORDS に含まれるが、
+ * 特定のコンテキスト内でのみキーワードとして機能する:
+ *
+ *   "fn"    — model / type / protocol の body 内でのみメソッド宣言キーワード
+ *   "as"    — participants 宣言内でのみ alias キーワード
+ *   "alt"   — seq block 内でのみ分岐キーワード
+ *   "else"  — alt 内の続く分岐キーワード (RFC 0003)
+ *   "loop"  — seq block 内でのみ反復キーワード
+ *   "include" / "exclude" / "layout" / "participants" / "seq" — view body 内のみ
+ *   "protocol" / "union" / "module" — top-level またはそれらの body 内 (RFC 0006)
+ *   "import" / "as"    — ファイル冒頭の import 宣言、または participants 内の alias
+ *   "extends"          — protocol 宣言の継承節 (RFC 0010)
+ *   "opt" / "par" / "and" — seq block 内のフラグメント (RFC 0007)
+ *   "await" / "timeout" — par block 末尾の同期指定 (RFC 0013)
+ *   "from"             — @@sample(from: "...") / @@override(from: ...) の指定
+ *   "all" / "any"      — await の戦略 (RFC 0013)
+ *   "impl" / "for"     — impl ブロック (RFC 0016)
+ *   "where"            — impl ブロックの型制約節 (RFC 0015 / 0016)
+ *   "critical"         — sequence の排他リージョン (RFC 0017)
+ *   "on"               — critical のロックターゲット指定
+ *   "timeout" / "catch" / "finally" — critical の RFC 0021 拡張
+ *   "out" / "in"       — 型パラメータの variance (RFC 0019)
+ *   "criticalPath"     — Gantt view の CPM hint (RFC 0024)
+ *   "highlight" / "compute" — criticalPath strategy (RFC 0024)
+ *   "message" / "since" / "removeIn" / "replaceWith" — @deprecated object 形 (RFC 0023)
+ *   "prisma" / "sql" / "ts" / "openapi" / "graphql" / "zod" — @@codegen ターゲット (RFC 0025)
+ *   "skip" / "rename" / "template" / "type" — @@codegen action (RFC 0025)
+ *)
+
+(*
+ * ── `_id` ハッシュ算出 (RFC 0026、semantic のみ) ───────────────
+ *
+ * 全 IR 要素の `_id` は以下で算出:
+ *   canonicalPath = canonicalize(element)    // NFC 正規化、区切り文字規則
+ *   hash          = sha1(canonicalPath).hex()[0:16]
+ *   _id           = "sha1:" + hash
+ *
+ * canonicalize 規則:
+ *   namespace:  name
+ *   model:      namespacePath + "." + name
+ *   attribute:  modelId[4:] + "#" + name
+ *   view:       "view:" + id
+ *   protocol:   namespacePath + "." + name + "<" + typeParams.join(",") + ">"
+ *   union:      namespacePath + "." + name
+ *   variant:    unionId[4:] + "#" + name
+ *)
+
+(*
+ * ── Blanket impl の衝突規則 (RFC 0020、semantic のみ) ──────────
+ *
+ * 複数の blanket impl が同じ型で適用可能な場合:
+ *   1. より厳密 (bound が多い) な impl が優先
+ *   2. 同じ厳密性なら parse error (曖昧)
+ *   3. ユーザ明示の `impl P for SpecificType` は blanket impl を上書き
+ *
+ * Blanket impl は P を所有する namespace でのみ書ける (orphan rule 緩和)。
+ *)
+
+(*
+ * ── Well-foundedness 検査アルゴリズム (RFC 0022、semantic のみ) ──
+ *
+ * 1. 依存グラフ G 構築 (edge_kind: required | optional | container)
+ * 2. Tarjan SCC 分解
+ * 3. 各 SCC で terminatingVariant を探す:
+ *    ∀ field f, resolveType(f) ∉ SCC ∨ edge(f) ∈ { optional, container }
+ * 4. 少なくとも 1 つあれば SCC 全体を wellFounded、無ければ parse error
+ *)
+
+(*
+ * ── 再帰 union variant (RFC 0012、semantic のみ) ─────────────────
+ *
+ * inline payload variant の field 型に **親 union 名** を許可する。
+ * 循環検出のため、終端 (non-recursive) な variant が最低 1 つ必須。
+ * 例:
+ *   union Expr = Num { value: int! }
+ *              | Add { left: Expr!, right: Expr! }
+ *)
+
+(*
+ * ── MRO 解決 (RFC 0011、semantic のみ) ──────────────────────────
+ *
+ * protocol の多重継承で diamond が発生した場合、C3 linearization に従って
+ * method 解決順序を決定する。曖昧性がある場合は子 protocol で明示的に
+ * 再宣言するか、@@override(from: X) で選択する。
+ *
+ * それ以外の位置でこれらを識別子として使うと parse error。
+ * 完全な RESERVED_KEYWORDS リストは index.ts を参照。
+ *)

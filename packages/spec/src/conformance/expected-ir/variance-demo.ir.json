@@ -1,0 +1,314 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "variance_demo": {
+      "models": {
+        "DogProducer": {
+          "_id": "3ac167ff852b",
+          "name": "DogProducer",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "ff40a25a686b",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Dog を生産。Producer<Animal> としても扱える (共変)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [
+            {
+              "ref": "Producer",
+              "args": [
+                "Dog"
+              ]
+            }
+          ]
+        },
+        "AnimalConsumer": {
+          "_id": "23ae6a203e26",
+          "name": "AnimalConsumer",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "ff40a25a686b",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Animal を消費。Consumer<Dog> としても扱える (反変)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [
+            {
+              "ref": "Consumer",
+              "args": [
+                "Animal"
+              ]
+            }
+          ]
+        }
+      },
+      "types": {},
+      "enums": {},
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [
+        {
+          "name": "Animal",
+          "extends": [],
+          "methods": [
+            {
+              "name": "getName",
+              "params": [],
+              "returns": {
+                "ref": "string"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Dog",
+          "extends": [
+            {
+              "ref": "Animal"
+            }
+          ],
+          "methods": [
+            {
+              "name": "bark",
+              "params": [],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cat",
+          "extends": [
+            {
+              "ref": "Animal"
+            }
+          ],
+          "methods": [
+            {
+              "name": "meow",
+              "params": [],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Producer",
+          "typeParams": [
+            {
+              "name": "T",
+              "variance": "out"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "produce",
+              "params": [],
+              "returns": {
+                "ref": "T"
+              }
+            },
+            {
+              "name": "produceOrNull",
+              "params": [],
+              "returns": {
+                "ref": "T"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consumer",
+          "typeParams": [
+            {
+              "name": "T",
+              "variance": "in"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "consume",
+              "params": [
+                {
+                  "name": "item",
+                  "type": {
+                    "ref": "T"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            },
+            {
+              "name": "consumeMany",
+              "params": [
+                {
+                  "name": "items",
+                  "type": {
+                    "ref": "T"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Collection",
+          "typeParams": [
+            {
+              "name": "R",
+              "variance": "out"
+            },
+            {
+              "name": "W",
+              "variance": "in"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "read",
+              "params": [],
+              "returns": {
+                "ref": "R"
+              }
+            },
+            {
+              "name": "write",
+              "params": [
+                {
+                  "name": "item",
+                  "type": {
+                    "ref": "W"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Repository",
+          "typeParams": [
+            {
+              "name": "T"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "get",
+              "params": [
+                {
+                  "name": "id",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "T"
+              }
+            },
+            {
+              "name": "save",
+              "params": [
+                {
+                  "name": "entity",
+                  "type": {
+                    "ref": "T"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        }
+      ],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "variance-class",
+      "kind": "class_diagram",
+      "include": [
+        "variance_demo.*"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "TB",
+        "engine": "elk"
+      },
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

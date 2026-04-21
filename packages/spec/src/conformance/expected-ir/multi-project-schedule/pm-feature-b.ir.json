@@ -1,0 +1,331 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "meta": {
+    "imports": [
+      {
+        "kind": "ns",
+        "value": "pm_core"
+      },
+      {
+        "kind": "ns",
+        "value": "pm_feature_a"
+      }
+    ]
+  },
+  "namespaces": {
+    "pm_feature_b": {
+      "models": {
+        "Task": {
+          "_id": "90b34f677f21",
+          "name": "Task",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "a487f28a735e",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "910c62cabb03",
+              "name": "name",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "f2e8f0951341",
+              "name": "plannedStart",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "4074f324ba1d",
+              "name": "plannedEnd",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "b1dffcfd5646",
+              "name": "progress",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "0.0",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "19406e8fdfa7",
+              "name": "status",
+              "type": "TaskStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "PENDING",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "dd24cb0dcd42",
+              "name": "assignee",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "機能 B のタスク。pm_core + pm_feature_a に依存",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [
+            {
+              "id": "b-design",
+              "name": "Feature B Design",
+              "plannedStart": "2026-05-25",
+              "plannedEnd": "2026-05-31",
+              "progress": 0.2,
+              "status": "IN_PROGRESS",
+              "assignee": "Grace"
+            },
+            {
+              "id": "b-impl",
+              "name": "Feature B Implementation",
+              "plannedStart": "2026-06-01",
+              "plannedEnd": "2026-06-21",
+              "progress": 0,
+              "status": "PENDING",
+              "assignee": "Heidi"
+            },
+            {
+              "id": "b-release",
+              "name": "Feature B Release",
+              "plannedStart": "2026-06-25",
+              "plannedEnd": "2026-06-25",
+              "progress": 0,
+              "status": "PENDING",
+              "assignee": "Grace"
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "TaskDependency": {
+          "_id": "8f7b9e4e2020",
+          "name": "TaskDependency",
+          "stereotype": "entity",
+          "identity": [
+            "fromId",
+            "toId"
+          ],
+          "attributes": [
+            {
+              "_id": "d23b4e2f64d8",
+              "name": "fromId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Task.id",
+                "onDelete": "CASCADE"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "732b085b6d0b",
+              "name": "toId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Task.id",
+                "onDelete": "CASCADE"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "feature B 内の先行関係",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [
+            {
+              "fromId": "b-design",
+              "toId": "b-impl"
+            },
+            {
+              "fromId": "b-impl",
+              "toId": "b-release"
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "FeatureBCrossDeps": {
+          "_id": "dd578bddc4e6",
+          "name": "FeatureBCrossDeps",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "a487f28a735e",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "feature B は core のインフラと feature A の完了に依存",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [
+            {
+              "on": "pm_core.Task",
+              "kind": "FS",
+              "lag": "0"
+            },
+            {
+              "on": "pm_feature_a.Task",
+              "kind": "FS",
+              "lag": "3"
+            }
+          ],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "TaskStatus": {
+          "_id": "3a549d6254de",
+          "name": "TaskStatus",
+          "values": [
+            "PENDING",
+            "IN_PROGRESS",
+            "DONE",
+            "BLOCKED"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "feature-b-wbs",
+      "kind": "wbs_diagram",
+      "include": [
+        "pm_feature_b.Task"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "feature-b-gantt",
+      "kind": "gantt_chart",
+      "include": [
+        "pm_feature_b.Task",
+        "pm_feature_b.TaskDependency"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

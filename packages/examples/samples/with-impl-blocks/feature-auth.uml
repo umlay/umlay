@@ -1,0 +1,38 @@
+// feature-auth.uml — 認証機能モジュール。core.User に Identifiable を後付けで実装
+//
+// spec 0.5.0 (RFC 0016): impl ブロックで別ファイルの protocol を別ファイルの
+// model に適用する。orphan rule: Identifiable / User はどちらも core 所有、
+// 本 namespace が auth。許可されるのは「どちらか片方を所有」の場合のみだが、
+// core の protocol + core の model への impl は core からのみ書ける。
+//
+// そのため本ファイルは **auth 自身が所有する protocol** を core.User に
+// 適用するパターンを示す。
+
+@@mode(strict)
+
+namespace auth
+
+import core
+
+// ============================================================================
+// auth 所有の protocol (別 namespace に impl 可能)
+// ============================================================================
+
+protocol Authenticatable @intent("認証可能な主体") {
+  fn verifyPassword(candidate: string!) -> bool!
+  fn issueToken() -> string!
+}
+
+// ============================================================================
+// impl: auth.Authenticatable を core.User に適用
+// (Authenticatable は auth 所有なので orphan rule OK)
+// ============================================================================
+
+impl Authenticatable for core.User {
+  fn verifyPassword(candidate: string!) -> bool! {
+    // 実装本体は spec 範囲外
+  }
+  fn issueToken() -> string! {
+    // JWT などを返す
+  }
+}

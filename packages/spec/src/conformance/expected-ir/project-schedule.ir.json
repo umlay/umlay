@@ -1,0 +1,776 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "pm": {
+      "models": {
+        "Resource": {
+          "_id": "0721ae409a10",
+          "name": "Resource",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "02f1fbcc3228",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "9903e1db255f",
+              "name": "name",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "97b207c6a783",
+              "name": "role",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "aecb773fe694",
+              "name": "email",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": true,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "c6c6a55a6796",
+              "name": "capacity",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "1.0",
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "capacity > 0 && capacity <= 1.0"
+                ],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            },
+            {
+              "_id": "be1f2dd8fa9a",
+              "name": "active",
+              "type": "bool",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": true,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "プロジェクトメンバー。Task.assigneeId の参照先",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [
+            {
+              "id": "r-alice",
+              "name": "Alice",
+              "role": "Project Manager",
+              "email": "alice@example.com",
+              "capacity": 1
+            },
+            {
+              "id": "r-bob",
+              "name": "Bob",
+              "role": "Backend Engineer",
+              "email": "bob@example.com",
+              "capacity": 1
+            },
+            {
+              "id": "r-carol",
+              "name": "Carol",
+              "role": "QA Engineer",
+              "email": "carol@example.com",
+              "capacity": 0.8
+            },
+            {
+              "id": "r-dave",
+              "name": "Dave",
+              "role": "Frontend Engineer",
+              "email": "dave@example.com",
+              "capacity": 1
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "Task": {
+          "_id": "1348706cdc2c",
+          "name": "Task",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "02f1fbcc3228",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "9903e1db255f",
+              "name": "name",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "2c7f6649d3da",
+              "name": "description",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "2cff669fd649",
+              "name": "plannedStart",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "b0a7204142a9",
+              "name": "plannedEnd",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "plannedEnd >= plannedStart"
+                ],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            },
+            {
+              "_id": "b0b1d3c37cfa",
+              "name": "actualStart",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "f4007c8f08ce",
+              "name": "actualEnd",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "97f680d56bcc",
+              "name": "progress",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "0.0",
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "progress >= 0.0 && progress <= 1.0"
+                ],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            },
+            {
+              "_id": "4bfb1a60e045",
+              "name": "status",
+              "type": "TaskStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "PENDING",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "ea3ae386fc89",
+              "name": "priority",
+              "type": "Priority",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "MEDIUM",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "15c995113f7b",
+              "name": "isMilestone",
+              "type": "bool",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "742aceeb47e4",
+              "name": "assigneeId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Resource.id",
+                "onDelete": "SET_NULL",
+                "inverse": "assignedTasks"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "a54005062957",
+              "name": "parentId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Task.id",
+                "onDelete": "CASCADE",
+                "inverse": "children"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "WBS の最小作業単位 / Gantt のバー 1 本に対応",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [
+            {
+              "id": "t-kickoff",
+              "name": "Kickoff",
+              "plannedStart": "2026-04-20",
+              "plannedEnd": "2026-04-20",
+              "progress": 1,
+              "status": "DONE",
+              "priority": "CRITICAL",
+              "assigneeId": "r-alice",
+              "isMilestone": true
+            },
+            {
+              "id": "t-release",
+              "name": "Release",
+              "plannedStart": "2026-06-30",
+              "plannedEnd": "2026-06-30",
+              "progress": 0,
+              "status": "PENDING",
+              "priority": "CRITICAL",
+              "assigneeId": "r-alice",
+              "isMilestone": true
+            },
+            {
+              "id": "t-planning",
+              "name": "Planning Phase",
+              "plannedStart": "2026-04-20",
+              "plannedEnd": "2026-05-03",
+              "progress": 1,
+              "status": "DONE",
+              "priority": "HIGH",
+              "assigneeId": "r-alice"
+            },
+            {
+              "id": "t-build",
+              "name": "Build Phase",
+              "plannedStart": "2026-05-04",
+              "plannedEnd": "2026-06-15",
+              "progress": 0.6,
+              "status": "IN_PROGRESS",
+              "priority": "HIGH",
+              "assigneeId": "r-bob"
+            },
+            {
+              "id": "t-testing",
+              "name": "Testing Phase",
+              "plannedStart": "2026-06-16",
+              "plannedEnd": "2026-06-29",
+              "progress": 0,
+              "status": "PENDING",
+              "priority": "HIGH",
+              "assigneeId": "r-carol"
+            },
+            {
+              "id": "t-discovery",
+              "name": "Discovery",
+              "plannedStart": "2026-04-20",
+              "plannedEnd": "2026-04-25",
+              "progress": 1,
+              "status": "DONE",
+              "priority": "HIGH",
+              "assigneeId": "r-alice",
+              "parentId": "t-planning"
+            },
+            {
+              "id": "t-reqdef",
+              "name": "Requirements Definition",
+              "plannedStart": "2026-04-26",
+              "plannedEnd": "2026-04-30",
+              "progress": 1,
+              "status": "DONE",
+              "priority": "HIGH",
+              "assigneeId": "r-bob",
+              "parentId": "t-planning"
+            },
+            {
+              "id": "t-estimate",
+              "name": "Estimation",
+              "plannedStart": "2026-05-01",
+              "plannedEnd": "2026-05-03",
+              "progress": 1,
+              "status": "DONE",
+              "priority": "MEDIUM",
+              "assigneeId": "r-alice",
+              "parentId": "t-planning"
+            },
+            {
+              "id": "t-backend",
+              "name": "Backend Development",
+              "plannedStart": "2026-05-04",
+              "plannedEnd": "2026-05-24",
+              "progress": 0.8,
+              "status": "IN_PROGRESS",
+              "priority": "HIGH",
+              "assigneeId": "r-bob",
+              "parentId": "t-build"
+            },
+            {
+              "id": "t-frontend",
+              "name": "Frontend Development",
+              "plannedStart": "2026-05-11",
+              "plannedEnd": "2026-06-07",
+              "progress": 0.5,
+              "status": "IN_PROGRESS",
+              "priority": "HIGH",
+              "assigneeId": "r-dave",
+              "parentId": "t-build"
+            },
+            {
+              "id": "t-integration",
+              "name": "Integration",
+              "plannedStart": "2026-06-08",
+              "plannedEnd": "2026-06-15",
+              "progress": 0,
+              "status": "PENDING",
+              "priority": "HIGH",
+              "assigneeId": "r-bob",
+              "parentId": "t-build"
+            },
+            {
+              "id": "t-unit",
+              "name": "Unit Testing",
+              "plannedStart": "2026-06-16",
+              "plannedEnd": "2026-06-20",
+              "progress": 0,
+              "status": "PENDING",
+              "priority": "MEDIUM",
+              "assigneeId": "r-carol",
+              "parentId": "t-testing"
+            },
+            {
+              "id": "t-e2e",
+              "name": "E2E + UAT",
+              "plannedStart": "2026-06-21",
+              "plannedEnd": "2026-06-29",
+              "progress": 0,
+              "status": "PENDING",
+              "priority": "HIGH",
+              "assigneeId": "r-carol",
+              "parentId": "t-testing"
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "TaskDependency": {
+          "_id": "f0bb3ceee8c8",
+          "name": "TaskDependency",
+          "stereotype": "entity",
+          "identity": [
+            "fromTaskId",
+            "toTaskId"
+          ],
+          "attributes": [
+            {
+              "_id": "938908b9cf08",
+              "name": "fromTaskId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Task.id",
+                "onDelete": "CASCADE",
+                "inverse": "successors"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "9b208e90e66a",
+              "name": "toTaskId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Task.id",
+                "onDelete": "CASCADE",
+                "inverse": "predecessors"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "42f389d176bd",
+              "name": "kind",
+              "type": "DependencyKind",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "FS",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "3c83c3cea37c",
+              "name": "lagDays",
+              "type": "int",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "0",
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "lagDays >= -60 && lagDays <= 365"
+                ],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            }
+          ],
+          "relations": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Task 間の先行関係。Gantt の矢印 1 本に対応",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [
+            {
+              "fromTaskId": "t-kickoff",
+              "toTaskId": "t-discovery"
+            },
+            {
+              "fromTaskId": "t-discovery",
+              "toTaskId": "t-reqdef"
+            },
+            {
+              "fromTaskId": "t-reqdef",
+              "toTaskId": "t-estimate"
+            },
+            {
+              "fromTaskId": "t-estimate",
+              "toTaskId": "t-backend"
+            },
+            {
+              "fromTaskId": "t-estimate",
+              "toTaskId": "t-frontend"
+            },
+            {
+              "fromTaskId": "t-backend",
+              "toTaskId": "t-integration"
+            },
+            {
+              "fromTaskId": "t-frontend",
+              "toTaskId": "t-integration"
+            },
+            {
+              "fromTaskId": "t-integration",
+              "toTaskId": "t-unit"
+            },
+            {
+              "fromTaskId": "t-unit",
+              "toTaskId": "t-e2e"
+            },
+            {
+              "fromTaskId": "t-e2e",
+              "toTaskId": "t-release",
+              "kind": "FS",
+              "lag": 2
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "TaskStatus": {
+          "_id": "e3bd213c4aa7",
+          "name": "TaskStatus",
+          "values": [
+            "PENDING",
+            "IN_PROGRESS",
+            "DONE",
+            "BLOCKED"
+          ]
+        },
+        "Priority": {
+          "_id": "d34c6e1b5b29",
+          "name": "Priority",
+          "values": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ]
+        },
+        "DependencyKind": {
+          "_id": "7fe6b9f614c8",
+          "name": "DependencyKind",
+          "values": [
+            "FS",
+            "SS",
+            "FF",
+            "SF"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "pm-wbs",
+      "kind": "wbs_diagram",
+      "include": [
+        "pm.Task"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "TB",
+        "engine": "elk"
+      },
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "pm-gantt",
+      "kind": "gantt_chart",
+      "include": [
+        "pm.Task",
+        "pm.TaskDependency"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "LR",
+        "engine": "elk",
+        "spacing": 24
+      },
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "pm-er",
+      "kind": "er_diagram",
+      "include": [
+        "pm.Resource",
+        "pm.Task",
+        "pm.TaskDependency"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "pm-class",
+      "kind": "class_diagram",
+      "include": [
+        "pm.Resource",
+        "pm.Task",
+        "pm.TaskDependency",
+        "pm.TaskStatus",
+        "pm.Priority",
+        "pm.DependencyKind"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "task-lifecycle",
+      "kind": "state_machine",
+      "include": [
+        "pm.Task",
+        "pm.TaskStatus"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

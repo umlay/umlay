@@ -1,0 +1,102 @@
+// critical-with-timeout.uml — critical + timeout / catch / finally のデモ (RFC 0021)
+//
+// spec 0.6.0:
+//   - `critical "X" { } timeout(5s) catch "label" { } finally { }`
+//   - ロック取得失敗 / 処理超過 / リソース解放の完全フロー
+
+@@mode(strict)
+
+namespace payments
+
+enum PaymentStatus { PENDING, COMMITTED, FAILED, TIMED_OUT }
+
+model Payment @aggregate_root @intent("決済トランザクション") {
+  +id     UUID!            @id
+  +amount decimal!         @inv("amount > 0")
+  +status PaymentStatus!   @default(PENDING)
+}
+
+// Participant services
+model Client    @service { +id string! @id }
+model API       @service { +id string! @id }
+model Lock      @service { +id string! @id }
+model DB        @service { +id string! @id }
+model Gateway   @service { +id string! @id }   // 外部決済ゲートウェイ
+model AuditLog  @service { +id string! @id }
+
+// ============================================================================
+// Sequence: timeout / catch / finally の完全組み合わせ
+// ============================================================================
+
+view payment-flow @sequence_diagram
+  @intent("決済フロー: 外部 Gateway 呼び出しを critical で保護、5 秒 timeout + cleanup") {
+  participants:
+    Client   as c,
+    API      as api,
+    Lock     as lock,
+    DB       as db,
+    Gateway  as gw,
+    AuditLog as audit
+
+  seq {
+    // 1. リクエスト受信 + ロック取得
+    c    ->> api  : "POST /payments"
+    api  ->> lock : "acquire(\"payment:{paymentId}\")"
+    lock -.> api  : "acquired"
+
+    // 2. critical: 外部 Gateway 呼び出しに 5 秒のタイムアウト
+    critical "Gateway 決済処理" on (gw, db) timeout(5s) {
+      api ->> gw : "charge(paymentId, amount)"
+      gw  -.> api: "{ authCode }"
+      api ->> db : "insert Payment (status=COMMITTED)"
+      db  -.> api: "ok"
+    } catch "timeout or gateway error" {
+      // タイムアウト時 / Gateway エラー時
+      api ->> db    : "insert Payment (status=TIMED_OUT)"
+      api ->> audit : "log(\"payment timeout\", { paymentId })"
+      api ->> gw    : "cancelIfPending(paymentId)"  // best-effort 取り消し
+    } finally {
+      // 成功 / 失敗どちらでも必ずロック解放
+      api  ->> lock : "release(\"payment:{paymentId}\")"
+      lock -.> api  : "released"
+    }
+
+    // 3. レスポンス
+    alt "成功" {
+      api -.> c : "201 Created { paymentId, status }"
+    } else "タイムアウト" {
+      api -.> c : "504 Gateway Timeout { paymentId, status: \"TIMED_OUT\" }"
+    } else {
+      api -.> c : "500 Internal Server Error"
+    }
+  }
+}
+
+// ============================================================================
+// ネストした critical: 外側で audit の排他、内側で DB の排他
+// ============================================================================
+
+view nested-critical @sequence_diagram
+  @intent("critical のネスト + timeout の例") {
+  participants:
+    API      as api,
+    Lock     as lock,
+    DB       as db,
+    AuditLog as audit
+
+  seq {
+    critical "audit 書き込み全体" on (audit) timeout(2s) {
+      critical "DB への決済結果記録" on (db) timeout(500ms) {
+        api ->> db : "update Payment"
+        db  -.> api: "ok"
+      } catch "DB slow" {
+        api ->> audit : "log(\"DB timeout, payment may be inconsistent\")"
+      }
+      api ->> audit : "log(\"payment audit recorded\")"
+    } finally {
+      api ->> lock : "release()"
+    }
+  }
+}
+
+view payment-lifecycle @state_machine { include: payments.Payment, payments.PaymentStatus }

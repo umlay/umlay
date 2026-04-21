@@ -1,0 +1,253 @@
+# Umlay Conformance Test Manifest
+#
+# 各サンプルが使う spec 機能を宣言し、実装側の準拠性を検証可能にする。
+# スキーマ: {version, samples: [{path, min-spec-version, features: {...}}]}
+
+version: 1.0
+spec-version: 1.0.0
+updated: 2026-04-22
+
+samples:
+  - path: ../../../examples/samples/hello-order.uml
+    summary: 最小サンプル (model 2 + view 2)
+    min-spec-version: 0.1.0
+    features:
+      declarations: [namespace, model, view]
+      stereotypes: [aggregate_root, entity]
+      annotations: [id, ref]
+      blocks: [id]
+      view-kinds: [class_diagram, er_diagram]
+      visibility: ["+"]
+
+  - path: ../../../examples/samples/blog.uml
+    summary: Users / Posts / Comments / Tags ブログドメイン
+    min-spec-version: 0.1.0
+    features:
+      declarations: [namespace, enum, model, view]
+      stereotypes: [aggregate_root, entity, value_object]
+      annotations: [id, ref, unique, default, intent]
+      blocks: [mode, index]
+      view-kinds: [er_diagram]
+      modes: [strict]
+
+  - path: ../../../examples/samples/ecommerce.uml
+    summary: cascade / inverse + 値オブジェクト (Money)
+    min-spec-version: 0.1.0
+    features:
+      declarations: [namespace, type, enum, model, view]
+      stereotypes: [aggregate_root, entity, value_object]
+      annotations: [id, ref, unique, default, intent, pattern]
+      blocks: [mode, index, id]
+      ref-options: [onDelete, inverse]
+      modes: [strict]
+
+  - path: ../../../examples/samples/saas-multitenant.uml
+    summary: Orgs / Teams / Memberships / Invitations
+    min-spec-version: 0.1.0
+    features:
+      declarations: [namespace, enum, model, view]
+      stereotypes: [aggregate_root, entity]
+      annotations: [id, ref, unique, default, intent]
+      blocks: [mode, id, unique, index]
+      modes: [strict]
+
+  - path: ../../../examples/samples/japanese-domain.uml
+    summary: 日本語識別子 + @codegenName
+    min-spec-version: 0.1.0
+    features:
+      declarations: [namespace, enum, model, view]
+      stereotypes: [aggregate_root, entity]
+      annotations: [id, ref, unique, codegenName, default, intent]
+      blocks: [mode, id]
+      special: [unicode-identifiers]
+      modes: [strict]
+
+  - path: ../../../examples/samples/with-attachments.uml
+    summary: 画像添付デモ (北極星 #6)
+    min-spec-version: 0.1.0
+    features:
+      declarations: [namespace, model, view]
+      stereotypes: [aggregate_root]
+      annotations: [id, intent]
+      blocks: [doc, attachments]
+
+  - path: ../../../examples/samples/with-custom-theme.uml
+    summary: 外部 CSS テーマ (北極星 #5)
+    min-spec-version: 0.1.0
+    features:
+      declarations: [namespace, model, view]
+      stereotypes: [aggregate_root, entity]
+      annotations: [id, ref, unique, intent]
+      blocks: [mode, theme]
+      view-features: [theme]
+      modes: [strict]
+
+  - path: ../../../examples/samples/reserved-keywords.uml
+    summary: 予約語の扱い (禁止例 + 将来構文コメント)
+    min-spec-version: 0.1.0
+    features:
+      declarations: [namespace, model, view]
+      stereotypes: [aggregate_root]
+      annotations: [id, ref, unique, intent]
+      blocks: [mode]
+      reserved-demo: true
+      modes: [strict]
+
+  - path: ../../../examples/samples/project-schedule.uml
+    summary: WBS / Gantt - 13 タスクを @@sample で宣言
+    min-spec-version: 0.2.0
+    features:
+      declarations: [namespace, enum, model, view]
+      stereotypes: [aggregate_root, entity]
+      annotations: [id, ref, default, intent, inv]
+      blocks: [mode, id, index, sample, layout]
+      view-kinds: [wbs_diagram, gantt_chart, er_diagram, class_diagram, state_machine]
+      view-features: [layout]
+      ref-options: [onDelete, inverse]
+      rfcs: [0002, 0004]
+      modes: [strict]
+
+  - path: ../../../examples/samples/login/login.uml
+    summary: Google OAuth + AWS serverless login (multi-view)
+    min-spec-version: 0.2.0
+    features:
+      declarations: [namespace, type, enum, model, view]
+      stereotypes: [aggregate_root, entity, value_object, service]
+      annotations: [id, ref, unique, default, intent, inv, pre, post, auto]
+      blocks: [mode, id, unique, index, doc]
+      view-kinds: [er_diagram, class_diagram, component_diagram, sequence_diagram, state_machine]
+      view-features: [participants, seq, alt-else, alt-default, loop]
+      fn-methods: true
+      ref-options: [onDelete, inverse]
+      rfcs: [0003]
+      modes: [strict]
+
+  - path: ../../../examples/samples/event-sourcing.uml
+    summary: Union (RFC 0006) + inline payload variant (RFC 0010)
+    min-spec-version: 0.3.0
+    features:
+      declarations: [namespace, enum, model, union, view]
+      stereotypes: [aggregate_root]
+      annotations: [id, ref, intent, inv, pre, post, auto, maxLength, default]
+      blocks: [mode]
+      view-kinds: [er_diagram, class_diagram, state_machine]
+      fn-methods: true
+      ref-options: [onDelete]
+      rfcs: [0006, 0010]
+      union-inline-variants: true
+      modes: [strict]
+
+  - path: ../../../examples/samples/modules-ddd.uml
+    summary: module + protocol<T> + 多重継承 (RFC 0006 + 0010)
+    min-spec-version: 0.3.0
+    features:
+      declarations: [namespace, module, protocol, enum, model, view]
+      stereotypes: [aggregate_root, entity, service]
+      annotations: [id, ref, unique, intent, inv, maxLength, default]
+      blocks: [mode, implements]
+      view-kinds: [er_diagram, class_diagram, package_diagram]
+      view-features: [layout]
+      type-params: true
+      protocol-extends: true
+      rfcs: [0006, 0010]
+      modes: [strict]
+
+  - path: ../../../examples/samples/multi-project-schedule/pm-core.uml
+    summary: Cross-ns 依存の参照元 (RFC 0005)
+    min-spec-version: 0.2.0
+    features:
+      declarations: [namespace, enum, model, view]
+      blocks: [mode, sample]
+      view-kinds: [wbs_diagram, gantt_chart]
+      rfcs: [0004, 0005]
+      modes: [strict]
+
+  - path: ../../../examples/samples/multi-project-schedule/pm-feature-a.uml
+    summary: Cross-ns 依存 + import (RFC 0005 + 0009)
+    min-spec-version: 0.3.0
+    features:
+      declarations: [namespace, enum, model, view]
+      blocks: [mode, sample, id, dependencies, import]
+      dependencies-cross-ns: true
+      rfcs: [0004, 0005, 0009]
+      modes: [strict]
+
+  - path: ../../../examples/samples/multi-project-schedule/pm-feature-b.uml
+    summary: Cross-ns 依存 (pm_core + pm_feature_a) + 複数 import (RFC 0005 + 0009)
+    min-spec-version: 0.3.0
+    features:
+      declarations: [namespace, enum, model, view]
+      blocks: [mode, sample, id, dependencies, import]
+      dependencies-cross-ns: true
+      dependencies-lag: true
+      rfcs: [0004, 0005, 0009]
+      modes: [strict]
+
+  - path: ../../../examples/samples/concurrent-flow.uml
+    summary: opt / par / await シーケンスの単独デモ (RFC 0007 + 0013)
+    min-spec-version: 0.4.0
+    features:
+      declarations: [namespace, enum, model, view]
+      stereotypes: [aggregate_root, service]
+      annotations: [id, intent, inv, default, auto]
+      blocks: [mode]
+      view-kinds: [sequence_diagram, state_machine]
+      view-features: [participants, seq, opt, par, par-await]
+      rfcs: [0007, 0013]
+      modes: [strict]
+
+  - path: ../../../examples/samples/ast-expr.uml
+    summary: Recursive union variant + generics (RFC 0012)
+    min-spec-version: 0.4.0
+    features:
+      declarations: [namespace, union, protocol, view]
+      annotations: [intent]
+      blocks: [mode]
+      view-kinds: [class_diagram]
+      union-inline-variants: true
+      union-recursive: true
+      type-params: true
+      rfcs: [0010, 0012]
+      modes: [strict]
+
+# 機能マーカー (grep で DSL 中に存在確認するための文字列)
+# index.ts が各 feature に対応する正規表現を持つ
+feature-markers:
+  declarations:
+    namespace:  "^namespace "
+    type:       "^type .+@value_object"
+    enum:       "^enum "
+    model:      "^model "
+    view:       "^view "
+    module:     "^module "
+    protocol:   "^protocol "
+    union:      "^union "
+  blocks:
+    mode:         "@@mode\\("
+    theme:        "@@theme\\("
+    doc:          "@@doc\\("
+    attachments:  "@@attachments\\("
+    id:           "@@id\\("
+    unique:       "@@unique\\("
+    index:        "@@index\\("
+    dependencies: "@@dependencies\\("
+    sample:       "@@sample\\("
+    implements:   "@@implements\\("
+    layout:       "layout:"
+    import:       "^import "
+    opt:          "\\bopt \".+\" \\{"
+    par:          "\\bpar \".+\" \\{"
+    extends:      "\\bextends \\w"
+  annotations:
+    id:          "@id\\b"
+    ref:         "@ref\\("
+    unique:      "@unique\\b"
+    default:     "@default\\("
+    intent:      "@intent\\("
+    inv:         "@inv\\("
+    pre:         "@pre\\("
+    post:        "@post\\("
+    auto:        "@auto\\b"
+    pattern:     "@pattern\\("
+    maxLength:   "@maxLength\\("
+    codegenName: "@codegenName\\("

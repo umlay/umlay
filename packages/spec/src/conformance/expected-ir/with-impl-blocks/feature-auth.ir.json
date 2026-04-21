@@ -1,0 +1,82 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "meta": {
+    "imports": [
+      {
+        "kind": "ns",
+        "value": "core"
+      }
+    ]
+  },
+  "namespaces": {
+    "auth": {
+      "models": {},
+      "types": {},
+      "enums": {},
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [
+        {
+          "name": "Authenticatable",
+          "extends": [],
+          "methods": [
+            {
+              "name": "verifyPassword",
+              "params": [
+                {
+                  "name": "candidate",
+                  "type": {
+                    "ref": "string"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "bool"
+              }
+            },
+            {
+              "name": "issueToken",
+              "params": [],
+              "returns": {
+                "ref": "string"
+              }
+            }
+          ]
+        }
+      ],
+      "unions": [],
+      "impls": [
+        {
+          "trait": "Authenticatable",
+          "target": "core.User",
+          "methods": [
+            {
+              "name": "verifyPassword",
+              "params": [
+                {
+                  "name": "candidate",
+                  "type": {
+                    "ref": "string"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "bool"
+              }
+            },
+            {
+              "name": "issueToken",
+              "params": [],
+              "returns": {
+                "ref": "string"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "views": []
+}

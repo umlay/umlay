@@ -1,0 +1,101 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "draft",
+  "namespaces": {
+    "ordering": {
+      "models": {
+        "Order": {
+          "_id": "4b5659d0ab4f",
+          "name": "Order",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "a0bb8f245fc2",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "643bf3cdc605",
+              "name": "total",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "doc": "## 概要\n    顧客発注のアグリゲート。\n    詳細は添付のワイヤフレーム + Figma マスターを参照。",
+          "attachments": [
+            {
+              "kind": "image",
+              "src": ".uml/attachments/order-wireframe.png",
+              "caption": "注文画面ワイヤフレーム (2026-04-10 打合)",
+              "role": "wireframe"
+            },
+            {
+              "kind": "image",
+              "src": ".uml/attachments/whiteboard.jpg",
+              "caption": "ブレスト結果",
+              "role": "memo"
+            },
+            {
+              "kind": "link",
+              "url": "https://figma.com/file/xxxx",
+              "caption": "Figma マスター"
+            }
+          ],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "顧客発注。実装前にワイヤフレームを参照のこと",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {},
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "er",
+      "kind": "er_diagram",
+      "include": [
+        "ordering.*"
+      ],
+      "exclude": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

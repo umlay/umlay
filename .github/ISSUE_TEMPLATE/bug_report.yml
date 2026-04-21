@@ -1,0 +1,57 @@
+name: Bug report
+description: Report a problem with the Umlay spec, samples, or skill definitions
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please fill in the details below.
+        For implementation bugs (parser, lint, renderer, web editor), please open issues in the respective repositories.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      description: Which part of this repository is affected?
+      options:
+        - "@umlay/spec (grammar / schema)"
+        - "@umlay/examples (samples)"
+        - "skills/ (developer / AI skills)"
+        - "Docs / README"
+        - "Unsure"
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: One-line description of the bug
+      placeholder: "grammar.md missing @@attachments syntax"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Minimal DSL snippet or steps to reproduce, or a pointer to the problematic lines.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit
+      description: e.g. @umlay/spec 0.8.0, or commit SHA if on main
+    validations:
+      required: false
