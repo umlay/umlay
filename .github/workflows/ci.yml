@@ -22,7 +22,7 @@ jobs:
         id: node
         run: echo "version=$(cat .node-version)" >> "$GITHUB_OUTPUT"
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           run_install: false
 
