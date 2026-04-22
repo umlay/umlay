@@ -98,6 +98,7 @@ spec 1.0 RC までに catalog に昇格予定の参照実装ルール:
 | R10 | Gantt/WBS model で `plannedStart`/`plannedEnd` 欠落 | error | — | ✅ |
 | R11 | `@experimental` 要素が runtime critical path 上 | warn | 0029 | ✅ (static: CPM view / sequence critical 領域を検査) |
 | R12 | `union` の variant が 10 超 (ADT 爆発) | info | 0029 | ✅ |
+| R13 | model の `@@md` / `@@doc` 合計 200 行超 (別ファイルへの分離を検討) | info | 0031 | ✅ |
 
 ## W — Warning (実行時通知、常に info)
 
@@ -120,10 +121,10 @@ spec 1.0 RC までに catalog に昇格予定の参照実装ルール:
 | S (parser / Zod + 追加 lint 側) | 17 (🟡 10 / ✅ 7) | 0 | **17/17 = 100%** |
 | L 本流 (L001-L016) | 16 (L001-L016 全て) | 0 | **16/16 = 100%** |
 | L 拡張 (L017+) | 4 (L017/L020/L021/L033) | — | 実装独自 |
-| R | 12 (R01-R12) | 0 | **12/12 = 100%** |
+| R | 13 (R01-R13) | 0 | **13/13 = 100%** |
 | W | 2 (W001/W002) | 0 | 100% |
 | C | 2 (C001/C002) | 0 | 100% |
-| **全体** | **53** | **0** | **53/53 = 100%** |
+| **全体** | **54** | **0** | **54/54 = 100%** |
 
 > 1.0 catalog の全ルールが参照実装に載った。R11 は runtime trace 無しの **static 近似** (CPM view / sequence critical 領域を検査)。将来 runtime trace が導入されたら同 rule をアップグレード。
 

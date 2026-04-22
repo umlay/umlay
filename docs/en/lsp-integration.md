@@ -147,7 +147,64 @@ An LSP implementation can open every sample in `packages/spec/src/conformance/ma
 
 Report under `conformance/reports/*-lsp.md` for "LSP level conformance".
 
-## 9. See also
+## 9. Editor setup
+
+Configuration snippets for the reference `@umlay/lsp` (npm).
+
+### 9.1 VS Code
+
+Install the official extension from the Marketplace (search
+`keydrop.umlay-vscode`). The LSP server is bundled — no separate install.
+
+### 9.2 Neovim (nvim-lspconfig)
+
+```lua
+-- ~/.config/nvim/lua/plugins/umlay.lua
+return {
+  "neovim/nvim-lspconfig",
+  config = function()
+    local configs = require("lspconfig.configs")
+    if not configs.umlay then
+      configs.umlay = {
+        default_config = {
+          cmd = { "umlay-lsp", "--stdio" },           -- npm i -g @umlay/lsp
+          filetypes = { "umlay" },
+          root_dir = require("lspconfig.util").root_pattern("package.json", ".git"),
+          settings = { umlay = { diagnostics = { mode = "draft" } } },
+        },
+      }
+    end
+    require("lspconfig").umlay.setup({})
+    vim.filetype.add({
+      extension = { umlay = "umlay" },
+      pattern   = { ["%.umlay%.md$"] = "markdown" },  -- literate is markdown
+    })
+  end,
+}
+```
+
+### 9.3 Zed
+
+```jsonc
+// ~/.config/zed/settings.json
+{
+  "lsp": {
+    "umlay": { "binary": { "path": "umlay-lsp", "arguments": ["--stdio"] } }
+  },
+  "languages": { "Umlay": { "language_servers": ["umlay"], "format_on_save": "on" } },
+  "file_types": { "Umlay": ["umlay"] }
+}
+```
+
+### 9.4 IntelliJ / WebStorm (LSP4IJ)
+
+Register `umlay-lsp --stdio` via the LSP4IJ plugin. Server config (JSON):
+
+```json
+{ "umlay": { "diagnostics": { "mode": "strict" } } }
+```
+
+## 10. See also
 
 - [Grammar (BNF)](../../packages/spec/src/grammar.bnf)
 - [IR Schema](../../packages/spec/src/ir.schema.json)

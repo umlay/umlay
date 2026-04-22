@@ -8,6 +8,16 @@ updates:
     open-pull-requests-limit: 5
     labels:
       - dependencies
+    # Block major bumps automatically — past upgrades to vitest 4.x and
+    # biome 2.x both broke the reference implementation. Major upgrades
+    # go through a dedicated PR after manual evaluation.
+    ignore:
+      - dependency-name: "vitest"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@vitest/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@biomejs/biome"
+        update-types: ["version-update:semver-major"]
     groups:
       dev-deps:
         dependency-type: development

@@ -148,7 +148,65 @@ LSP 実装は `packages/spec/src/conformance/manifest.yaml` の各 sample を開
 
 を全て通すことで「LSP level conformance」を申告できる。`conformance/reports/*-lsp.md` として別立てレポート。
 
-## 9. 参照
+## 9. エディタ別セットアップ
+
+参照実装の `@umlay/lsp` (npm) を使う場合の設定例。
+
+### 9.1 VS Code
+
+公式拡張を Marketplace からインストール (検索: `keydrop.umlay-vscode`)。
+LSP server (`@umlay/lsp`) は拡張に同梱されているので別途インストール不要。
+
+### 9.2 Neovim (nvim-lspconfig)
+
+```lua
+-- ~/.config/nvim/lua/plugins/umlay.lua
+return {
+  "neovim/nvim-lspconfig",
+  config = function()
+    local configs = require("lspconfig.configs")
+    if not configs.umlay then
+      configs.umlay = {
+        default_config = {
+          cmd = { "umlay-lsp", "--stdio" },           -- npm i -g @umlay/lsp
+          filetypes = { "umlay" },
+          root_dir = require("lspconfig.util").root_pattern("package.json", ".git"),
+          settings = { umlay = { diagnostics = { mode = "draft" } } },
+        },
+      }
+    end
+    require("lspconfig").umlay.setup({})
+    vim.filetype.add({
+      extension = { umlay = "umlay" },
+      pattern   = { ["%.umlay%.md$"] = "markdown" },  -- literate は markdown 扱い
+    })
+  end,
+}
+```
+
+### 9.3 Zed
+
+```jsonc
+// ~/.config/zed/settings.json
+{
+  "lsp": {
+    "umlay": { "binary": { "path": "umlay-lsp", "arguments": ["--stdio"] } }
+  },
+  "languages": { "Umlay": { "language_servers": ["umlay"], "format_on_save": "on" } },
+  "file_types": { "Umlay": ["umlay"] }
+}
+```
+
+### 9.4 IntelliJ / WebStorm (LSP4IJ)
+
+JetBrains Marketplace の LSP4IJ プラグイン経由で `umlay-lsp --stdio`
+を登録。Server config (JSON):
+
+```json
+{ "umlay": { "diagnostics": { "mode": "strict" } } }
+```
+
+## 10. 参照
 
 - [Grammar (BNF)](../../packages/spec/src/grammar.bnf)
 - [IR Schema](../../packages/spec/src/ir.schema.json)
