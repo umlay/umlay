@@ -37,7 +37,9 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": ["amount > 0"],
+                "invariants": [
+                  "amount > 0"
+                ],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -59,6 +61,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -96,6 +99,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -126,6 +130,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -156,6 +161,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -186,6 +192,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -216,6 +223,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -246,6 +254,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -261,7 +270,12 @@
         "PaymentStatus": {
           "_id": "d9e5028d0bde",
           "name": "PaymentStatus",
-          "values": ["PENDING", "COMMITTED", "FAILED", "TIMED_OUT"]
+          "values": [
+            "PENDING",
+            "COMMITTED",
+            "FAILED",
+            "TIMED_OUT"
+          ]
         }
       },
       "reservedBlocks": [],
@@ -277,6 +291,7 @@
       "kind": "sequence_diagram",
       "include": [],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [
         {
@@ -372,7 +387,10 @@
             "timeout": {
               "duration": "5s"
             },
-            "on": ["gw", "db"],
+            "on": [
+              "gw",
+              "db"
+            ],
             "body": [
               {
                 "kind": "message",
@@ -495,6 +513,7 @@
       "kind": "sequence_diagram",
       "include": [],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [
         {
@@ -549,7 +568,9 @@
             "timeout": {
               "duration": "2s"
             },
-            "on": ["audit"],
+            "on": [
+              "audit"
+            ],
             "body": [
               {
                 "kind": "critical",
@@ -557,7 +578,9 @@
                 "timeout": {
                   "duration": "500ms"
                 },
-                "on": ["db"],
+                "on": [
+                  "db"
+                ],
                 "body": [
                   {
                     "kind": "message",
@@ -614,8 +637,12 @@
     {
       "id": "payment-lifecycle",
       "kind": "state_machine",
-      "include": ["payments.Payment", "payments.PaymentStatus"],
+      "include": [
+        "payments.Payment",
+        "payments.PaymentStatus"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],

@@ -39,6 +39,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -99,6 +100,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -270,12 +272,15 @@
     {
       "id": "blanket-class",
       "kind": "class_diagram",
-      "include": ["blanket_demo.*"],
+      "include": [
+        "blanket_demo.*"
+      ],
       "exclude": [],
       "layout": {
         "direction": "LR",
         "engine": "elk"
       },
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],

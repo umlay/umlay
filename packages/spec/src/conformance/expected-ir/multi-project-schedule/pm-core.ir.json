@@ -63,7 +63,9 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": ["plannedEnd >= plannedStart"],
+                "invariants": [
+                  "plannedEnd >= plannedStart"
+                ],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -112,6 +114,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -162,7 +165,12 @@
         "TaskStatus": {
           "_id": "efb7ce68d8c6",
           "name": "TaskStatus",
-          "values": ["PENDING", "IN_PROGRESS", "DONE", "BLOCKED"]
+          "values": [
+            "PENDING",
+            "IN_PROGRESS",
+            "DONE",
+            "BLOCKED"
+          ]
         }
       },
       "reservedBlocks": [],
@@ -176,8 +184,11 @@
     {
       "id": "core-wbs",
       "kind": "wbs_diagram",
-      "include": ["pm_core.Task"],
+      "include": [
+        "pm_core.Task"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -186,8 +197,11 @@
     {
       "id": "core-gantt",
       "kind": "gantt_chart",
-      "include": ["pm_core.Task"],
+      "include": [
+        "pm_core.Task"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],

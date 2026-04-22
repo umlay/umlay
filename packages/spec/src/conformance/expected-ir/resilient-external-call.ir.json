@@ -26,6 +26,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -56,6 +57,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -86,6 +88,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -116,6 +119,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -146,6 +150,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -171,6 +176,7 @@
       "kind": "sequence_diagram",
       "include": [],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [
         {
@@ -246,6 +252,7 @@
       "kind": "sequence_diagram",
       "include": [],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [
         {
@@ -346,6 +353,7 @@
       "kind": "sequence_diagram",
       "include": [],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [
         {
@@ -423,6 +431,7 @@
       "kind": "sequence_diagram",
       "include": [],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [
         {
@@ -501,6 +510,7 @@
       "kind": "sequence_diagram",
       "include": [],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [
         {
@@ -555,7 +565,9 @@
                 "timeout": {
                   "duration": "1s"
                 },
-                "on": ["db"],
+                "on": [
+                  "db"
+                ],
                 "body": [
                   {
                     "kind": "message",

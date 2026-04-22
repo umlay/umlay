@@ -56,6 +56,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -119,6 +120,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -162,6 +164,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -194,7 +197,13 @@
         "LogLevel": {
           "_id": "f4c35b4c8cd0",
           "name": "LogLevel",
-          "values": ["DEBUG", "INFO", "WARN", "ERROR", "TRACE"]
+          "values": [
+            "DEBUG",
+            "INFO",
+            "WARN",
+            "ERROR",
+            "TRACE"
+          ]
         }
       },
       "reservedBlocks": [],
@@ -242,8 +251,11 @@
     {
       "id": "experimental-class",
       "kind": "class_diagram",
-      "include": ["experimental_demo.*"],
+      "include": [
+        "experimental_demo.*"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],

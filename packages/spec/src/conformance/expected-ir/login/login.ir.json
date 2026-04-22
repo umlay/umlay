@@ -105,6 +105,7 @@
               "role": "sessions"
             }
           ],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -125,7 +126,10 @@
           "_id": "36e05106122c",
           "name": "OAuthAccount",
           "stereotype": "entity",
-          "identity": ["userId", "provider"],
+          "identity": [
+            "userId",
+            "provider"
+          ],
           "attributes": [
             {
               "_id": "11121e5287b1",
@@ -200,6 +204,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -280,7 +285,9 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": ["sessionToken.expiresAt > sessionToken.issuedAt"],
+                "invariants": [
+                  "sessionToken.expiresAt > sessionToken.issuedAt"
+                ],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -341,6 +348,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -378,6 +386,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -428,6 +437,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -478,6 +488,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -529,6 +540,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -594,6 +606,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -659,6 +672,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -724,6 +738,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -817,6 +832,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -910,6 +926,9 @@
             }
           ],
           "doc": "構成コンポーネント:\n      <AppHeader>        ロゴ + テーマ切替\n      <HeroSection>      プロダクト紹介コピー\n      <SignInWithGoogleButton>\n        クリック → GET /api/auth/google\n      <LegalFootnote>    Privacy Policy / Terms へのリンク",
+          "docs": [
+            "構成コンポーネント:\n      <AppHeader>        ロゴ + テーマ切替\n      <HeroSection>      プロダクト紹介コピー\n      <SignInWithGoogleButton>\n        クリック → GET /api/auth/google\n      <LegalFootnote>    Privacy Policy / Terms へのリンク"
+          ],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -969,6 +988,9 @@
             }
           ],
           "doc": "Google 所有ドメイン (accounts.google.com) で表示される画面。\n    ユーザーは Allow / Deny を選択可能。",
+          "docs": [
+            "Google 所有ドメイン (accounts.google.com) で表示される画面。\n    ユーザーは Allow / Deny を選択可能。"
+          ],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -1062,6 +1084,9 @@
             }
           ],
           "doc": "構成コンポーネント:\n      <AppHeader>        ロゴ + <UserMenu> (avatar + displayName + Logout)\n      <WelcomeBanner>    \"Welcome back, {displayName}\"\n      <ProjectList>      プロジェクト一覧\n      <ActivityFeed>     最近のアクティビティ\n\n    未ログイン時は 302 → / (LoginPage)。",
+          "docs": [
+            "構成コンポーネント:\n      <AppHeader>        ロゴ + <UserMenu> (avatar + displayName + Logout)\n      <WelcomeBanner>    \"Welcome back, {displayName}\"\n      <ProjectList>      プロジェクト一覧\n      <ActivityFeed>     最近のアクティビティ\n\n    未ログイン時は 302 → / (LoginPage)。"
+          ],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -1135,6 +1160,9 @@
             }
           ],
           "doc": "構成コンポーネント:\n      <ErrorBanner reason={query.reason}>\n      <RetryButton> → / (LoginPage) へ戻る\n      <SupportLink>",
+          "docs": [
+            "構成コンポーネント:\n      <ErrorBanner reason={query.reason}>\n      <RetryButton> → / (LoginPage) へ戻る\n      <SupportLink>"
+          ],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -1212,6 +1240,9 @@
           ],
           "relations": [],
           "doc": "現時点のアクション:\n      id=\"signin-google\", label=\"Sign in with Google\", GET /api/auth/google",
+          "docs": [
+            "現時点のアクション:\n      id=\"signin-google\", label=\"Sign in with Google\", GET /api/auth/google"
+          ],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -1340,12 +1371,18 @@
         "AuthProvider": {
           "_id": "2b132954aa66",
           "name": "AuthProvider",
-          "values": ["GOOGLE"]
+          "values": [
+            "GOOGLE"
+          ]
         },
         "SessionStatus": {
           "_id": "470f66304e5d",
           "name": "SessionStatus",
-          "values": ["ACTIVE", "EXPIRED", "REVOKED"]
+          "values": [
+            "ACTIVE",
+            "EXPIRED",
+            "REVOKED"
+          ]
         }
       },
       "reservedBlocks": [],
@@ -1359,8 +1396,13 @@
     {
       "id": "login-er",
       "kind": "er_diagram",
-      "include": ["login.User", "login.OAuthAccount", "login.Session"],
+      "include": [
+        "login.User",
+        "login.OAuthAccount",
+        "login.Session"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -1379,6 +1421,7 @@
         "login.SessionStatus"
       ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -1398,6 +1441,7 @@
         "login.GoogleOAuth"
       ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -1418,6 +1462,7 @@
         "login.LoginAction"
       ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -1434,6 +1479,7 @@
         "login.LoginAction"
       ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -1444,6 +1490,7 @@
       "kind": "sequence_diagram",
       "include": [],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [
         {
@@ -1905,8 +1952,12 @@
     {
       "id": "session-lifecycle",
       "kind": "state_machine",
-      "include": ["login.Session", "login.SessionStatus"],
+      "include": [
+        "login.Session",
+        "login.SessionStatus"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],

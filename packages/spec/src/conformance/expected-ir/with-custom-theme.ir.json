@@ -42,6 +42,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -118,6 +119,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -172,6 +174,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -202,8 +205,11 @@
     {
       "id": "presentation",
       "kind": "er_diagram",
-      "include": ["shop.*"],
+      "include": [
+        "shop.*"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -212,8 +218,11 @@
     {
       "id": "er",
       "kind": "er_diagram",
-      "include": ["shop.*"],
+      "include": [
+        "shop.*"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],

@@ -50,7 +50,9 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": ["balance >= 0"],
+                "invariants": [
+                  "balance >= 0"
+                ],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -72,6 +74,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -152,7 +155,9 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": ["amount > 0"],
+                "invariants": [
+                  "amount > 0"
+                ],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -187,6 +192,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -224,6 +230,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -261,6 +268,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -298,6 +306,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -335,6 +344,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -372,6 +382,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -409,6 +420,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -431,12 +443,20 @@
         "AccountStatus": {
           "_id": "084fdf7cb020",
           "name": "AccountStatus",
-          "values": ["ACTIVE", "FROZEN", "CLOSED"]
+          "values": [
+            "ACTIVE",
+            "FROZEN",
+            "CLOSED"
+          ]
         },
         "TxStatus": {
           "_id": "06a9976c516d",
           "name": "TxStatus",
-          "values": ["PENDING", "COMMITTED", "REVERTED"]
+          "values": [
+            "PENDING",
+            "COMMITTED",
+            "REVERTED"
+          ]
         }
       },
       "reservedBlocks": [],
@@ -452,6 +472,7 @@
       "kind": "sequence_diagram",
       "include": [],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [
         {
@@ -537,7 +558,10 @@
           {
             "kind": "critical",
             "label": "残高チェックと資金移動",
-            "on": ["a", "b"],
+            "on": [
+              "a",
+              "b"
+            ],
             "body": [
               {
                 "kind": "message",
@@ -673,7 +697,9 @@
               }
             ],
             "awaitSpec": {
-              "labels": ["ロック解放"]
+              "labels": [
+                "ロック解放"
+              ]
             }
           },
           {
@@ -703,8 +729,12 @@
     {
       "id": "account-lifecycle",
       "kind": "state_machine",
-      "include": ["banking.Account", "banking.AccountStatus"],
+      "include": [
+        "banking.Account",
+        "banking.AccountStatus"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],

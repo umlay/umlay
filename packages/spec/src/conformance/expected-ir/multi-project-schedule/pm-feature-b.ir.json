@@ -118,6 +118,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -166,7 +167,10 @@
           "_id": "8f7b9e4e2020",
           "name": "TaskDependency",
           "stereotype": "entity",
-          "identity": ["fromId", "toId"],
+          "identity": [
+            "fromId",
+            "toId"
+          ],
           "attributes": [
             {
               "_id": "d23b4e2f64d8",
@@ -204,6 +208,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -250,6 +255,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -283,7 +289,12 @@
         "TaskStatus": {
           "_id": "3a549d6254de",
           "name": "TaskStatus",
-          "values": ["PENDING", "IN_PROGRESS", "DONE", "BLOCKED"]
+          "values": [
+            "PENDING",
+            "IN_PROGRESS",
+            "DONE",
+            "BLOCKED"
+          ]
         }
       },
       "reservedBlocks": [],
@@ -297,8 +308,11 @@
     {
       "id": "feature-b-wbs",
       "kind": "wbs_diagram",
-      "include": ["pm_feature_b.Task"],
+      "include": [
+        "pm_feature_b.Task"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -307,8 +321,12 @@
     {
       "id": "feature-b-gantt",
       "kind": "gantt_chart",
-      "include": ["pm_feature_b.Task", "pm_feature_b.TaskDependency"],
+      "include": [
+        "pm_feature_b.Task",
+        "pm_feature_b.TaskDependency"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],

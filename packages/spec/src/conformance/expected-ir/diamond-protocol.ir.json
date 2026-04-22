@@ -151,12 +151,15 @@
     {
       "id": "diamond-class",
       "kind": "class_diagram",
-      "include": ["didemo.*"],
+      "include": [
+        "didemo.*"
+      ],
       "exclude": [],
       "layout": {
         "direction": "TB",
         "engine": "elk"
       },
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],

@@ -64,7 +64,9 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": ["total >= 0"],
+                "invariants": [
+                  "total >= 0"
+                ],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -84,7 +86,9 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": ["version >= 0"],
+                "invariants": [
+                  "version >= 0"
+                ],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -92,6 +96,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -114,7 +119,12 @@
         "OrderStatus": {
           "_id": "ebfb8ad83408",
           "name": "OrderStatus",
-          "values": ["DRAFT", "CONFIRMED", "SHIPPED", "CANCELLED"]
+          "values": [
+            "DRAFT",
+            "CONFIRMED",
+            "SHIPPED",
+            "CANCELLED"
+          ]
         }
       },
       "reservedBlocks": [],
@@ -268,8 +278,12 @@
     {
       "id": "orders-er",
       "kind": "er_diagram",
-      "include": ["orders.Order", "orders.OrderEvent"],
+      "include": [
+        "orders.Order",
+        "orders.OrderEvent"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -278,8 +292,11 @@
     {
       "id": "orders-class",
       "kind": "class_diagram",
-      "include": ["orders.*"],
+      "include": [
+        "orders.*"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -288,8 +305,12 @@
     {
       "id": "order-lifecycle",
       "kind": "state_machine",
-      "include": ["orders.Order", "orders.OrderStatus"],
+      "include": [
+        "orders.Order",
+        "orders.OrderStatus"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],

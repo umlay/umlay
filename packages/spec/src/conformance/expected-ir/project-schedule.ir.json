@@ -77,7 +77,9 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": ["capacity > 0 && capacity <= 1.0"],
+                "invariants": [
+                  "capacity > 0 && capacity <= 1.0"
+                ],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -99,6 +101,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -215,7 +218,9 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": ["plannedEnd >= plannedStart"],
+                "invariants": [
+                  "plannedEnd >= plannedStart"
+                ],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -261,7 +266,9 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": ["progress >= 0.0 && progress <= 1.0"],
+                "invariants": [
+                  "progress >= 0.0 && progress <= 1.0"
+                ],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -347,6 +354,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -508,7 +516,10 @@
           "_id": "f0bb3ceee8c8",
           "name": "TaskDependency",
           "stereotype": "entity",
-          "identity": ["fromTaskId", "toTaskId"],
+          "identity": [
+            "fromTaskId",
+            "toTaskId"
+          ],
           "attributes": [
             {
               "_id": "938908b9cf08",
@@ -574,7 +585,9 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": ["lagDays >= -60 && lagDays <= 365"],
+                "invariants": [
+                  "lagDays >= -60 && lagDays <= 365"
+                ],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -582,6 +595,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -647,17 +661,32 @@
         "TaskStatus": {
           "_id": "e3bd213c4aa7",
           "name": "TaskStatus",
-          "values": ["PENDING", "IN_PROGRESS", "DONE", "BLOCKED"]
+          "values": [
+            "PENDING",
+            "IN_PROGRESS",
+            "DONE",
+            "BLOCKED"
+          ]
         },
         "Priority": {
           "_id": "d34c6e1b5b29",
           "name": "Priority",
-          "values": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+          "values": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ]
         },
         "DependencyKind": {
           "_id": "7fe6b9f614c8",
           "name": "DependencyKind",
-          "values": ["FS", "SS", "FF", "SF"]
+          "values": [
+            "FS",
+            "SS",
+            "FF",
+            "SF"
+          ]
         }
       },
       "reservedBlocks": [],
@@ -671,12 +700,15 @@
     {
       "id": "pm-wbs",
       "kind": "wbs_diagram",
-      "include": ["pm.Task"],
+      "include": [
+        "pm.Task"
+      ],
       "exclude": [],
       "layout": {
         "direction": "TB",
         "engine": "elk"
       },
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -685,13 +717,17 @@
     {
       "id": "pm-gantt",
       "kind": "gantt_chart",
-      "include": ["pm.Task", "pm.TaskDependency"],
+      "include": [
+        "pm.Task",
+        "pm.TaskDependency"
+      ],
       "exclude": [],
       "layout": {
         "direction": "LR",
         "engine": "elk",
         "spacing": 24
       },
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -700,8 +736,13 @@
     {
       "id": "pm-er",
       "kind": "er_diagram",
-      "include": ["pm.Resource", "pm.Task", "pm.TaskDependency"],
+      "include": [
+        "pm.Resource",
+        "pm.Task",
+        "pm.TaskDependency"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -719,6 +760,7 @@
         "pm.DependencyKind"
       ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -727,8 +769,12 @@
     {
       "id": "task-lifecycle",
       "kind": "state_machine",
-      "include": ["pm.Task", "pm.TaskStatus"],
+      "include": [
+        "pm.Task",
+        "pm.TaskStatus"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],

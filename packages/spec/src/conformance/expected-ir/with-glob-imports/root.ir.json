@@ -26,13 +26,18 @@
     {
       "id": "global-gantt",
       "kind": "gantt_chart",
-      "include": ["sprint1.Task", "sprint2.Task", "sprint3.Task"],
+      "include": [
+        "sprint1.Task",
+        "sprint2.Task",
+        "sprint3.Task"
+      ],
       "exclude": [],
       "layout": {
         "direction": "LR",
         "engine": "elk",
         "spacing": 20
       },
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
@@ -41,8 +46,13 @@
     {
       "id": "global-wbs",
       "kind": "wbs_diagram",
-      "include": ["sprint1.Task", "sprint2.Task", "sprint3.Task"],
+      "include": [
+        "sprint1.Task",
+        "sprint2.Task",
+        "sprint3.Task"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],

@@ -54,6 +54,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -138,6 +139,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -158,7 +160,10 @@
           "_id": "7c0fe42e99ed",
           "name": "注文明細",
           "stereotype": "entity",
-          "identity": ["注文ID", "行番号"],
+          "identity": [
+            "注文ID",
+            "行番号"
+          ],
           "attributes": [
             {
               "_id": "5f7342234eb8",
@@ -208,6 +213,7 @@
             }
           ],
           "relations": [],
+          "docs": [],
           "attachments": [],
           "reviews": [],
           "fixes": [],
@@ -230,7 +236,12 @@
         "注文状態": {
           "_id": "bcaa56e745a4",
           "name": "注文状態",
-          "values": ["下書き", "確定", "出荷済", "取消"]
+          "values": [
+            "下書き",
+            "確定",
+            "出荷済",
+            "取消"
+          ]
         }
       },
       "reservedBlocks": [],
@@ -244,8 +255,11 @@
     {
       "id": "er",
       "kind": "er_diagram",
-      "include": ["受発注.*"],
+      "include": [
+        "受発注.*"
+      ],
       "exclude": [],
+      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
