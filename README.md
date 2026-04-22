@@ -2,6 +2,13 @@
 
 > **UML, relaid.** — レガシーUMLを現代のNode/クラウド/AI時代に置き直すモデリングツール。
 
+[![spec](https://img.shields.io/badge/spec-1.1.0-3b82f6)](./packages/spec)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-green.svg)](./LICENSE)
+[![License: MIT (examples)](https://img.shields.io/badge/examples-MIT-blue.svg)](./packages/examples)
+[![GitHub Repo stars](https://img.shields.io/github/stars/umlay/umlay?style=social)](https://github.com/umlay/umlay)
+[![Website](https://img.shields.io/badge/web-umlay.keydrop.net-0ea5e9)](https://umlay.keydrop.net)
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%98%95%20BMAC-ff813f)](https://buymeacoffee.com/umlay)
+
 Umlay は、UML / ER をテキスト DSL として記述し、Git/PR でレビュー可能な形で扱うためのモデリング基盤です。このリポジトリでは **DSL 仕様 (spec) / サンプル (examples) / 開発者・AI 向け skill 定義 (skills)** を公開します。実装 (パーサ、Lint、レンダラー、Web エディタ) は別リポジトリで開発中です。
 
 ## このリポジトリの構成
