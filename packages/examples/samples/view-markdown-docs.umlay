@@ -1,0 +1,34 @@
+// view-markdown-docs.umlay — RFC 0031 Layer B on views.
+//
+// Demonstrates `@@md` block inside a `view` body (spec 1.1+). The Markdown
+// body is captured as `view.docs[]` and shown next to the diagram in
+// Document mode / VS Code preview.
+
+namespace shop
+
+model Order @aggregate_root @intent("顧客発注") {
+  +id       UUID!    @id
+  +userId   UUID!    @ref(User.id)
+  +total    decimal!
+}
+
+model User @entity @intent("顧客") {
+  +id    UUID!   @id
+  +email string! @unique
+}
+
+view order-er @er_diagram {
+  include: shop.*
+
+  @@md("""
+## Purpose
+
+Visualises the Order aggregate and its `User` reference.
+
+## Decisions captured
+
+- Orders are scoped per user; no anonymous checkout (see ADR-007).
+- `total` is stored denormalised for reporting speed — invariants are
+  enforced in the domain service.
+""")
+}

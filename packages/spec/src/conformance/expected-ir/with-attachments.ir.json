@@ -91,7 +91,9 @@
     {
       "id": "er",
       "kind": "er_diagram",
-      "include": ["ordering.*"],
+      "include": [
+        "ordering.*"
+      ],
       "exclude": [],
       "docs": [],
       "attachments": [],

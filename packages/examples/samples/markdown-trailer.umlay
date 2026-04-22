@@ -1,0 +1,42 @@
+// markdown-trailer.umlay — RFC 0031 Layer D (trailer).
+//
+// Everything after the `---` line is captured into `IR.docTrailer` and can
+// be rendered as Markdown next to / below the diagram. Useful for ADRs
+// that should live next to the model.
+
+namespace billing
+
+model Invoice @aggregate_root @intent("請求書") {
+  +id       UUID!    @id
+  +customerId UUID!  @ref(Customer.id)
+  +amount   decimal!
+  +issuedAt DateTime!
+}
+
+model Customer @entity @intent("取引先") {
+  +id   UUID!   @id
+  +name string!
+}
+
+view invoices @er_diagram { include: billing.* }
+
+---
+
+# ADR-014: Invoices are immutable after issuance
+
+## Context
+
+Finance/audit systems assume issued invoices are an append-only record.
+Mutating an issued invoice (e.g. to correct a typo) would break reconciliation
+with downstream ledgers.
+
+## Decision
+
+- `Invoice.issuedAt` is set exactly once; we never re-issue.
+- Corrections are modelled as **credit notes** (a separate aggregate),
+  not as mutations.
+
+## Consequences
+
+- `Invoice` has no setters beyond the initial constructor pathway.
+- The domain service rejects any command whose target has `issuedAt != null`.

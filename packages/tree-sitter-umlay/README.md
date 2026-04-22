@@ -23,13 +23,24 @@ they live in the reference implementation
 [`@umlay/core`](../../packages/spec/). Treat this grammar as
 **highlight + navigation only**.
 
-## Build
+## Build & test
 
 ```sh
 npm install
 npm run generate   # runs `tree-sitter generate`
-npm test           # snapshot tests (placeholder — fill corpus/ to grow)
+npm test           # runs the corpus/*.txt snapshot suite
 ```
+
+## Corpus tests
+
+`test/corpus/*.txt` contains `=== name === / source / --- / expected tree`
+records in the standard tree-sitter format. Current coverage:
+
+- `declarations.txt` — namespace, enum, model, view, protocol, union
+- `directives.txt` — line + block comments, `@@doc`, `@@md` triple-quoted,
+  file-level `---` Markdown trailer
+
+Add a new record whenever you extend the grammar.
 
 ## Layout
 

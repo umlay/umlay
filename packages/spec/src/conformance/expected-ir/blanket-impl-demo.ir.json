@@ -272,7 +272,9 @@
     {
       "id": "blanket-class",
       "kind": "class_diagram",
-      "include": ["blanket_demo.*"],
+      "include": [
+        "blanket_demo.*"
+      ],
       "exclude": [],
       "layout": {
         "direction": "LR",

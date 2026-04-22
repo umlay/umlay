@@ -1,0 +1,96 @@
+==================
+line + block comments
+==================
+
+// this is a line comment
+/* and a block
+   comment */
+namespace s
+
+---
+
+(source_file
+  (line_comment)
+  (block_comment)
+  (namespace_decl (identifier)))
+
+==================
+@@doc directive
+==================
+
+namespace s
+model X {
+  @@doc("short summary")
+  +id UUID! @id
+}
+
+---
+
+(source_file
+  (namespace_decl (identifier))
+  (model_decl
+    (identifier)
+    (block_directive
+      (identifier)
+      (string_literal))
+    (attribute
+      (visibility)
+      (identifier)
+      (type_ref (_qualified_ident (identifier)))
+      (nullability)
+      (annotation (identifier)))))
+
+==================
+@@md triple-quoted block
+==================
+
+namespace s
+model X {
+  +id UUID! @id
+  @@md("""## Title
+
+body""")
+}
+
+---
+
+(source_file
+  (namespace_decl (identifier))
+  (model_decl
+    (identifier)
+    (attribute
+      (visibility)
+      (identifier)
+      (type_ref (_qualified_ident (identifier)))
+      (nullability)
+      (annotation (identifier)))
+    (block_directive
+      (identifier)
+      (string_literal))))
+
+==================
+file-level docTrailer
+==================
+
+namespace s
+model X { +id UUID! @id }
+
+---
+
+# notes
+
+follow-up doc
+
+---
+
+(source_file
+  (namespace_decl (identifier))
+  (model_decl
+    (identifier)
+    (attribute
+      (visibility)
+      (identifier)
+      (type_ref (_qualified_ident (identifier)))
+      (nullability)
+      (annotation (identifier))))
+  (doc_trailer))

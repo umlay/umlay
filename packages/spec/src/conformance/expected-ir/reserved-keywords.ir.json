@@ -139,7 +139,10 @@
     {
       "id": "er",
       "kind": "er_diagram",
-      "include": ["orders.Order", "orders.Customer"],
+      "include": [
+        "orders.Order",
+        "orders.Customer"
+      ],
       "exclude": [],
       "docs": [],
       "attachments": [],

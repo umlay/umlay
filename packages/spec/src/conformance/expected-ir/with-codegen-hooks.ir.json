@@ -430,7 +430,12 @@
         "UserRole": {
           "_id": "47d5381341c8",
           "name": "UserRole",
-          "values": ["OWNER", "ADMIN", "MEMBER", "GUEST"]
+          "values": [
+            "OWNER",
+            "ADMIN",
+            "MEMBER",
+            "GUEST"
+          ]
         }
       },
       "reservedBlocks": [],
@@ -444,7 +449,10 @@
     {
       "id": "hooked-er",
       "kind": "er_diagram",
-      "include": ["hooked.User", "hooked.AuditLog"],
+      "include": [
+        "hooked.User",
+        "hooked.AuditLog"
+      ],
       "exclude": [],
       "docs": [],
       "attachments": [],
@@ -455,7 +463,9 @@
     {
       "id": "hooked-class",
       "kind": "class_diagram",
-      "include": ["hooked.*"],
+      "include": [
+        "hooked.*"
+      ],
       "exclude": [],
       "docs": [],
       "attachments": [],

@@ -222,6 +222,28 @@ samples:
       literate: true
       rfcs: [0031]
 
+  - path: ../../../examples/samples/view-markdown-docs.umlay
+    summary: "`@@md` on view body — Markdown next to a diagram (RFC 0031 Layer B on views)"
+    min-spec-version: 1.1.0
+    features:
+      declarations: [namespace, model, view]
+      stereotypes: [aggregate_root, entity]
+      annotations: [id, intent, ref, unique]
+      blocks: [md]
+      view-kinds: [er_diagram]
+      rfcs: [0031]
+
+  - path: ../../../examples/samples/markdown-trailer.umlay
+    summary: "Markdown trailer after `---` captured as `IR.docTrailer` (RFC 0031 Layer D)"
+    min-spec-version: 1.1.0
+    features:
+      declarations: [namespace, model, view]
+      stereotypes: [aggregate_root, entity]
+      annotations: [id, intent, ref]
+      view-kinds: [er_diagram]
+      doc-trailer: true
+      rfcs: [0031]
+
 # 機能マーカー (grep で DSL 中に存在確認するための文字列)
 # index.ts が各 feature に対応する正規表現を持つ
 feature-markers:

@@ -137,7 +137,10 @@
           "_id": "f2f6c3b41a07",
           "name": "Membership",
           "stereotype": "entity",
-          "identity": ["orgId", "userId"],
+          "identity": [
+            "orgId",
+            "userId"
+          ],
           "attributes": [
             {
               "_id": "267ae395f363",
@@ -279,7 +282,10 @@
           "_id": "337536735ed5",
           "name": "TeamMember",
           "stereotype": "entity",
-          "identity": ["teamId", "userId"],
+          "identity": [
+            "teamId",
+            "userId"
+          ],
           "attributes": [
             {
               "_id": "9e41700b80b5",
@@ -449,12 +455,22 @@
         "Role": {
           "_id": "1e1a0594748d",
           "name": "Role",
-          "values": ["OWNER", "ADMIN", "MEMBER", "GUEST"]
+          "values": [
+            "OWNER",
+            "ADMIN",
+            "MEMBER",
+            "GUEST"
+          ]
         },
         "InviteStatus": {
           "_id": "484ccaec6a4f",
           "name": "InviteStatus",
-          "values": ["PENDING", "ACCEPTED", "REVOKED", "EXPIRED"]
+          "values": [
+            "PENDING",
+            "ACCEPTED",
+            "REVOKED",
+            "EXPIRED"
+          ]
         }
       },
       "reservedBlocks": [],
@@ -468,7 +484,9 @@
     {
       "id": "er",
       "kind": "er_diagram",
-      "include": ["saas.*"],
+      "include": [
+        "saas.*"
+      ],
       "exclude": [],
       "docs": [],
       "attachments": [],

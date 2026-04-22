@@ -1,18 +1,18 @@
 {
   "version": "1.0",
   "kind": "UmlModel",
-  "mode": "strict",
+  "mode": "draft",
   "namespaces": {
-    "sprint3": {
+    "billing": {
       "models": {
-        "Task": {
-          "_id": "fd2c7eee194b",
-          "name": "Task",
+        "Invoice": {
+          "_id": "bfe76eca9dea",
+          "name": "Invoice",
           "stereotype": "aggregate_root",
           "identity": "id",
           "attributes": [
             {
-              "_id": "5d8c124e4836",
+              "_id": "5c7b551bcccc",
               "name": "id",
               "type": "UUID",
               "visibility": "public",
@@ -25,75 +25,88 @@
               "fixes": []
             },
             {
-              "_id": "8a12caae9e9c",
-              "name": "name",
-              "type": "string",
+              "_id": "a0f4f1c43477",
+              "name": "customerId",
+              "type": "UUID",
               "visibility": "public",
               "nullable": false,
               "unique": false,
               "pk": false,
               "index": false,
+              "ref": {
+                "target": "Customer.id"
+              },
               "codegen": [],
               "reviews": [],
               "fixes": []
             },
             {
-              "_id": "313bd0b482c0",
-              "name": "plannedStart",
-              "type": "Date",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "2cdc77ae9be0",
-              "name": "plannedEnd",
-              "type": "Date",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "b2990e8eb18f",
-              "name": "progress",
+              "_id": "574071ba5bdd",
+              "name": "amount",
               "type": "decimal",
               "visibility": "public",
               "nullable": false,
               "unique": false,
               "pk": false,
               "index": false,
-              "default": "0.0",
               "codegen": [],
               "reviews": [],
               "fixes": []
             },
             {
-              "_id": "69f28a2b39a8",
-              "name": "status",
-              "type": "TaskStatus",
+              "_id": "aa115a766fda",
+              "name": "issuedAt",
+              "type": "DateTime",
               "visibility": "public",
               "nullable": false,
               "unique": false,
               "pk": false,
               "index": false,
-              "default": "PENDING",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "請求書",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "Customer": {
+          "_id": "489b8d705e22",
+          "name": "Customer",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "5c7b551bcccc",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
               "codegen": [],
               "reviews": [],
               "fixes": []
             },
             {
-              "_id": "c967ea2edd6b",
-              "name": "assignee",
+              "_id": "9970b65c313a",
+              "name": "name",
               "type": "string",
               "visibility": "public",
               "nullable": false,
@@ -111,41 +124,13 @@
           "reviews": [],
           "fixes": [],
           "rationale": {
-            "intent": "Sprint 3 のタスク",
+            "intent": "取引先",
             "invariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
           },
-          "sampleSources": [
-            {
-              "id": "s3-integration",
-              "name": "Integration + Hardening",
-              "plannedStart": "2026-05-25",
-              "plannedEnd": "2026-06-05",
-              "progress": 0,
-              "status": "PENDING",
-              "assignee": "Bob"
-            },
-            {
-              "id": "s3-qa",
-              "name": "QA + Release Prep",
-              "plannedStart": "2026-06-08",
-              "plannedEnd": "2026-06-15",
-              "progress": 0,
-              "status": "PENDING",
-              "assignee": "Carol"
-            },
-            {
-              "id": "s3-release",
-              "name": "Production Release",
-              "plannedStart": "2026-06-16",
-              "plannedEnd": "2026-06-16",
-              "progress": 0,
-              "status": "PENDING",
-              "assignee": "Alice"
-            }
-          ],
+          "sampleSources": [],
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
@@ -153,17 +138,7 @@
         }
       },
       "types": {},
-      "enums": {
-        "TaskStatus": {
-          "_id": "74734b273a90",
-          "name": "TaskStatus",
-          "values": [
-            "PENDING",
-            "IN_PROGRESS",
-            "DONE"
-          ]
-        }
-      },
+      "enums": {},
       "reservedBlocks": [],
       "cloudPrimitives": [],
       "protocols": [],
@@ -171,5 +146,20 @@
       "impls": []
     }
   },
-  "views": []
+  "views": [
+    {
+      "id": "invoices",
+      "kind": "er_diagram",
+      "include": [
+        "billing.*"
+      ],
+      "exclude": [],
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ],
+  "docTrailer": "# ADR-014: Invoices are immutable after issuance\n\n## Context\n\nFinance/audit systems assume issued invoices are an append-only record.\nMutating an issued invoice (e.g. to correct a typo) would break reconciliation\nwith downstream ledgers.\n\n## Decision\n\n- `Invoice.issuedAt` is set exactly once; we never re-issue.\n- Corrections are modelled as **credit notes** (a separate aggregate),\n  not as mutations.\n\n## Consequences\n\n- `Invoice` has no setters beyond the initial constructor pathway.\n- The domain service rejects any command whose target has `issuedAt != null`."
 }

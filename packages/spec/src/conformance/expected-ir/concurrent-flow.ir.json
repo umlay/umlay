@@ -63,7 +63,9 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": ["total >= 0"],
+                "invariants": [
+                  "total >= 0"
+                ],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -387,7 +389,12 @@
         "OrderStatus": {
           "_id": "ebfb8ad83408",
           "name": "OrderStatus",
-          "values": ["DRAFT", "PLACED", "COMPLETED", "FAILED"]
+          "values": [
+            "DRAFT",
+            "PLACED",
+            "COMPLETED",
+            "FAILED"
+          ]
         }
       },
       "reservedBlocks": [],
@@ -558,7 +565,10 @@
               }
             ],
             "awaitSpec": {
-              "labels": ["cache-update", "event-publish"]
+              "labels": [
+                "cache-update",
+                "event-publish"
+              ]
             }
           },
           {
@@ -609,7 +619,10 @@
     {
       "id": "order-lifecycle",
       "kind": "state_machine",
-      "include": ["orders.Order", "orders.OrderStatus"],
+      "include": [
+        "orders.Order",
+        "orders.OrderStatus"
+      ],
       "exclude": [],
       "docs": [],
       "attachments": [],

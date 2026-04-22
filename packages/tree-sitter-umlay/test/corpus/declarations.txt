@@ -1,0 +1,137 @@
+==================
+empty namespace
+==================
+
+namespace shop
+
+---
+
+(source_file
+  (namespace_decl (identifier)))
+
+==================
+enum declaration
+==================
+
+namespace s
+
+enum Role { ADMIN, USER, GUEST }
+
+---
+
+(source_file
+  (namespace_decl (identifier))
+  (enum_decl
+    (identifier)
+    (identifier)
+    (identifier)
+    (identifier)))
+
+==================
+model with one attribute
+==================
+
+namespace s
+
+model User @entity {
+  +id UUID! @id
+}
+
+---
+
+(source_file
+  (namespace_decl (identifier))
+  (model_decl
+    (identifier)
+    (annotation (identifier))
+    (attribute
+      (visibility)
+      (identifier)
+      (type_ref (_qualified_ident (identifier)))
+      (nullability)
+      (annotation (identifier)))))
+
+==================
+view with include
+==================
+
+namespace s
+
+model User @entity { +id UUID! @id }
+
+view er @er_diagram { include: s.* }
+
+---
+
+(source_file
+  (namespace_decl (identifier))
+  (model_decl
+    (identifier)
+    (annotation (identifier))
+    (attribute
+      (visibility)
+      (identifier)
+      (type_ref (_qualified_ident (identifier)))
+      (nullability)
+      (annotation (identifier))))
+  (view_decl
+    (_view_id (identifier))
+    (annotation (identifier))
+    (view_property
+      (identifier)
+      (view_property_value
+        (pattern_list (pattern))))))
+
+==================
+protocol with generic parameter
+==================
+
+namespace core
+
+protocol Repository<T: Identifiable> {
+  fn findById(id: UUID!) -> T
+}
+
+---
+
+(source_file
+  (namespace_decl (identifier))
+  (protocol_decl
+    (identifier)
+    (type_params
+      (type_param
+        (identifier)
+        (type_ref (_qualified_ident (identifier)))))
+    (fn_signature
+      (identifier)
+      (fn_param
+        (identifier)
+        (type_ref (_qualified_ident (identifier))))
+      (type_ref (_qualified_ident (identifier))))))
+
+==================
+union with struct variant
+==================
+
+namespace ast
+
+union Expr =
+  | Num { value: int }
+  | Var { name: string }
+
+---
+
+(source_file
+  (namespace_decl (identifier))
+  (union_decl
+    (identifier)
+    (union_variant
+      (identifier)
+      (union_field
+        (identifier)
+        (type_ref (_qualified_ident (identifier)))))
+    (union_variant
+      (identifier)
+      (union_field
+        (identifier)
+        (type_ref (_qualified_ident (identifier)))))))

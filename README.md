@@ -35,7 +35,10 @@ umlay-oss/
 
 ## ドキュメント
 
-[`docs/`](./docs/) に、日本語・英語それぞれ 7 本の利用者向けドキュメントを用意しています: overview / getting-started / dsl-guide / ir-guide / design-principles / roadmap / faq。
+[`docs/`](./docs/) に、日本語・英語それぞれの利用者向けドキュメントを用意しています:
+overview / getting-started / dsl-guide / ir-guide / design-principles /
+roadmap / faq / lsp-integration / migration-guide-1.0 /
+**vscode-extension**。
 
 ## クイックスタート
 

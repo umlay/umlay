@@ -1,17 +1,81 @@
 {
   "version": "1.0",
   "kind": "UmlModel",
-  "mode": "strict",
-  "meta": {
-    "theme": "\"./themes/brand.css\""
-  },
+  "mode": "draft",
   "namespaces": {
     "shop": {
       "models": {
-        "Customer": {
-          "_id": "b25391330ed7",
-          "name": "Customer",
+        "Order": {
+          "_id": "51e58540cd15",
+          "name": "Order",
           "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "6c69f183cb58",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "365c717206c2",
+              "name": "userId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "User.id"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "0eddc670f56c",
+              "name": "total",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "顧客発注",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "User": {
+          "_id": "bfeb158aad29",
+          "name": "User",
+          "stereotype": "entity",
           "identity": "id",
           "attributes": [
             {
@@ -47,139 +111,7 @@
           "reviews": [],
           "fixes": [],
           "rationale": {
-            "intent": "購入顧客",
-            "invariants": [],
-            "preconditions": [],
-            "postconditions": [],
-            "raises": []
-          },
-          "sampleSources": [],
-          "sampleFileRefs": [],
-          "dependencies": [],
-          "codegen": [],
-          "implements": []
-        },
-        "Product": {
-          "_id": "257583211bad",
-          "name": "Product",
-          "stereotype": "entity",
-          "identity": "id",
-          "attributes": [
-            {
-              "_id": "6c69f183cb58",
-              "name": "id",
-              "type": "UUID",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": true,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "f432278f0df6",
-              "name": "sku",
-              "type": "string",
-              "visibility": "public",
-              "nullable": false,
-              "unique": true,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "df601ab0b3ed",
-              "name": "name",
-              "type": "string",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "949309bf3809",
-              "name": "price",
-              "type": "decimal",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            }
-          ],
-          "relations": [],
-          "docs": [],
-          "attachments": [],
-          "reviews": [],
-          "fixes": [],
-          "rationale": {
-            "intent": "販売商品",
-            "invariants": [],
-            "preconditions": [],
-            "postconditions": [],
-            "raises": []
-          },
-          "sampleSources": [],
-          "sampleFileRefs": [],
-          "dependencies": [],
-          "codegen": [],
-          "implements": []
-        },
-        "Order": {
-          "_id": "51e58540cd15",
-          "name": "Order",
-          "stereotype": "aggregate_root",
-          "identity": "id",
-          "attributes": [
-            {
-              "_id": "6c69f183cb58",
-              "name": "id",
-              "type": "UUID",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": true,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "8d7277fe5f10",
-              "name": "customerId",
-              "type": "UUID",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "ref": {
-                "target": "Customer.id",
-                "onDelete": "RESTRICT"
-              },
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            }
-          ],
-          "relations": [],
-          "docs": [],
-          "attachments": [],
-          "reviews": [],
-          "fixes": [],
-          "rationale": {
-            "intent": "顧客の購入注文",
+            "intent": "顧客",
             "invariants": [],
             "preconditions": [],
             "postconditions": [],
@@ -203,26 +135,15 @@
   },
   "views": [
     {
-      "id": "presentation",
+      "id": "order-er",
       "kind": "er_diagram",
       "include": [
         "shop.*"
       ],
       "exclude": [],
-      "docs": [],
-      "attachments": [],
-      "participants": [],
-      "messages": [],
-      "ganttTasks": []
-    },
-    {
-      "id": "er",
-      "kind": "er_diagram",
-      "include": [
-        "shop.*"
+      "docs": [
+        "## Purpose\n\nVisualises the Order aggregate and its `User` reference.\n\n## Decisions captured\n\n- Orders are scoped per user; no anonymous checkout (see ADR-007).\n- `total` is stored denormalised for reporting speed — invariants are\n  enforced in the domain service."
       ],
-      "exclude": [],
-      "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
