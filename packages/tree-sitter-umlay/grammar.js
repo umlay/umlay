@@ -66,11 +66,7 @@ module.exports = grammar({
     namespace_decl: ($) => seq('namespace', $.identifier),
 
     import_decl: ($) =>
-      seq(
-        'import',
-        choice($.string_literal, $.identifier),
-        optional(seq('as', $.identifier)),
-      ),
+      seq('import', choice($.string_literal, $.identifier), optional(seq('as', $.identifier))),
 
     enum_decl: ($) =>
       seq(
@@ -96,19 +92,11 @@ module.exports = grammar({
     _model_body: ($) => choice($.attribute, $.relation, $.block_directive),
 
     view_decl: ($) =>
-      seq(
-        'view',
-        field('id', $._view_id),
-        repeat($.annotation),
-        '{',
-        repeat($._view_body),
-        '}',
-      ),
+      seq('view', field('id', $._view_id), repeat($.annotation), '{', repeat($._view_body), '}'),
 
     _view_id: ($) => seq($.identifier, repeat(seq('-', $.identifier))),
 
-    _view_body: ($) =>
-      choice($.view_property, $.participants_decl, $.seq_block, $.block_directive),
+    _view_body: ($) => choice($.view_property, $.participants_decl, $.seq_block, $.block_directive),
 
     protocol_decl: ($) =>
       seq(
@@ -145,8 +133,7 @@ module.exports = grammar({
 
     _union_fields: ($) => seq($.union_field, repeat(seq(',', $.union_field)), optional(',')),
 
-    union_field: ($) =>
-      seq(field('name', $.identifier), ':', $.type_ref, optional($.nullability)),
+    union_field: ($) => seq(field('name', $.identifier), ':', $.type_ref, optional($.nullability)),
 
     impl_decl: ($) =>
       seq(
@@ -175,8 +162,7 @@ module.exports = grammar({
     _fn_params: ($) => seq($.fn_param, repeat(seq(',', $.fn_param)), optional(',')),
     fn_param: ($) => seq(field('name', $.identifier), ':', $.type_ref),
 
-    type_params: ($) =>
-      seq('<', $.type_param, repeat(seq(',', $.type_param)), '>'),
+    type_params: ($) => seq('<', $.type_param, repeat(seq(',', $.type_param)), '>'),
     type_param: ($) =>
       seq(
         optional(choice('in', 'out')),
@@ -207,43 +193,30 @@ module.exports = grammar({
 
     visibility: (_) => token(choice('+', '-', '#', '~')),
 
-    multiplicity: (_) =>
-      token(choice('1', '0..1', '1..*', '0..*', /[0-9]+\.\.[0-9*]+/, /[0-9]+/)),
+    multiplicity: (_) => token(choice('1', '0..1', '1..*', '0..*', /[0-9]+\.\.[0-9*]+/, /[0-9]+/)),
 
     nullability: (_) => token(choice('?', '!', '??')),
 
     // ---------- View body properties --------------------------------------
 
-    view_property: ($) =>
-      seq(field('key', $.identifier), ':', $.view_property_value),
+    view_property: ($) => seq(field('key', $.identifier), ':', $.view_property_value),
     view_property_value: ($) =>
-      choice(
-        $.pattern_list,
-        $.layout_options,
-        $.identifier,
-        $.string_literal,
-        $.number_literal,
-      ),
+      choice($.pattern_list, $.layout_options, $.identifier, $.string_literal, $.number_literal),
 
     pattern_list: ($) => seq($.pattern, repeat(seq(',', $.pattern))),
     pattern: (_) => token(/[A-Za-z_][A-Za-z0-9_.]*(\*)?/),
 
     layout_options: ($) =>
-      seq(
-        '{',
-        optional(seq($.layout_opt, repeat(seq(',', $.layout_opt)), optional(','))),
-        '}',
-      ),
+      seq('{', optional(seq($.layout_opt, repeat(seq(',', $.layout_opt)), optional(','))), '}'),
     layout_opt: ($) =>
-      seq(field('key', $.identifier), ':', choice($.string_literal, $.number_literal, $.identifier)),
+      seq(
+        field('key', $.identifier),
+        ':',
+        choice($.string_literal, $.number_literal, $.identifier),
+      ),
 
     participants_decl: ($) =>
-      seq(
-        'participants',
-        ':',
-        $.participant,
-        repeat(seq(',', $.participant)),
-      ),
+      seq('participants', ':', $.participant, repeat(seq(',', $.participant))),
     participant: ($) =>
       seq(field('ref', $.identifier), optional(seq('as', field('alias', $.identifier)))),
 
@@ -273,7 +246,9 @@ module.exports = grammar({
         '{',
         repeat($._seq_stmt),
         '}',
-        repeat(seq(choice('alt', 'else'), optional($.string_literal), '{', repeat($._seq_stmt), '}')),
+        repeat(
+          seq(choice('alt', 'else'), optional($.string_literal), '{', repeat($._seq_stmt), '}'),
+        ),
       ),
     seq_opt: ($) => seq('opt', optional($.string_literal), '{', repeat($._seq_stmt), '}'),
     seq_par: ($) => seq('par', optional($.string_literal), '{', repeat($._seq_stmt), '}'),
@@ -290,18 +265,15 @@ module.exports = grammar({
         optional(seq('catch', optional($.string_literal), '{', repeat($._seq_stmt), '}')),
         optional(seq('finally', '{', repeat($._seq_stmt), '}')),
       ),
-    seq_await: ($) => seq('await', '(', optional(/[^)]*/), ')'),
+    seq_await: (_) => seq('await', '(', optional(/[^)]*/), ')'),
 
     // ---------- Directives / Annotations ----------------------------------
 
     /** Inline `@intent(...)`, `@unique`, `@ref(X.id)`, `@entity`, `@er_diagram`… */
     annotation: ($) =>
-      seq(
-        '@',
-        field('name', $.identifier),
-        optional(seq('(', optional($._annotation_args), ')')),
-      ),
-    _annotation_args: ($) => repeat1(choice($.string_literal, $.number_literal, $.identifier, ',', ':', '.', '*')),
+      seq('@', field('name', $.identifier), optional(seq('(', optional($._annotation_args), ')'))),
+    _annotation_args: ($) =>
+      repeat1(choice($.string_literal, $.number_literal, $.identifier, ',', ':', '.', '*')),
 
     /** Block-level `@@doc(...)`, `@@md("""...""")`, `@@codegen(...)` — content
      *  is opaque for highlighting purposes. */
@@ -312,7 +284,11 @@ module.exports = grammar({
         optional(
           seq(
             '(',
-            optional(repeat(choice($.string_literal, $.number_literal, $.identifier, /[,:.{}*<>=\[\]+\-\/]/))),
+            optional(
+              repeat(
+                choice($.string_literal, $.number_literal, $.identifier, /[,:.{}*<>=\[\]+\-\/]/),
+              ),
+            ),
             ')',
           ),
         ),
@@ -324,10 +300,7 @@ module.exports = grammar({
     // ---------- Type references -------------------------------------------
 
     type_ref: ($) =>
-      seq(
-        $._qualified_ident,
-        optional(seq('<', $.type_ref, repeat(seq(',', $.type_ref)), '>')),
-      ),
+      seq($._qualified_ident, optional(seq('<', $.type_ref, repeat(seq(',', $.type_ref)), '>'))),
 
     _qualified_ident: ($) => seq($.identifier, repeat(seq('.', $.identifier))),
 

@@ -13,7 +13,9 @@
       "**/build",
       "**/coverage",
       "**/*.min.js",
-      "pnpm-lock.yaml"
+      "pnpm-lock.yaml",
+      "packages/spec/src/conformance/expected-ir/**",
+      "packages/spec/src/ir.schema.json"
     ]
   },
   "organizeImports": {
