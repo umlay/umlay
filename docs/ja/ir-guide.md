@@ -193,6 +193,64 @@ Layout ヒント (renderer 任意で尊重):
 
 詳細は [`migration-guide-1.0.md`](./migration-guide-1.0.md) §4 を参照。
 
+## 参照実装の派生 API (`@umlay/core` 1.1+)
+
+IR と同じファミリで、参照実装が提供する追加 API:
+
+### `parseLiterate(source)` — RFC 0031 Layer C
+
+Markdown 文書中の ` ```umlay ` フェンスを抽出して 1 IR に集約する。エラー行は元
+Markdown の行番号に remap 済。`.umlay.md` ファイル用。
+
+```ts
+import { parseLiterate } from '@umlay/core';
+const { ir, blocks, hasUmlay, diagnostics } = parseLiterate(mdSource);
+// blocks: LiterateBlock[]  — markdown / umlay 順序を保持
+```
+
+### `irToDsl(ir)` — 正規化フォーマッタ (round-trip)
+
+IR から `.umlay` ソースを生成する canonical formatter。format-on-save / codegen
+reconciliation / 黄金ファイルテストに使える。
+
+```ts
+import { parse, irToDsl } from '@umlay/core';
+const { ir } = parse(source);
+const formatted = irToDsl(ir);   // 等価の canonical DSL
+parse(formatted);                 // round-trip 成立
+```
+
+対応範囲: namespaces / enums / models (stereotype + intent + identity + attributes) /
+relations / block directives (`@@id` / `@@unique` / `@@index` / `@@dependencies` /
+`@@implements` / `@@codegen` / `@@doc` / `@@md`) / views (include / exclude /
+layout / criticalPath) / `docTrailer`。
+
+**未対応 (1.1 時点)**: protocols / unions / impl blocks / sequence-body rich form /
+Gantt task tables。これらを含む DSL を round-trip すると一部情報が失われる点に注意。
+
+### `expandSampleFileRefs(ir, { readFile })` — RFC 0008
+
+`@@sample(from: "./file.jsonl")` の外部ファイル参照を、caller が提供する
+`readFile` callback 経由で実データに展開する。
+
+```ts
+import { expandSampleFileRefs } from '@umlay/core';
+await expandSampleFileRefs(ir, { readFile: (p) => fs.readFileSync(p, 'utf8') });
+// model.sampleSources[] に行が追加される
+```
+
+### `renderDocument(ir, opts)` — IR → Markdown + inline SVG (`@umlay/renderer-er`)
+
+IR から Markdown 文書 (table / attribute 一覧 / view の SVG を inline) を
+組み立てる。Web editor の Document Mode と、literate 形式のリバース
+生成 (spec 文書の自動 export) に使う。
+
+```ts
+import { renderDocument } from '@umlay/renderer-er';
+const md = await renderDocument(ir);
+// そのまま Markdown renderer に渡せる。inline <svg> は HTML 許容で pass-through。
+```
+
 ## 参考
 
 - [`packages/spec/src/ir.schema.json`](../../packages/spec/src/ir.schema.json) — `pnpm --filter @umlay/core gen:ir-schema` で自動生成

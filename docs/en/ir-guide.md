@@ -185,6 +185,65 @@ Accepted RFCs not yet in `ir.schema.json` (Zod-generated):
 
 See [`migration-guide-1.0.md`](./migration-guide-1.0.md) §4.
 
+## Reference-implementation APIs (`@umlay/core` 1.1+)
+
+Companion APIs shipped alongside the IR by the reference parser:
+
+### `parseLiterate(source)` — RFC 0031 Layer C
+
+Extracts ` ```umlay ` fenced blocks from a Markdown document, concatenates
+them, and parses the result as one IR. Diagnostic line numbers are remapped
+back to the original Markdown. Use for `.umlay.md` files.
+
+```ts
+import { parseLiterate } from '@umlay/core';
+const { ir, blocks, hasUmlay, diagnostics } = parseLiterate(mdSource);
+```
+
+### `irToDsl(ir)` — canonical formatter (round-trip)
+
+Regenerates a `.umlay` source from an IR. Drives format-on-save, codegen
+reconciliation, and golden-file test fixtures.
+
+```ts
+import { parse, irToDsl } from '@umlay/core';
+const { ir } = parse(source);
+const formatted = irToDsl(ir);
+parse(formatted);   // round-trips
+```
+
+Covered: namespaces, enums, models (stereotype + intent + identity +
+attributes), relations, block directives (`@@id` / `@@unique` / `@@index`
+/ `@@dependencies` / `@@implements` / `@@codegen` / `@@doc` / `@@md`),
+views (include / exclude / layout / criticalPath), `docTrailer`.
+
+**Not yet covered (as of 1.1)**: protocols, unions, impl blocks,
+sequence-body rich form, Gantt task tables. Round-tripping an IR with
+these parts will lose some detail.
+
+### `expandSampleFileRefs(ir, { readFile })` — RFC 0008
+
+Resolves `@@sample(from: "./file.jsonl")` external references through a
+caller-supplied `readFile` callback and appends rows to
+`model.sampleSources[]`.
+
+```ts
+import { expandSampleFileRefs } from '@umlay/core';
+await expandSampleFileRefs(ir, { readFile: (p) => fs.readFileSync(p, 'utf8') });
+```
+
+### `renderDocument(ir, opts)` — IR → Markdown + inline SVG (`@umlay/renderer-er`)
+
+Composes a full Markdown document with diagrams inlined as SVG. Powers
+the web editor's Document Mode and literate-ready exports.
+
+```ts
+import { renderDocument } from '@umlay/renderer-er';
+const md = await renderDocument(ir);
+// Feed to any Markdown renderer — inline <svg> survives because the
+// renderer emits raw HTML alongside the Markdown source.
+```
+
 ## See also
 
 - [`packages/spec/src/ir.schema.json`](../../packages/spec/src/ir.schema.json) — auto-generated via `pnpm --filter @umlay/core gen:ir-schema`
