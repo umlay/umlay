@@ -25,10 +25,17 @@ they live in the reference implementation
 
 ## Build & test
 
+The default workspace `pnpm -r build` is a **no-op** for this package —
+`tree-sitter generate` + `node-gyp build` need the native `tree-sitter`
+binary (fetched via a postinstall script that CI blocks by default).
+
+Run the real generator explicitly when you're working on the grammar:
+
 ```sh
-npm install
-npm run generate   # runs `tree-sitter generate`
-npm test           # runs the corpus/*.txt snapshot suite
+pnpm install                                   # add postinstall approval for tree-sitter-cli
+pnpm -F tree-sitter-umlay run build:grammar    # tree-sitter generate + node-gyp build
+pnpm -F tree-sitter-umlay run generate         # grammar.js → src/parser.c only
+pnpm -F tree-sitter-umlay run test             # corpus/*.txt snapshot suite
 ```
 
 ## Corpus tests

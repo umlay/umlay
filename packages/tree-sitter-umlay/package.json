@@ -22,7 +22,8 @@
   "scripts": {
     "generate": "tree-sitter generate",
     "test": "tree-sitter test",
-    "build": "tree-sitter generate && node-gyp configure && node-gyp build",
+    "build": "echo 'tree-sitter-umlay: skipping generate/node-gyp in workspace build — run `pnpm run build:grammar` when distributing'",
+    "build:grammar": "tree-sitter generate && node-gyp configure && node-gyp build",
     "parse": "tree-sitter parse"
   },
   "tree-sitter": [
