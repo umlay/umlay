@@ -33,6 +33,12 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(@types/node@25.6.0)
 
+  packages/tree-sitter-umlay:
+    devDependencies:
+      tree-sitter-cli:
+        specifier: ^0.24.0
+        version: 0.24.7
+
 packages:
 
   '@biomejs/biome@1.9.4':
@@ -519,6 +525,11 @@ packages:
     resolution: {integrity: sha512-n1cw8k1k0x4pgA2+9XrOkFydTerNcJ1zWCO5Nn9scWHTD+5tp8dghT2x1uduQePZTZgd3Tupf+x9BxJjeJi77Q==}
     engines: {node: '>=14.0.0'}
 
+  tree-sitter-cli@0.24.7:
+    resolution: {integrity: sha512-o4gnE82pVmMMhJbWwD6+I9yr4lXii5Ci5qEQ2pFpUbVy1YiD8cizTJaqdcznA0qEbo7l2OneI1GocChPrI4YGQ==}
+    engines: {node: '>=12.0.0'}
+    hasBin: true
+
   typescript@6.0.3:
     resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
     engines: {node: '>=14.17'}
@@ -949,6 +960,8 @@ snapshots:
   tinyrainbow@1.2.0: {}
 
   tinyspy@3.0.2: {}
+
+  tree-sitter-cli@0.24.7: {}
 
   typescript@6.0.3: {}
 
