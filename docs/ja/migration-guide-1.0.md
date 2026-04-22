@@ -143,8 +143,12 @@ for (const model of oldIR.namespaces.*.models.*) {
 | Markdown trailer (`---` 以降) | 0031 | parser pre-処理、IR `docTrailer?` |
 | Literate `.umlay.md` | 0031 | 新 API `parseLiterate(source)` |
 | (Layer A: 既存 doc 文字列の Markdown レンダリング) | 0031 | 表示側のみ、grammar / IR 不変 |
+| R13 lint rule (`@@md` 合計 200 行超で info) | 0031 follow-up | `@umlay/lint` 1.1+、54/54 |
+| `irToDsl(ir)` canonical formatter | — | `@umlay/core` 1.1+ の新 public API (format-on-save / round-trip 用) |
+| `renderDocument(ir)` Markdown + inline SVG | — | `@umlay/renderer-er` 1.1+ — web editor Document Mode の基盤 |
 
-**移行作業: 不要**。全て後方互換。既存 `.umlay` ファイルはそのまま動く。
+**移行作業: 不要**。全て後方互換。既存 `.umlay` ファイルはそのまま動く。新 API は
+opt-in — 呼び出しコードを足さない限り挙動に影響しない。
 
 ## 7. 参照
 

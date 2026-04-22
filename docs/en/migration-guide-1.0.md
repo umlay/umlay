@@ -143,9 +143,13 @@ See [`rfcs/README.md`](../../packages/spec/src/rfcs/README.md) for the running i
 | Markdown trailer (after `---`) | 0031 | Parser pre-pass; IR `docTrailer?` |
 | Literate `.umlay.md` | 0031 | New API `parseLiterate(source)` |
 | (Layer A: render existing doc strings as Markdown) | 0031 | Display-side only; grammar / IR unchanged |
+| R13 lint rule (info when `@@md` exceeds 200 lines) | 0031 follow-up | `@umlay/lint` 1.1+, 54/54 |
+| `irToDsl(ir)` canonical formatter | — | New public API in `@umlay/core` 1.1+ (format-on-save / round-trip) |
+| `renderDocument(ir)` Markdown + inline SVG | — | `@umlay/renderer-er` 1.1+ — powers the web editor's Document Mode |
 
 **Migration: none required.** Every change is backward compatible — existing
-`.umlay` files keep parsing identically.
+`.umlay` files keep parsing identically. The new APIs are opt-in — behaviour
+is unchanged until you call them.
 
 ## 7. See also
 
