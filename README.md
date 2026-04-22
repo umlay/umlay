@@ -55,6 +55,10 @@ Node バージョンは `.node-version` に固定されています (Volta / fnm
 
 `packages/spec` は Apache License 2.0、`packages/examples` は MIT、`skills/` 配下は各ファイルヘッダに従います。詳細は [`LICENSE`](./LICENSE) および [`NOTICE`](./NOTICE) を参照してください。
 
+## Sponsor
+
+Umlay の開発を支援いただける場合は [Buy Me a Coffee](https://buymeacoffee.com/umlay) からお願いします。いただいたサポートはドキュメント整備 / 新しい view kind の実装 / AI 協働ループの改善に使います。
+
 ---
 
 Maintained by [Keydrop](https://www.keydrop.net).
