@@ -205,9 +205,7 @@
     {
       "id": "presentation",
       "kind": "er_diagram",
-      "include": [
-        "shop.*"
-      ],
+      "include": ["shop.*"],
       "exclude": [],
       "docs": [],
       "attachments": [],
@@ -218,9 +216,7 @@
     {
       "id": "er",
       "kind": "er_diagram",
-      "include": [
-        "shop.*"
-      ],
+      "include": ["shop.*"],
       "exclude": [],
       "docs": [],
       "attachments": [],

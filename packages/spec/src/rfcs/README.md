@@ -45,6 +45,7 @@ rfcs/
 | [0028](./0028-critical-retry.md) | critical-retry | `critical ... retry({attempts, backoff, jitter})` 自動再試行 | **accepted** | 0.8.0 | A |
 | [0029](./0029-lint-rule-catalog.md) | lint-rule-catalog | Lint ルールカタログの標準化 (S/L/R/W/C 番号体系) | **accepted** | 0.8.0 | A |
 | [0030](./0030-type-inference-rules.md) | type-inference-rules | 型推論規則の形式化 | **accepted** | 0.8.0 | A |
+| [0031](./0031-markdown-integration.md) | markdown-integration | Markdown 統合 4 レイヤー (`@@md` / trailer / `.umlay.md` literate) | **accepted** | 1.1.0 | A |
 
 status: draft → open → accepted / rejected / superseded
 

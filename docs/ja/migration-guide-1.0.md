@@ -135,6 +135,17 @@ for (const model of oldIR.namespaces.*.models.*) {
 
 各 1.x release では [`rfcs/README.md`](../../packages/spec/src/rfcs/README.md) のインデックスを参照。
 
+### 6.1 spec 1.1.0 の追加機能
+
+| 機能 | RFC | 影響 |
+| --- | --- | --- |
+| `@@md(""" ... """)` model directive | 0031 | grammar 1 行追加 (additive)、IR `Model.docs[]` |
+| Markdown trailer (`---` 以降) | 0031 | parser pre-処理、IR `docTrailer?` |
+| Literate `.umlay.md` | 0031 | 新 API `parseLiterate(source)` |
+| (Layer A: 既存 doc 文字列の Markdown レンダリング) | 0031 | 表示側のみ、grammar / IR 不変 |
+
+**移行作業: 不要**。全て後方互換。既存 `.umlay` ファイルはそのまま動く。
+
 ## 7. 参照
 
 - [Roadmap](./roadmap.md)

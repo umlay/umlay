@@ -44,9 +44,7 @@
           "implements": [
             {
               "ref": "Producer",
-              "args": [
-                "Dog"
-              ]
+              "args": ["Dog"]
             }
           ]
         },
@@ -89,9 +87,7 @@
           "implements": [
             {
               "ref": "Consumer",
-              "args": [
-                "Animal"
-              ]
+              "args": ["Animal"]
             }
           ]
         }
@@ -299,9 +295,7 @@
     {
       "id": "variance-class",
       "kind": "class_diagram",
-      "include": [
-        "variance_demo.*"
-      ],
+      "include": ["variance_demo.*"],
       "exclude": [],
       "layout": {
         "direction": "TB",

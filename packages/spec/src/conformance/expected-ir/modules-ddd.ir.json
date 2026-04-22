@@ -207,9 +207,7 @@
     {
       "id": "shop-class",
       "kind": "class_diagram",
-      "include": [
-        "shop.*"
-      ],
+      "include": ["shop.*"],
       "exclude": [],
       "layout": {
         "direction": "LR",
@@ -224,9 +222,7 @@
     {
       "id": "catalog-er",
       "kind": "er_diagram",
-      "include": [
-        "shop.catalog.*"
-      ],
+      "include": ["shop.catalog.*"],
       "exclude": [],
       "docs": [],
       "attachments": [],
@@ -237,9 +233,7 @@
     {
       "id": "checkout-er",
       "kind": "er_diagram",
-      "include": [
-        "shop.checkout.*"
-      ],
+      "include": ["shop.checkout.*"],
       "exclude": [],
       "docs": [],
       "attachments": [],
@@ -250,10 +244,7 @@
     {
       "id": "shop-modules",
       "kind": "package_diagram",
-      "include": [
-        "shop.catalog.*",
-        "shop.checkout.*"
-      ],
+      "include": ["shop.catalog.*", "shop.checkout.*"],
       "exclude": [],
       "docs": [],
       "attachments": [],

@@ -135,6 +135,18 @@ After freeze:
 
 See [`rfcs/README.md`](../../packages/spec/src/rfcs/README.md) for the running index of RFCs per 1.x release.
 
+### 6.1 Spec 1.1.0 additions
+
+| Feature | RFC | Impact |
+| --- | --- | --- |
+| `@@md(""" ... """)` model directive | 0031 | One grammar rule (additive); IR `Model.docs[]` |
+| Markdown trailer (after `---`) | 0031 | Parser pre-pass; IR `docTrailer?` |
+| Literate `.umlay.md` | 0031 | New API `parseLiterate(source)` |
+| (Layer A: render existing doc strings as Markdown) | 0031 | Display-side only; grammar / IR unchanged |
+
+**Migration: none required.** Every change is backward compatible — existing
+`.umlay` files keep parsing identically.
+
 ## 7. See also
 
 - [Roadmap](./roadmap.md)

@@ -171,7 +171,8 @@ Declared inside `model`, `type`, or `protocol` bodies.
 | --- | --- | --- |
 | `@@mode(draft\|strict)` | File | Validation mode |
 | `@@theme("<path>")` | File / view | External CSS theme |
-| `@@doc("""...""")` | model / view / type | Documentation |
+| `@@doc("""...""")` | model / view / type | Documentation (Markdown supported, RFC 0031) |
+| `@@md("""...""")` | model | Free-form Markdown body (tables, code fences, multi-paragraph — RFC 0031) |
 | `@@attachments(<item>, ...)` | model / view | Supplementary material |
 | `@@id(<attr>, ...)` | model | Composite primary key |
 | `@@unique(<attr>, ...)` | model | Composite uniqueness |
@@ -211,6 +212,31 @@ model Task @entity {
 ```
 
 Supported external formats: `json`, `jsonl`, `yaml`, `csv`. Inline and external forms may coexist within a model.
+
+### `@@md` — Markdown block (RFC 0031)
+
+Attaches a free-form CommonMark + GFM body to a model. Unlike `@@doc`,
+multiple `@@md` blocks may coexist on the same model, and the body
+preserves tables / code fences / multi-paragraph layout.
+
+```prisma
+model Order @aggregate_root {
+  +id     UUID! @id
+  +status OrderStatus!
+
+  @@md("""
+  ## State transitions
+
+  | from | to |
+  | --- | --- |
+  | DRAFT | SUBMITTED |
+  | SUBMITTED | PAID / CANCELLED |
+  """)
+}
+```
+
+Captured into `model.docs[]` (string array). The first `@@doc` also fills
+`model.doc` (string) for backward compat.
 
 ## 9. Sequence diagram body
 
@@ -352,6 +378,63 @@ The following contexts accept reserved words as identifiers (within the limits o
 - **Participant aliases / message endpoints** (`participantIdent`): only cloud / infra keywords (`cache`, `queue`, …); seq-body keywords (`critical`, `opt`, …) are excluded to avoid ambiguity
 - **Annotation names** (`@timeout(30s)`, `@retry`, …): seq-body keywords plus `as` / `on` / `participants` are accepted
 - **View IDs** (`view seq`, `view critical-flow`, …): same as above
+
+## 12.5 Markdown integration (RFC 0031, spec 1.1.0)
+
+Umlay integrates Markdown across four layers. **All additive** — existing
+`.umlay` files keep parsing unchanged.
+
+### Layer A — Markdown inside doc strings
+
+`@intent("...")` / `@@doc("""...""")` / `@review("...")` / `@fix("...")`
+strings are rendered as **CommonMark + GFM** by every consumer (LSP hover,
+VS Code preview, web editor). Grammar / IR unchanged.
+
+### Layer B — `@@md` directive
+
+See §8. Captured into `model.docs[]` (`string[]`).
+
+### Layer D — Markdown trailer (after `---`)
+
+A standalone `---` line at the end of a `.umlay` file separates the DSL
+from a free-form Markdown trailer that is stored verbatim in
+`IR.docTrailer?: string`. A `---` inside a triple-quoted string is
+ignored (the parser tracks `"""` open/close).
+
+```
+namespace shop
+model Order @entity { id UUID! @id }
+
+---
+
+# Design notes
+
+- orders are immutable
+```
+
+### Layer C — Literate `.umlay.md`
+
+Files ending in `.umlay.md` are Markdown documents whose ` ```umlay `
+fenced code blocks are extracted in document order, concatenated, and fed
+to `parse()`. Diagnostic line numbers are remapped back to the original
+Markdown source.
+
+```markdown
+# Auth domain
+
+\`\`\`umlay
+namespace auth
+model User @entity { id UUID! @id }
+\`\`\`
+
+## Views
+
+\`\`\`umlay
+view er @er_diagram { include: auth.* }
+\`\`\`
+```
+
+Reference implementation API: `parseLiterate(source)` in `@umlay/core`.
 
 ## 13. Open issues (tracked in RFCs)
 

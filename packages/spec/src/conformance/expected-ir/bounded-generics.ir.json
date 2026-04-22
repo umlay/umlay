@@ -115,9 +115,7 @@
           "implements": [
             {
               "ref": "Repository",
-              "args": [
-                "User"
-              ]
+              "args": ["User"]
             }
           ]
         }

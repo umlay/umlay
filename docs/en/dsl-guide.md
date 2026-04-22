@@ -307,6 +307,82 @@ model StreamProcessor @aggregate_root
 - `@deprecated` surfaces call sites via lint W001
 - `@experimental` surfaces via lint W002 and is a candidate for the migration-guide-1.0.md tables
 
+## 10.5 Markdown integration (RFC 0031, spec 1.1.0+)
+
+Four ways to put Markdown into a `.umlay` file. **All additive** — existing
+files work unchanged.
+
+### A. Markdown inside doc strings
+
+```prisma
+model User @aggregate_root @intent("""
+## Role
+
+- authentication subject
+- **email** is unique
+""") {
+  id UUID! @id
+}
+```
+
+`@intent` / `@@doc` / `@review` / `@fix` bodies render as CommonMark + GFM
+across consumers (LSP hover, VS Code preview, web editor).
+
+### B. `@@md` directive — free-form Markdown block
+
+```prisma
+model Order @aggregate_root {
+  id UUID! @id
+
+  @@md("""
+  ## State transitions
+
+  | from | to |
+  | --- | --- |
+  | DRAFT | SUBMITTED |
+  """)
+}
+```
+
+Unlike `@@doc`, multiple `@@md` blocks may coexist on the same model and
+preserve tables / code fences / multiple paragraphs.
+
+### D. Markdown trailer at end of file
+
+```
+namespace shop
+model Order @entity { id UUID! @id }
+
+---
+
+# Design notes
+
+ADR / implementation rationale lives here.
+```
+
+A standalone `---` line ends the DSL section; everything after it is
+captured as `IR.docTrailer` (string). A `---` inside a triple-quoted
+string is ignored.
+
+### C. Literate `.umlay.md`
+
+Save the file as `.umlay.md` and write Markdown freely with ` ```umlay `
+fenced blocks for the DSL parts. GitHub renders the file as a normal
+Markdown document.
+
+````markdown
+# Auth domain
+
+## Entities
+
+```umlay
+namespace auth
+model User @entity { id UUID! @id }
+```
+````
+
+Reference implementation API: `parseLiterate(source)` in `@umlay/core`.
+
 ## 11. References
 
 - [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) — canonical grammar

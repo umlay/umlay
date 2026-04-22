@@ -126,10 +126,7 @@
           "_id": "36e05106122c",
           "name": "OAuthAccount",
           "stereotype": "entity",
-          "identity": [
-            "userId",
-            "provider"
-          ],
+          "identity": ["userId", "provider"],
           "attributes": [
             {
               "_id": "11121e5287b1",
@@ -285,9 +282,7 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": [
-                  "sessionToken.expiresAt > sessionToken.issuedAt"
-                ],
+                "invariants": ["sessionToken.expiresAt > sessionToken.issuedAt"],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -1371,18 +1366,12 @@
         "AuthProvider": {
           "_id": "2b132954aa66",
           "name": "AuthProvider",
-          "values": [
-            "GOOGLE"
-          ]
+          "values": ["GOOGLE"]
         },
         "SessionStatus": {
           "_id": "470f66304e5d",
           "name": "SessionStatus",
-          "values": [
-            "ACTIVE",
-            "EXPIRED",
-            "REVOKED"
-          ]
+          "values": ["ACTIVE", "EXPIRED", "REVOKED"]
         }
       },
       "reservedBlocks": [],
@@ -1396,11 +1385,7 @@
     {
       "id": "login-er",
       "kind": "er_diagram",
-      "include": [
-        "login.User",
-        "login.OAuthAccount",
-        "login.Session"
-      ],
+      "include": ["login.User", "login.OAuthAccount", "login.Session"],
       "exclude": [],
       "docs": [],
       "attachments": [],
@@ -1952,10 +1937,7 @@
     {
       "id": "session-lifecycle",
       "kind": "state_machine",
-      "include": [
-        "login.Session",
-        "login.SessionStatus"
-      ],
+      "include": ["login.Session", "login.SessionStatus"],
       "exclude": [],
       "docs": [],
       "attachments": [],

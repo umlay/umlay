@@ -63,9 +63,7 @@
               "reviews": [],
               "fixes": [],
               "rationale": {
-                "invariants": [
-                  "plannedEnd >= plannedStart"
-                ],
+                "invariants": ["plannedEnd >= plannedStart"],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -179,10 +177,7 @@
           "_id": "2b2fb2a47cd5",
           "name": "TaskDependency",
           "stereotype": "entity",
-          "identity": [
-            "fromId",
-            "toId"
-          ],
+          "identity": ["fromId", "toId"],
           "attributes": [
             {
               "_id": "4a4cc99fecbd",
@@ -269,11 +264,7 @@
         "TaskStatus": {
           "_id": "2bc12f0dc1ba",
           "name": "TaskStatus",
-          "values": [
-            "PENDING",
-            "IN_PROGRESS",
-            "DONE"
-          ]
+          "values": ["PENDING", "IN_PROGRESS", "DONE"]
         }
       },
       "reservedBlocks": [],
@@ -287,10 +278,7 @@
     {
       "id": "gantt-highlight",
       "kind": "gantt_chart",
-      "include": [
-        "cpm.Task",
-        "cpm.TaskDependency"
-      ],
+      "include": ["cpm.Task", "cpm.TaskDependency"],
       "exclude": [],
       "layout": {
         "direction": "LR",
@@ -306,10 +294,7 @@
     {
       "id": "gantt-compute",
       "kind": "gantt_chart",
-      "include": [
-        "cpm.Task",
-        "cpm.TaskDependency"
-      ],
+      "include": ["cpm.Task", "cpm.TaskDependency"],
       "exclude": [],
       "docs": [],
       "attachments": [],
@@ -321,10 +306,7 @@
     {
       "id": "gantt-ignore",
       "kind": "gantt_chart",
-      "include": [
-        "cpm.Task",
-        "cpm.TaskDependency"
-      ],
+      "include": ["cpm.Task", "cpm.TaskDependency"],
       "exclude": [],
       "docs": [],
       "attachments": [],

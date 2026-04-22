@@ -182,7 +182,8 @@ fn <name>(<arg>: <type>[, ...]) -> <return-type>
 | --- | --- | --- |
 | `@@mode(draft\|strict)` | ファイル | 検証モード |
 | `@@theme("<path>")` | ファイル / view | 外部 CSS テーマ |
-| `@@doc("""...""")` | model / view / type | ドキュメント |
+| `@@doc("""...""")` | model / view / type | ドキュメント (Markdown 可、RFC 0031) |
+| `@@md("""...""")` | model | 任意 Markdown ブロック (table / code fence / 多段落、RFC 0031) |
 | `@@attachments(<item>, ...)` | model / view | 資料添付 |
 | `@@id(<attr>, ...)` | model | 複合主キー |
 | `@@unique(<attr>, ...)` | model | 複合一意制約 |
@@ -223,6 +224,30 @@ model Task @entity {
 ```
 
 外部ファイル対応形式: `json` / `jsonl` / `yaml` / `csv`。inline と外部は同一 model 内で併用可能。
+
+### `@@md` — Markdown ブロック (RFC 0031)
+
+任意の CommonMark + GFM 本文を model に添付する。`@@doc` と異なり、複数回
+書ける / 表 / コードフェンス / 多段落を保持する。
+
+```prisma
+model Order @aggregate_root {
+  +id     UUID! @id
+  +status OrderStatus!
+
+  @@md("""
+  ## 状態遷移
+
+  | from | to |
+  | --- | --- |
+  | DRAFT | SUBMITTED |
+  | SUBMITTED | PAID / CANCELLED |
+  """)
+}
+```
+
+IR 内で `model.docs[]` に append される (`@@doc` の最初の 1 つは
+`model.doc` (string) と `model.docs[0]` の両方に入る、後方互換のため)。
 
 ## 9. Sequence diagram 本体
 
@@ -364,6 +389,61 @@ view order-er @er_diagram {
 - **Participant alias / message 参加者** (`participantIdent`): cloud/infra keyword のみ (`cache` / `queue` など) を許容、seq-body keyword (`critical` / `opt` など) は ambiguity を避けて除外
 - **Annotation 名** (`@timeout(30s)`, `@retry` など): seq-body keyword + `as` / `on` / `participants` を許容
 - **View ID** (`view seq`, `view critical-flow` など): 同上
+
+## 12.5 Markdown 統合 (RFC 0031, spec 1.1.0)
+
+Umlay は Markdown を 4 レイヤーで統合する。**全て additive** — 既存
+`.umlay` ファイルは無変更で動く。
+
+### Layer A — 文字列内 Markdown
+
+`@intent("...")` / `@@doc("""...""")` / `@review("...")` / `@fix("...")`
+の文字列は実装側で **CommonMark + GFM** として表示される。grammar / IR
+に変更なし。
+
+### Layer B — `@@md` ディレクティブ
+
+§8 を参照。`model.docs[]` (`string[]`) に append される。
+
+### Layer D — Markdown trailer (`---` 以降)
+
+ファイル末尾に **`---` 単独行** が現れた場合、それ以降は IR には入らず
+`IR.docTrailer?: string` に格納される。triple-quoted 文字列の中の `---`
+は対象外 (parser は `"""` の開閉を数えて判定)。
+
+```
+namespace shop
+model Order @entity { id UUID! @id }
+
+---
+
+# 設計メモ
+
+- 注文は不可逆
+```
+
+### Layer C — 文芸的 (literate) `.umlay.md`
+
+拡張子 `.umlay.md` は Markdown 文書として扱われる。中の ` ```umlay `
+フェンスを順番に連結して `parse()` に渡す。エラー位置は元 Markdown の
+行番号にリマップされる。
+
+```markdown
+# Auth domain
+
+\`\`\`umlay
+namespace auth
+model User @entity { id UUID! @id }
+\`\`\`
+
+## ビュー
+
+\`\`\`umlay
+view er @er_diagram { include: auth.* }
+\`\`\`
+```
+
+参照実装: `@umlay/core` の `parseLiterate(source)` API。
 
 ## 13. 残置課題 (RFC 追跡)
 

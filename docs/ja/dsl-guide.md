@@ -307,11 +307,91 @@ model StreamProcessor @aggregate_root
 - `@deprecated` は lint W001 で使用箇所を通知
 - `@experimental` は lint W002 + migration-guide-1.0.md の移行表に自動掲載候補
 
+## 10.5 Markdown 統合 (RFC 0031, spec 1.1.0〜)
+
+`.umlay` ファイルに Markdown を組み込む 4 通りの方法。**全て additive**
+で既存ファイルに影響なし。
+
+### A. doc 文字列内 Markdown (実装側で自動レンダリング)
+
+```prisma
+model User @aggregate_root @intent("""
+## 役割
+
+- 認証主体
+- **email** は unique
+""") {
+  id UUID! @id
+}
+```
+
+`@intent` / `@@doc` / `@review` / `@fix` の中身は CommonMark + GFM として
+表示される (LSP hover / VS Code preview / web editor)。
+
+### B. `@@md` ディレクティブ — 任意 Markdown ブロック
+
+```prisma
+model Order @aggregate_root {
+  id UUID! @id
+
+  @@md("""
+  ## 状態遷移
+
+  | from | to |
+  | --- | --- |
+  | DRAFT | SUBMITTED |
+  """)
+}
+```
+
+`@@doc` と異なり**複数回**書ける。table / code fence / 多段落を保持。
+
+### D. ファイル末尾の Markdown trailer
+
+```
+namespace shop
+model Order @entity { id UUID! @id }
+
+---
+
+# 設計メモ
+
+ADR / 実装上の判断をここに自由に書ける。
+```
+
+`---` 単独行以降は IR には入らず `IR.docTrailer` に格納される。
+triple-quoted 文字列の中の `---` は対象外。
+
+### C. 文芸的 (literate) `.umlay.md`
+
+ファイル拡張子を `.umlay.md` にすれば、Markdown 文書として書きながら
+` ```umlay ` フェンスに DSL を埋め込める。GitHub 上ではそのまま設計文書
+として読める。
+
+````markdown
+# Auth domain
+
+## エンティティ
+
+```umlay
+namespace auth
+model User @entity { id UUID! @id }
+```
+
+## ビュー
+
+```umlay
+view er @er_diagram { include: auth.* }
+```
+````
+
+参照実装: `parseLiterate(source)` API (`@umlay/core`)。
+
 ## 11. 参考
 
 - [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) — 文法の正本
 - [`packages/spec/src/ir.schema.json`](../../packages/spec/src/ir.schema.json) — 正規IR の JSON Schema
 - [`packages/spec/src/lint-rules.md`](../../packages/spec/src/lint-rules.md) — Lint rule catalog
 - [`packages/spec/src/type-inference.md`](../../packages/spec/src/type-inference.md) — variance / bound / diamond MRO の判定規則
-- [`packages/spec/src/rfcs/`](../../packages/spec/src/rfcs/) — accepted RFC (0001〜0030)
+- [`packages/spec/src/rfcs/`](../../packages/spec/src/rfcs/) — accepted RFC (0001〜0031)
 - [`packages/examples/samples/`](../../packages/examples/samples/) — 実例

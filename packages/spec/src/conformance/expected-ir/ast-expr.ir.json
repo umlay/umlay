@@ -182,11 +182,7 @@
     {
       "id": "ast-class",
       "kind": "class_diagram",
-      "include": [
-        "lang.Expr",
-        "lang.Tree",
-        "lang.Evaluator"
-      ],
+      "include": ["lang.Expr", "lang.Tree", "lang.Evaluator"],
       "exclude": [],
       "docs": [],
       "attachments": [],

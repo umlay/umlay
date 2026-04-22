@@ -4,7 +4,7 @@
 # スキーマ: {version, samples: [{path, min-spec-version, features: {...}}]}
 
 version: 1.0
-spec-version: 1.0.0
+spec-version: 1.1.0
 updated: 2026-04-22
 
 samples:
@@ -209,6 +209,18 @@ samples:
       type-params: true
       rfcs: [0010, 0012]
       modes: [strict]
+
+  - path: ../../../examples/samples/literate-auth.umlay.md
+    summary: Literate `.umlay.md` 形式 — Markdown + ```umlay フェンス (RFC 0031)
+    min-spec-version: 1.1.0
+    features:
+      declarations: [namespace, model, view]
+      stereotypes: [aggregate_root, entity]
+      annotations: [id, intent, ref, unique]
+      blocks: [index]
+      view-kinds: [er_diagram]
+      literate: true
+      rfcs: [0031]
 
 # 機能マーカー (grep で DSL 中に存在確認するための文字列)
 # index.ts が各 feature に対応する正規表現を持つ

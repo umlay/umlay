@@ -17,7 +17,10 @@
 
 (* ─────────────── ファイル構造 ─────────────── *)
 
+(* RFC 0031: ファイル末尾の `---` 単独行以降は IR.docTrailer に格納される *)
 File            ::= FileDirective* NamespaceDecl ImportDecl* TopLevel*
+                    DocTrailerSeparator?
+DocTrailerSeparator ::= "---" Newline /* 任意 Markdown 本文 */
 NamespaceDecl   ::= "namespace" Identifier
 TopLevel        ::= TypeDecl | EnumDecl | ModelDecl | ViewDecl
                   | ProtocolDecl | UnionDecl | ModuleDecl
@@ -175,6 +178,7 @@ BlockDirective       ::= CompositeIdBlock
                        | CompositeUniqueBlock
                        | CompositeIndexBlock
                        | DocBlock
+                       | MdBlock                              (* RFC 0031 *)
                        | AttachmentsBlock
                        | DependenciesBlock
                        | SampleBlock
@@ -202,6 +206,8 @@ CompositeUniqueBlock ::= "@@unique" "(" IdentifierList ")"
 CompositeIndexBlock  ::= "@@index"  "(" IdentifierList ")"
 
 DocBlock             ::= "@@doc" "(" TripleQuotedString ")"
+(* RFC 0031: 任意 Markdown ブロック (table / code fence / 多段落) *)
+MdBlock              ::= "@@md"  "(" TripleQuotedString ")"
 
 AttachmentsBlock     ::= "@@attachments" "(" AttachmentItem
                          ("," AttachmentItem)* ")"

@@ -1,6 +1,6 @@
 # Umlay Lint Rule Catalog
 
-**spec version**: 1.0.0 (1.0 RC — freeze 時点)
+**spec version**: 1.1.0 (RFC 0031 Markdown integration を取り込み)
 
 `skills/*/review-uml.md` から Lint ルールを一元化した正本カタログ。全実装は本カタログに記載されたルール ID / 重大度 / mandatory 区分を尊重する。
 
@@ -113,7 +113,7 @@ spec 1.0 RC までに catalog に昇格予定の参照実装ルール:
 | C001 | IR version と現行 spec の不一致 | — | ✅ |
 | C002 | 使用機能の `min-spec-version` が現行より新しい | 0029 | ✅ |
 
-## 実装カバレッジサマリ (参照実装 `@umlay/lint` @ spec 1.0.0)
+## 実装カバレッジサマリ (参照実装 `@umlay/lint` @ spec 1.1.0)
 
 | カテゴリ | 実装済 | 実装予定 | 実装率 |
 | --- | --- | --- | --- |
