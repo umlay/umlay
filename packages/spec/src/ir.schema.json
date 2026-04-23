@@ -58,6 +58,52 @@
                         "interface"
                       ]
                     },
+                    "abstract": {
+                      "type": "boolean"
+                    },
+                    "typeParams": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "variance": {
+                            "type": "string",
+                            "enum": [
+                              "out",
+                              "in"
+                            ]
+                          },
+                          "bounds": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "ref": {
+                                  "type": "string"
+                                },
+                                "args": {
+                                  "type": "array",
+                                  "items": {
+                                    "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/typeParams/items/properties/bounds/items"
+                                  }
+                                }
+                              },
+                              "required": [
+                                "ref"
+                              ],
+                              "additionalProperties": true
+                            }
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "additionalProperties": true
+                      }
+                    },
                     "identity": {
                       "anyOf": [
                         {
@@ -387,6 +433,15 @@
                               }
                             },
                             "additionalProperties": true
+                          },
+                          "static": {
+                            "type": "boolean"
+                          },
+                          "readonly": {
+                            "type": "boolean"
+                          },
+                          "derived": {
+                            "type": "boolean"
                           }
                         },
                         "required": [
@@ -453,44 +508,7 @@
                           "typeParams": {
                             "type": "array",
                             "items": {
-                              "type": "object",
-                              "properties": {
-                                "name": {
-                                  "type": "string"
-                                },
-                                "variance": {
-                                  "type": "string",
-                                  "enum": [
-                                    "out",
-                                    "in"
-                                  ]
-                                },
-                                "bounds": {
-                                  "type": "array",
-                                  "items": {
-                                    "type": "object",
-                                    "properties": {
-                                      "ref": {
-                                        "type": "string"
-                                      },
-                                      "args": {
-                                        "type": "array",
-                                        "items": {
-                                          "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/methods/items/properties/typeParams/items/properties/bounds/items"
-                                        }
-                                      }
-                                    },
-                                    "required": [
-                                      "ref"
-                                    ],
-                                    "additionalProperties": true
-                                  }
-                                }
-                              },
-                              "required": [
-                                "name"
-                              ],
-                              "additionalProperties": true
+                              "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/typeParams/items"
                             }
                           },
                           "params": {
@@ -502,7 +520,7 @@
                                   "type": "string"
                                 },
                                 "type": {
-                                  "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/methods/items/properties/typeParams/items/properties/bounds/items"
+                                  "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/typeParams/items/properties/bounds/items"
                                 }
                               },
                               "required": [
@@ -514,7 +532,7 @@
                             "default": []
                           },
                           "returns": {
-                            "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/methods/items/properties/typeParams/items/properties/bounds/items"
+                            "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/typeParams/items/properties/bounds/items"
                           },
                           "visibility": {
                             "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/attributes/items/properties/visibility",
@@ -857,13 +875,13 @@
                     "typeParams": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/methods/items/properties/typeParams/items"
+                        "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/typeParams/items"
                       }
                     },
                     "extends": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/methods/items/properties/typeParams/items/properties/bounds/items"
+                        "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/typeParams/items/properties/bounds/items"
                       },
                       "default": []
                     },
@@ -893,7 +911,7 @@
                     "typeParams": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/methods/items/properties/typeParams/items"
+                        "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/typeParams/items"
                       }
                     },
                     "variants": {
@@ -913,7 +931,7 @@
                                   "type": "string"
                                 },
                                 "type": {
-                                  "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/methods/items/properties/typeParams/items/properties/bounds/items"
+                                  "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/typeParams/items/properties/bounds/items"
                                 }
                               },
                               "required": [
@@ -954,7 +972,7 @@
                     "typeParams": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/methods/items/properties/typeParams/items"
+                        "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/typeParams/items"
                       }
                     },
                     "methods": {
