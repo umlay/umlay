@@ -47,6 +47,8 @@ rfcs/
 | [0030](./0030-type-inference-rules.md) | type-inference-rules | 型推論規則の形式化 | **accepted** | 0.8.0 | A |
 | [0031](./0031-markdown-integration.md) | markdown-integration | Markdown 統合 4 レイヤー (`@@md` / trailer / `.umlay.md` literate) | **accepted** | 1.1.0 | A |
 | [0032](./0032-view-selectors.md) | view-selectors | `include:` / `exclude:` に selector(`visibility:X` / `seq:X` / `stereotype:X` / `kind:X` / `**.attr`) | **accepted** | 1.2.0 | A |
+| [0033](./0033-composite-views.md) | composite-views | `@composite` view kind + `@@include(viewId)` で複数の view を 1 canvas に合成 | **draft** | 1.3.0 | A |
+| [0034](./0034-model-traits.md) | model-traits | `trait` 宣言 + `@@include(Trait)` で属性 mixin | **draft** | 1.3.0 | A |
 
 status: draft → open → accepted / rejected / superseded
 
