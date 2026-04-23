@@ -151,6 +151,22 @@ See [`rfcs/README.md`](../../packages/spec/src/rfcs/README.md) for the running i
 `.umlay` files keep parsing identically. The new APIs are opt-in — behaviour
 is unchanged until you call them.
 
+### 6.2 New features in spec 1.2.0
+
+| Feature | RFC | Impact |
+| --- | --- | --- |
+| View selectors: `visibility:X` / `seq:X` / `**.attr` (Phase 1) | 0032 | Additive grammar; IR unchanged (`view.include/exclude` stay `string[]`) |
+| View selectors: `stereotype:X` / `kind:X` (Phase 2) | 0032 | Same |
+| Public API `projectIrForView(ir, view)` | — | `@umlay/core` 1.2+ — shared by renderer + lint |
+| Public API `parseSelector(raw)` | — | `@umlay/core` 1.2+ — type-safe decode |
+| L034 / L035 / L036 lint rules | 0032 | `@umlay/lint` 1.2+, **60/60 = 100%** |
+
+**Migration: none required.** Existing `include: ns.*` / `exclude: ns.X`
+DSL works untouched. Renderer / lint only interpret selectors when DSL
+files actually use the new syntax. IR consumers that read `view.include`
+as `string[]` keep working — selectors appear as opaque strings they
+don't need to recognise.
+
 ## 7. See also
 
 - [Roadmap](./roadmap.md)

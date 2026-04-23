@@ -248,10 +248,23 @@ ViewKind        ::= "@er_diagram"        | "@class_diagram"
 ViewBody        ::= IncludeClause ExcludeClause? LayoutClause?
                     CriticalPathClause? ThemeDirective? SequenceBody?
 
-IncludeClause   ::= "include" ":" ModelPatternList
-ExcludeClause   ::= "exclude" ":" ModelPatternList
-ModelPatternList ::= ModelPattern ("," ModelPattern)*
+(* RFC 0032: view selectors — include / exclude accept selector lists,    *)
+(*           not just model patterns. Backward compatible: old DSL still  *)
+(*           parses as SelectorList of pure patterns.                     *)
+IncludeClause   ::= "include" ":" SelectorList
+ExcludeClause   ::= "exclude" ":" SelectorList
+SelectorList    ::= Selector ("," Selector)*
+Selector        ::= ModelPattern                      (* legacy *)
+                  | AttrSelector
+                  | KindSelector
 ModelPattern    ::= QualifiedName (".*")?
+                  | "**" ("." Identifier)?            (* `**` / `**.attr` *)
+AttrSelector    ::= "**" "." Identifier               (* `**.passwordHash` *)
+KindSelector    ::= SelectorKind ":" SelectorValue
+SelectorKind    ::= "visibility" | "seq" | "stereotype" | "kind"
+                                                      (* Phase 2; `@attr:X`
+                                                         reserved for Phase 3 *)
+SelectorValue   ::= Identifier
 
 (* RFC 0002: layout 具体構文 *)
 LayoutClause    ::= "layout" ":" LayoutOption ("," LayoutOption)*

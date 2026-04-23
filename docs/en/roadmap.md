@@ -6,8 +6,8 @@ This repository (`umlay-oss`) publishes the **Umlay DSL spec, samples, developer
 
 | Package / directory | Contents | Version |
 | --- | --- | --- |
-| `@umlay/spec` | DSL grammar + normalized IR JSON Schema + formal BNF + conformance (manifest + expected-ir + id-hash-vectors) + 30 accepted RFCs | 0.8.0 |
-| `@umlay/examples` | 35 `.umlay` samples (live demos of every accepted RFC) | 0.8.0 |
+| `@umlay/spec` | DSL grammar + normalized IR JSON Schema + formal BNF + conformance (manifest + expected-ir + id-hash-vectors) + **32 accepted RFCs** (through 0032 view-selectors) | 1.2.0-draft |
+| `@umlay/examples` | 38 `.umlay` samples (live demos of every accepted RFC; google-oauth-login exercises view selectors across 5 views) | 1.2.0-draft |
 | `skills/` | Skill definitions for developers / AI (scaffold) | — |
 | `docs/` | User-facing documentation (this guide set) | — |
 

@@ -218,6 +218,9 @@ Strict モードでは、未指定の `visibility` / `multiplicity` / `intent` �
 - [ ] view の kind は IR スキーマ enum の 10 種のいずれか
 - [ ] view 内にモデル本体を書いていない
 - [ ] 識別子が `RESERVED_KEYWORDS` に含まれていない
+- [ ] 複数のレビュワー向けに粒度違いの view を書くなら **RFC 0032 selector**
+      (`exclude: seq:critical` / `stereotype:service` / `visibility:private` 等)
+      で切り分ける。読者ごとに `.umlay` を複製しない
 
 ## 完全なサンプル
 

@@ -135,6 +135,40 @@ view shop @er_diagram {
 5. nullability なし — Strict では error、Draft では既定 `!`
 6. `Money` が未定義 — `type Money @value_object { ... }` を先に宣言
 
+## レビューの粒度を揃える — View Selectors (RFC 0032, spec 1.2+)
+
+1 つの `.umlay` を複数のレビュワーに渡すときは、**view selector で粒度を
+明示的に切り分ける**。口頭で「ここは見なくていい」と伝えるよりも、view
+の名前と `exclude:` の内容が契約になる。
+
+```umlay
+view exec @sequence_diagram {
+  // PM/経営向け: critical / catch / opt を隠したハッピーパス
+  include: auth.Browser, auth.App, auth.Google, auth.AppCallback
+  exclude: seq:critical, seq:opt, seq:alt
+}
+
+view senior-review @sequence_diagram {
+  include: auth.*
+  exclude: seq:catch, seq:finally        // リトライ境界はレビュー対象、後始末は省略
+}
+
+view er-overview @er_diagram {
+  include: auth.*
+  exclude: visibility:private, **.createdAt, **.updatedAt, stereotype:service
+}
+```
+
+レビュー時のチェック観点:
+
+- 指定された view の名前 (exec / senior-review / sre / …) と「**誰向けか**」
+  が対応しているか
+- `exclude` が過剰(重要な critical / catch を隠していないか)または
+  過少(見せても意味のない監査カラムを残していないか)
+- L034 (未知 selector 混入)、L035 (マッチ 0 件) が出ていないか
+
+詳細は RFC 0032 と [dsl-guide §10.6](../../docs/ja/dsl-guide.md)。
+
 ## 参照
 
 - 文法: [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md)

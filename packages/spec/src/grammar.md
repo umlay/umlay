@@ -445,6 +445,24 @@ view er @er_diagram { include: auth.* }
 
 参照実装: `@umlay/core` の `parseLiterate(source)` API。
 
+## 12.6 View Selectors (RFC 0032, spec 1.2.0)
+
+`view` の `include:` / `exclude:` はモデル名パターンだけでなく **selector**
+を受け付ける。文法は [`grammar.bnf`](./grammar.bnf) の `SelectorList` を
+正本とし、Phase 1 + Phase 2 の kind は以下:
+
+| Selector | 意味 | 例 |
+| --- | --- | --- |
+| `ns.Model` / `ns.*` / `**` | モデル名パターン(従来) | `auth.*` |
+| `**.attr` | 属性名マッチ(全モデル) | `**.passwordHash` |
+| `visibility:X` | 属性の可視性 (`public` / `private` / `protected` / `package`) | `visibility:private` |
+| `seq:X` | sequence body 種別 (`critical` / `opt` / `alt` / `par` / `loop` / `catch` / `finally` / `retry` / `timeout` / `message` / `await`) | `seq:critical` |
+| `stereotype:X` | モデル stereotype (`entity` / `aggregate_root` / `value_object` / `service` / `interface`) | `stereotype:value_object` |
+| `kind:X` | relation kind (`composition` / `aggregation` / `association` / `dependency` / `inheritance` / `realization`) | `kind:dependency` |
+
+意味論は RFC 0032 §Semantics を参照。未知の kind (`foo:bar`) は L034 で
+warning、マッチ 0 件は L035 info、冗長な visibility exclude は L036 info。
+
 ## 13. 残置課題 (RFC 追跡)
 
 spec 0.8.0 時点で accepted RFC (0001-0030) は実装反映済み。以下は spec 1.0 RC に向けた未決事項:

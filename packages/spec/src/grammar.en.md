@@ -436,6 +436,25 @@ view er @er_diagram { include: auth.* }
 
 Reference implementation API: `parseLiterate(source)` in `@umlay/core`.
 
+## 12.6 View Selectors (RFC 0032, spec 1.2.0)
+
+`view`'s `include:` / `exclude:` accept **selectors** beyond bare model
+patterns. The grammar is defined in [`grammar.bnf`](./grammar.bnf) under
+`SelectorList`. Phase 1 + Phase 2 kinds:
+
+| Selector | Matches | Example |
+| --- | --- | --- |
+| `ns.Model` / `ns.*` / `**` | model name pattern (legacy) | `auth.*` |
+| `**.attr` | attribute name across every model | `**.passwordHash` |
+| `visibility:X` | attribute visibility (`public` / `private` / `protected` / `package`) | `visibility:private` |
+| `seq:X` | sequence body kind (`critical` / `opt` / `alt` / `par` / `loop` / `catch` / `finally` / `retry` / `timeout` / `message` / `await`) | `seq:critical` |
+| `stereotype:X` | model stereotype (`entity` / `aggregate_root` / `value_object` / `service` / `interface`) | `stereotype:value_object` |
+| `kind:X` | relation kind (`composition` / `aggregation` / `association` / `dependency` / `inheritance` / `realization`) | `kind:dependency` |
+
+See RFC 0032 §Semantics. Unknown kinds (`foo:bar`) trigger lint L034
+(warning), zero-match excludes trigger L035 (info), and redundant
+visibility excludes trigger L036 (info).
+
 ## 13. Open issues (tracked in RFCs)
 
 As of spec 0.8.0, all accepted RFCs (0001–0030) are reflected in the implementation. The following items remain open toward spec 1.0 RC:

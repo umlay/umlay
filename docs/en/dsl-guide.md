@@ -383,6 +383,70 @@ model User @entity { id UUID! @id }
 
 Reference implementation API: `parseLiterate(source)` in `@umlay/core`.
 
+## 10.6 View selectors (RFC 0032, spec 1.2+)
+
+`include:` and `exclude:` now accept **selectors** beyond bare model names,
+so one DSL can serve multiple review audiences without duplicating models.
+
+### Available selectors
+
+| Selector | Matches | Example | Phase |
+| --- | --- | --- | --- |
+| `ns.Model` / `ns.*` / `**` | model name pattern (legacy) | `auth.*` | 1 |
+| `**.attr` | attribute name across every model | `**.passwordHash` | 1 |
+| `visibility:X` | attribute visibility (`public` / `private` / `protected` / `package`) | `visibility:private` | 1 |
+| `seq:X` | sequence-body statement kind (`critical` / `opt` / `alt` / `par` / `loop` / `catch` / `finally` / `retry` / `timeout` / `message` / `await`) | `seq:critical` | 1 |
+| `stereotype:X` | model stereotype (`entity` / `aggregate_root` / `value_object` / `service` / `interface`) | `stereotype:value_object` | **2** |
+| `kind:X` | relation kind (`composition` / `aggregation` / `association` / `dependency` / `inheritance` / `realization`) | `kind:dependency` | **2** |
+
+### Examples
+
+```umlay
+// PM / exec overview: four actors, happy path only.
+view exec @sequence_diagram {
+  include: auth.Browser, auth.App, auth.Google, auth.AppCallback
+  exclude: seq:critical, seq:opt, seq:alt
+}
+
+// Reviewer view: critical blocks visible, catch/finally suppressed.
+view senior-review @sequence_diagram {
+  include: auth.*
+  exclude: seq:catch, seq:finally
+}
+
+// ER overview — no private / audit columns.
+view er-overview @er_diagram {
+  include: auth.*
+  exclude: visibility:private, **.createdAt, **.updatedAt
+}
+
+// Phase 2: drop @service actors to see only domain entities.
+view business-only @er_diagram {
+  include: auth.*
+  exclude: stereotype:service
+}
+
+// Phase 2: structural relationships only — no dependencies.
+view structural @class_diagram {
+  include: core.*
+  exclude: kind:dependency
+}
+```
+
+### Semantics
+
+- Empty `include` still means "every model" (unchanged).
+- `exclude` is applied after `include`, to the same candidate set.
+- Dropping `seq:critical` drops the whole critical frame; dropping
+  `seq:catch` / `seq:retry` / `seq:finally` / `seq:timeout` prunes only
+  that sub-property of a surviving `critical`.
+- `stereotype:X` drops the whole model whose stereotype matches.
+- `kind:X` drops relations of that kind while keeping the models.
+- Unknown kinds (`foo:bar`) raise lint L034 but do not block parsing.
+
+Showcase: `packages/examples/samples/google-oauth-login.umlay` contains
+five canonical views demonstrating every selector family.
+
 ## 11. References
 
 - [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) — canonical grammar

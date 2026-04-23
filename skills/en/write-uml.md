@@ -218,6 +218,10 @@ Canonical source: `RESERVED_KEYWORDS` in [`packages/spec/src/index.ts`](../../pa
 - [ ] View kinds are one of the 10 IR schema values
 - [ ] No model bodies inside views
 - [ ] No identifiers collide with `RESERVED_KEYWORDS`
+- [ ] When multiple reviewer audiences share one `.umlay`, carve the
+      views with **RFC 0032 selectors** (`exclude: seq:critical`,
+      `stereotype:service`, `visibility:private`, …) instead of forking
+      the file per reader.
 
 ## Complete sample
 

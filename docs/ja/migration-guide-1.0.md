@@ -150,6 +150,21 @@ for (const model of oldIR.namespaces.*.models.*) {
 **移行作業: 不要**。全て後方互換。既存 `.umlay` ファイルはそのまま動く。新 API は
 opt-in — 呼び出しコードを足さない限り挙動に影響しない。
 
+### 6.2 spec 1.2.0 の追加機能
+
+| 機能 | RFC | 影響 |
+| --- | --- | --- |
+| View selectors: `visibility:X` / `seq:X` / `**.attr` (Phase 1) | 0032 | grammar additive、IR 不変(`view.include/exclude` は `string[]` のまま) |
+| View selectors: `stereotype:X` / `kind:X` (Phase 2) | 0032 | 同上 |
+| `projectIrForView(ir, view)` 公開 API | — | `@umlay/core` 1.2+ — renderer / lint が共有 |
+| `parseSelector(raw)` 公開 API | — | `@umlay/core` 1.2+ — selector の型安全 decode |
+| L034 / L035 / L036 lint rules | 0032 | `@umlay/lint` 1.2+、**60/60 = 100%** |
+
+**移行作業: 不要**。既存 `include: ns.*` / `exclude: ns.X` DSL は何も変えず
+に動作。renderer / lint が selector を解釈するのは DSL 側に新しい selector
+を書いた時だけ。IR consumer 側も `view.include` を `string[]` として扱う
+既存コードは無変更で OK(selector は知らない文字列として素通りする)。
+
 ## 7. 参照
 
 - [Roadmap](./roadmap.md)

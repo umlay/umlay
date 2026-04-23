@@ -93,6 +93,44 @@ All references (`@ref`, view `include`) are normalized to `<namespace>.<name>` i
 
 `views[]` hold **projections** only. `include` patterns select which models to draw, and view-scoped attributes (layout, participant aliasing, etc.) attach here.
 
+### 4.1 View selector encoding in the IR (RFC 0032, spec 1.2+)
+
+`view.include` / `view.exclude` stay as `string[]` for backward compat,
+but each string may be one of:
+
+- legacy model patterns — `"auth.User"`, `"auth.*"`, `"**"`
+- attribute name — `"**.passwordHash"`
+- `kind:value` form — `"visibility:private"`, `"seq:critical"`,
+  `"stereotype:value_object"`, `"kind:dependency"`
+
+Consumers have two strategies:
+
+1. **Pattern-only consumers** — keep reading `view.include` as
+   `string[]` of model patterns; selectors they don't recognise are
+   safely ignored.
+2. **Selector-aware consumers** — use `parseSelector(raw)` from
+   `@umlay/core`, which returns a discriminated union:
+
+```ts
+import { parseSelector } from '@umlay/core';
+
+for (const raw of view.exclude) {
+  const sel = parseSelector(raw);
+  switch (sel.kind) {
+    case 'pattern':     // "auth.User" / "auth.*" / "**"
+    case 'attr':        // "**.passwordHash" → { name: 'passwordHash' }
+    case 'visibility':
+    case 'seq':
+    case 'stereotype':
+    case 'relation':    // "kind:composition"
+    case 'unknown':     // "foo:bar" — lint L034 fires
+  }
+}
+```
+
+Renderers typically call `projectIrForView(ir, view)` which applies
+every selector in one pass and returns a projected IR.
+
 ## Recommendations for IR consumers
 
 | Goal | Suggested approach |

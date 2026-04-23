@@ -297,3 +297,11 @@ feature-markers:
     pattern:     "@pattern\\("
     maxLength:   "@maxLength\\("
     codegenName: "@codegenName\\("
+  # RFC 0032 — view selector usage. Each regex detects whether a view
+  # uses the corresponding selector kind in its include / exclude list.
+  view-selectors:
+    seq:         "exclude:.*seq:"
+    visibility:  "exclude:.*visibility:"
+    attr:        "exclude:.*\\*\\*\\."
+    stereotype:  "exclude:.*stereotype:"
+    relation:    "exclude:.*kind:"

@@ -81,6 +81,9 @@ spec 1.0 RC までに catalog に昇格予定の参照実装ルール:
 | L020 | model に `@@doc` / `@intent` が無い (rationale 不足) | — / warn / error | model | ✅ (L008 と機能重複、1.0 RC で統合) |
 | L021 | `@aggregate_root` に `@inv` が無い | — / info / error | model | ✅ (R04 相当) |
 | L033 | モデルが画像添付に依存している疑い (ヒューリスティック) | — / info / warn | model | ✅ |
+| L034 | view の include/exclude に未知の selector kind (`foo:bar` 等) | warn / warn / error | view | ✅ (RFC 0032) |
+| L035 | view の exclude selector が 1 件もマッチしなかった | — / info / info | view | ✅ (RFC 0032) |
+| L036 | `exclude: visibility:X` を指定したが include 対象のモデルに属性が無い | — / info / info | view | ✅ (RFC 0032) |
 
 ## R — Risk (設計ヒューリスティック、常に warn/info)
 
@@ -120,11 +123,11 @@ spec 1.0 RC までに catalog に昇格予定の参照実装ルール:
 | --- | --- | --- | --- |
 | S (parser / Zod + 追加 lint 側) | 17 (🟡 10 / ✅ 7) | 0 | **17/17 = 100%** |
 | L 本流 (L001-L016) | 16 (L001-L016 全て) | 0 | **16/16 = 100%** |
-| L 拡張 (L017+) | 4 (L017/L020/L021/L033) | — | 実装独自 |
+| L 拡張 (L017+) | 7 (L017/L020/L021/L033/L034/L035/L036) | — | 実装独自 |
 | R | 13 (R01-R13) | 0 | **13/13 = 100%** |
 | W | 2 (W001/W002) | 0 | 100% |
 | C | 2 (C001/C002) | 0 | 100% |
-| **全体** | **54** | **0** | **54/54 = 100%** |
+| **全体** | **60** | **0** | **60/60 = 100%** |
 
 > 1.0 catalog の全ルールが参照実装に載った。R11 は runtime trace 無しの **static 近似** (CPM view / sequence critical 領域を検査)。将来 runtime trace が導入されたら同 rule をアップグレード。
 

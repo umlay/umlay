@@ -93,6 +93,42 @@ IR に到達した時点で、以下は必ず埋まっています (Strict モ�
 
 `views[]` はモデルの**投影**のみを持ちます。`include` パターンで「どのモデル群を描くか」を指定し、描画属性 (layout / participant alias など) を乗せます。
 
+### 4.1 View selectors の IR エンコーディング (RFC 0032, spec 1.2+)
+
+`view.include` / `view.exclude` は `string[]` のまま(後方互換)ですが、
+要素は RFC 0032 の **selector 文字列**を含みうる:
+
+- 従来の model パターン: `"auth.User"`, `"auth.*"`, `"**"`
+- Attribute 名: `"**.passwordHash"`
+- `kind:value` 形式: `"visibility:private"`, `"seq:critical"`,
+  `"stereotype:value_object"`, `"kind:dependency"`
+
+IR 消費者は:
+
+1. **単純な model pattern だけを扱う場合** — 従来どおりそのまま OK
+2. **selector も解釈する場合** — `@umlay/core` の `parseSelector(raw)`
+   が `{ kind, value | name }` の判別共用体を返す
+
+```ts
+import { parseSelector } from '@umlay/core';
+
+for (const raw of view.exclude) {
+  const sel = parseSelector(raw);
+  switch (sel.kind) {
+    case 'pattern': // "auth.User" / "auth.*" / "**"
+    case 'attr':    // "**.passwordHash" → { name: 'passwordHash' }
+    case 'visibility':
+    case 'seq':
+    case 'stereotype':
+    case 'relation':  // "kind:composition"
+    case 'unknown':   // "foo:bar" — lint L034 の対象
+  }
+}
+```
+
+単純化したい場合は `projectIrForView(ir, view)` が view の selectors を
+まとめて適用した **投影済み IR** を返します(renderer 側の使い方)。
+
 ## IR 消費者向けの推奨
 
 | 目的 | 推奨アプローチ |

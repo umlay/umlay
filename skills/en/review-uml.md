@@ -135,6 +135,40 @@ Findings:
 5. Nullability missing — error in Strict, defaults to `!` in Draft
 6. `Money` undefined — declare `type Money @value_object { ... }` first
 
+## Matching the review grain — View Selectors (RFC 0032, spec 1.2+)
+
+When one `.umlay` serves multiple reviewer audiences, **make the grain
+explicit via view selectors** instead of saying "ignore this part" in
+prose. The view name + its `exclude:` list become the contract.
+
+```umlay
+view exec @sequence_diagram {
+  // PM / exec view — hide critical / catch / opt to show the happy path.
+  include: auth.Browser, auth.App, auth.Google, auth.AppCallback
+  exclude: seq:critical, seq:opt, seq:alt
+}
+
+view senior-review @sequence_diagram {
+  include: auth.*
+  exclude: seq:catch, seq:finally        // retry frame in scope, cleanup out
+}
+
+view er-overview @er_diagram {
+  include: auth.*
+  exclude: visibility:private, **.createdAt, **.updatedAt, stereotype:service
+}
+```
+
+Review checklist:
+
+- Is the view name (`exec`, `senior-review`, `sre`, …) aligned with
+  **who** will read it?
+- Is the `exclude` list too aggressive (hiding important `critical` /
+  `catch`) or too lax (keeping audit columns that add noise)?
+- Are L034 (unknown selector) or L035 (zero-match exclude) firing?
+
+See RFC 0032 and [dsl-guide §10.6](../../docs/en/dsl-guide.md).
+
 ## References
 
 - Grammar: [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md)
