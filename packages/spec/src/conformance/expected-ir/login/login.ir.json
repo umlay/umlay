@@ -105,6 +105,7 @@
               "role": "sessions"
             }
           ],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -205,6 +206,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -350,6 +352,24 @@
             }
           ],
           "relations": [],
+          "methods": [
+            {
+              "name": "revoke",
+              "params": [],
+              "returns": {
+                "ref": "void"
+              },
+              "visibility": "public"
+            },
+            {
+              "name": "isExpired",
+              "params": [],
+              "returns": {
+                "ref": "bool"
+              },
+              "visibility": "public"
+            }
+          ],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -389,6 +409,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -441,6 +462,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -493,6 +515,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -546,6 +569,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -613,6 +637,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -680,6 +705,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -747,6 +773,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -842,6 +869,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -936,6 +964,7 @@
               "role": "actions"
             }
           ],
+          "methods": [],
           "doc": "構成コンポーネント:\n      <AppHeader>        ロゴ + テーマ切替\n      <HeroSection>      プロダクト紹介コピー\n      <SignInWithGoogleButton>\n        クリック → GET /api/auth/google\n      <LegalFootnote>    Privacy Policy / Terms へのリンク",
           "docs": [
             "構成コンポーネント:\n      <AppHeader>        ロゴ + テーマ切替\n      <HeroSection>      プロダクト紹介コピー\n      <SignInWithGoogleButton>\n        クリック → GET /api/auth/google\n      <LegalFootnote>    Privacy Policy / Terms へのリンク"
@@ -999,6 +1028,7 @@
               "role": "providedBy"
             }
           ],
+          "methods": [],
           "doc": "Google 所有ドメイン (accounts.google.com) で表示される画面。\n    ユーザーは Allow / Deny を選択可能。",
           "docs": [
             "Google 所有ドメイン (accounts.google.com) で表示される画面。\n    ユーザーは Allow / Deny を選択可能。"
@@ -1096,6 +1126,7 @@
               "role": "readsSession"
             }
           ],
+          "methods": [],
           "doc": "構成コンポーネント:\n      <AppHeader>        ロゴ + <UserMenu> (avatar + displayName + Logout)\n      <WelcomeBanner>    \"Welcome back, {displayName}\"\n      <ProjectList>      プロジェクト一覧\n      <ActivityFeed>     最近のアクティビティ\n\n    未ログイン時は 302 → / (LoginPage)。",
           "docs": [
             "構成コンポーネント:\n      <AppHeader>        ロゴ + <UserMenu> (avatar + displayName + Logout)\n      <WelcomeBanner>    \"Welcome back, {displayName}\"\n      <ProjectList>      プロジェクト一覧\n      <ActivityFeed>     最近のアクティビティ\n\n    未ログイン時は 302 → / (LoginPage)。"
@@ -1173,6 +1204,7 @@
               "role": "servedBy"
             }
           ],
+          "methods": [],
           "doc": "構成コンポーネント:\n      <ErrorBanner reason={query.reason}>\n      <RetryButton> → / (LoginPage) へ戻る\n      <SupportLink>",
           "docs": [
             "構成コンポーネント:\n      <ErrorBanner reason={query.reason}>\n      <RetryButton> → / (LoginPage) へ戻る\n      <SupportLink>"
@@ -1254,6 +1286,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "doc": "現時点のアクション:\n      id=\"signin-google\", label=\"Sign in with Google\", GET /api/auth/google",
           "docs": [
             "現時点のアクション:\n      id=\"signin-google\", label=\"Sign in with Google\", GET /api/auth/google"

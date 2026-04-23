@@ -26,7 +26,8 @@
               ],
               "returns": {
                 "ref": "int"
-              }
+              },
+              "visibility": "public"
             }
           ]
         }

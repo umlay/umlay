@@ -27,14 +27,16 @@
               "params": [],
               "returns": {
                 "ref": "Timestamp"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "updatedAt",
               "params": [],
               "returns": {
                 "ref": "Timestamp"
-              }
+              },
+              "visibility": "public"
             }
           ]
         }
@@ -50,14 +52,16 @@
               "params": [],
               "returns": {
                 "ref": "Timestamp"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "updatedAt",
               "params": [],
               "returns": {
                 "ref": "Timestamp"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -70,14 +74,16 @@
               "params": [],
               "returns": {
                 "ref": "Timestamp"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "updatedAt",
               "params": [],
               "returns": {
                 "ref": "Timestamp"
-              }
+              },
+              "visibility": "public"
             }
           ]
         }

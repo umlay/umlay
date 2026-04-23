@@ -96,6 +96,31 @@
             }
           ],
           "relations": [],
+          "methods": [
+            {
+              "name": "apply",
+              "params": [
+                {
+                  "name": "event",
+                  "type": {
+                    "ref": "OrderEvent"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              },
+              "visibility": "public"
+            },
+            {
+              "name": "confirm",
+              "params": [],
+              "returns": {
+                "ref": "void"
+              },
+              "visibility": "public"
+            }
+          ],
           "docs": [],
           "attachments": [],
           "reviews": [],

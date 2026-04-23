@@ -52,6 +52,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -305,6 +306,7 @@
               "role": "coverImage"
             }
           ],
+          "methods": [],
           "doc": "Book は in-stock 時のみ新規 Loan 発行可",
           "docs": [
             "Book は in-stock 時のみ新規 Loan 発行可",
@@ -424,6 +426,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -529,6 +532,7 @@
               "role": "reservations"
             }
           ],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -658,6 +662,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -771,6 +776,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -835,6 +841,7 @@
               "role": "pay"
             }
           ],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -881,6 +888,7 @@
               "role": "smtp"
             }
           ],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -927,6 +935,7 @@
               "role": "stripe"
             }
           ],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -966,6 +975,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -1005,6 +1015,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -1044,6 +1055,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -1083,6 +1095,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -1122,6 +1135,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -1165,6 +1179,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -1325,6 +1340,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -1467,7 +1483,8 @@
               ],
               "returns": {
                 "ref": "T"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "save",
@@ -1481,7 +1498,8 @@
               ],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "delete",
@@ -1495,7 +1513,8 @@
               ],
               "returns": {
                 "ref": "bool"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -1514,14 +1533,16 @@
               "params": [],
               "returns": {
                 "ref": "T"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "produceOrNull",
               "params": [],
               "returns": {
                 "ref": "T"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -1547,7 +1568,8 @@
               ],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -1567,7 +1589,8 @@
               ],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -1592,7 +1615,8 @@
               ],
               "returns": {
                 "ref": "string"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "invalidate",
@@ -1606,7 +1630,8 @@
               ],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -1646,7 +1671,8 @@
               ],
               "returns": {
                 "ref": "User"
-              }
+              },
+              "visibility": "public"
             }
           ]
         }
@@ -1784,7 +1810,8 @@
               ],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -1802,14 +1829,16 @@
               "params": [],
               "returns": {
                 "ref": "T"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "produceOrNull",
               "params": [],
               "returns": {
                 "ref": "T"
-              }
+              },
+              "visibility": "public"
             }
           ]
         }

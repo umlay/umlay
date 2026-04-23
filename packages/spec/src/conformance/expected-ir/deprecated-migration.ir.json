@@ -113,6 +113,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -165,6 +166,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -228,7 +230,8 @@
               ],
               "returns": {
                 "ref": "T"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "put",
@@ -242,7 +245,8 @@
               ],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         }

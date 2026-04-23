@@ -52,6 +52,31 @@
             }
           ],
           "relations": [],
+          "methods": [
+            {
+              "name": "getId",
+              "params": [],
+              "returns": {
+                "ref": "UUID"
+              },
+              "visibility": "public"
+            },
+            {
+              "name": "compareTo",
+              "params": [
+                {
+                  "name": "other",
+                  "type": {
+                    "ref": "User"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "int"
+              },
+              "visibility": "public"
+            }
+          ],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -98,6 +123,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -138,7 +164,8 @@
               "params": [],
               "returns": {
                 "ref": "UUID"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -158,7 +185,8 @@
               ],
               "returns": {
                 "ref": "int"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -171,7 +199,8 @@
               "params": [],
               "returns": {
                 "ref": "bigint"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -189,7 +218,8 @@
               "params": [],
               "returns": {
                 "ref": "F"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "deserialize",
@@ -203,7 +233,8 @@
               ],
               "returns": {
                 "ref": "Self"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -233,7 +264,8 @@
               ],
               "returns": {
                 "ref": "T"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "save",
@@ -247,7 +279,8 @@
               ],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "delete",
@@ -261,7 +294,8 @@
               ],
               "returns": {
                 "ref": "bool"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -303,7 +337,8 @@
               ],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "get",
@@ -317,7 +352,8 @@
               ],
               "returns": {
                 "ref": "V"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "range",
@@ -337,7 +373,8 @@
               ],
               "returns": {
                 "ref": "string"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -378,14 +415,16 @@
               ],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "loadSorted",
               "params": [],
               "returns": {
                 "ref": "T"
-              }
+              },
+              "visibility": "public"
             }
           ]
         }

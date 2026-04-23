@@ -26,6 +26,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -72,6 +73,7 @@
             }
           ],
           "relations": [],
+          "methods": [],
           "docs": [],
           "attachments": [],
           "reviews": [],
@@ -112,7 +114,8 @@
               "params": [],
               "returns": {
                 "ref": "string"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -129,7 +132,8 @@
               "params": [],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -146,7 +150,8 @@
               "params": [],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -165,14 +170,16 @@
               "params": [],
               "returns": {
                 "ref": "T"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "produceOrNull",
               "params": [],
               "returns": {
                 "ref": "T"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -198,7 +205,8 @@
               ],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "consumeMany",
@@ -212,7 +220,8 @@
               ],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -235,7 +244,8 @@
               "params": [],
               "returns": {
                 "ref": "R"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "write",
@@ -249,7 +259,8 @@
               ],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -274,7 +285,8 @@
               ],
               "returns": {
                 "ref": "T"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "save",
@@ -288,7 +300,8 @@
               ],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         }

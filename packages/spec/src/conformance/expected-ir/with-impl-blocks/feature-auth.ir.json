@@ -34,14 +34,16 @@
               ],
               "returns": {
                 "ref": "bool"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "issueToken",
               "params": [],
               "returns": {
                 "ref": "string"
-              }
+              },
+              "visibility": "public"
             }
           ]
         }
@@ -64,14 +66,16 @@
               ],
               "returns": {
                 "ref": "bool"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "issueToken",
               "params": [],
               "returns": {
                 "ref": "string"
-              }
+              },
+              "visibility": "public"
             }
           ]
         }

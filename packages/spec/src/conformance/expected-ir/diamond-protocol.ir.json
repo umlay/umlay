@@ -19,14 +19,16 @@
               "params": [],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "describe",
               "params": [],
               "returns": {
                 "ref": "string"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -43,14 +45,16 @@
               "params": [],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "leftOnly",
               "params": [],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -67,14 +71,16 @@
               "params": [],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             },
             {
               "name": "rightOnly",
               "params": [],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -106,7 +112,8 @@
               "params": [],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
@@ -126,7 +133,8 @@
               "params": [],
               "returns": {
                 "ref": "void"
-              }
+              },
+              "visibility": "public"
             }
           ]
         },
