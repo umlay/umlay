@@ -1,6 +1,6 @@
 # RFC 0032 — View Selectors (expressive `include` / `exclude`)
 
-- Status: **Accepted (Phase 1 implemented in spec 1.2.0-draft)**
+- Status: **Accepted (Phase 1 + Phase 2 implemented in spec 1.2.0-draft)**
 - Class: **A — additive** (existing DSL keeps working verbatim)
 - Target release: spec **1.2.0**
 - Supersedes: nothing
@@ -35,12 +35,17 @@ selector is either a bare pattern (the current syntax) or `kind:value`.
 | `visibility:X` | attributes / methods by visibility | `visibility:private` |
 | `seq:X` | sequence-body statement kinds | `seq:critical`, `seq:retry`, `seq:catch`, `seq:finally`, `seq:opt`, `seq:alt` |
 
-### Phase 2 (deferred, spec 1.3)
+### Phase 2 (shipped in spec 1.2.0-draft)
+
+| Selector | Matches | Example |
+| --- | --- | --- |
+| `stereotype:X` | models by stereotype | `stereotype:value_object` |
+| `kind:X` | relations by kind | `kind:dependency`, `kind:composition` |
+
+### Phase 3 (deferred)
 
 | Selector | Matches |
 | --- | --- |
-| `stereotype:X` | models by stereotype (`@aggregate_root`, …) |
-| `kind:X` | relations by kind (`composition`, `dependency`, …) |
 | `@attr:X` | elements bearing the named annotation (`@attr:deprecated`) |
 
 ### Semantics
@@ -176,5 +181,14 @@ continues to parse and behave identically.
 - [x] Class renderer: same
 - [x] Sequence renderer: apply `seq:` filters (critical→dashed stub)
 - [x] Example: `google-oauth-login.umlay` gets 4 canonical views
-- [x] DSL guide §12.6 — selector catalogue
-- [ ] Lint L034 / L035 / L036 (Phase 1.5, shipped with spec 1.2.0 RC)
+- [x] DSL guide §10.6 — selector catalogue
+
+## Work items (Phase 2 — spec 1.2.0)
+
+- [x] `stereotype:X` decoded and applied (drops the whole model)
+- [x] `kind:X` decoded and applied (drops relations of that kind)
+- [x] Lint L034 — unknown selector kind (warn)
+- [x] Lint L035 — exclude matches 0 elements (info)
+- [x] Lint L036 — redundant visibility exclude (info)
+- [x] Unit tests: `@umlay/core` + `@umlay/lint`
+- [x] `@attr:X` deferred to Phase 3 (scope-creep guard)

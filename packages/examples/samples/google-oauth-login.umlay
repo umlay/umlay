@@ -97,3 +97,10 @@ view er-overview @er_diagram {
 view er-detailed @er_diagram {
   include: auth.User, auth.Session, auth.LoginAttempt
 }
+
+// Phase 2 selector showcase — stereotype:service を除外して、
+// actor / lambda を混ぜずにドメインエンティティだけを見せる。
+view er-domain-only @er_diagram {
+  include: auth.*
+  exclude: stereotype:service, visibility:private, **.createdAt, **.updatedAt
+}

@@ -778,6 +778,24 @@
       "participants": [],
       "messages": [],
       "ganttTasks": []
+    },
+    {
+      "id": "er-domain-only",
+      "kind": "er_diagram",
+      "include": [
+        "auth.*"
+      ],
+      "exclude": [
+        "stereotype:service",
+        "visibility:private",
+        "**.createdAt",
+        "**.updatedAt"
+      ],
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
     }
   ]
 }

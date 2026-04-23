@@ -392,14 +392,16 @@ view er @er_diagram { include: auth.* }
 `include:` と `exclude:` にはモデル名だけでなく **selector** を書ける。
 同じ IR から「誰向けか」の粒度を view 単位で切り分けたい時に使う。
 
-### Phase 1 で使える selector
+### 使える selector
 
-| Selector | 意味 | 例 |
-| --- | --- | --- |
-| `ns.Model` / `ns.*` / `**` | モデル名パターン(従来) | `auth.*` |
-| `**.attr` | 属性名マッチ(全モデル) | `**.passwordHash` |
-| `visibility:X` | 属性の可視性 (`public` / `private` / `protected` / `package`) | `visibility:private` |
-| `seq:X` | sequence body の種別 (`critical` / `opt` / `alt` / `par` / `loop` / `catch` / `finally` / `retry` / `timeout` / `message` / `await`) | `seq:critical` |
+| Selector | 意味 | 例 | Phase |
+| --- | --- | --- | --- |
+| `ns.Model` / `ns.*` / `**` | モデル名パターン(従来) | `auth.*` | 1 |
+| `**.attr` | 属性名マッチ(全モデル) | `**.passwordHash` | 1 |
+| `visibility:X` | 属性の可視性 (`public` / `private` / `protected` / `package`) | `visibility:private` | 1 |
+| `seq:X` | sequence body の種別 (`critical` / `opt` / `alt` / `par` / `loop` / `catch` / `finally` / `retry` / `timeout` / `message` / `await`) | `seq:critical` | 1 |
+| `stereotype:X` | モデルのステレオタイプ (`entity` / `aggregate_root` / `value_object` / `service` / `interface`) | `stereotype:value_object` | **2** |
+| `kind:X` | relation の種別 (`composition` / `aggregation` / `association` / `dependency` / `inheritance` / `realization`) | `kind:dependency` | **2** |
 
 ### 使用例
 
@@ -417,6 +419,18 @@ view senior-review @sequence_diagram {
 view er-overview @er_diagram {
   include: auth.*
   exclude: visibility:private, **.createdAt, **.updatedAt
+}
+
+// Phase 2: value_object を隠した業務エンティティだけの ER
+view business-only @er_diagram {
+  include: auth.*
+  exclude: stereotype:value_object
+}
+
+// Phase 2: 依存関係の矢印を省いた構造図
+view structural @class_diagram {
+  include: core.*
+  exclude: kind:dependency
 }
 ```
 
