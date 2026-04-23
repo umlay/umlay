@@ -63,6 +63,29 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
 | --- | --- | --- |
 | `umlay.diagnostics.mode` | `draft` | `strict` にすると多くのルールが error に昇格 |
 | `umlay.preview.autoRefresh` | `true` | 保存/編集時に自動再レンダリング |
+| `umlay.llm.provider` | `anthropic` | BYOK LLM プロバイダ (`anthropic` / `openai`) |
+| `umlay.llm.model` | `claude-sonnet-4-6` | 使うモデル ID |
+| `umlay.llm.apiKey` | `""` | API キー。`Umlay: Configure LLM API key` コマンドで対話的に設定推奨(User settings に保存) |
+
+### 既定の editor 設定(`[umlay]` scope)
+
+拡張 0.4.0+ は以下を **`configurationDefaults`** として提供:
+
+```jsonc
+"[umlay]": {
+  "editor.formatOnSave": true,      // irToDsl で保存時整形
+  "editor.tabSize": 2,
+  "editor.defaultFormatter": "keydrop.umlay-vscode"
+}
+```
+
+ユーザが上書きしたい場合は Workspace / User 設定で差し替え可能。
+
+### コマンド
+
+- `Umlay: Open Preview`
+- `Umlay: Open Preview to the Side`
+- `Umlay: Configure LLM API key`(provider / model / key を対話的に設定)
 
 ## アーキテクチャ
 

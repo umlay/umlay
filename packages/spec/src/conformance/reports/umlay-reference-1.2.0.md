@@ -84,13 +84,29 @@ fixtures.
 
 | Package | Tests | Coverage (lines) |
 | --- | --- | --- |
-| `@umlay/core` | 278 | ~90% |
+| `@umlay/core` | 306 | ~90% |
 | `@umlay/lint` | 94 | ~88% |
 | `@umlay/renderer-er` | 59 | ~82% |
-| `@umlay/lsp` | 61 | 95.4% |
-| `@umlay/webview-ui` | 40 | 92.1% |
+| `@umlay/lsp` | 74 | 95.4% |
+| `@umlay/webview-ui` | 49 | 92.1% |
 | `apps/web` | 128 | 92.1% |
-| **Total** | **660** (+ 1 skipped) | — |
+| **Total** | **710** (+ 1 skipped) | — |
+
+### LSP capability coverage (1.2.0)
+
+| Capability | Status | RFC / section |
+| --- | --- | --- |
+| diagnostics (parse + lint) | ✅ | RFC 0029 |
+| hover | ✅ | — |
+| definition | ✅ | — |
+| references | ✅ (+ comment/string skip) | §2 |
+| rename (+ prepare) | ✅ | — |
+| formatting (full buffer via `irToDsl`) | ✅ | — |
+| documentSymbol | ✅ | — |
+| workspace/symbol | ✅ NEW 1.2 | §2 |
+| semanticTokens/full | ✅ NEW 1.2 | §2 |
+| completion | ✅ | — |
+| codeAction (L001 / L002 / L008 quick fixes) | ✅ | RFC 0032 (indirect) |
 
 ## Signature
 

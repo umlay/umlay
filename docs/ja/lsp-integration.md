@@ -84,6 +84,29 @@ const diagnostic: Diagnostic = {
 - 複数 annotation は同行でスペース区切り
 - block directive (`@@id`, `@@sample`) は model body の冒頭にまとめる
 
+参照実装 (`@umlay/lsp` 1.2+) は保存時に `irToDsl(ir)` で全バッファ置換する。
+
+### workspace/symbol (Umlay 1.2+)
+
+- ⌘T / Ctrl+T による**プロジェクト横断シンボル検索**
+- model / enum / view / protocol / union を FQN (`ns.Name`) で返却
+- クエリは大文字小文字無視の部分一致
+
+### textDocument/references (Umlay 1.2+ 拡張)
+
+既存の references に加え、参照実装は **`// コメント` と `"""triple-quoted"""`
+文字列内を除外**(`@@doc` / `@@md` 本文で偶発的に一致した model 名を
+"参照" と誤認しないため)。
+
+### textDocument/semanticTokens/full (Umlay 1.2+)
+
+- IR を使った**意味論的色分け**(tmLanguage grammar では区別できない
+  `User`(モデル名参照)vs `User`(文字列)を正しく色分け)
+- token type: `namespace` / `class` / `enum` / `interface` / `struct`
+  / `function` (= view id) / `property` / `variable` / `decorator` (= `@annotation` / `@@directive`)
+- triple-quoted 文字列内とラインコメント内の identifier は token を
+  出さない
+
 ## 3. 参照解決の実装ガイド (RFC 0005 / 0009 / 0014)
 
 ### 解決順序

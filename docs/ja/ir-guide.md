@@ -287,6 +287,47 @@ const md = await renderDocument(ir);
 // そのまま Markdown renderer に渡せる。inline <svg> は HTML 許容で pass-through。
 ```
 
+### `parseSelector(raw)` / `projectIrForView(ir, view)` — RFC 0032 (1.2+)
+
+`view.include` / `view.exclude` の selector(`visibility:private` /
+`seq:critical` / `**.attr` / `stereotype:X` / `kind:X`)を型安全に
+デコードし、renderer が投影済み IR を受け取れるようにするヘルパ。
+
+```ts
+import { parseSelector, projectIrForView } from '@umlay/core';
+const projected = projectIrForView(ir, view);
+// projected の model は view の exclude を適用した後の姿
+```
+
+### `buildIrDiffSummary(before, after)` / `irDiffToPrompt(summary)` (1.2+)
+
+2 つの IR の構造 diff を LLM プロンプトに流せる形で出力する。
+rename / add / remove / intent 変更 / stereotype 変更を拾う。AI
+レビュー / codegen reconcile で使う。
+
+```ts
+import { buildIrDiffSummary, irDiffToPrompt } from '@umlay/core';
+const summary = buildIrDiffSummary(prevIr, ir);
+const md = irDiffToPrompt(summary);   // LLM に渡す Markdown
+```
+
+### `findModelsNeedingIntent(ir)` / `generateIntentDrafts(ir, llm)` (1.2+)
+
+`@intent` が空のモデルを列挙し、1 コールで全件分の下書きを LLM から
+取り寄せる。`LLMClient` インターフェース(BYOK プロバイダに注入可)
+を使うので `MockLLM` でテスト可能。
+
+```ts
+import {
+  findModelsNeedingIntent,
+  generateIntentDrafts,
+} from '@umlay/core';
+
+const gaps = findModelsNeedingIntent(ir);
+const drafts = await generateIntentDrafts(ir, llmClient);
+// drafts は `{ namespace, name, intent }[]`
+```
+
 ## 参考
 
 - [`packages/spec/src/ir.schema.json`](../../packages/spec/src/ir.schema.json) — `pnpm --filter @umlay/core gen:ir-schema` で自動生成

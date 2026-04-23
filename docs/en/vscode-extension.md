@@ -65,6 +65,29 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
 | --- | --- | --- |
 | `umlay.diagnostics.mode` | `draft` | Lint mode — `strict` promotes more rules to errors |
 | `umlay.preview.autoRefresh` | `true` | Re-render the preview when the source file changes |
+| `umlay.llm.provider` | `anthropic` | BYOK LLM provider (`anthropic` / `openai`) |
+| `umlay.llm.model` | `claude-sonnet-4-6` | Model id passed to the provider |
+| `umlay.llm.apiKey` | `""` | API key. Prefer setting via `Umlay: Configure LLM API key` (stored in User settings, not Workspace) |
+
+### Default editor settings (`[umlay]` scope)
+
+Extension 0.4.0+ ships the following via **`configurationDefaults`**:
+
+```jsonc
+"[umlay]": {
+  "editor.formatOnSave": true,      // irToDsl on save
+  "editor.tabSize": 2,
+  "editor.defaultFormatter": "keydrop.umlay-vscode"
+}
+```
+
+Users can override per-workspace or per-user as usual.
+
+### Commands
+
+- `Umlay: Open Preview`
+- `Umlay: Open Preview to the Side`
+- `Umlay: Configure LLM API key` — interactive provider / model / key setup
 
 ## Architecture
 

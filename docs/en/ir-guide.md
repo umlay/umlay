@@ -282,6 +282,49 @@ const md = await renderDocument(ir);
 // renderer emits raw HTML alongside the Markdown source.
 ```
 
+### `parseSelector(raw)` / `projectIrForView(ir, view)` — RFC 0032 (1.2+)
+
+Type-safe decoding for the selector strings in `view.include` /
+`view.exclude` (`visibility:private`, `seq:critical`, `**.attr`,
+`stereotype:X`, `kind:X`) plus a one-pass view projection used by
+renderers.
+
+```ts
+import { parseSelector, projectIrForView } from '@umlay/core';
+const projected = projectIrForView(ir, view);
+// projected models reflect the view's exclude list.
+```
+
+### `buildIrDiffSummary(before, after)` / `irDiffToPrompt(summary)` (1.2+)
+
+Produces a structured diff suited for an LLM prompt. Picks up
+renamed / added / removed models, attribute changes, intent shifts,
+and stereotype changes. Used by AI review and codegen reconcile flows.
+
+```ts
+import { buildIrDiffSummary, irDiffToPrompt } from '@umlay/core';
+const summary = buildIrDiffSummary(prevIr, ir);
+const md = irDiffToPrompt(summary);   // Markdown string ready for a prompt
+```
+
+### `findModelsNeedingIntent(ir)` / `generateIntentDrafts(ir, llm)` (1.2+)
+
+Enumerate every model whose `@intent(...)` is missing or blank, then
+ask the LLM for concise drafts in a single round-trip. Uses the
+`LLMClient` interface so production plugs in BYOK clients while tests
+use `MockLLM`.
+
+```ts
+import {
+  findModelsNeedingIntent,
+  generateIntentDrafts,
+} from '@umlay/core';
+
+const gaps = findModelsNeedingIntent(ir);
+const drafts = await generateIntentDrafts(ir, llmClient);
+// drafts is `{ namespace, name, intent }[]`
+```
+
 ## See also
 
 - [`packages/spec/src/ir.schema.json`](../../packages/spec/src/ir.schema.json) — auto-generated via `pnpm --filter @umlay/core gen:ir-schema`

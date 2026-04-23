@@ -83,6 +83,34 @@ Implementation-defined, but recommended conventions:
 - Multiple annotations on one line, space-separated
 - Block directives (`@@id`, `@@sample`) cluster at the top of the model body
 
+The reference implementation (`@umlay/lsp` 1.2+) runs `irToDsl(ir)` and
+replaces the whole buffer on save.
+
+### workspace/symbol (Umlay 1.2+)
+
+- ⌘T / Ctrl+T — project-wide symbol search.
+- Returns models / enums / views / protocols / unions as FQN (`ns.Name`).
+- Query match is case-insensitive substring.
+
+### textDocument/references (Umlay 1.2+ refinement)
+
+In addition to the regular reference resolution, the reference
+implementation **ignores matches inside `// line comments` and
+`"""triple-quoted"""` strings** so `@@doc` / `@@md` bodies don't
+produce false positives when the body text happens to contain a
+model name.
+
+### textDocument/semanticTokens/full (Umlay 1.2+)
+
+- IR-aware highlighting — distinguishes `User` (a model reference)
+  from `User` (just a string literal or attribute name) which a pure
+  tmLanguage grammar cannot.
+- Token types: `namespace`, `class`, `enum`, `interface`, `struct`,
+  `function` (view id), `property`, `variable`, `decorator`
+  (`@annotation` / `@@directive`).
+- Identifiers inside triple-quoted strings and line comments emit no
+  token.
+
 ## 3. Reference resolution (RFC 0005 / 0009 / 0014)
 
 Resolution order:
