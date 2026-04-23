@@ -1,0 +1,31 @@
+{
+  "grammars": [
+    {
+      "name": "umlay",
+      "camelcase": "Umlay",
+      "scope": "source.umlay",
+      "path": ".",
+      "file-types": [
+        "umlay"
+      ],
+      "highlights": "queries/highlights.scm",
+      "injections": "queries/injections.scm"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "Apache-2.0",
+    "description": "tree-sitter grammar for the Umlay DSL. Powers GitHub syntax highlighting and editors that use tree-sitter (Neovim, Zed, Helix).",
+    "links": {
+      "repository": "https://github.com/umlay/umlay.git"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true
+  }
+}

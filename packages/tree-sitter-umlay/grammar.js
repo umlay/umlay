@@ -239,15 +239,25 @@ module.exports = grammar({
         ':',
         field('label', $.string_literal),
       ),
+    // `prec.right` breaks the parse ambiguity between "this alt has another
+    // `alt` clause right after" vs "a new seq_alt statement starts".
     seq_alt: ($) =>
-      seq(
-        'alt',
-        $.string_literal,
-        '{',
-        repeat($._seq_stmt),
-        '}',
-        repeat(
-          seq(choice('alt', 'else'), optional($.string_literal), '{', repeat($._seq_stmt), '}'),
+      prec.right(
+        seq(
+          'alt',
+          $.string_literal,
+          '{',
+          repeat($._seq_stmt),
+          '}',
+          repeat(
+            seq(
+              choice('alt', 'else'),
+              optional($.string_literal),
+              '{',
+              repeat($._seq_stmt),
+              '}',
+            ),
+          ),
         ),
       ),
     seq_opt: ($) => seq('opt', optional($.string_literal), '{', repeat($._seq_stmt), '}'),

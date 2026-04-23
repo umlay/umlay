@@ -38,7 +38,10 @@
 (enum_decl name: (identifier) @type)
 (model_decl name: (identifier) @type)
 (type_alias name: (identifier) @type)
-(view_decl id: (_view_id (identifier) @function))
+; NOTE: view id highlighting omitted — the view id rule is currently hidden
+; (`_view_id`) to keep the CST compact, which makes it unreachable from
+; queries. When the grammar is stabilised, rename the rule to `view_id`
+; and restore a `(view_decl id: (view_id) @function)` capture here.
 (protocol_decl name: (identifier) @type.interface)
 (union_decl name: (identifier) @type)
 (union_variant name: (identifier) @constructor)
@@ -77,8 +80,9 @@
 (block_directive "@@" @attribute)
 (block_directive name: (identifier) @attribute)
 
-; Type refs
-(type_ref (_qualified_ident (identifier) @type))
+; Type refs — `_qualified_ident` is hidden, its inner identifiers bubble
+; up into `type_ref` directly.
+(type_ref (identifier) @type)
 
 ; Comments
 (line_comment) @comment
@@ -89,9 +93,10 @@
 (number_literal) @number
 (pattern) @string.regexp
 
-; Punctuation
-[ "{" "}" "(" ")" "[" "]" "<" ">" ] @punctuation.bracket
-[ "," ":" ";" "." "|" "=" "&" ] @punctuation.delimiter
+; Punctuation — only include terminals the grammar actually emits as
+; literal anonymous nodes.
+[ "{" "}" "(" ")" "<" ">" ] @punctuation.bracket
+[ "," ":" "." "|" "=" "&" ] @punctuation.delimiter
 [ "->" "->>" "-.>" ] @keyword.operator
 
 ; Markdown trailer (coloured as comment-ish)

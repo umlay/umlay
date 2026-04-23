@@ -8,7 +8,13 @@
     "url": "https://github.com/umlay/umlay.git",
     "directory": "packages/tree-sitter-umlay"
   },
-  "keywords": ["umlay", "parser", "tree-sitter", "dsl", "uml"],
+  "keywords": [
+    "umlay",
+    "parser",
+    "tree-sitter",
+    "dsl",
+    "uml"
+  ],
   "main": "bindings/node",
   "types": "bindings/node",
   "files": [
@@ -26,14 +32,6 @@
     "build:grammar": "tree-sitter generate && node-gyp configure && node-gyp build",
     "parse": "tree-sitter parse"
   },
-  "tree-sitter": [
-    {
-      "scope": "source.umlay",
-      "file-types": ["umlay"],
-      "highlights": "queries/highlights.scm",
-      "injections": "queries/injections.scm"
-    }
-  ],
   "devDependencies": {
     "tree-sitter-cli": "^0.24.0"
   }
