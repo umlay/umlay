@@ -8,13 +8,7 @@
     "url": "https://github.com/umlay/umlay.git",
     "directory": "packages/tree-sitter-umlay"
   },
-  "keywords": [
-    "umlay",
-    "parser",
-    "tree-sitter",
-    "dsl",
-    "uml"
-  ],
+  "keywords": ["umlay", "parser", "tree-sitter", "dsl", "uml"],
   "main": "bindings/node",
   "types": "bindings/node",
   "files": [

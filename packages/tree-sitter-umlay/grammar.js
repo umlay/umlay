@@ -250,13 +250,7 @@ module.exports = grammar({
           repeat($._seq_stmt),
           '}',
           repeat(
-            seq(
-              choice('alt', 'else'),
-              optional($.string_literal),
-              '{',
-              repeat($._seq_stmt),
-              '}',
-            ),
+            seq(choice('alt', 'else'), optional($.string_literal), '{', repeat($._seq_stmt), '}'),
           ),
         ),
       ),
