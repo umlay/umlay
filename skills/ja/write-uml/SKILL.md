@@ -1,13 +1,14 @@
 ---
 name: write-uml
-version: 0.8.0
-spec: "@umlay/spec >= 0.8.0 (DSL 1.0 / IR 1.0)"
+version: 1.3.0
+spec: "@umlay/spec >= 1.3.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer]
 summary: 要件や既存の説明文から Umlay DSL (.umlay) を仕様準拠で書き起こす手順
+description: ユーザが新しい Umlay DSL (.umlay) を要件・自然言語説明・既存コード/スキーマから書き起こしたいときに起動する。`@umlay/spec` に準拠し、パース → IR v1.0 へ通る .umlay を生成する。
 references:
-  grammar: ../../packages/spec/src/grammar.md
-  schema: ../../packages/spec/src/ir.schema.json
-  keywords: ../../packages/spec/src/index.ts
+  grammar: ../../../packages/spec/src/grammar.md
+  schema: ../../../packages/spec/src/ir.schema.json
+  keywords: ../../../packages/spec/src/index.ts
 ---
 
 # write-uml

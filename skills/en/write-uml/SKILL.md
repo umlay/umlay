@@ -1,13 +1,14 @@
 ---
 name: write-uml
-version: 0.8.0
-spec: "@umlay/spec >= 0.8.0 (DSL 1.0 / IR 1.0)"
+version: 1.3.0
+spec: "@umlay/spec >= 1.3.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer]
 summary: Produce spec-conformant Umlay DSL (.umlay) from requirements or existing descriptions
+description: Use when the user wants to write a new Umlay DSL (.umlay) file from requirements, a natural-language description, or an existing codebase/schema. Produces a `@umlay/spec`-conformant file that parses into IR v1.0.
 references:
-  grammar: ../../packages/spec/src/grammar.md
-  schema: ../../packages/spec/src/ir.schema.json
-  keywords: ../../packages/spec/src/index.ts
+  grammar: ../../../packages/spec/src/grammar.md
+  schema: ../../../packages/spec/src/ir.schema.json
+  keywords: ../../../packages/spec/src/index.ts
 ---
 
 # write-uml

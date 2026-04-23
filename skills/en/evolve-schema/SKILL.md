@@ -1,13 +1,14 @@
 ---
 name: evolve-schema
-version: 0.8.0
-spec: "@umlay/spec >= 0.8.0 (DSL 1.0 / IR 1.0)"
+version: 1.3.0
+spec: "@umlay/spec >= 1.3.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer, architect]
 summary: Evolve existing Umlay DSL / IR safely while preserving backward compatibility and reference integrity
+description: Use when the user wants to modify an existing Umlay model / enum / protocol / view — add a field, rename, refactor — and needs the change to preserve backward compatibility and `@ref` integrity. Proposes a safe diff.
 references:
-  grammar: ../../packages/spec/src/grammar.md
-  schema: ../../packages/spec/src/ir.schema.json
-  keywords: ../../packages/spec/src/index.ts
+  grammar: ../../../packages/spec/src/grammar.md
+  schema: ../../../packages/spec/src/ir.schema.json
+  keywords: ../../../packages/spec/src/index.ts
 ---
 
 # evolve-schema

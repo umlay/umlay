@@ -1,13 +1,14 @@
 ---
 name: codegen-mapping
-version: 0.8.0
-spec: "@umlay/spec >= 0.8.0 (DSL 1.0 / IR 1.0)"
+version: 1.3.0
+spec: "@umlay/spec >= 1.3.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, codegen-author, tool-author]
 summary: Deterministic mapping rules from Umlay normalized IR to Prisma / SQL DDL / TypeScript types
+description: Use when the user asks to convert Umlay IR into Prisma schema, SQL DDL, or TypeScript types, or wants to inspect the deterministic mapping rules (type mapping, nullability, relation → FK, etc.).
 references:
-  grammar: ../../packages/spec/src/grammar.md
-  schema: ../../packages/spec/src/ir.schema.json
-  keywords: ../../packages/spec/src/index.ts
+  grammar: ../../../packages/spec/src/grammar.md
+  schema: ../../../packages/spec/src/ir.schema.json
+  keywords: ../../../packages/spec/src/index.ts
 ---
 
 # codegen-mapping

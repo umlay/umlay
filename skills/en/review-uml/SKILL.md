@@ -1,13 +1,14 @@
 ---
 name: review-uml
-version: 0.8.0
-spec: "@umlay/spec >= 0.8.0 (DSL 1.0 / IR 1.0)"
+version: 1.3.0
+spec: "@umlay/spec >= 1.3.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, reviewer]
 summary: Mechanically review Umlay DSL / IR for spec conformance and design quality
+description: Use when the user asks to review, audit, or analyse an existing Umlay DSL / IR for spec conformance, lint violations, and design risks. Produces structured `@review` / `@fix` annotations.
 references:
-  grammar: ../../packages/spec/src/grammar.md
-  schema: ../../packages/spec/src/ir.schema.json
-  keywords: ../../packages/spec/src/index.ts
+  grammar: ../../../packages/spec/src/grammar.md
+  schema: ../../../packages/spec/src/ir.schema.json
+  keywords: ../../../packages/spec/src/index.ts
 ---
 
 # review-uml

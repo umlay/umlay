@@ -17,23 +17,23 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 
 | Skill | リンク |
 | --- | --- |
-| write-uml | [`ja/write-uml.md`](./ja/write-uml.md) |
-| review-uml | [`ja/review-uml.md`](./ja/review-uml.md) |
-| evolve-schema | [`ja/evolve-schema.md`](./ja/evolve-schema.md) |
-| codegen-mapping | [`ja/codegen-mapping.md`](./ja/codegen-mapping.md) |
+| write-uml | [`ja/write-uml/SKILL.md`](./ja/write-uml/SKILL.md) |
+| review-uml | [`ja/review-uml/SKILL.md`](./ja/review-uml/SKILL.md) |
+| evolve-schema | [`ja/evolve-schema/SKILL.md`](./ja/evolve-schema/SKILL.md) |
+| codegen-mapping | [`ja/codegen-mapping/SKILL.md`](./ja/codegen-mapping/SKILL.md) |
 
 ## English 🇬🇧
 
 | Skill | Link |
 | --- | --- |
-| write-uml | [`en/write-uml.md`](./en/write-uml.md) |
-| review-uml | [`en/review-uml.md`](./en/review-uml.md) |
-| evolve-schema | [`en/evolve-schema.md`](./en/evolve-schema.md) |
-| codegen-mapping | [`en/codegen-mapping.md`](./en/codegen-mapping.md) |
+| write-uml | [`en/write-uml/SKILL.md`](./en/write-uml/SKILL.md) |
+| review-uml | [`en/review-uml/SKILL.md`](./en/review-uml/SKILL.md) |
+| evolve-schema | [`en/evolve-schema/SKILL.md`](./en/evolve-schema/SKILL.md) |
+| codegen-mapping | [`en/codegen-mapping/SKILL.md`](./en/codegen-mapping/SKILL.md) |
 
 ## Claude Code への導入 / Install into Claude Code
 
-Claude Code は `~/.claude/skills/` (全プロジェクト共通) もしくは `<project>/.claude/skills/` (プロジェクト固有) に置かれたスキルファイルを `/<skill-name>` として呼び出せます。以下のいずれかの方法で Umlay skills をインストールしてください。
+Claude Code の skill は `~/.claude/skills/<name>/SKILL.md` (全プロジェクト共通) または `<project>/.claude/skills/<name>/SKILL.md` (プロジェクト固有) に配置します。**subfolder + SKILL.md** が現在の標準フォーマット (`description` フィールドにより Claude が文脈を見て自動起動、sub-files も同梱可)。
 
 ### 方法 A: 全プロジェクト共通で使う (推奨)
 
@@ -41,25 +41,29 @@ Claude Code は `~/.claude/skills/` (全プロジェクト共通) もしくは `
 # 1. リポジトリを任意の場所にクローン
 git clone https://github.com/umlay/umlay.git ~/src/umlay
 
-# 2. Claude Code のスキルディレクトリにシンボリックリンクを貼る
+# 2. skill フォルダごとシンボリックリンク
 mkdir -p ~/.claude/skills
-ln -s ~/src/umlay/umlay-oss/skills/ja/write-uml.md        ~/.claude/skills/write-uml.md
-ln -s ~/src/umlay/umlay-oss/skills/ja/review-uml.md       ~/.claude/skills/review-uml.md
-ln -s ~/src/umlay/umlay-oss/skills/ja/evolve-schema.md    ~/.claude/skills/evolve-schema.md
-ln -s ~/src/umlay/umlay-oss/skills/ja/codegen-mapping.md  ~/.claude/skills/codegen-mapping.md
+ln -s ~/src/umlay/umlay-oss/skills/ja/write-uml        ~/.claude/skills/write-uml
+ln -s ~/src/umlay/umlay-oss/skills/ja/review-uml       ~/.claude/skills/review-uml
+ln -s ~/src/umlay/umlay-oss/skills/ja/evolve-schema    ~/.claude/skills/evolve-schema
+ln -s ~/src/umlay/umlay-oss/skills/ja/codegen-mapping  ~/.claude/skills/codegen-mapping
 
 # 英語版を使いたい場合は `ja/` を `en/` に読み替え
 ```
 
-シンボリックリンクなので `git pull` で自動的に最新版が反映されます。
+シンボリックリンクなので `git pull` で最新版が自動反映。
 
 ### 方法 B: 特定プロジェクトだけで使う
 
 ```sh
 cd <your-project>
 mkdir -p .claude/skills
-curl -sL https://raw.githubusercontent.com/umlay/umlay/main/umlay-oss/skills/ja/write-uml.md \
-  -o .claude/skills/write-uml.md
+# サブフォルダごと取得 (curl 単体では subfolder 取れないので git sparse-checkout か以下で代替)
+git clone --depth=1 --filter=blob:none --sparse \
+  https://github.com/umlay/umlay.git /tmp/umlay-skills
+cd /tmp/umlay-skills
+git sparse-checkout set umlay-oss/skills/ja
+cp -r umlay-oss/skills/ja/write-uml <your-project>/.claude/skills/
 # 必要な skill 分だけ繰り返す
 ```
 
@@ -69,13 +73,13 @@ curl -sL https://raw.githubusercontent.com/umlay/umlay/main/umlay-oss/skills/ja/
 cd <your-project>
 git submodule add https://github.com/umlay/umlay.git vendor/umlay
 mkdir -p .claude/skills
-ln -s ../../vendor/umlay/umlay-oss/skills/ja/write-uml.md .claude/skills/write-uml.md
+ln -s ../../vendor/umlay/umlay-oss/skills/ja/write-uml .claude/skills/write-uml
 # 他 skill も同様
 ```
 
 ### 使い方 / Usage
 
-インストール後、Claude Code のチャットで以下のように呼び出せます:
+インストール後、Claude Code のチャットで `/<skill-name>` として明示呼び出しが可能:
 
 ```
 /write-uml 「ECサイトで商品・カート・注文を扱う最小 DSL を書いて」
@@ -83,6 +87,8 @@ ln -s ../../vendor/umlay/umlay-oss/skills/ja/write-uml.md .claude/skills/write-u
 /evolve-schema User モデルに role: UserRole を追加したい
 /codegen-mapping この IR を Prisma schema に変換して
 ```
+
+また、各 skill の frontmatter `description` を見て Claude が文脈から**自動起動**します (例: 「この DSL をレビューして」だけで `review-uml` が選ばれる)。自動起動を止めたい場合は skill の frontmatter に `disable-model-invocation: true` を追加。
 
 各 skill は `@umlay/spec` の grammar.md / ir.schema.json を正本として参照するため、**CLI ツールのインストールは不要**です。`.umlay` のパーサ / lint / レンダリングを併用したい場合のみ、以下を追加インストールしてください:
 
