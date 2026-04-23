@@ -69,7 +69,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "注文": {
           "_id": "ffe35f86bd68",
@@ -154,7 +155,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "注文明細": {
           "_id": "7c0fe42e99ed",
@@ -228,7 +230,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         }
       },
       "types": {},
@@ -248,7 +251,8 @@
       "cloudPrimitives": [],
       "protocols": [],
       "unions": [],
-      "impls": []
+      "impls": [],
+      "traits": {}
     }
   },
   "views": [

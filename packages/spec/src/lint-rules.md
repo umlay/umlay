@@ -84,6 +84,15 @@ spec 1.0 RC までに catalog に昇格予定の参照実装ルール:
 | L034 | view の include/exclude に未知の selector kind (`foo:bar` 等) | warn / warn / error | view | ✅ (RFC 0032) |
 | L035 | view の exclude selector が 1 件もマッチしなかった | — / info / info | view | ✅ (RFC 0032) |
 | L036 | `exclude: visibility:X` を指定したが include 対象のモデルに属性が無い | — / info / info | view | ✅ (RFC 0032) |
+| L037 | 非 `@composite` view で `@@include(viewId)` を使用 (無効) | info / info / warn | view | ✅ (RFC 0033) |
+| L038 | `@composite` が参照する viewId が存在しない | warn / warn / error | view | ✅ (RFC 0033) |
+| L039 | `@composite` の include に循環 (`A → B → A`) | error / error / error | view | ✅ (RFC 0033) |
+| L040 | model の属性と trait の属性が同名で衝突 | error / error / error | model | ✅ (RFC 0034) |
+| L041 | 2 つの trait が同名属性を提供 | error / error / error | model | ✅ (RFC 0034) |
+| L042 | trait の `@@include` に循環 | error / error / error | trait | ✅ (RFC 0034) |
+| L043 | 宣言されただけで `@@include` されない trait | — / warn / warn | trait | ✅ (RFC 0034) |
+| L044 | trait の attribute が 2 未満 (過抽象化の疑い) | — / info / info | trait | ✅ (RFC 0034) |
+| L045 | `@@include(UnknownTrait)` — 未定義の trait 参照 | error / error / error | model | ✅ (RFC 0034) |
 
 ## R — Risk (設計ヒューリスティック、常に warn/info)
 
@@ -117,19 +126,22 @@ spec 1.0 RC までに catalog に昇格予定の参照実装ルール:
 | C001 | IR version と現行 spec の不一致 | — | ✅ |
 | C002 | 使用機能の `min-spec-version` が現行より新しい | 0029 | ✅ |
 
-## 実装カバレッジサマリ (参照実装 `@umlay/lint` @ spec 1.1.0)
+## 実装カバレッジサマリ (参照実装 `@umlay/lint` @ spec 1.3.0)
 
 | カテゴリ | 実装済 | 実装予定 | 実装率 |
 | --- | --- | --- | --- |
 | S (parser / Zod + 追加 lint 側) | 17 (🟡 10 / ✅ 7) | 0 | **17/17 = 100%** |
 | L 本流 (L001-L016) | 16 (L001-L016 全て) | 0 | **16/16 = 100%** |
-| L 拡張 (L017+) | 7 (L017/L020/L021/L033/L034/L035/L036) | — | 実装独自 |
+| L 拡張 (L017+) | 16 (L017/L020/L021/L033-L045) | — | 実装独自 |
 | R | 13 (R01-R13) | 0 | **13/13 = 100%** |
 | W | 2 (W001/W002) | 0 | 100% |
 | C | 2 (C001/C002) | 0 | 100% |
-| **全体** | **60** | **0** | **60/60 = 100%** |
+| **全体** | **69** | **0** | **69/69 = 100%** |
 
-> 1.0 catalog の全ルールが参照実装に載った。R11 は runtime trace 無しの **static 近似** (CPM view / sequence critical 領域を検査)。将来 runtime trace が導入されたら同 rule をアップグレード。
+> 1.3.0 で **L037-L039** (composite views, RFC 0033) と **L040-L045**
+> (traits, RFC 0034) を追加。R11 は runtime trace 無しの **static 近似**
+> (CPM view / sequence critical 領域を検査)。将来 runtime trace が導入
+> されたら同 rule をアップグレード。
 
 ## Mandatory / Optional 区分
 

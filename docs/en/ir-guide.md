@@ -146,6 +146,75 @@ every selector in one pass and returns a projected IR.
 - Breaking changes bump to `version: "2.0"` with a published migration guide
 - Schema changes go through the RFC process in `packages/spec` (see [CONTRIBUTING.md](../../CONTRIBUTING.md))
 
+## Fields added in spec 1.3.0
+
+All additive; legacy 1.x IRs remain valid.
+
+### Namespace.traits (RFC 0034)
+
+```json
+{
+  "traits": {
+    "Timestamped": {
+      "_id": "sha1:shared.Timestamped",
+      "name": "Timestamped",
+      "attributes": [
+        { "_id": "sha1:shared.Timestamped.createdAt", "name": "createdAt", "type": "Timestamp", "visibility": "private", "nullable": false },
+        { "_id": "sha1:shared.Timestamped.updatedAt", "name": "updatedAt", "type": "Timestamp", "visibility": "private", "nullable": false }
+      ],
+      "relations": [],
+      "includes": []
+    }
+  }
+}
+```
+
+### Model.includedTraits (RFC 0034)
+
+Records which traits a model pulled in. Downstream consumers see the
+expanded attribute list — `includedTraits` is metadata for `find references`
+and round-trip formatters, not semantic input.
+
+```json
+{
+  "name": "Order",
+  "includedTraits": ["Audited", "shared.Tenanted"],
+  "attributes": [ /* createdAt, updatedAt, createdBy, updatedBy, tenantId, id, total */ ]
+}
+```
+
+### View.composition (RFC 0033)
+
+Present only on `kind: "composite"` views. Renderers stitch children in
+declaration order per the view's `layout`.
+
+```json
+{
+  "id": "overview",
+  "kind": "composite",
+  "composition": { "includes": ["auth-er", "login-flow", "impl-gantt"] },
+  "layout": { "direction": "LR", "spacing": 48 }
+}
+```
+
+### TypeDef.aliasOf (type-alias form)
+
+```json
+{
+  "types": {
+    "ISBN": { "_id": "sha1:demo.ISBN", "name": "ISBN", "aliasOf": "string", "fields": [] }
+  }
+}
+```
+
+`fields` is always `[]` for alias form; body-form value objects populate
+`fields` and leave `aliasOf` undefined.
+
+### Attribute.visibility adds `"package"`
+
+The `VisibilityEnum` is now `"public" | "private" | "protected" | "package"`.
+DSL source `~name` maps to `"package"`.
+
 ## Fields added in spec 0.8.0
 
 All optional; legacy 0.x IRs remain valid.

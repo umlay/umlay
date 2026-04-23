@@ -1,0 +1,66 @@
+// composite-overview.umlay — RFC 0033 @composite view のデモ
+//
+// spec 1.3.0:
+//   - `@composite` view kind
+//   - `@@include(viewId)` でサブ view を埋め込み
+//   - layout: direction(LR|TB) で縦/横並び
+//
+// Architect/PM 向け「1 枚俯瞰」の生成。子 view は通常通り個別でも描画できる。
+
+@@mode(strict)
+
+namespace shopdemo
+
+enum OrderStatus { DRAFT, PLACED, PAID, SHIPPED }
+
+model User @aggregate_root @intent("購入者") {
+  +id    UUID!   @id
+  +email string! @unique
+}
+
+model Order @aggregate_root @intent("注文") {
+  +id         UUID!         @id
+  +customerId UUID!         @ref(User.id, onDelete: RESTRICT)
+  +status     OrderStatus!  @default(DRAFT)
+  +total      decimal!
+}
+
+model API @service @intent("HTTP API")     { +id string! @id }
+model DB  @service @intent("PostgreSQL")   { +id string! @id }
+
+// ============================================================================
+// 個別 view
+// ============================================================================
+
+view shopdemo-er @er_diagram @intent("永続化スキーマ") {
+  include: shopdemo.User, shopdemo.Order
+  layout: direction(LR)
+}
+
+view place-order @sequence_diagram @intent("注文確定のフロー") {
+  participants:
+    User as u, API as api, DB as db
+  seq {
+    u   ->> api : "POST /orders"
+    api ->> db  : "INSERT Order (status=PLACED)"
+    db  -.> api : "ok"
+    api -.> u   : "201 Created"
+  }
+}
+
+view shopdemo-arch @component_diagram @intent("サービス境界") {
+  include: shopdemo.API, shopdemo.DB
+  layout: direction(TB)
+}
+
+// ============================================================================
+// 合成 view (RFC 0033 本題)
+// ============================================================================
+
+view overview @composite
+  @intent("Architect 向け — データ/フロー/構成の 1 枚俯瞰") {
+  @@include(shopdemo-er)
+  @@include(place-order)
+  @@include(shopdemo-arch)
+  layout: direction(TB), spacing(32)
+}

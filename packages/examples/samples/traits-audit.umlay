@@ -1,0 +1,73 @@
+// traits-audit.umlay — RFC 0034 trait (属性 mixin) のデモ
+//
+// spec 1.3.0:
+//   - 単純 trait: `trait Timestamped { ... }`
+//   - 多重 include: 1 model に 2+ trait
+//   - 再帰 include: trait 内から `@@include(他 trait)`
+//   - パース時に model.attributes へ展開される → lint/renderer/codegen
+//     は trait の存在を知らなくて良い
+
+@@mode(strict)
+
+namespace shop
+
+// ============================================================================
+// 基本 trait (同一 namespace 内で定義、`@@include(Name)` の短縮参照が効く)
+// ============================================================================
+
+trait Timestamped {
+  -createdAt Timestamp!
+  -updatedAt Timestamp!
+}
+
+trait SoftDelete {
+  -deletedAt Timestamp?
+}
+
+trait Tenanted {
+  -tenantId UUID!
+}
+
+// ============================================================================
+// 再帰 include — trait 内から別 trait を取り込み
+// ============================================================================
+
+trait Audited {
+  @@include(Timestamped)    // createdAt/updatedAt が transitive に入る
+  -createdBy UUID!
+  -updatedBy UUID!
+}
+
+// ============================================================================
+// 利用側 — 通常の model が `@@include(Trait)` で属性を合成
+// ============================================================================
+
+model User @aggregate_root @intent("顧客ユーザー") {
+  @@include(Timestamped)
+  @@include(SoftDelete)
+  +id    UUID!   @id
+  +email string! @unique
+  +name  string!
+}
+
+model Order @aggregate_root @intent("SaaS の注文") {
+  @@include(Tenanted)
+  @@include(Audited)        // Timestamped 経由で createdAt/updatedAt も入る
+  +id    UUID!    @id
+  +total decimal! @inv("total >= 0")
+}
+
+// ============================================================================
+// Views
+// ============================================================================
+
+view shop-er @er_diagram
+  @intent("trait 展開後のフラットな ER (trait 由来属性も普通の列として描画)") {
+  include: shop.*
+  layout: direction(LR), engine(elk)
+}
+
+view shop-class @class_diagram
+  @intent("クラス図 — 展開後のフィールド構成") {
+  include: shop.*
+}

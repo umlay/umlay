@@ -166,7 +166,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "TaskDependency": {
           "_id": "1ac5cad2641e",
@@ -273,7 +274,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "FeatureACoreDependency": {
           "_id": "7dc1022fe1c2",
@@ -320,7 +322,8 @@
             }
           ],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         }
       },
       "types": {},
@@ -340,7 +343,8 @@
       "cloudPrimitives": [],
       "protocols": [],
       "unions": [],
-      "impls": []
+      "impls": [],
+      "traits": {}
     }
   },
   "views": [

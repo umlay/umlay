@@ -1,0 +1,2368 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "strict",
+  "namespaces": {
+    "lib": {
+      "models": {
+        "Author": {
+          "_id": "7ff37c8ebb71",
+          "name": "Author",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "c79789153c73",
+              "name": "name",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "2648fa689242",
+              "name": "bio",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "著者",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        },
+        "Book": {
+          "_id": "9a67cc225bc0",
+          "name": "Book",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "08f37bbe9a83",
+              "name": "createdBy",
+              "type": "UUID",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "fb5ef328f9d6",
+              "name": "createdAt",
+              "type": "Timestamp",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "69030bf51437",
+              "name": "updatedAt",
+              "type": "Timestamp",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "42a89f90d06e",
+              "name": "isbn",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": true,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "0e15d6aa0063",
+              "name": "title",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "eb6195e10a18",
+              "name": "authorId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Author.id",
+                "onDelete": "RESTRICT",
+                "inverse": "books"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "9e9cc6cd3af8",
+              "name": "copies",
+              "type": "int",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "1",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "5bf06006998c",
+              "name": "status",
+              "type": "BookStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "AVAILABLE",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "f5a28ba888b4",
+              "name": "publishedAt",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "7b061d8c2088",
+              "name": "summary",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [
+                {
+                  "text": "長文になる。先頭 200 字の要約 embed を別テーブル化検討",
+                  "replies": []
+                }
+              ],
+              "fixes": [
+                {
+                  "text": "v2 で `BookSummary` モデルに切り出す",
+                  "replies": []
+                }
+              ]
+            },
+            {
+              "_id": "dda9bfeffd80",
+              "name": "rating",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "experimental": {
+                "since": "1.2.0"
+              }
+            },
+            {
+              "_id": "b80d257e618f",
+              "name": "notes",
+              "type": "string",
+              "visibility": "private",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "deprecated": {
+                "message": "v2 で @@md に統合",
+                "since": "1.2.0",
+                "removeIn": "2.0.0",
+                "replaceWith": "Book.summary"
+              }
+            },
+            {
+              "_id": "c35c00630416",
+              "name": "internalScore",
+              "type": "int",
+              "visibility": "protected",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [
+            {
+              "kind": "composition",
+              "target": "Loan",
+              "multiplicity": "0..*",
+              "role": "loans"
+            },
+            {
+              "kind": "aggregation",
+              "target": "Reservation",
+              "multiplicity": "0..*",
+              "role": "reservations"
+            },
+            {
+              "kind": "association",
+              "target": "MediaAsset",
+              "multiplicity": "0..1",
+              "role": "coverImage"
+            }
+          ],
+          "doc": "Book は in-stock 時のみ新規 Loan 発行可",
+          "docs": [
+            "Book は in-stock 時のみ新規 Loan 発行可",
+            "## Book の運用メモ\n\n- **在庫** = `copies − loans.where(status = ACTIVE).count`\n- 直接の `status` 書き換えは禁止、Loan 経由のみ\n- 廃棄 (`WITHDRAWN`) は不可逆"
+          ],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "図書。在庫管理単位",
+            "invariants": [
+              "copies >= 0",
+              "status in {AVAILABLE, ON_LOAN, RESERVED, LOST, WITHDRAWN}"
+            ],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [
+            {
+              "id": "b1",
+              "isbn": "9784873119885",
+              "title": "Clean Architecture",
+              "authorId": "a1",
+              "copies": 3,
+              "status": "AVAILABLE"
+            },
+            {
+              "id": "b2",
+              "isbn": "9784798167985",
+              "title": "Domain-Driven Design",
+              "authorId": "a2",
+              "copies": 2,
+              "status": "ON_LOAN"
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [
+            {
+              "target": "prisma",
+              "action": {
+                "kind": "object",
+                "fields": {
+                  "tableName": "books_v2"
+                }
+              }
+            },
+            {
+              "target": "sql",
+              "action": {
+                "kind": "object",
+                "fields": {
+                  "schema": "library"
+                }
+              }
+            },
+            {
+              "target": "ts",
+              "action": {
+                "kind": "object",
+                "fields": {
+                  "extend": "DomainEntity<Book>"
+                }
+              }
+            }
+          ],
+          "implements": [],
+          "includedTraits": [
+            "Audited"
+          ]
+        },
+        "MediaAsset": {
+          "_id": "390fd280124d",
+          "name": "MediaAsset",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "82bccee2c089",
+              "name": "url",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "0ad4c9469d8b",
+              "name": "mime",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "表紙画像など",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        },
+        "User": {
+          "_id": "6d50eb5dfd4e",
+          "name": "User",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "ed164310987e",
+              "name": "email",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": true,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "43c91c312e26",
+              "name": "role",
+              "type": "UserRole",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "MEMBER",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "fb5ef328f9d6",
+              "name": "createdAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "9e37abfe1e47",
+              "name": "bannedUntil",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [
+            {
+              "kind": "composition",
+              "target": "Loan",
+              "multiplicity": "0..*",
+              "role": "loans"
+            },
+            {
+              "kind": "aggregation",
+              "target": "Reservation",
+              "multiplicity": "0..*",
+              "role": "reservations"
+            }
+          ],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "図書館利用者",
+            "invariants": [
+              "role in {MEMBER, LIBRARIAN, ADMIN}"
+            ],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        },
+        "Loan": {
+          "_id": "6ac803fedf0b",
+          "name": "Loan",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "6ac5de020d19",
+              "name": "bookId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Book.id",
+                "onDelete": "CASCADE",
+                "inverse": "loans"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "8a61f5643542",
+              "name": "userId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "User.id",
+                "onDelete": "RESTRICT"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "b8e899db89a3",
+              "name": "borrowedAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "d5457e47beee",
+              "name": "dueAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "0905756fa523",
+              "name": "returnedAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "5bf06006998c",
+              "name": "status",
+              "type": "LoanStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "ACTIVE",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "貸出レコード",
+            "invariants": [],
+            "preconditions": [
+              "book.status == AVAILABLE"
+            ],
+            "postconditions": [
+              "book.status == ON_LOAN || status == RETURNED"
+            ],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [
+            {
+              "on": "lib.NotificationSvc"
+            },
+            {
+              "on": "lib.PaymentSvc",
+              "kind": "FS",
+              "lag": "0"
+            }
+          ],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        },
+        "Reservation": {
+          "_id": "27c06d743bfb",
+          "name": "Reservation",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "6ac5de020d19",
+              "name": "bookId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Book.id",
+                "onDelete": "CASCADE"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "8a61f5643542",
+              "name": "userId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "User.id",
+                "onDelete": "CASCADE"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "fb5ef328f9d6",
+              "name": "createdAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "b29612d3cbb8",
+              "name": "cancelled",
+              "type": "bool",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "予約",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        },
+        "LibraryAPI": {
+          "_id": "26d852df322a",
+          "name": "LibraryAPI",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [
+            {
+              "kind": "dependency",
+              "target": "Postgres",
+              "multiplicity": "1",
+              "role": "db"
+            },
+            {
+              "kind": "dependency",
+              "target": "Redis",
+              "multiplicity": "1",
+              "role": "rds"
+            },
+            {
+              "kind": "dependency",
+              "target": "NotificationSvc",
+              "multiplicity": "1",
+              "role": "notify"
+            },
+            {
+              "kind": "dependency",
+              "target": "PaymentSvc",
+              "multiplicity": "1",
+              "role": "pay"
+            }
+          ],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "HTTP API (Next.js)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        },
+        "NotificationSvc": {
+          "_id": "c8d1e6447895",
+          "name": "NotificationSvc",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [
+            {
+              "kind": "dependency",
+              "target": "SmtpGateway",
+              "multiplicity": "1",
+              "role": "smtp"
+            }
+          ],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "通知配送 (mail / push)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        },
+        "PaymentSvc": {
+          "_id": "e71785c5af86",
+          "name": "PaymentSvc",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [
+            {
+              "kind": "dependency",
+              "target": "StripeGateway",
+              "multiplicity": "1",
+              "role": "stripe"
+            }
+          ],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "延滞料請求",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        },
+        "Postgres": {
+          "_id": "21103052e4e5",
+          "name": "Postgres",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "RDB (Prisma)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        },
+        "Redis": {
+          "_id": "b53dadd802a9",
+          "name": "Redis",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "キャッシュ",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        },
+        "SmtpGateway": {
+          "_id": "52099ef339ad",
+          "name": "SmtpGateway",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "SMTP (外部)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        },
+        "StripeGateway": {
+          "_id": "d29fbd5cff2d",
+          "name": "StripeGateway",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Stripe (外部)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        },
+        "UserRepositoryImpl": {
+          "_id": "b5caaa516353",
+          "name": "UserRepositoryImpl",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "UserRepository 準拠 = Repository<User> + Auditable + Cacheable<User>",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [
+            {
+              "ref": "UserRepository"
+            }
+          ],
+          "includedTraits": []
+        },
+        "BookRepositoryImpl": {
+          "_id": "627ce70e1209",
+          "name": "BookRepositoryImpl",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Book 専用 Repository",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [
+            {
+              "ref": "Repository",
+              "args": [
+                "Book"
+              ]
+            },
+            {
+              "ref": "Auditable"
+            }
+          ],
+          "includedTraits": []
+        },
+        "Task": {
+          "_id": "e36556ce48e3",
+          "name": "Task",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "c79789153c73",
+              "name": "name",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "9dab0fcd30c2",
+              "name": "parentId",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "Task.id",
+                "onDelete": "SET_NULL",
+                "inverse": "children"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "1d03c4db1944",
+              "name": "plannedStart",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "c0f7f20afce9",
+              "name": "plannedEnd",
+              "type": "Date",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "56f7a53be5df",
+              "name": "progress",
+              "type": "int",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "0",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "5bf06006998c",
+              "name": "status",
+              "type": "TaskStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "PENDING",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "e2daeae7e08d",
+              "name": "assignee",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "be0b7bc442ba",
+              "name": "dependsOn",
+              "type": "string",
+              "visibility": "public",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "実装タスク (Gantt + WBS)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [
+            {
+              "id": "t-design",
+              "name": "設計",
+              "plannedStart": "2026-04-20",
+              "plannedEnd": "2026-04-22",
+              "progress": 100,
+              "status": "DONE",
+              "assignee": "alice"
+            },
+            {
+              "id": "t-model",
+              "name": "モデリング",
+              "plannedStart": "2026-04-22",
+              "plannedEnd": "2026-04-24",
+              "progress": 60,
+              "status": "IN_PROGRESS",
+              "assignee": "alice",
+              "dependsOn": "t-design"
+            },
+            {
+              "id": "t-impl",
+              "name": "実装",
+              "plannedStart": "2026-04-24",
+              "plannedEnd": "2026-04-28",
+              "progress": 20,
+              "status": "IN_PROGRESS",
+              "assignee": "bob",
+              "dependsOn": "t-model"
+            },
+            {
+              "id": "t-test",
+              "name": "テスト",
+              "plannedStart": "2026-04-28",
+              "plannedEnd": "2026-04-30",
+              "progress": 0,
+              "status": "PENDING",
+              "assignee": "carol",
+              "dependsOn": "t-impl"
+            },
+            {
+              "id": "t-deploy",
+              "name": "デプロイ",
+              "plannedStart": "2026-04-30",
+              "plannedEnd": "2026-05-01",
+              "progress": 0,
+              "status": "PENDING",
+              "assignee": "bob",
+              "dependsOn": "t-test"
+            }
+          ],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        }
+      },
+      "types": {
+        "Money": {
+          "_id": "af4f248e3a8c",
+          "name": "Money",
+          "fields": [],
+          "aliasOf": "decimal"
+        }
+      },
+      "enums": {
+        "BookStatus": {
+          "_id": "a33a81d71f67",
+          "name": "BookStatus",
+          "values": [
+            "AVAILABLE",
+            "ON_LOAN",
+            "RESERVED",
+            "LOST",
+            "WITHDRAWN"
+          ]
+        },
+        "LoanStatus": {
+          "_id": "2bba911ee316",
+          "name": "LoanStatus",
+          "values": [
+            "ACTIVE",
+            "RETURNED",
+            "OVERDUE"
+          ]
+        },
+        "UserRole": {
+          "_id": "0385fc40ab22",
+          "name": "UserRole",
+          "values": [
+            "MEMBER",
+            "LIBRARIAN",
+            "ADMIN"
+          ]
+        },
+        "TaskStatus": {
+          "_id": "40eea94ad446",
+          "name": "TaskStatus",
+          "values": [
+            "PENDING",
+            "IN_PROGRESS",
+            "DONE",
+            "BLOCKED"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [
+        {
+          "name": "Repository",
+          "typeParams": [
+            {
+              "name": "T"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "get",
+              "params": [
+                {
+                  "name": "id",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "T"
+              }
+            },
+            {
+              "name": "save",
+              "params": [
+                {
+                  "name": "entity",
+                  "type": {
+                    "ref": "T"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            },
+            {
+              "name": "delete",
+              "params": [
+                {
+                  "name": "id",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "bool"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Producer",
+          "typeParams": [
+            {
+              "name": "T",
+              "variance": "out"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "produce",
+              "params": [],
+              "returns": {
+                "ref": "T"
+              }
+            },
+            {
+              "name": "produceOrNull",
+              "params": [],
+              "returns": {
+                "ref": "T"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consumer",
+          "typeParams": [
+            {
+              "name": "T",
+              "variance": "in"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "consume",
+              "params": [
+                {
+                  "name": "item",
+                  "type": {
+                    "ref": "T"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Auditable",
+          "extends": [],
+          "methods": [
+            {
+              "name": "audit",
+              "params": [
+                {
+                  "name": "action",
+                  "type": {
+                    "ref": "string"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cacheable",
+          "typeParams": [
+            {
+              "name": "T"
+            }
+          ],
+          "extends": [],
+          "methods": [
+            {
+              "name": "cacheKey",
+              "params": [
+                {
+                  "name": "entity",
+                  "type": {
+                    "ref": "T"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "string"
+              }
+            },
+            {
+              "name": "invalidate",
+              "params": [
+                {
+                  "name": "id",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "name": "UserRepository",
+          "extends": [
+            {
+              "ref": "Repository",
+              "args": [
+                {
+                  "ref": "User"
+                }
+              ]
+            },
+            {
+              "ref": "Auditable"
+            },
+            {
+              "ref": "Cacheable",
+              "args": [
+                {
+                  "ref": "User"
+                }
+              ]
+            }
+          ],
+          "methods": [
+            {
+              "name": "findByEmail",
+              "params": [
+                {
+                  "name": "email",
+                  "type": {
+                    "ref": "string"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "User"
+              }
+            }
+          ]
+        }
+      ],
+      "unions": [
+        {
+          "name": "BookEvent",
+          "variants": [
+            {
+              "name": "Borrowed",
+              "fields": [
+                {
+                  "name": "loanId",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                },
+                {
+                  "name": "at",
+                  "type": {
+                    "ref": "Timestamp"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Returned",
+              "fields": [
+                {
+                  "name": "loanId",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                },
+                {
+                  "name": "at",
+                  "type": {
+                    "ref": "Timestamp"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Reserved",
+              "fields": [
+                {
+                  "name": "reservationId",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                },
+                {
+                  "name": "at",
+                  "type": {
+                    "ref": "Timestamp"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Cancelled",
+              "fields": [
+                {
+                  "name": "reservationId",
+                  "type": {
+                    "ref": "UUID"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Tree",
+          "typeParams": [
+            {
+              "name": "T"
+            }
+          ],
+          "variants": [
+            {
+              "name": "Leaf",
+              "fields": []
+            },
+            {
+              "name": "Node",
+              "fields": [
+                {
+                  "name": "value",
+                  "type": {
+                    "ref": "T"
+                  }
+                },
+                {
+                  "name": "left",
+                  "type": {
+                    "ref": "Tree",
+                    "args": [
+                      {
+                        "ref": "T"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "right",
+                  "type": {
+                    "ref": "Tree",
+                    "args": [
+                      {
+                        "ref": "T"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "impls": [
+        {
+          "trait": "Auditable",
+          "target": "Loan",
+          "methods": [
+            {
+              "name": "audit",
+              "params": [
+                {
+                  "name": "action",
+                  "type": {
+                    "ref": "string"
+                  }
+                }
+              ],
+              "returns": {
+                "ref": "void"
+              }
+            }
+          ]
+        },
+        {
+          "trait": "Producer",
+          "target": "T",
+          "typeParams": [
+            {
+              "name": "T"
+            }
+          ],
+          "methods": [
+            {
+              "name": "produce",
+              "params": [],
+              "returns": {
+                "ref": "T"
+              }
+            },
+            {
+              "name": "produceOrNull",
+              "params": [],
+              "returns": {
+                "ref": "T"
+              }
+            }
+          ]
+        }
+      ],
+      "traits": {
+        "Timestamped": {
+          "_id": "104b4ec5b226",
+          "name": "Timestamped",
+          "attributes": [
+            {
+              "_id": "fb5ef328f9d6",
+              "name": "createdAt",
+              "type": "Timestamp",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "69030bf51437",
+              "name": "updatedAt",
+              "type": "Timestamp",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "includes": []
+        },
+        "Audited": {
+          "_id": "d8b63db8c7bc",
+          "name": "Audited",
+          "attributes": [
+            {
+              "_id": "08f37bbe9a83",
+              "name": "createdBy",
+              "type": "UUID",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "includes": [
+            "Timestamped"
+          ]
+        }
+      }
+    }
+  },
+  "views": [
+    {
+      "id": "lib-er",
+      "kind": "er_diagram",
+      "include": [
+        "lib.Book",
+        "lib.Author",
+        "lib.User",
+        "lib.Loan",
+        "lib.Reservation",
+        "lib.MediaAsset"
+      ],
+      "exclude": [
+        "**.internalScore"
+      ],
+      "layout": {
+        "direction": "LR",
+        "engine": "elk",
+        "spacing": 50
+      },
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "lib-class",
+      "kind": "class_diagram",
+      "include": [
+        "lib.*"
+      ],
+      "exclude": [
+        "stereotype:service"
+      ],
+      "layout": {
+        "direction": "LR",
+        "engine": "elk"
+      },
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "borrow-flow",
+      "kind": "sequence_diagram",
+      "include": [],
+      "exclude": [],
+      "docs": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "u",
+          "label": "User",
+          "ref": "User"
+        },
+        {
+          "id": "api",
+          "label": "LibraryAPI",
+          "ref": "LibraryAPI"
+        },
+        {
+          "id": "db",
+          "label": "Postgres",
+          "ref": "Postgres"
+        },
+        {
+          "id": "rds",
+          "label": "Redis",
+          "ref": "Redis"
+        },
+        {
+          "id": "notify",
+          "label": "NotificationSvc",
+          "ref": "NotificationSvc"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "u",
+            "label": "User",
+            "ref": "User"
+          },
+          {
+            "id": "api",
+            "label": "LibraryAPI",
+            "ref": "LibraryAPI"
+          },
+          {
+            "id": "db",
+            "label": "Postgres",
+            "ref": "Postgres"
+          },
+          {
+            "id": "rds",
+            "label": "Redis",
+            "ref": "Redis"
+          },
+          {
+            "id": "notify",
+            "label": "NotificationSvc",
+            "ref": "NotificationSvc"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "message",
+            "from": "u",
+            "to": "api",
+            "arrow": "sync",
+            "label": "POST /loans (bookId)"
+          },
+          {
+            "kind": "critical",
+            "label": "在庫ロック + 貸出行発行",
+            "timeout": {
+              "duration": "2s"
+            },
+            "retry": {
+              "attempts": 3,
+              "backoff": "exponential",
+              "initial": "200ms",
+              "jitter": true
+            },
+            "body": [
+              {
+                "kind": "message",
+                "from": "api",
+                "to": "db",
+                "arrow": "sync",
+                "label": "SELECT Book WHERE id=? FOR UPDATE"
+              },
+              {
+                "kind": "message",
+                "from": "db",
+                "to": "api",
+                "arrow": "reply",
+                "label": "book row"
+              },
+              {
+                "kind": "alt",
+                "cases": [
+                  {
+                    "condition": "AVAILABLE",
+                    "body": [
+                      {
+                        "kind": "message",
+                        "from": "api",
+                        "to": "db",
+                        "arrow": "sync",
+                        "label": "INSERT Loan (status=ACTIVE)"
+                      },
+                      {
+                        "kind": "message",
+                        "from": "api",
+                        "to": "db",
+                        "arrow": "sync",
+                        "label": "UPDATE Book SET status=ON_LOAN"
+                      }
+                    ]
+                  },
+                  {
+                    "condition": "ON_LOAN",
+                    "body": [
+                      {
+                        "kind": "message",
+                        "from": "api",
+                        "to": "u",
+                        "arrow": "reply",
+                        "label": "409 Conflict"
+                      }
+                    ]
+                  },
+                  {
+                    "condition": "LOST / WITHDRAWN",
+                    "body": [
+                      {
+                        "kind": "message",
+                        "from": "api",
+                        "to": "u",
+                        "arrow": "reply",
+                        "label": "410 Gone"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "opt",
+                "condition": "待機中の予約あり",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "db",
+                    "arrow": "sync",
+                    "label": "SELECT Reservation WHERE bookId=? AND cancelled=false"
+                  },
+                  {
+                    "kind": "loop",
+                    "condition": "各予約者",
+                    "body": [
+                      {
+                        "kind": "message",
+                        "from": "api",
+                        "to": "notify",
+                        "arrow": "sync",
+                        "label": "wait-list 更新通知"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "catchBlock": {
+              "label": "DB 書き込み失敗",
+              "body": [
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "db",
+                  "arrow": "sync",
+                  "label": "INSERT AuditLog (outcome=NETWORK_ERROR)"
+                },
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "u",
+                  "arrow": "reply",
+                  "label": "500 Internal Server Error"
+                }
+              ]
+            },
+            "finallyBlock": {
+              "body": [
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "api",
+                  "arrow": "self",
+                  "label": "metrics flush"
+                }
+              ]
+            }
+          },
+          {
+            "kind": "par",
+            "branches": [
+              {
+                "label": "メール通知",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "notify",
+                    "arrow": "sync",
+                    "label": "貸出確認メール"
+                  }
+                ]
+              },
+              {
+                "label": "プッシュ通知",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "notify",
+                    "arrow": "sync",
+                    "label": "プッシュ通知"
+                  }
+                ]
+              },
+              {
+                "label": "キャッシュ暖気",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "rds",
+                    "arrow": "sync",
+                    "label": "SET loan:<id> EX 3600"
+                  }
+                ]
+              }
+            ],
+            "awaitSpec": {
+              "labels": [
+                "メール通知",
+                "プッシュ通知",
+                "キャッシュ暖気"
+              ]
+            }
+          },
+          {
+            "kind": "message",
+            "from": "api",
+            "to": "u",
+            "arrow": "reply",
+            "label": "201 Created (Location: /loans/<id>)"
+          }
+        ]
+      },
+      "ganttTasks": []
+    },
+    {
+      "id": "lib-arch",
+      "kind": "component_diagram",
+      "include": [
+        "lib.LibraryAPI",
+        "lib.NotificationSvc",
+        "lib.PaymentSvc",
+        "lib.Postgres",
+        "lib.Redis",
+        "lib.SmtpGateway",
+        "lib.StripeGateway"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "LR",
+        "engine": "elk"
+      },
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "lib-pkg",
+      "kind": "package_diagram",
+      "include": [
+        "lib.*"
+      ],
+      "exclude": [
+        "kind:dependency"
+      ],
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "book-lifecycle",
+      "kind": "state_machine",
+      "include": [
+        "lib.Book",
+        "lib.BookStatus"
+      ],
+      "exclude": [],
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "borrow-activity",
+      "kind": "activity_diagram",
+      "include": [
+        "lib.Loan",
+        "lib.Book",
+        "lib.User"
+      ],
+      "exclude": [],
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "lib-deploy",
+      "kind": "deployment_diagram",
+      "include": [
+        "lib.LibraryAPI",
+        "lib.Postgres",
+        "lib.Redis",
+        "lib.NotificationSvc",
+        "lib.SmtpGateway",
+        "lib.PaymentSvc",
+        "lib.StripeGateway"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "TB",
+        "engine": "elk"
+      },
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "impl-wbs",
+      "kind": "wbs_diagram",
+      "include": [
+        "lib.Task"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "TB",
+        "engine": "elk"
+      },
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "impl-gantt",
+      "kind": "gantt_chart",
+      "include": [
+        "lib.Task"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "LR",
+        "engine": "elk",
+        "spacing": 24
+      },
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": [],
+      "criticalPath": "highlight"
+    },
+    {
+      "id": "public-only",
+      "kind": "class_diagram",
+      "include": [
+        "lib.*"
+      ],
+      "exclude": [
+        "visibility:private",
+        "visibility:protected"
+      ],
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "core-only",
+      "kind": "class_diagram",
+      "include": [
+        "lib.*"
+      ],
+      "exclude": [
+        "stereotype:service",
+        "kind:dependency"
+      ],
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "library-overview",
+      "kind": "composite",
+      "include": [],
+      "exclude": [],
+      "layout": {
+        "direction": "TB",
+        "spacing": 40
+      },
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": [],
+      "composition": {
+        "includes": [
+          "lib-er",
+          "borrow-flow",
+          "impl-gantt"
+        ]
+      }
+    }
+  ],
+  "docTrailer": "# dummy.umlay — 動作確認用の網羅サンプル\n\n## 目的\n\nUmlay の **実装済み全機能** を 1 ファイルで触れるように並べた参照用サンプル。\nWeb / VS Code の両エディタで以下を確認できる:\n\n- 全 10 view kind (ER / Class / Sequence / Component / Package /\n  State Machine / Activity / Deployment / WBS / Gantt) が描画される\n- `@@mode(strict)` 下での lint が期待通り動く\n- RFC 0032 selector (`visibility:X` / `stereotype:X` / `kind:X` / `**.attr`)\n  で view が正しく projection される\n- Critical Path が Gantt でハイライトされる\n- Markdown trailer (このセクション) が Docs タブに出る\n\n## 未カバー機能\n\n| 機能 | 状態 | 備考 |\n| --- | --- | --- |\n| `@@include(viewId)` composite view | **未実装** | RFC 0033 ドラフト |\n| `trait Name { ... }` + `@@include(Trait)` | **未実装** | RFC 0034 ドラフト |\n| `@@sample(from: \"./file.jsonl\")` 外部ファイル | **部分実装** | parse + IR 格納 OK。展開は `expandSampleFileRefs` 呼び出しが必要で web / VS Code 未結線 |\n| `~` (package visibility) | **未対応** | IR には `package` 値があるが、parser は `+ / - / #` のみ |\n\n## 使い方\n\n1. VS Code でこのファイルを開くと、右上の **Open Preview to the Side**\n   で全 10 view がタブ表示される\n2. `Umlay: Export Diagram as Image…` (右クリック → または Cmd+Shift+P)\n   で個別 view / All views を SVG / PNG で保存できる\n3. Web (https://umlay.keydrop.net/) にコピペすれば同じ結果が得られる"
+}

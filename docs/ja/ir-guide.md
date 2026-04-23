@@ -144,6 +144,59 @@ for (const raw of view.exclude) {
 - 破壊的変更は `version: "2.0"` にバンプし、マイグレーション手順を公開します
 - Schema の変更は RFC プロセスを経て `packages/spec` に反映されます ([CONTRIBUTING.md](../../CONTRIBUTING.md) 参照)
 
+## spec 1.3.0 で追加されたフィールド
+
+全て additive。既存 1.x IR は互換。
+
+### `Namespace.traits` (RFC 0034)
+
+Trait 宣言の格納場所。model 側は `includedTraits` にどの trait を取り込んだかだけ残し、実際の属性は parse 時に `model.attributes` に展開済み。
+
+```json
+{
+  "traits": {
+    "Timestamped": {
+      "_id": "sha1:shared.Timestamped",
+      "name": "Timestamped",
+      "attributes": [ /* createdAt, updatedAt */ ],
+      "relations": [],
+      "includes": []
+    }
+  }
+}
+```
+
+### `Model.includedTraits` (RFC 0034)
+
+```json
+{ "name": "Order", "includedTraits": ["Audited", "shared.Tenanted"], "attributes": [ /* 展開後 */ ] }
+```
+
+### `View.composition` (RFC 0033)
+
+`kind: "composite"` の view だけに存在。子 view 配列を宣言順に保持。
+
+```json
+{
+  "id": "overview",
+  "kind": "composite",
+  "composition": { "includes": ["auth-er", "login-flow"] },
+  "layout": { "direction": "LR", "spacing": 48 }
+}
+```
+
+### `TypeDef.aliasOf` (type alias form)
+
+```json
+{ "types": { "ISBN": { "_id": "sha1:demo.ISBN", "name": "ISBN", "aliasOf": "string", "fields": [] } } }
+```
+
+alias form は `fields=[]`、body form は `aliasOf=undefined`。
+
+### `Visibility` に `"package"` 追加
+
+`VisibilityEnum` が `"public" | "private" | "protected" | "package"` へ拡張。DSL の `~name` が `"package"` にマップされる。
+
 ## spec 0.8.0 で追加されたフィールド
 
 以下は RFC 受諾に伴って IR に追加された新フィールド (全て optional、既存 0.x IR とは互換):

@@ -54,7 +54,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "OrderLine": {
           "_id": "7d59dc8863d2",
@@ -125,7 +126,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         }
       },
       "types": {},
@@ -134,7 +136,8 @@
       "cloudPrimitives": [],
       "protocols": [],
       "unions": [],
-      "impls": []
+      "impls": [],
+      "traits": {}
     }
   },
   "views": [

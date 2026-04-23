@@ -78,6 +78,7 @@ model Order @aggregate_root @intent("顧客発注のアグリゲート") {
 | `+` | public (既定) |
 | `-` | private |
 | `#` | protected |
+| `~` | package (spec 1.3.0+) |
 
 ## 5. リレーション
 
@@ -445,6 +446,80 @@ view structural @class_diagram {
 
 実例: `packages/examples/samples/google-oauth-login.umlay` に 4 view の
 ショーケース。
+
+## 10.7. Trait — 属性 mixin (RFC 0034 / spec 1.3+)
+
+`createdAt` / `updatedAt` / `deletedAt` / `tenantId` のような反復属性を
+**trait** として切り出し、`@@include(Trait)` で複数 model に差し込む。
+展開は parse 時に行われるので、lint / renderer / codegen は展開後の
+model しか見えない。
+
+```prisma
+namespace shared
+
+trait Timestamped {
+  -createdAt Timestamp!
+  -updatedAt Timestamp!
+}
+
+trait SoftDelete {
+  -deletedAt Timestamp?
+}
+
+// trait 自体が他 trait を `@@include` 可能 (再帰展開)
+trait Audited {
+  @@include(Timestamped)
+  -createdBy UUID!
+  -updatedBy UUID!
+}
+
+namespace shop
+import shared
+
+model Order @aggregate_root {
+  @@include(shared.Tenanted)
+  @@include(shared.Audited)        // Timestamped 経由で createdAt/updatedAt も入る
+  +id    UUID!   @id
+  +total decimal!
+}
+```
+
+- **衝突検出**: model 側と trait 側が同名属性を持つと **L040 error**
+- **二重提供**: 2 つの trait が同名属性を持つと **L041 error**
+- **循環**: `A → B → A` の include ループは **L042 error**
+- **未定義 trait**: `@@include(UnknownTrait)` は **L045 error**
+- **Unused / tiny**: 使われない trait = L043 warn, 属性 < 2 = L044 info
+
+Trait はメソッド mixin には使わない (そこは `protocol` + `impl`)。
+属性レベルの反復排除と、ロールアップできる粒度の監査レベルを「データ形状」として宣言する用途。
+
+実例: `packages/examples/samples/traits-audit.umlay`。
+
+## 10.8. Composite view — view を合成 (RFC 0033 / spec 1.3+)
+
+「全体概要 1 枚」を view として宣言できる。他の view を `@@include(viewId)`
+で埋め込むと、parse 時に子 SVG を取得して縦/横に並べた 1 枚の SVG が出る。
+
+```prisma
+view auth-er       @er_diagram       { include: auth.* }
+view login-flow    @sequence_diagram { participants: ...  seq { ... } }
+view impl-schedule @gantt_chart      { include: auth.ImplTask }
+
+view overview @composite @intent("Architect 向け 1 枚俯瞰") {
+  @@include(auth-er)
+  @@include(login-flow)
+  @@include(impl-schedule)
+  layout: direction(LR), spacing(48)
+}
+```
+
+- 子 view の `include:` / `exclude:` はそのまま効く (pure compose)
+- `@@include` は **view id を直接参照** (ハイフン可、`,` で複数)
+- 未解決 id は赤点線プレースホルダで描画 (L038 warning)
+- composite が composite を include するのも OK (再帰)
+- `direction(LR)` / `TB` / `RL` で並べ方、`spacing(N)` で隙間
+
+実例: `packages/examples/samples/composite-overview.umlay`。
 
 ## 11. 参考
 

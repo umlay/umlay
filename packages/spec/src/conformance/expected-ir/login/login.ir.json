@@ -120,7 +120,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "OAuthAccount": {
           "_id": "36e05106122c",
@@ -219,7 +220,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "Session": {
           "_id": "cb1707802f79",
@@ -363,7 +365,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "Browser": {
           "_id": "62a65985ca4f",
@@ -401,7 +404,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "CloudFront": {
           "_id": "4f92a2251764",
@@ -452,7 +456,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "S3Bucket": {
           "_id": "07ec487806df",
@@ -503,7 +508,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "ApiGateway": {
           "_id": "6f0b59a5c179",
@@ -555,7 +561,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "LambdaAuthStart": {
           "_id": "4e4962d44fb1",
@@ -621,7 +628,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "LambdaAuthCallback": {
           "_id": "bccf5920aa32",
@@ -687,7 +695,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "DynamoDBTable": {
           "_id": "5cb695191de5",
@@ -753,7 +762,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "GoogleOAuth": {
           "_id": "c019e0a1c9e1",
@@ -847,7 +857,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "LoginPage": {
           "_id": "ad67be652512",
@@ -943,7 +954,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "GoogleConsentScreen": {
           "_id": "88c05f7308ea",
@@ -1005,7 +1017,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "DashboardPage": {
           "_id": "e5af054cc0ca",
@@ -1101,7 +1114,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "AuthErrorPage": {
           "_id": "34733e679917",
@@ -1177,7 +1191,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "LoginAction": {
           "_id": "40533dc23495",
@@ -1257,7 +1272,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         }
       },
       "types": {
@@ -1389,7 +1405,8 @@
       "cloudPrimitives": [],
       "protocols": [],
       "unions": [],
-      "impls": []
+      "impls": [],
+      "traits": {}
     }
   },
   "views": [

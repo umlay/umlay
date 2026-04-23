@@ -5,12 +5,51 @@
   "namespaces": {
     "shop": {
       "models": {
-        "Customer": {
-          "_id": "b25391330ed7",
-          "name": "Customer",
+        "User": {
+          "_id": "bfeb158aad29",
+          "name": "User",
           "stereotype": "aggregate_root",
           "identity": "id",
           "attributes": [
+            {
+              "_id": "5aef76912dd2",
+              "name": "createdAt",
+              "type": "Timestamp",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "aafe3495a397",
+              "name": "updatedAt",
+              "type": "Timestamp",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "c32178aa7f6d",
+              "name": "deletedAt",
+              "type": "Timestamp",
+              "visibility": "private",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
             {
               "_id": "6c69f183cb58",
               "name": "id",
@@ -57,7 +96,7 @@
           "reviews": [],
           "fixes": [],
           "rationale": {
-            "intent": "購入顧客",
+            "intent": "顧客ユーザー",
             "invariants": [],
             "preconditions": [],
             "postconditions": [],
@@ -68,85 +107,10 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
-        },
-        "Product": {
-          "_id": "257583211bad",
-          "name": "Product",
-          "stereotype": "entity",
-          "identity": "id",
-          "attributes": [
-            {
-              "_id": "6c69f183cb58",
-              "name": "id",
-              "type": "UUID",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": true,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "f432278f0df6",
-              "name": "sku",
-              "type": "string",
-              "visibility": "public",
-              "nullable": false,
-              "unique": true,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "df601ab0b3ed",
-              "name": "name",
-              "type": "string",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "949309bf3809",
-              "name": "price",
-              "type": "Money",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            }
-          ],
-          "relations": [],
-          "docs": [],
-          "attachments": [],
-          "reviews": [],
-          "fixes": [],
-          "rationale": {
-            "intent": "販売商品",
-            "invariants": [],
-            "preconditions": [],
-            "postconditions": [],
-            "raises": []
-          },
-          "sampleSources": [],
-          "sampleFileRefs": [],
-          "dependencies": [],
-          "codegen": [],
-          "implements": [],
-          "includedTraits": []
+          "includedTraits": [
+            "Timestamped",
+            "SoftDelete"
+          ]
         },
         "Order": {
           "_id": "51e58540cd15",
@@ -155,6 +119,71 @@
           "identity": "id",
           "attributes": [
             {
+              "_id": "737c5a3d8332",
+              "name": "tenantId",
+              "type": "UUID",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "f6385dd3fefe",
+              "name": "createdBy",
+              "type": "UUID",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "b53c79672ef2",
+              "name": "updatedBy",
+              "type": "UUID",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "5aef76912dd2",
+              "name": "createdAt",
+              "type": "Timestamp",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "aafe3495a397",
+              "name": "updatedAt",
+              "type": "Timestamp",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
               "_id": "6c69f183cb58",
               "name": "id",
               "type": "UUID",
@@ -168,183 +197,8 @@
               "fixes": []
             },
             {
-              "_id": "8d7277fe5f10",
-              "name": "customerId",
-              "type": "UUID",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "ref": {
-                "target": "Customer.id",
-                "onDelete": "RESTRICT",
-                "inverse": "orders"
-              },
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
               "_id": "0eddc670f56c",
               "name": "total",
-              "type": "Money",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "83914cc3b883",
-              "name": "status",
-              "type": "OrderStatus",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "default": "DRAFT",
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            }
-          ],
-          "relations": [],
-          "docs": [],
-          "attachments": [],
-          "reviews": [],
-          "fixes": [],
-          "rationale": {
-            "intent": "顧客の購入注文",
-            "invariants": [],
-            "preconditions": [],
-            "postconditions": [],
-            "raises": []
-          },
-          "sampleSources": [],
-          "sampleFileRefs": [],
-          "dependencies": [],
-          "codegen": [],
-          "implements": [],
-          "includedTraits": []
-        },
-        "OrderLine": {
-          "_id": "7d59dc8863d2",
-          "name": "OrderLine",
-          "stereotype": "entity",
-          "identity": [
-            "orderId",
-            "lineNo"
-          ],
-          "attributes": [
-            {
-              "_id": "6b9aad7874a8",
-              "name": "orderId",
-              "type": "UUID",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "ref": {
-                "target": "Order.id",
-                "onDelete": "CASCADE",
-                "inverse": "lines"
-              },
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "682abec11b21",
-              "name": "lineNo",
-              "type": "int",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "1cd41315caeb",
-              "name": "productId",
-              "type": "UUID",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "ref": {
-                "target": "Product.id",
-                "onDelete": "RESTRICT"
-              },
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "866148efbca8",
-              "name": "qty",
-              "type": "int",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "949309bf3809",
-              "name": "price",
-              "type": "Money",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            }
-          ],
-          "relations": [],
-          "docs": [],
-          "attachments": [],
-          "reviews": [],
-          "fixes": [],
-          "rationale": {
-            "intent": "注文明細の 1 行",
-            "invariants": [],
-            "preconditions": [],
-            "postconditions": [],
-            "raises": []
-          },
-          "sampleSources": [],
-          "sampleFileRefs": [],
-          "dependencies": [],
-          "codegen": [],
-          "implements": [],
-          "includedTraits": []
-        }
-      },
-      "types": {
-        "Money": {
-          "_id": "3df391ed4bdc",
-          "name": "Money",
-          "stereotype": "value_object",
-          "fields": [
-            {
-              "_id": "60894f57e464",
-              "name": "amount",
               "type": "decimal",
               "visibility": "public",
               "nullable": false,
@@ -353,13 +207,70 @@
               "index": false,
               "codegen": [],
               "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "total >= 0"
+                ],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "SaaS の注文",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": [
+            "Tenanted",
+            "Audited"
+          ]
+        }
+      },
+      "types": {},
+      "enums": {},
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": [],
+      "traits": {
+        "Timestamped": {
+          "_id": "10552705440c",
+          "name": "Timestamped",
+          "attributes": [
+            {
+              "_id": "5aef76912dd2",
+              "name": "createdAt",
+              "type": "Timestamp",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
               "fixes": []
             },
             {
-              "_id": "dc945c00e387",
-              "name": "currency",
-              "type": "string",
-              "visibility": "public",
+              "_id": "aafe3495a397",
+              "name": "updatedAt",
+              "type": "Timestamp",
+              "visibility": "private",
               "nullable": false,
               "unique": false,
               "pk": false,
@@ -368,33 +279,112 @@
               "reviews": [],
               "fixes": []
             }
+          ],
+          "relations": [],
+          "includes": []
+        },
+        "SoftDelete": {
+          "_id": "f4ab92615849",
+          "name": "SoftDelete",
+          "attributes": [
+            {
+              "_id": "c32178aa7f6d",
+              "name": "deletedAt",
+              "type": "Timestamp",
+              "visibility": "private",
+              "nullable": "null",
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "includes": []
+        },
+        "Tenanted": {
+          "_id": "7b1cc3d8d56c",
+          "name": "Tenanted",
+          "attributes": [
+            {
+              "_id": "737c5a3d8332",
+              "name": "tenantId",
+              "type": "UUID",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "includes": []
+        },
+        "Audited": {
+          "_id": "f3206211b2a2",
+          "name": "Audited",
+          "attributes": [
+            {
+              "_id": "f6385dd3fefe",
+              "name": "createdBy",
+              "type": "UUID",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "b53c79672ef2",
+              "name": "updatedBy",
+              "type": "UUID",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "includes": [
+            "Timestamped"
           ]
         }
-      },
-      "enums": {
-        "OrderStatus": {
-          "_id": "22e0a6eaa734",
-          "name": "OrderStatus",
-          "values": [
-            "DRAFT",
-            "CONFIRMED",
-            "SHIPPED",
-            "CANCELLED"
-          ]
-        }
-      },
-      "reservedBlocks": [],
-      "cloudPrimitives": [],
-      "protocols": [],
-      "unions": [],
-      "impls": [],
-      "traits": {}
+      }
     }
   },
   "views": [
     {
-      "id": "er",
+      "id": "shop-er",
       "kind": "er_diagram",
+      "include": [
+        "shop.*"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "LR",
+        "engine": "elk"
+      },
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "shop-class",
+      "kind": "class_diagram",
       "include": [
         "shop.*"
       ],

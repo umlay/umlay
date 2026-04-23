@@ -59,6 +59,7 @@ User-defined `type <Name> @value_object { ... }` declarations and `enum`s are al
 | `+` | public (default) |
 | `-` | private |
 | `#` | protected |
+| `~` | package (spec 1.3.0) |
 | `!` | NOT NULL |
 | `?` | NULL allowed (explicit) |
 | `??` | NULL allowed with default NULL |
@@ -67,17 +68,57 @@ Visibility prefixes the field name; nullability follows the type.
 
 ## 4. Declaration syntax
 
-### 4.1 namespace / type / enum / model / view
+### 4.1 namespace / type / enum / model / view / trait
 
 - `namespace <identifier>`
-- `type <Name> @value_object { <field>* <block>* }`
+- `type <Name> = <TypeRef>` — alias form (spec 1.3.0)
+- `type <Name> @value_object { <field>* <block>* }` — body form
 - `enum <Name> { V1, V2, ... }`
 - `model <Name> <Stereotype> { <field>* <relation>* <fn>* <block>* }`
+- `trait <Name> { <field>* <relation>* }` — RFC 0034, spec 1.3.0
 - `view <id> <kind> { include: ..., exclude?: ..., layout?: ..., ... }`
 
 Stereotypes (5 values): `@entity` / `@aggregate_root` / `@value_object` / `@service` / `@interface`.
 
-View kinds (10 values): `@er_diagram` / `@class_diagram` / `@sequence_diagram` / `@component_diagram` / `@package_diagram` / `@state_machine` / `@activity_diagram` / `@deployment_diagram` / `@wbs_diagram` / `@gantt_chart`.
+View kinds (**11 values**): `@er_diagram` / `@class_diagram` / `@sequence_diagram` / `@component_diagram` / `@package_diagram` / `@state_machine` / `@activity_diagram` / `@deployment_diagram` / `@wbs_diagram` / `@gantt_chart` / `@composite` (RFC 0033, spec 1.3.0).
+
+### 4.x trait (RFC 0034, spec 1.3.0)
+
+Attribute-level mixin. `@@include(Trait)` inside a model body expands the
+trait's attributes into the model at parse time.
+
+```prisma
+trait Timestamped {
+  -createdAt Timestamp!
+  -updatedAt Timestamp!
+}
+
+model Order @aggregate_root {
+  @@include(Timestamped)
+  +id    UUID!    @id
+  +total decimal!
+}
+```
+
+Collision diagnostics: L040 (model attr collides with trait), L041 (two
+traits both contribute same name), L042 (include cycle), L045 (unknown
+trait), L043 (unused trait, warn), L044 (<2 attrs, info).
+
+### 4.x @composite view (RFC 0033, spec 1.3.0)
+
+Composes multiple views onto one canvas.
+
+```prisma
+view overview @composite {
+  @@include(auth-er)
+  @@include(login-flow)
+  layout: direction(LR), spacing(48)
+}
+```
+
+Each `@@include(viewId)` embeds that view's rendered SVG; layout
+`direction(LR|TB|…)` controls tiling. Selectors on child views still
+apply. Missing targets render as red-dashed placeholder panels.
 
 ### 4.2 protocol / union / module (RFC 0006 + 0010)
 

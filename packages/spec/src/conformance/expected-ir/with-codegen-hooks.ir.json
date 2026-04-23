@@ -236,7 +236,8 @@
               "action": "skip"
             }
           ],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "UserStats": {
           "_id": "b8939008e268",
@@ -313,7 +314,8 @@
               "action": "skip"
             }
           ],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "AuditLog": {
           "_id": "ac914af01fe0",
@@ -422,7 +424,8 @@
               }
             }
           ],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         }
       },
       "types": {},
@@ -442,7 +445,8 @@
       "cloudPrimitives": [],
       "protocols": [],
       "unions": [],
-      "impls": []
+      "impls": [],
+      "traits": {}
     }
   },
   "views": [

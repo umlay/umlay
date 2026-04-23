@@ -58,6 +58,14 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
 - **`.umlay.md` literate mode** — open a literate file (fenced
   ` ```umlay ` blocks inside Markdown) and the preview renders every
   fence's diagrams combined.
+- **`@@sample(from: "./file.jsonl")` expansion (spec 1.3.0)** — relative
+  paths resolve against the current doc, constrained to open workspace
+  folders (no arbitrary-path reads). Parsed rows land in
+  `model.sampleSources`.
+- **Explorer right-click → Open Preview to the Side** / editor context
+  menu offers the same.
+- **Umlay: Export Diagram as Image…** — SVG or PNG (`@2x` with white
+  background), per-view or All views to a folder.
 
 ## Settings
 

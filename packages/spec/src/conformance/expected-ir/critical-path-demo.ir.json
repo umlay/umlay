@@ -173,7 +173,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "TaskDependency": {
           "_id": "2b2fb2a47cd5",
@@ -261,7 +262,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         }
       },
       "types": {},
@@ -280,7 +282,8 @@
       "cloudPrimitives": [],
       "protocols": [],
       "unions": [],
-      "impls": []
+      "impls": [],
+      "traits": {}
     }
   },
   "views": [

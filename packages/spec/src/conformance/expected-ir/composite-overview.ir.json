@@ -3,16 +3,16 @@
   "kind": "UmlModel",
   "mode": "strict",
   "namespaces": {
-    "blog": {
+    "shopdemo": {
       "models": {
         "User": {
-          "_id": "a74c0d1f952e",
+          "_id": "6b9fe15121c5",
           "name": "User",
           "stereotype": "aggregate_root",
           "identity": "id",
           "attributes": [
             {
-              "_id": "716676293c59",
+              "_id": "d08543756ce6",
               "name": "id",
               "type": "UUID",
               "visibility": "public",
@@ -25,38 +25,12 @@
               "fixes": []
             },
             {
-              "_id": "a1e591335f81",
+              "_id": "4cde5367a357",
               "name": "email",
               "type": "string",
               "visibility": "public",
               "nullable": false,
               "unique": true,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "b5aff66d33fa",
-              "name": "name",
-              "type": "string",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "8b178cd89162",
-              "name": "createdAt",
-              "type": "Timestamp",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
               "pk": false,
               "index": false,
               "codegen": [],
@@ -70,7 +44,7 @@
           "reviews": [],
           "fixes": [],
           "rationale": {
-            "intent": "ブログの著者 / 読者",
+            "intent": "購入者",
             "invariants": [],
             "preconditions": [],
             "postconditions": [],
@@ -83,14 +57,14 @@
           "implements": [],
           "includedTraits": []
         },
-        "Post": {
-          "_id": "10a7041372b8",
-          "name": "Post",
-          "stereotype": "entity",
+        "Order": {
+          "_id": "e4bd6b4dcba0",
+          "name": "Order",
+          "stereotype": "aggregate_root",
           "identity": "id",
           "attributes": [
             {
-              "_id": "716676293c59",
+              "_id": "d08543756ce6",
               "name": "id",
               "type": "UUID",
               "visibility": "public",
@@ -103,8 +77,8 @@
               "fixes": []
             },
             {
-              "_id": "05f214819695",
-              "name": "authorId",
+              "_id": "0e2ca0fbc125",
+              "name": "customerId",
               "type": "UUID",
               "visibility": "public",
               "nullable": false,
@@ -113,43 +87,16 @@
               "index": false,
               "ref": {
                 "target": "User.id",
-                "onDelete": "CASCADE",
-                "inverse": "posts"
+                "onDelete": "RESTRICT"
               },
               "codegen": [],
               "reviews": [],
               "fixes": []
             },
             {
-              "_id": "c717ed3df0cf",
-              "name": "title",
-              "type": "string",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "ebb426e2c851",
-              "name": "body",
-              "type": "string",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "8802ba5f3d3e",
+              "_id": "5613ff2c0d64",
               "name": "status",
-              "type": "PostStatus",
+              "type": "OrderStatus",
               "visibility": "public",
               "nullable": false,
               "unique": false,
@@ -161,9 +108,9 @@
               "fixes": []
             },
             {
-              "_id": "8b178cd89162",
-              "name": "createdAt",
-              "type": "Timestamp",
+              "_id": "f6e30ad013a0",
+              "name": "total",
+              "type": "decimal",
               "visibility": "public",
               "nullable": false,
               "unique": false,
@@ -180,7 +127,7 @@
           "reviews": [],
           "fixes": [],
           "rationale": {
-            "intent": "ブログ記事",
+            "intent": "注文",
             "invariants": [],
             "preconditions": [],
             "postconditions": [],
@@ -193,68 +140,20 @@
           "implements": [],
           "includedTraits": []
         },
-        "Comment": {
-          "_id": "3ff9da208076",
-          "name": "Comment",
-          "stereotype": "entity",
+        "API": {
+          "_id": "004a002cbfee",
+          "name": "API",
+          "stereotype": "service",
           "identity": "id",
           "attributes": [
             {
-              "_id": "716676293c59",
+              "_id": "d08543756ce6",
               "name": "id",
-              "type": "UUID",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": true,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "97fb473c9937",
-              "name": "postId",
-              "type": "UUID",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "ref": {
-                "target": "Post.id",
-                "onDelete": "CASCADE",
-                "inverse": "comments"
-              },
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "05f214819695",
-              "name": "authorId",
-              "type": "UUID",
-              "visibility": "public",
-              "nullable": false,
-              "unique": false,
-              "pk": false,
-              "index": false,
-              "ref": {
-                "target": "User.id",
-                "onDelete": "CASCADE"
-              },
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "ebb426e2c851",
-              "name": "body",
               "type": "string",
               "visibility": "public",
               "nullable": false,
               "unique": false,
-              "pk": false,
+              "pk": true,
               "index": false,
               "codegen": [],
               "reviews": [],
@@ -267,7 +166,7 @@
           "reviews": [],
           "fixes": [],
           "rationale": {
-            "intent": "記事へのコメント",
+            "intent": "HTTP API",
             "invariants": [],
             "preconditions": [],
             "postconditions": [],
@@ -280,33 +179,20 @@
           "implements": [],
           "includedTraits": []
         },
-        "Tag": {
-          "_id": "d88094c6b1a3",
-          "name": "Tag",
-          "stereotype": "value_object",
+        "DB": {
+          "_id": "9e0878689362",
+          "name": "DB",
+          "stereotype": "service",
           "identity": "id",
           "attributes": [
             {
-              "_id": "716676293c59",
+              "_id": "d08543756ce6",
               "name": "id",
-              "type": "UUID",
+              "type": "string",
               "visibility": "public",
               "nullable": false,
               "unique": false,
               "pk": true,
-              "index": false,
-              "codegen": [],
-              "reviews": [],
-              "fixes": []
-            },
-            {
-              "_id": "b5aff66d33fa",
-              "name": "name",
-              "type": "string",
-              "visibility": "public",
-              "nullable": false,
-              "unique": true,
-              "pk": false,
               "index": false,
               "codegen": [],
               "reviews": [],
@@ -319,7 +205,7 @@
           "reviews": [],
           "fixes": [],
           "rationale": {
-            "intent": "記事の分類ラベル",
+            "intent": "PostgreSQL",
             "invariants": [],
             "preconditions": [],
             "postconditions": [],
@@ -335,13 +221,14 @@
       },
       "types": {},
       "enums": {
-        "PostStatus": {
-          "_id": "2eab264d9367",
-          "name": "PostStatus",
+        "OrderStatus": {
+          "_id": "eeb69ffed378",
+          "name": "OrderStatus",
           "values": [
             "DRAFT",
-            "PUBLISHED",
-            "ARCHIVED"
+            "PLACED",
+            "PAID",
+            "SHIPPED"
           ]
         }
       },
@@ -355,17 +242,136 @@
   },
   "views": [
     {
-      "id": "er",
+      "id": "shopdemo-er",
       "kind": "er_diagram",
       "include": [
-        "blog.*"
+        "shopdemo.User",
+        "shopdemo.Order"
       ],
       "exclude": [],
+      "layout": {
+        "direction": "LR"
+      },
       "docs": [],
       "attachments": [],
       "participants": [],
       "messages": [],
       "ganttTasks": []
+    },
+    {
+      "id": "place-order",
+      "kind": "sequence_diagram",
+      "include": [],
+      "exclude": [],
+      "docs": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "u",
+          "label": "User",
+          "ref": "User"
+        },
+        {
+          "id": "api",
+          "label": "API",
+          "ref": "API"
+        },
+        {
+          "id": "db",
+          "label": "DB",
+          "ref": "DB"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "u",
+            "label": "User",
+            "ref": "User"
+          },
+          {
+            "id": "api",
+            "label": "API",
+            "ref": "API"
+          },
+          {
+            "id": "db",
+            "label": "DB",
+            "ref": "DB"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "message",
+            "from": "u",
+            "to": "api",
+            "arrow": "sync",
+            "label": "POST /orders"
+          },
+          {
+            "kind": "message",
+            "from": "api",
+            "to": "db",
+            "arrow": "sync",
+            "label": "INSERT Order (status=PLACED)"
+          },
+          {
+            "kind": "message",
+            "from": "db",
+            "to": "api",
+            "arrow": "reply",
+            "label": "ok"
+          },
+          {
+            "kind": "message",
+            "from": "api",
+            "to": "u",
+            "arrow": "reply",
+            "label": "201 Created"
+          }
+        ]
+      },
+      "ganttTasks": []
+    },
+    {
+      "id": "shopdemo-arch",
+      "kind": "component_diagram",
+      "include": [
+        "shopdemo.API",
+        "shopdemo.DB"
+      ],
+      "exclude": [],
+      "layout": {
+        "direction": "TB"
+      },
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "overview",
+      "kind": "composite",
+      "include": [],
+      "exclude": [],
+      "layout": {
+        "direction": "TB",
+        "spacing": 32
+      },
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": [],
+      "composition": {
+        "includes": [
+          "shopdemo-er",
+          "place-order",
+          "shopdemo-arch"
+        ]
+      }
     }
   ]
 }

@@ -1,8 +1,8 @@
 # RFC 0034 — Model traits (attribute mixins)
 
-- Status: **Draft**
+- Status: **Accepted**
+- Shipped in: spec **1.3.0**
 - Class: **A — additive**
-- Target release: spec **1.3.0** (tentative)
 - Related: RFC 0006 (protocol), RFC 0016 (impl blocks)
 
 ## Motivation
@@ -198,19 +198,21 @@ formatter:
 
 ## Work items
 
-Phase 1 (spec 1.3.0):
+Phase 1 (spec 1.3.0) — **shipped**:
 
-- [ ] Grammar: `trait` declaration + `@@include(trait)` inside models
-- [ ] Reserved keyword: `trait`
-- [ ] IR: `Namespace.traits`, `Model.includedTraits`, trait expansion pass
-- [ ] Visitor: expand traits into model attribute lists before IR emission
-- [ ] Lint: L040 / L041 / L042 / L043 / L044
-- [ ] `irToDsl`: round-trip trait declarations + `@@include` directives
-- [ ] Example sample: `traits-audit.umlay` + conformance fixture
-- [ ] `dsl-guide` §10.8 — trait walkthrough
+- [x] Grammar: `trait` declaration + `@@include(trait)` inside models
+- [x] Reserved keyword: `trait`
+- [x] IR: `Namespace.traits`, `Model.includedTraits`, trait expansion pass
+- [x] Visitor: expand traits into model attribute lists before IR emission
+- [x] Lint: L040 / L041 / L042 / L043 / L044 (+ L045 unknown-trait)
+- [ ] `irToDsl`: round-trip trait declarations + `@@include` directives *(pre-existing formatter gap — types / impls already not round-tripped)*
+- [x] Example sample: `traits-audit.umlay`
+- [x] `dsl-guide` §10.8 — trait walkthrough
 
 Phase 2 (later, pending real-world feedback):
 
 - [ ] `find references` shows which models include a given trait
 - [ ] Hover on `@@include(X)` surfaces the trait's attributes inline
 - [ ] LSP rename refactor: renaming a trait renames its `@@include` sites
+- [ ] Cross-namespace trait resolution polish (currently searches all
+      namespaces for a bare ref — fully-qualified `ns.Trait` recommended)

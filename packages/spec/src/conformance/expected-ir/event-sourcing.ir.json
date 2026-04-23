@@ -111,7 +111,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         }
       },
       "types": {},
@@ -271,7 +272,8 @@
           ]
         }
       ],
-      "impls": []
+      "impls": [],
+      "traits": {}
     }
   },
   "views": [

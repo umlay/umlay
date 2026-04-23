@@ -2,7 +2,7 @@
  * Umlay DSL — Formal Grammar
  *
  * 本ファイルは DSL 文法の機械可読な正本。散文解説は grammar.md 参照。
- * spec version: 0.8.0 (RFC 0001〜0030 accepted)
+ * spec version: 1.3.0 (RFC 0001〜0034 accepted)
  *
  * 記法: W3C EBNF (XML 1.0 準拠)
  *   ::=     生成規則
@@ -25,6 +25,7 @@ NamespaceDecl   ::= "namespace" Identifier
 TopLevel        ::= TypeDecl | EnumDecl | ModelDecl | ViewDecl
                   | ProtocolDecl | UnionDecl | ModuleDecl
                   | ImplBlock                           (* RFC 0016 *)
+                  | TraitDecl                           (* RFC 0034 *)
                   | FileDirective
 
 (* RFC 0016: impl ブロック + RFC 0020: blanket impl 対応 *)
@@ -58,8 +59,17 @@ ThemeDirective  ::= "@@theme" "(" String ")"
 
 (* ─────────────── 宣言 ─────────────── *)
 
-TypeDecl        ::= "type" Identifier "@value_object" ModelAnnotation*
-                    "{" (Field | BlockDirective)* "}"
+(* spec 1.3.0: alias form `type X = TypeRef` added alongside body form *)
+TypeDecl        ::= "type" Identifier ModelAnnotation*
+                    ( "=" Type                                  (* alias form *)
+                    | "{" (Field | BlockDirective)* "}" )       (* body form *)
+
+(* RFC 0034 — spec 1.3.0: model trait mixin *)
+TraitDecl       ::= "trait" Identifier ModelAnnotation*
+                    "{" (Field | Relation | BlockDirective)* "}"
+(* Used inside a model body: `@@include(TraitName)` / `@@include(ns.Trait)`.
+ * Expansion happens at parse time before lint; collisions fire L040 / L041,
+ * cycles L042, unknown-target L045. *)
 
 EnumDecl        ::= "enum" Identifier ModelAnnotation*
                     "{" EnumValue ("," EnumValue)* ","? "}"
@@ -109,7 +119,8 @@ ImplementsAnnotation ::= "@@implements" "(" QualifiedName
 (* ─────────────── 属性 (field) ─────────────── *)
 
 Field           ::= Visibility? Identifier Type Nullability FieldAnnotation*
-Visibility      ::= "+" | "-" | "#"
+(* spec 1.3.0: `~` = package visibility joined the existing three sigils. *)
+Visibility      ::= "+" | "-" | "#" | "~"
 Nullability     ::= "!" | "?" | "??"
 Type            ::= QualifiedName
 QualifiedName   ::= Identifier ("." Identifier)*
@@ -244,9 +255,17 @@ ViewKind        ::= "@er_diagram"        | "@class_diagram"
                   | "@package_diagram"   | "@state_machine"
                   | "@activity_diagram"  | "@deployment_diagram"
                   | "@wbs_diagram"       | "@gantt_chart"
+                  | "@composite"                           (* RFC 0033, spec 1.3.0 *)
 
 ViewBody        ::= IncludeClause ExcludeClause? LayoutClause?
                     CriticalPathClause? ThemeDirective? SequenceBody?
+                    CompositeInclude*                      (* RFC 0033 *)
+
+(* RFC 0033 — `@composite` view bodies embed other views. `viewId` is a
+ * single identifier (hyphens allowed); multiple ids may be comma-separated
+ * in one directive. *)
+CompositeInclude ::= "@@include" "(" ViewId ("," ViewId)* ")"
+ViewId           ::= Identifier ("-" Identifier)*
 
 (* RFC 0032: view selectors — include / exclude accept selector lists,    *)
 (*           not just model patterns. Backward compatible: old DSL still  *)

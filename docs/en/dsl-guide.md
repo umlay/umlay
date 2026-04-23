@@ -78,6 +78,7 @@ Apply at the start of a field or method; defaults to `public` if omitted.
 | `+` | public (default) |
 | `-` | private |
 | `#` | protected |
+| `~` | package (spec 1.3.0+) |
 
 ## 5. Relations
 
@@ -446,6 +447,73 @@ view structural @class_diagram {
 
 Showcase: `packages/examples/samples/google-oauth-login.umlay` contains
 five canonical views demonstrating every selector family.
+
+## 10.7 Traits — attribute mixins (RFC 0034, spec 1.3+)
+
+Repeating columns like `createdAt` / `updatedAt` / `deletedAt` / `tenantId`
+are factored into a **trait**. A model pulls them in with `@@include(Trait)`;
+expansion happens at parse time, so lint / renderer / codegen only see the
+final flat attribute list.
+
+```prisma
+namespace shared
+
+trait Timestamped {
+  -createdAt Timestamp!
+  -updatedAt Timestamp!
+}
+
+trait SoftDelete {
+  -deletedAt Timestamp?
+}
+
+// Traits can themselves `@@include` other traits (recursive expansion).
+trait Audited {
+  @@include(Timestamped)
+  -createdBy UUID!
+  -updatedBy UUID!
+}
+
+model Order @aggregate_root {
+  @@include(Audited)          // brings Timestamped transitively
+  +id    UUID!    @id
+  +total decimal!
+}
+```
+
+Diagnostics: L040 (model vs trait clash), L041 (two traits clash),
+L042 (include cycle), L045 (unknown trait), L043 (unused trait, warn),
+L044 (<2 attrs, info).
+
+Traits don't carry methods — use `protocol` + `impl` for those. They're
+a pure structural mixin, so codegen / Prisma / SQL all see concrete rows.
+
+Real example: `packages/examples/samples/traits-audit.umlay`.
+
+## 10.8 Composite views (RFC 0033, spec 1.3+)
+
+`@composite` views embed other views on one canvas — ER + sequence +
+Gantt in a single architect-friendly picture.
+
+```prisma
+view auth-er       @er_diagram       { include: auth.* }
+view login-flow    @sequence_diagram { participants: ...  seq { ... } }
+view impl-schedule @gantt_chart      { include: auth.ImplTask }
+
+view overview @composite @intent("Architect-friendly one-canvas view") {
+  @@include(auth-er)
+  @@include(login-flow)
+  @@include(impl-schedule)
+  layout: direction(LR), spacing(48)
+}
+```
+
+Child views keep their own `include:` / `exclude:` (this is a pure compose).
+`@@include` accepts a view id directly (hyphens OK, comma-separated for
+multiple). Missing ids render as a red-dashed placeholder (L038 warning).
+Composites-of-composites are allowed (recursive). Layout defaults to `TB`.
+
+Real example: `packages/examples/samples/composite-overview.umlay`.
 
 ## 11. References
 

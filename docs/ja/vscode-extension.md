@@ -56,6 +56,11 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
 - スケールは view 単位で永続化(localStorage)
 - **`.umlay.md` リテラット形式** — Markdown 内の ` ```umlay ` フェンスを
   すべて結合して 1 IR として描画
+- **`@@sample(from: "./file.jsonl")` 展開 (spec 1.3.0)** — 開いている
+  workspace folder 内の相対パスを `fs.readFile` で解決し `model.sampleSources`
+  に反映。ワークスペース外のファイルは読まない
+- **エクスプローラ右クリック → Open Preview to the Side** / **エディタ右クリック同**
+- **Umlay: Export Diagram as Image…** — SVG / PNG (2×)、個別 view / All views
 
 ## 設定
 

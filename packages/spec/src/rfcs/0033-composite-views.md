@@ -1,8 +1,8 @@
 # RFC 0033 — Composite views (`@@include` inside view bodies)
 
-- Status: **Draft**
+- Status: **Accepted**
+- Shipped in: spec **1.3.0**
 - Class: **A — additive** (existing DSL keeps working)
-- Target release: spec **1.3.0** (tentative)
 - Related: RFC 0002 (view layout), RFC 0032 (view selectors)
 
 ## Motivation

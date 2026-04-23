@@ -48,7 +48,8 @@
                 "Dog"
               ]
             }
-          ]
+          ],
+          "includedTraits": []
         },
         "AnimalConsumer": {
           "_id": "23ae6a203e26",
@@ -93,7 +94,8 @@
                 "Animal"
               ]
             }
-          ]
+          ],
+          "includedTraits": []
         }
       },
       "types": {},
@@ -292,7 +294,8 @@
         }
       ],
       "unions": [],
-      "impls": []
+      "impls": [],
+      "traits": {}
     }
   },
   "views": [

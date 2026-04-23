@@ -59,6 +59,7 @@ import "./modules/{core,shared}/*.umlay"
 | `+` | public (既定) |
 | `-` | private |
 | `#` | protected |
+| `~` | package (spec 1.3.0) |
 | `!` | NOT NULL |
 | `?` | NULL 許可 (明示) |
 | `??` | NULL 許可 + default NULL |
@@ -67,17 +68,66 @@ import "./modules/{core,shared}/*.umlay"
 
 ## 4. 宣言構文
 
-### 4.1 namespace / type / enum / model / view
+### 4.1 namespace / type / enum / model / view / trait
 
 - `namespace <identifier>`
-- `type <Name> @value_object { <field>* <block>* }`
+- `type <Name> = <TypeRef>` — alias 形 (spec 1.3.0)
+- `type <Name> @value_object { <field>* <block>* }` — body 形
 - `enum <Name> { V1, V2, ... }`
 - `model <Name> <Stereotype> { <field>* <relation>* <fn>* <block>* }`
+- `trait <Name> { <field>* <relation>* }` — RFC 0034, spec 1.3.0
 - `view <id> <kind> { include: ..., exclude?: ..., layout?: ..., ... }`
 
 stereotype は 5 値: `@entity` / `@aggregate_root` / `@value_object` / `@service` / `@interface`。
 
-view kind は 10 値: `@er_diagram` / `@class_diagram` / `@sequence_diagram` / `@component_diagram` / `@package_diagram` / `@state_machine` / `@activity_diagram` / `@deployment_diagram` / `@wbs_diagram` / `@gantt_chart`。
+view kind は **11 値**: `@er_diagram` / `@class_diagram` / `@sequence_diagram` / `@component_diagram` / `@package_diagram` / `@state_machine` / `@activity_diagram` / `@deployment_diagram` / `@wbs_diagram` / `@gantt_chart` / `@composite` (RFC 0033, spec 1.3.0)。
+
+### 4.x trait (RFC 0034, spec 1.3.0)
+
+属性の mixin。model 内で `@@include(Trait)` すると trait の属性がパース時に展開される。
+
+```prisma
+trait Timestamped {
+  -createdAt Timestamp!
+  -updatedAt Timestamp!
+}
+
+trait Audited {
+  @@include(Timestamped)     // 他 trait の取り込みも可 (再帰展開)
+  -createdBy UUID!
+  -updatedBy UUID!
+}
+
+model Order @aggregate_root {
+  @@include(Audited)          // Timestamped + createdBy + updatedBy が入る
+  +id    UUID!    @id
+  +total decimal!
+}
+```
+
+- 衝突: model の属性と trait の属性が同名 → **L040 error**
+- 2 trait が同名属性を提供 → **L041 error**
+- `A→B→A` の循環 → **L042 error**
+- 未定義 trait の `@@include` → **L045 error**
+- 使われない trait → **L043 warning** / 2 属性未満 → **L044 info**
+
+### 4.x @composite view (RFC 0033, spec 1.3.0)
+
+他の view を 1 枚に合成するビュー種別。
+
+```prisma
+view overview @composite {
+  @@include(auth-er)
+  @@include(login-flow)
+  @@include(impl-gantt)
+  layout: direction(LR), spacing(48)
+}
+```
+
+- `@@include` は子 view id を直接参照 (ハイフン可、カンマ区切りで複数可)
+- 子 view の `include:` / `exclude:` はそのまま効く (合成は pure compose)
+- 未解決 id は赤点線のプレースホルダ panel で描画 (lint L038 warning)
+- `@composite` 以外で `@@include(viewId)` を使うと無視 (lint L037 info)
 
 ### 4.2 protocol / union / module (RFC 0006 + 0010 + 0011 + 0012)
 

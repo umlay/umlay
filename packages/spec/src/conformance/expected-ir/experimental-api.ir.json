@@ -71,7 +71,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "StreamProcessor": {
           "_id": "90d7b7c9776f",
@@ -141,7 +142,8 @@
             "note": "async interface may change before stabilization",
             "stabilizeIn": "1.0.0",
             "trackingIssue": "umlay/umlay#456"
-          }
+          },
+          "includedTraits": []
         },
         "OldStreamProcessor": {
           "_id": "d8f3c70cb2db",
@@ -189,7 +191,8 @@
           "experimental": {
             "since": "0.6.0",
             "note": "superseded by StreamProcessor"
-          }
+          },
+          "includedTraits": []
         }
       },
       "types": {},
@@ -244,7 +247,8 @@
         }
       ],
       "unions": [],
-      "impls": []
+      "impls": [],
+      "traits": {}
     }
   },
   "views": [

@@ -5,7 +5,7 @@
  * Grammar and IR schema live as sibling files; this module exposes metadata only.
  */
 
-export const SPEC_VERSION = '1.2.0' as const;
+export const SPEC_VERSION = '1.3.0' as const;
 export const IR_SCHEMA_VERSION = '1.0' as const;
 export const DSL_VERSION = '1.0' as const;
 
@@ -20,6 +20,7 @@ export const RESERVED_KEYWORDS = [
   // future UML / modern-stack (accepted in Phase 1, rendered later)
   'protocol',
   'union',
+  'trait',
   'fn',
   'module',
   // React / Next.js

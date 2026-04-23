@@ -64,7 +64,8 @@
             {
               "ref": "Identifiable"
             }
-          ]
+          ],
+          "includedTraits": []
         },
         "Product": {
           "_id": "67da85a7776a",
@@ -122,7 +123,8 @@
             {
               "ref": "Identifiable"
             }
-          ]
+          ],
+          "includedTraits": []
         }
       },
       "types": {},
@@ -265,7 +267,8 @@
             }
           ]
         }
-      ]
+      ],
+      "traits": {}
     }
   },
   "views": [

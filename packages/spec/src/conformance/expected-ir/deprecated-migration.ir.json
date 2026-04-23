@@ -128,7 +128,8 @@
           "sampleFileRefs": [],
           "dependencies": [],
           "codegen": [],
-          "implements": []
+          "implements": [],
+          "includedTraits": []
         },
         "LegacyUser": {
           "_id": "db728921611d",
@@ -185,7 +186,8 @@
             "since": "0.3.0",
             "removeIn": "1.0.0",
             "replaceWith": "User"
-          }
+          },
+          "includedTraits": []
         }
       },
       "types": {},
@@ -246,7 +248,8 @@
         }
       ],
       "unions": [],
-      "impls": []
+      "impls": [],
+      "traits": {}
     }
   },
   "views": [

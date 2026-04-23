@@ -1,0 +1,499 @@
+// all-features.umlay — Umlay 全機能網羅の conformance サンプル
+//
+// spec 1.3.0 で実装済みの全機能を 1 ファイルで網羅:
+//   - 宣言    : @@mode / namespace / type / enum / protocol / union / model /
+//              impl / trait (RFC 0034) / view (@composite 含む)
+//   - 可視性  : +public / -private / #protected / ~package
+//   - null型 : ! / ? / ??
+//   - 関連    : composition / aggregation / association / dependency ×
+//              multiplicity (1 / 0..1 / 0..* / 1..*)
+//   - 注釈    : @id @unique @ref @default @auto @maxLength @min @max
+//              @intent @inv @pre @post @review @fix @deprecated @experimental
+//   - ディレクティブ: @@id @@unique @@index @@doc @@md @@sample @@dependencies
+//                  @@implements @@codegen @@mode @@include (traits + composite)
+//   - ジェネリクス: <T> / <in T> / <out T> / bounds (T: Q & R) / multi-extends
+//   - union   : simple / generic / 再帰 variant
+//   - impl    : 直 / blanket (impl<T> ... where (T: Q))
+//   - view 全11種: er / class / sequence / component / package / state_machine /
+//                activity / deployment / wbs / gantt / composite (RFC 0033)
+//   - sequence: alt / else / opt / par / and / critical / catch / finally /
+//              loop / await / timeout / retry
+//   - selector: pattern / **.attr / visibility:X / seq:X / stereotype:X / kind:X
+//   - Markdown trailer (末尾の ---)
+//
+// 未カバー (部分実装):
+//   - @@sample(from: "./file.jsonl") 外部参照 —
+//     parse + IR.sampleFileRefs[] は OK。
+//     展開は Web/VS Code が `expandSampleFileRefs(ir, {readFile})` を呼ぶ。
+
+@@mode(strict)
+
+namespace lib
+
+// ============================================================================
+// Enums
+// ============================================================================
+
+enum BookStatus @intent("本の在庫状態") {
+  AVAILABLE, ON_LOAN, RESERVED, LOST, WITHDRAWN
+}
+
+enum LoanStatus @intent("貸出のライフサイクル") {
+  ACTIVE, RETURNED, OVERDUE
+}
+
+enum UserRole @intent("利用者の権限レベル") {
+  MEMBER, LIBRARIAN, ADMIN
+}
+
+enum TaskStatus {
+  PENDING, IN_PROGRESS, DONE, BLOCKED
+}
+
+// ============================================================================
+// Type alias (spec 1.3.0)
+// ============================================================================
+
+type Money = decimal
+
+// ============================================================================
+// Traits (RFC 0034, spec 1.3.0)
+// ============================================================================
+
+trait Timestamped {
+  -createdAt Timestamp!
+  -updatedAt Timestamp!
+}
+
+trait Audited {
+  @@include(Timestamped)
+  -createdBy UUID!
+}
+
+// ============================================================================
+// Protocols — generics / variance / bounds / multi-extends
+// ============================================================================
+
+protocol Repository<T> @intent("CRUD 汎用契約") {
+  fn get(id: UUID!)    -> T?
+  fn save(entity: T!)  -> void
+    @post("get(entity.id) != null")
+  fn delete(id: UUID!) -> bool!
+}
+
+// 共変: T は return 位置のみ
+protocol Producer<out T> @intent("T を生産 (共変)") {
+  fn produce()       -> T!
+  fn produceOrNull() -> T?
+}
+
+// 反変: T は parameter 位置のみ
+protocol Consumer<in T> @intent("T を消費 (反変)") {
+  fn consume(item: T!) -> void
+}
+
+protocol Auditable @intent("操作ログ記録") {
+  fn audit(action: string!) -> void
+}
+
+protocol Cacheable<T> @intent("キャッシュ可能") {
+  fn cacheKey(entity: T!) -> string!
+  fn invalidate(id: UUID!) -> void
+}
+
+// 多重継承による契約合成 (RFC 0010)
+protocol UserRepository extends Repository<User>, Auditable, Cacheable<User>
+  @intent("User 専用 Repository — 監査 + キャッシュ付き") {
+  fn findByEmail(email: string!) -> User?
+}
+
+// ============================================================================
+// Unions — simple / generic / 再帰 variant
+// ============================================================================
+
+union BookEvent =
+  | Borrowed  { loanId: UUID!, at: Timestamp! }
+  | Returned  { loanId: UUID!, at: Timestamp! }
+  | Reserved  { reservationId: UUID!, at: Timestamp! }
+  | Cancelled { reservationId: UUID! }
+  @intent("Book のドメインイベント")
+
+// ジェネリクス + 再帰 variant (Leaf で終端)
+union Tree<T> =
+  | Leaf
+  | Node { value: T!, left: Tree<T>!, right: Tree<T>! }
+  @intent("ジェネリック二分木 (再帰 variant のデモ)")
+
+// ============================================================================
+// Domain models
+// ============================================================================
+
+model Author @entity @intent("著者") {
+  +id   UUID!   @id
+  +name string! @maxLength(100)
+  +bio  string?
+}
+
+model Book @aggregate_root
+  @intent("図書。在庫管理単位")
+  @inv("copies >= 0")
+  @inv("status in {AVAILABLE, ON_LOAN, RESERVED, LOST, WITHDRAWN}") {
+  @@include(Audited)                                   // trait: createdAt/updatedAt/createdBy
+  +id          UUID!        @id
+  +isbn        string!        @unique @maxLength(13)
+  +title       string!      @maxLength(300)
+  +authorId    UUID!        @ref(Author.id, onDelete: RESTRICT, inverse: "books")
+  +copies      int!         @default(1) @min(0) @max(9999)
+  +status      BookStatus!  @default(AVAILABLE)
+  +publishedAt Date?
+  +summary     string?
+    @review("長文になる。先頭 200 字の要約 embed を別テーブル化検討")
+    @fix("v2 で `BookSummary` モデルに切り出す")
+  +rating      decimal?     @experimental({ stage: "beta", since: "1.2.0" })
+  -notes       string?      @deprecated({
+    message:     "v2 で @@md に統合",
+    since:       "1.2.0",
+    removeIn:    "2.0.0",
+    replaceWith: Book.summary
+  })
+  #internalScore int?
+  -> composition 0..* loans: Loan        @intent("この本の貸出履歴")
+  -> aggregation 0..* reservations: Reservation
+  -> association 0..1 coverImage: MediaAsset
+  @@index(status)
+  @@index(authorId, status)
+  @@doc("Book は in-stock 時のみ新規 Loan 発行可")
+  @@md("""
+## Book の運用メモ
+
+- **在庫** = `copies − loans.where(status = ACTIVE).count`
+- 直接の `status` 書き換えは禁止、Loan 経由のみ
+- 廃棄 (`WITHDRAWN`) は不可逆
+""")
+  @@sample(
+    { id: "b1", isbn: "9784873119885", title: "Clean Architecture", authorId: "a1", copies: 3, status: AVAILABLE },
+    { id: "b2", isbn: "9784798167985", title: "Domain-Driven Design", authorId: "a2", copies: 2, status: ON_LOAN }
+  )
+  @@codegen(
+    prisma: { tableName: "books_v2" },
+    sql:    { schema: "library" },
+    ts:     { extend: "DomainEntity<Book>" }
+  )
+}
+
+model MediaAsset @entity @intent("表紙画像など") {
+  +id   UUID!   @id
+  +url  string! @maxLength(500)
+  +mime string! @maxLength(64)
+}
+
+model User @aggregate_root
+  @intent("図書館利用者")
+  @inv("role in {MEMBER, LIBRARIAN, ADMIN}") {
+  +id          UUID!        @id
+  +email       string!      @unique @maxLength(255)
+  +role        UserRole!    @default(MEMBER)
+  +createdAt   Timestamp!   @auto
+  +bannedUntil Timestamp?
+  -> composition 0..* loans: Loan
+  -> aggregation 0..* reservations: Reservation
+}
+
+model Loan @entity
+  @intent("貸出レコード")
+  @pre("book.status == AVAILABLE")
+  @post("book.status == ON_LOAN || status == RETURNED") {
+  +id         UUID!       @id
+  +bookId     UUID!       @ref(Book.id, onDelete: CASCADE, inverse: "loans")
+  +userId     UUID!       @ref(User.id, onDelete: RESTRICT)
+  +borrowedAt Timestamp!  @auto
+  +dueAt      Timestamp!
+  +returnedAt Timestamp?
+  +status     LoanStatus! @default(ACTIVE)
+  @@unique(bookId, userId, borrowedAt)
+  @@index(userId, status)
+  @@dependencies(lib.NotificationSvc)
+  @@dependencies({ on: lib.PaymentSvc, kind: FS, lag: 0 })
+}
+
+model Reservation @entity @intent("予約") {
+  +id        UUID!      @id
+  +bookId    UUID!      @ref(Book.id, onDelete: CASCADE)
+  +userId    UUID!      @ref(User.id, onDelete: CASCADE)
+  +createdAt Timestamp! @auto
+  +cancelled bool!      @default(false)
+}
+
+// ============================================================================
+// Services (component / deployment diagram のノード)
+// ============================================================================
+
+model LibraryAPI @service @intent("HTTP API (Next.js)") {
+  +id string! @id
+  -> dependency 1 db: Postgres
+  -> dependency 1 rds: Redis
+  -> dependency 1 notify: NotificationSvc
+  -> dependency 1 pay: PaymentSvc
+}
+
+model NotificationSvc @service @intent("通知配送 (mail / push)") {
+  +id string! @id
+  -> dependency 1 smtp: SmtpGateway
+}
+
+model PaymentSvc @service @intent("延滞料請求") {
+  +id string! @id
+  -> dependency 1 stripe: StripeGateway
+}
+
+model Postgres      @service @intent("RDB (Prisma)")   { +id string! @id }
+model Redis         @service @intent("キャッシュ")       { +id string! @id }
+model SmtpGateway   @service @intent("SMTP (外部)")    { +id string! @id }
+model StripeGateway @service @intent("Stripe (外部)")  { +id string! @id }
+
+// ============================================================================
+// Repositories (@@implements の利用例)
+// ============================================================================
+
+model UserRepositoryImpl @service
+  @intent("UserRepository 準拠 = Repository<User> + Auditable + Cacheable<User>") {
+  @@implements(UserRepository)
+  +id UUID! @id
+}
+
+model BookRepositoryImpl @service
+  @intent("Book 専用 Repository") {
+  @@implements(Repository<Book>)
+  @@implements(Auditable)
+  +id UUID! @id
+}
+
+// ============================================================================
+// impl blocks — 直接 + blanket
+// ============================================================================
+
+// 直接 impl
+impl Auditable for Loan {
+  fn audit(action: string!) -> void { }
+}
+
+// Blanket impl: Repository を実装する任意の T に Producer<T> を自動適用
+impl<T> Producer<T> for T where (T: Repository<T>) {
+  fn produce() -> T! { }
+  fn produceOrNull() -> T? { }
+}
+
+// ============================================================================
+// Gantt / WBS 用タスク
+// ============================================================================
+
+model Task @entity
+  @intent("実装タスク (Gantt + WBS)") {
+  +id           string!     @id
+  +name         string!     @maxLength(120)
+  +parentId     string?     @ref(Task.id, onDelete: SET_NULL, inverse: "children")
+  +plannedStart Date!
+  +plannedEnd   Date!
+  +progress     int!        @default(0) @min(0) @max(100)
+  +status       TaskStatus! @default(PENDING)
+  +assignee     string!     @maxLength(64)
+  +dependsOn    string?
+
+  @@sample(
+    { id: "t-design",  name: "設計",       plannedStart: "2026-04-20", plannedEnd: "2026-04-22", progress: 100, status: DONE,        assignee: "alice" },
+    { id: "t-model",   name: "モデリング",  plannedStart: "2026-04-22", plannedEnd: "2026-04-24", progress: 60,  status: IN_PROGRESS, assignee: "alice", dependsOn: "t-design" },
+    { id: "t-impl",    name: "実装",       plannedStart: "2026-04-24", plannedEnd: "2026-04-28", progress: 20,  status: IN_PROGRESS, assignee: "bob",   dependsOn: "t-model" },
+    { id: "t-test",    name: "テスト",     plannedStart: "2026-04-28", plannedEnd: "2026-04-30", progress: 0,   status: PENDING,     assignee: "carol", dependsOn: "t-impl" },
+    { id: "t-deploy",  name: "デプロイ",   plannedStart: "2026-04-30", plannedEnd: "2026-05-01", progress: 0,   status: PENDING,     assignee: "bob",   dependsOn: "t-test" }
+  )
+}
+
+// ============================================================================
+// Views — 全 10 kind
+// ============================================================================
+
+// (1) ER
+view lib-er @er_diagram
+  @intent("永続化スキーマ (Book 中心)") {
+  include: lib.Book, lib.Author, lib.User, lib.Loan, lib.Reservation, lib.MediaAsset
+  exclude: **.internalScore
+  layout: direction(LR), engine(elk), spacing(50)
+}
+
+// (2) Class
+view lib-class @class_diagram
+  @intent("ドメイン + protocol + union の構造") {
+  include: lib.*
+  exclude: stereotype:service
+  layout: direction(LR), engine(elk)
+}
+
+// (3) Sequence — alt / else / opt / par+and / critical+catch+finally / loop / await 全部
+view borrow-flow @sequence_diagram
+  @intent("貸出フロー: 全ての sequence 構文を網羅") {
+  participants:
+    User            as u,
+    LibraryAPI      as api,
+    Postgres        as db,
+    Redis           as rds,
+    NotificationSvc as notify
+
+  seq {
+    u ->> api : "POST /loans (bookId)"
+
+    critical "在庫ロック + 貸出行発行" timeout(2s) retry({
+      attempts: 3, backoff: exponential, initial: 200ms, jitter: true
+    }) {
+      api ->> db : "SELECT Book WHERE id=? FOR UPDATE"
+      db  -.> api : "book row"
+
+      alt "AVAILABLE" {
+        api ->> db : "INSERT Loan (status=ACTIVE)"
+        api ->> db : "UPDATE Book SET status=ON_LOAN"
+      } else "ON_LOAN" {
+        api -.> u : "409 Conflict"
+      } else "LOST / WITHDRAWN" {
+        api -.> u : "410 Gone"
+      }
+
+      opt "待機中の予約あり" {
+        api ->> db : "SELECT Reservation WHERE bookId=? AND cancelled=false"
+        loop "各予約者" {
+          api ->> notify : "wait-list 更新通知"
+        }
+      }
+    } catch "DB 書き込み失敗" {
+      api ->> db : "INSERT AuditLog (outcome=NETWORK_ERROR)"
+      api -.> u  : "500 Internal Server Error"
+    } finally {
+      api ->> api : "metrics flush"
+    }
+
+    par "メール通知" {
+      api ->> notify : "貸出確認メール"
+    } and "プッシュ通知" {
+      api ->> notify : "プッシュ通知"
+    } and "キャッシュ暖気" {
+      api ->> rds : "SET loan:<id> EX 3600"
+    }
+
+    await("メール通知", "プッシュ通知", "キャッシュ暖気")
+
+    api -.> u : "201 Created (Location: /loans/<id>)"
+  }
+}
+
+// (4) Component
+view lib-arch @component_diagram
+  @intent("サービス境界 + 外部ゲートウェイ") {
+  include: lib.LibraryAPI, lib.NotificationSvc, lib.PaymentSvc,
+           lib.Postgres, lib.Redis, lib.SmtpGateway, lib.StripeGateway
+  layout: direction(LR), engine(elk)
+}
+
+// (5) Package
+view lib-pkg @package_diagram
+  @intent("namespace / 層の俯瞰") {
+  include: lib.*
+  exclude: kind:dependency
+}
+
+// (6) State machine
+view book-lifecycle @state_machine
+  @intent("Book.status の遷移") {
+  include: lib.Book, lib.BookStatus
+}
+
+// (7) Activity
+view borrow-activity @activity_diagram
+  @intent("貸出のアクティビティ") {
+  include: lib.Loan, lib.Book, lib.User
+}
+
+// (8) Deployment
+view lib-deploy @deployment_diagram
+  @intent("本番デプロイ構成") {
+  include: lib.LibraryAPI, lib.Postgres, lib.Redis,
+           lib.NotificationSvc, lib.SmtpGateway,
+           lib.PaymentSvc, lib.StripeGateway
+  layout: direction(TB), engine(elk)
+}
+
+// (9) WBS
+view impl-wbs @wbs_diagram
+  @intent("実装タスク階層") {
+  include: lib.Task
+  layout: direction(TB), engine(elk)
+}
+
+// (10) Gantt with critical path
+view impl-gantt @gantt_chart
+  @intent("実装スケジュール + CPM によるクリティカルパス可視化") {
+  include: lib.Task
+  layout: direction(LR), engine(elk), spacing(24)
+  criticalPath: highlight
+}
+
+// ============================================================================
+// Selector-focused views (RFC 0032 Phase 1 + 2)
+// ============================================================================
+
+// visibility:X — public 属性のみ
+view public-only @class_diagram
+  @intent("public 属性のみ (private / protected 除外)") {
+  include: lib.*
+  exclude: visibility:private, visibility:protected
+}
+
+// stereotype:X + kind:X — ドメイン中核のみ
+view core-only @class_diagram
+  @intent("@entity / @aggregate_root のみ、@service と dependency を除外") {
+  include: lib.*
+  exclude: stereotype:service, kind:dependency
+}
+
+// ============================================================================
+// Composite view (RFC 0033, spec 1.3.0)
+// ============================================================================
+
+view library-overview @composite
+  @intent("Architect 向け — データ / 貸出フロー / スケジュールを 1 枚に") {
+  @@include(lib-er)
+  @@include(borrow-flow)
+  @@include(impl-gantt)
+  layout: direction(TB), spacing(40)
+}
+
+---
+
+# dummy.umlay — 動作確認用の網羅サンプル
+
+## 目的
+
+Umlay の **実装済み全機能** を 1 ファイルで触れるように並べた参照用サンプル。
+Web / VS Code の両エディタで以下を確認できる:
+
+- 全 10 view kind (ER / Class / Sequence / Component / Package /
+  State Machine / Activity / Deployment / WBS / Gantt) が描画される
+- `@@mode(strict)` 下での lint が期待通り動く
+- RFC 0032 selector (`visibility:X` / `stereotype:X` / `kind:X` / `**.attr`)
+  で view が正しく projection される
+- Critical Path が Gantt でハイライトされる
+- Markdown trailer (このセクション) が Docs タブに出る
+
+## 未カバー機能
+
+| 機能 | 状態 | 備考 |
+| --- | --- | --- |
+| `@@include(viewId)` composite view | **未実装** | RFC 0033 ドラフト |
+| `trait Name { ... }` + `@@include(Trait)` | **未実装** | RFC 0034 ドラフト |
+| `@@sample(from: "./file.jsonl")` 外部ファイル | **部分実装** | parse + IR 格納 OK。展開は `expandSampleFileRefs` 呼び出しが必要で web / VS Code 未結線 |
+| `~` (package visibility) | **未対応** | IR には `package` 値があるが、parser は `+ / - / #` のみ |
+
+## 使い方
+
+1. VS Code でこのファイルを開くと、右上の **Open Preview to the Side**
+   で全 10 view がタブ表示される
+2. `Umlay: Export Diagram as Image…` (右クリック → または Cmd+Shift+P)
+   で個別 view / All views を SVG / PNG で保存できる
+3. Web (https://umlay.keydrop.net/) にコピペすれば同じ結果が得られる

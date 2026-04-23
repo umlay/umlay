@@ -144,7 +144,8 @@
         }
       ],
       "unions": [],
-      "impls": []
+      "impls": [],
+      "traits": {}
     }
   },
   "views": [

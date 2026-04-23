@@ -74,7 +74,8 @@
             {
               "ref": "Comparable"
             }
-          ]
+          ],
+          "includedTraits": []
         },
         "UserRepository": {
           "_id": "66d9b956a685",
@@ -119,7 +120,8 @@
                 "User"
               ]
             }
-          ]
+          ],
+          "includedTraits": []
         }
       },
       "types": {},
@@ -389,7 +391,8 @@
         }
       ],
       "unions": [],
-      "impls": []
+      "impls": [],
+      "traits": {}
     }
   },
   "views": []
