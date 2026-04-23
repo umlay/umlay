@@ -1,6 +1,6 @@
 {
   "name": "@umlay/spec",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Umlay DSL specification, grammar, and JSON Schema for the IR.",
   "license": "Apache-2.0",
   "type": "module",

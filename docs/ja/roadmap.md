@@ -6,8 +6,8 @@
 
 | パッケージ / ディレクトリ | 内容 | バージョン |
 | --- | --- | --- |
-| `@umlay/spec` | DSL 文法 + 正規IR JSON Schema + 形式文法 (BNF) + conformance (manifest + expected-ir + id-hash-vectors) + **32 RFC accepted** (〜0032 view-selectors) | 1.2.0-draft |
-| `@umlay/examples` | 38 本の `.umlay` サンプル (全 RFC 機能のライブデモ含む、google-oauth-login は 5 view で selector ショーケース) | 1.2.0-draft |
+| `@umlay/spec` | DSL 文法 + 正規IR JSON Schema + 形式文法 (BNF) + conformance (manifest + expected-ir + id-hash-vectors) + **32 RFC accepted** (〜0032 view-selectors) | 1.2.0 |
+| `@umlay/examples` | 38 本の `.umlay` サンプル (全 RFC 機能のライブデモ含む、google-oauth-login は 5 view で selector ショーケース) | 1.2.0 |
 | `skills/` | 開発者 / AI 向け skill 定義 (枠組み) | — |
 | `docs/` | 利用者向けドキュメント (本ガイド群) | — |
 

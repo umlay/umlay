@@ -1,6 +1,6 @@
 # RFC 0032 — View Selectors (expressive `include` / `exclude`)
 
-- Status: **Accepted (Phase 1 + Phase 2 implemented in spec 1.2.0-draft)**
+- Status: **Accepted (Phase 1 + Phase 2 shipped in spec 1.2.0)**
 - Class: **A — additive** (existing DSL keeps working verbatim)
 - Target release: spec **1.2.0**
 - Supersedes: nothing
@@ -35,7 +35,7 @@ selector is either a bare pattern (the current syntax) or `kind:value`.
 | `visibility:X` | attributes / methods by visibility | `visibility:private` |
 | `seq:X` | sequence-body statement kinds | `seq:critical`, `seq:retry`, `seq:catch`, `seq:finally`, `seq:opt`, `seq:alt` |
 
-### Phase 2 (shipped in spec 1.2.0-draft)
+### Phase 2 (shipped in spec 1.2.0)
 
 | Selector | Matches | Example |
 | --- | --- | --- |
