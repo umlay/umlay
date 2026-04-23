@@ -1,0 +1,99 @@
+// google-oauth-login.umlay — Google OAuth 2.0 ログインドメイン
+//
+// RFC 0032 view-selector のショーケース: 同じ IR から「誰向け」の粒度かを
+// view で使い分ける。PM は exec、reviewer は senior、実装者は detailed、
+// ER レビュー用に er-overview / er-detailed を用意している。
+
+@@mode(beta)
+
+namespace auth
+
+enum SessionStatus { ACTIVE, EXPIRED, REVOKED }
+
+model User @aggregate_root @intent("サービスを利用する人間。email 一意") {
+  +id       UUID!    @id
+  +email    string!  @unique
+  -passwordHash string!
+  +displayName string!
+  -createdAt DateTime!
+  -updatedAt DateTime!
+}
+
+model Session @entity @intent("認証済みユーザのセッション") {
+  +id        UUID!  @id
+  +userId    UUID!  @ref(User.id, onDelete: CASCADE)
+  +token     string! @unique
+  +status    SessionStatus = ACTIVE
+  -expiresAt DateTime!
+  -createdAt DateTime!
+}
+
+model LoginAttempt @entity @intent("監査用ログ。失敗回数で BOT 検知") {
+  +id        UUID!    @id
+  +email     string!
+  -ipAddress string!
+  -userAgent string!
+  +success   bool!
+  -at        DateTime!
+}
+
+// Participants modelled as @service — actors/lambdas, not entities.
+model Browser     @service @intent("ユーザのブラウザ") { +id string! @id }
+model App         @service @intent("本アプリ (frontend + API)") { +id string! @id }
+model Google      @service @intent("Google OAuth 2.0 サーバ") { +id string! @id }
+model AppCallback @service @intent("App 側 /oauth/callback エンドポイント") { +id string! @id }
+
+// ==== Views =================================================================
+
+view exec @sequence_diagram {
+  // PM / 経営層向け: 主要 4 actor のみ、ハッピーパスだけ。
+  // critical / opt / catch / finally は見えない(抽象化された設計図)。
+  include: auth.Browser, auth.App, auth.Google, auth.AppCallback
+  exclude: seq:critical, seq:opt, seq:alt
+
+  participants: Browser as u, App as a, Google as g, AppCallback as cb
+
+  seq {
+    u ->> a : "ログイン要求"
+    a ->> g : "OAuth 認可リクエスト"
+    g ->> u : "ログイン画面"
+    u ->> g : "認可同意"
+    g ->> cb : "code + state redirect"
+    cb ->> a : "token 交換完了"
+    a ->> u : "ログイン成功"
+  }
+}
+
+view senior-review @sequence_diagram {
+  // レビュワー向け: critical ブロックの存在は見えるが、catch は省略。
+  // exec では見えないリトライ境界をここでレビューする。
+  include: auth.Browser, auth.App, auth.Google, auth.AppCallback
+  exclude: seq:opt, seq:catch
+
+  participants: Browser as u, App as a, Google as g, AppCallback as cb
+
+  seq {
+    u ->> a : "ログイン要求"
+    a ->> g : "OAuth 認可リクエスト"
+    g ->> u : "ログイン画面"
+    u ->> g : "認可同意"
+    g ->> cb : "code + state redirect"
+    critical "token-exchange" {
+      cb ->> g : "POST /token"
+      g -.> cb : "access_token"
+    }
+    cb ->> a : "session cookie 発行"
+    a ->> u : "ログイン成功"
+  }
+}
+
+// ER 図でも selector の利点: 監査カラム(createdAt / updatedAt / at) と
+// private 属性を隠した overview と、全属性が見える detailed。
+view er-overview @er_diagram {
+  include: auth.User, auth.Session, auth.LoginAttempt
+  exclude: visibility:private, **.createdAt, **.updatedAt, **.expiresAt, **.at
+}
+
+view er-detailed @er_diagram {
+  include: auth.User, auth.Session, auth.LoginAttempt
+}

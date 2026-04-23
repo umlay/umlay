@@ -1,0 +1,783 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "beta",
+  "namespaces": {
+    "auth": {
+      "models": {
+        "User": {
+          "_id": "1b1adbf1e3ac",
+          "name": "User",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "e092a6a1eeb4",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "68c14134d7e9",
+              "name": "email",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": true,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "54907660c15b",
+              "name": "passwordHash",
+              "type": "string",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "a57f654b733f",
+              "name": "displayName",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "1b9daa3dced5",
+              "name": "createdAt",
+              "type": "DateTime",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "5e8141f69a14",
+              "name": "updatedAt",
+              "type": "DateTime",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "サービスを利用する人間。email 一意",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "Session": {
+          "_id": "f376dd27d47c",
+          "name": "Session",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "e092a6a1eeb4",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "c61c996756e4",
+              "name": "userId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "ref": {
+                "target": "User.id",
+                "onDelete": "CASCADE"
+              },
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "dc17d63936a3",
+              "name": "token",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": true,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "1983a8c00475",
+              "name": "status",
+              "type": "SessionStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "ACTIVE",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "26991034ca3d",
+              "name": "expiresAt",
+              "type": "DateTime",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "1b9daa3dced5",
+              "name": "createdAt",
+              "type": "DateTime",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "認証済みユーザのセッション",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "LoginAttempt": {
+          "_id": "28c9f0a50759",
+          "name": "LoginAttempt",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "e092a6a1eeb4",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "68c14134d7e9",
+              "name": "email",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "892cc0c2c541",
+              "name": "ipAddress",
+              "type": "string",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "6e026ffb173e",
+              "name": "userAgent",
+              "type": "string",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "965d776379e3",
+              "name": "success",
+              "type": "bool",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "11e53c03e2e2",
+              "name": "at",
+              "type": "DateTime",
+              "visibility": "private",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "監査用ログ。失敗回数で BOT 検知",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "Browser": {
+          "_id": "42bb79a8078e",
+          "name": "Browser",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "e092a6a1eeb4",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "ユーザのブラウザ",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "App": {
+          "_id": "2b35990fc91b",
+          "name": "App",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "e092a6a1eeb4",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "本アプリ (frontend + API)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "Google": {
+          "_id": "6acc5301f3b1",
+          "name": "Google",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "e092a6a1eeb4",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Google OAuth 2.0 サーバ",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        },
+        "AppCallback": {
+          "_id": "49cb3166bd9a",
+          "name": "AppCallback",
+          "stereotype": "service",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "e092a6a1eeb4",
+              "name": "id",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "App 側 /oauth/callback エンドポイント",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "SessionStatus": {
+          "_id": "8116eeb1d512",
+          "name": "SessionStatus",
+          "values": [
+            "ACTIVE",
+            "EXPIRED",
+            "REVOKED"
+          ]
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": []
+    }
+  },
+  "views": [
+    {
+      "id": "exec",
+      "kind": "sequence_diagram",
+      "include": [
+        "auth.Browser",
+        "auth.App",
+        "auth.Google",
+        "auth.AppCallback"
+      ],
+      "exclude": [
+        "seq:critical",
+        "seq:opt",
+        "seq:alt"
+      ],
+      "docs": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "u",
+          "label": "Browser",
+          "ref": "Browser"
+        },
+        {
+          "id": "a",
+          "label": "App",
+          "ref": "App"
+        },
+        {
+          "id": "g",
+          "label": "Google",
+          "ref": "Google"
+        },
+        {
+          "id": "cb",
+          "label": "AppCallback",
+          "ref": "AppCallback"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "u",
+            "label": "Browser",
+            "ref": "Browser"
+          },
+          {
+            "id": "a",
+            "label": "App",
+            "ref": "App"
+          },
+          {
+            "id": "g",
+            "label": "Google",
+            "ref": "Google"
+          },
+          {
+            "id": "cb",
+            "label": "AppCallback",
+            "ref": "AppCallback"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "message",
+            "from": "u",
+            "to": "a",
+            "arrow": "sync",
+            "label": "ログイン要求"
+          },
+          {
+            "kind": "message",
+            "from": "a",
+            "to": "g",
+            "arrow": "sync",
+            "label": "OAuth 認可リクエスト"
+          },
+          {
+            "kind": "message",
+            "from": "g",
+            "to": "u",
+            "arrow": "sync",
+            "label": "ログイン画面"
+          },
+          {
+            "kind": "message",
+            "from": "u",
+            "to": "g",
+            "arrow": "sync",
+            "label": "認可同意"
+          },
+          {
+            "kind": "message",
+            "from": "g",
+            "to": "cb",
+            "arrow": "sync",
+            "label": "code + state redirect"
+          },
+          {
+            "kind": "message",
+            "from": "cb",
+            "to": "a",
+            "arrow": "sync",
+            "label": "token 交換完了"
+          },
+          {
+            "kind": "message",
+            "from": "a",
+            "to": "u",
+            "arrow": "sync",
+            "label": "ログイン成功"
+          }
+        ]
+      },
+      "ganttTasks": []
+    },
+    {
+      "id": "senior-review",
+      "kind": "sequence_diagram",
+      "include": [
+        "auth.Browser",
+        "auth.App",
+        "auth.Google",
+        "auth.AppCallback"
+      ],
+      "exclude": [
+        "seq:opt",
+        "seq:catch"
+      ],
+      "docs": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "u",
+          "label": "Browser",
+          "ref": "Browser"
+        },
+        {
+          "id": "a",
+          "label": "App",
+          "ref": "App"
+        },
+        {
+          "id": "g",
+          "label": "Google",
+          "ref": "Google"
+        },
+        {
+          "id": "cb",
+          "label": "AppCallback",
+          "ref": "AppCallback"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "u",
+            "label": "Browser",
+            "ref": "Browser"
+          },
+          {
+            "id": "a",
+            "label": "App",
+            "ref": "App"
+          },
+          {
+            "id": "g",
+            "label": "Google",
+            "ref": "Google"
+          },
+          {
+            "id": "cb",
+            "label": "AppCallback",
+            "ref": "AppCallback"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "message",
+            "from": "u",
+            "to": "a",
+            "arrow": "sync",
+            "label": "ログイン要求"
+          },
+          {
+            "kind": "message",
+            "from": "a",
+            "to": "g",
+            "arrow": "sync",
+            "label": "OAuth 認可リクエスト"
+          },
+          {
+            "kind": "message",
+            "from": "g",
+            "to": "u",
+            "arrow": "sync",
+            "label": "ログイン画面"
+          },
+          {
+            "kind": "message",
+            "from": "u",
+            "to": "g",
+            "arrow": "sync",
+            "label": "認可同意"
+          },
+          {
+            "kind": "message",
+            "from": "g",
+            "to": "cb",
+            "arrow": "sync",
+            "label": "code + state redirect"
+          },
+          {
+            "kind": "critical",
+            "label": "token-exchange",
+            "body": [
+              {
+                "kind": "message",
+                "from": "cb",
+                "to": "g",
+                "arrow": "sync",
+                "label": "POST /token"
+              },
+              {
+                "kind": "message",
+                "from": "g",
+                "to": "cb",
+                "arrow": "reply",
+                "label": "access_token"
+              }
+            ]
+          },
+          {
+            "kind": "message",
+            "from": "cb",
+            "to": "a",
+            "arrow": "sync",
+            "label": "session cookie 発行"
+          },
+          {
+            "kind": "message",
+            "from": "a",
+            "to": "u",
+            "arrow": "sync",
+            "label": "ログイン成功"
+          }
+        ]
+      },
+      "ganttTasks": []
+    },
+    {
+      "id": "er-overview",
+      "kind": "er_diagram",
+      "include": [
+        "auth.User",
+        "auth.Session",
+        "auth.LoginAttempt"
+      ],
+      "exclude": [
+        "visibility:private",
+        "**.createdAt",
+        "**.updatedAt",
+        "**.expiresAt",
+        "**.at"
+      ],
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "er-detailed",
+      "kind": "er_diagram",
+      "include": [
+        "auth.User",
+        "auth.Session",
+        "auth.LoginAttempt"
+      ],
+      "exclude": [],
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    }
+  ]
+}

@@ -244,6 +244,18 @@ samples:
       doc-trailer: true
       rfcs: [0031]
 
+  - path: ../../../examples/samples/google-oauth-login.umlay
+    summary: "Google OAuth 2.0 domain + 4 views demonstrating RFC 0032 selectors (exec / senior-review / er-overview / er-detailed)"
+    min-spec-version: 1.2.0
+    features:
+      declarations: [namespace, enum, model, view]
+      stereotypes: [aggregate_root, entity, service]
+      annotations: [id, intent, ref, unique]
+      view-kinds: [er_diagram, sequence_diagram]
+      view-selectors: true
+      rfcs: [0032]
+      modes: [beta]
+
 # 機能マーカー (grep で DSL 中に存在確認するための文字列)
 # index.ts が各 feature に対応する正規表現を持つ
 feature-markers:

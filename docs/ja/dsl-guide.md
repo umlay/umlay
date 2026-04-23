@@ -387,6 +387,51 @@ view er @er_diagram { include: auth.* }
 
 参照実装: `parseLiterate(source)` API (`@umlay/core`)。
 
+## 10.6. View Selector (RFC 0032 / spec 1.2+)
+
+`include:` と `exclude:` にはモデル名だけでなく **selector** を書ける。
+同じ IR から「誰向けか」の粒度を view 単位で切り分けたい時に使う。
+
+### Phase 1 で使える selector
+
+| Selector | 意味 | 例 |
+| --- | --- | --- |
+| `ns.Model` / `ns.*` / `**` | モデル名パターン(従来) | `auth.*` |
+| `**.attr` | 属性名マッチ(全モデル) | `**.passwordHash` |
+| `visibility:X` | 属性の可視性 (`public` / `private` / `protected` / `package`) | `visibility:private` |
+| `seq:X` | sequence body の種別 (`critical` / `opt` / `alt` / `par` / `loop` / `catch` / `finally` / `retry` / `timeout` / `message` / `await`) | `seq:critical` |
+
+### 使用例
+
+```umlay
+view exec @sequence_diagram {
+  include: auth.Browser, auth.App, auth.Google, auth.AppCallback
+  exclude: seq:critical, seq:opt, seq:alt   // ハッピーパスだけ
+}
+
+view senior-review @sequence_diagram {
+  include: auth.*
+  exclude: seq:catch, seq:finally            // 設計レビュー用
+}
+
+view er-overview @er_diagram {
+  include: auth.*
+  exclude: visibility:private, **.createdAt, **.updatedAt
+}
+```
+
+### セマンティクス
+
+- 空の `include` は「全モデル」(従来通り)
+- `exclude` は `include` の subset に対して適用される
+- `seq:critical` を exclude すると `critical` ブロック全体が消える
+- `seq:catch` / `seq:finally` / `seq:retry` / `seq:timeout` は残っている
+  `critical` ブロックの対応する**サブプロパティ**だけを落とす
+- 未知の selector kind (`foo:bar`) は warning (L034) を出すが parse は通る
+
+実例: `packages/examples/samples/google-oauth-login.umlay` に 4 view の
+ショーケース。
+
 ## 11. 参考
 
 - [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) — 文法の正本
