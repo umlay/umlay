@@ -138,6 +138,24 @@ model Order {
 - [ ] Docs / skills updated
 - [ ] IR version bump decision made (2.0 if breaking)
 
+## Incremental refactors enabled by spec 1.3
+
+- **De-duplicate audit columns**: `createdAt / updatedAt` scattered
+  across 10+ models → introduce `trait Timestamped { … }` and
+  `@@include(Timestamped)` everywhere. Class A (additive) — parse-time
+  expansion keeps codegen / lint agnostic.
+- **Introduce an abstract base**: `Shape / Circle / Square` → add
+  `model Shape @entity @abstract` (or a `protocol Shape`) and connect
+  concretes via `@@implements(Shape)`. Realization arrows visualise
+  the hierarchy.
+- **Rename to reclaim reserved words**: if you previously renamed
+  `limit` / `from` / `type` attributes to avoid the lexer, you can
+  restore the original name with `` +`limit` int! `` and keep the DB
+  column as-is via `@codegenName("pageLimit")`.
+- **Tame a sprawling view**: split one giant ER into several focused
+  views and stitch them into a single canvas with `view overview
+  @composite { @@include(...) }`.
+
 ## References
 
 - Grammar: [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md)

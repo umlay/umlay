@@ -208,6 +208,54 @@ Strict モードでは、未指定の `visibility` / `multiplicity` / `intent` �
 
 正本: [`packages/spec/src/index.ts`](../../packages/spec/src/index.ts) の `RESERVED_KEYWORDS`。
 
+**予約語の回避 (spec 1.3+)**: `` +`limit` int! `` のように **backtick で囲む**と予約語や SQL 予約名 (limit / from / order / type / …) を属性名として使える。IR 上は backtick を剥がした通常名で格納される。
+
+## spec 1.3 の追加機能
+
+DSL を書き起こす際に考慮に入れられる新機能:
+
+### RFC 0033 — `@composite` view
+複数の view を 1 枚に合成:
+```umlay
+view overview @composite @intent("Architect 向け 1 枚俯瞰") {
+  @@include(auth-er)
+  @@include(login-flow)
+  layout: direction(LR)
+}
+```
+
+### RFC 0034 — `trait` (属性 mixin)
+`createdAt / updatedAt / deletedAt / tenantId` 等の反復属性を切り出し、parse 時に model に展開。
+```umlay
+trait Timestamped { -createdAt Timestamp!  -updatedAt Timestamp! }
+trait Audited { @@include(Timestamped)  -createdBy UUID! }
+
+model Order @aggregate_root {
+  @@include(Audited)      // createdAt / updatedAt / createdBy が展開される
+  +id UUID! @id
+}
+```
+
+### UML 修飾子 (クラス図描画向け)
+| アノテーション | 効果 |
+| --- | --- |
+| `@abstract` (model) | 名前斜体 + 破線枠 |
+| `@static` (attribute) | 属性行に下線 |
+| `@readonly` (attribute) | `{readonly}` チップ |
+| `@derived` (attribute) | `/name` プレフィックス |
+
+### `type X = Y` alias 形
+```umlay
+type ISBN = string
+type UserId = UUID
+```
+
+### `~` package 可視性
+`+ / - / #` に加えて `~name` で package 可視性。
+
+### ER 図の layout 自動最適化
+テーブル数 ≥ 8 で direction 未指定時、自動的に `DOWN` + aspectRatio 1.6 に切替。明示 `layout: direction(LR)` で上書き可。
+
 ## チェックリスト (完成前に確認)
 
 - [ ] `namespace` がファイル先頭に 1 つある

@@ -138,6 +138,15 @@ model Order {
 - [ ] docs / skill に変更点を追記した
 - [ ] IR バージョンバンプの要否を確認した (破壊的なら 2.0)
 
+## spec 1.3 を使った漸進的リファクタリング
+
+反復する属性や抽象化を導入する際の推奨パターン:
+
+- **監査カラムの重複を除去**: `createdAt / updatedAt` が 10+ モデルに散っている場合 → `trait Timestamped { … }` を新設し、`@@include(Timestamped)` を各 model に入れる (ClassA=追加操作、後方互換)。IR 上は parse 時展開なので、codegen / lint 側は何も変わらない。
+- **`abstract` 基底の導入**: 既存 `Shape / Circle / Square` を抽象化したい → `model Shape @entity @abstract` + `protocol Shape` を併設し、具体型は `@@implements(Shape)` で繋ぐ。realization 矢印で描画される。
+- **予約語衝突の事後対応**: 既存コードで `limit` 等の SQL 予約語を型エラー迂回のため別名 (e.g. `pageLimit`) にしていた場合、backtick ident で元名に戻せる (`` +`limit` int! ``)。`@codegenName("pageLimit")` で DB 側は従来互換にしつつ DSL 側の命名を自然に。
+- **View の肥大化に対処**: 1 つの巨大 ER を複数 view に分割 + `@composite` で俯瞰用 1 枚を合成 — 各リーフ view は通常通り個別エクスポート可能。
+
 ## 参照
 
 - 文法: [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md)

@@ -340,6 +340,19 @@ export interface Order {
 - [ ] `@service` / `@interface` は DDL 生成からスキップされる
 - [ ] 出力順序が IR の走査順に一致する (決定論)
 
+## spec 1.3 の追加機能 → target へのマッピング
+
+| IR フィールド | Prisma | SQL DDL | TypeScript | 備考 |
+| --- | --- | --- | --- | --- |
+| `model.abstract: true` | `@@ignore` モデル扱い or 親 interface のみ生成 | 物理テーブル生成スキップ | `abstract class` | 具体実装は `@@implements` 経由 |
+| `attribute.static: true` | 非対応 (レコード列ではない) | 非対応 | `static readonly` プロパティ | クラス定数扱い |
+| `attribute.readonly: true` | Prisma 生成型で `readonly` 修飾 | DB 制約としては非対応、app 層で enforce | `readonly` プロパティ | 初期化後書換不可 |
+| `attribute.derived: true` | column 生成スキップ | column 生成スキップ | getter 生成 (`get name() { … }`) | 派生値は DB に持たない |
+| `model.typeParams` (generic) | 型パラで Prisma 出力不可 — codegen target で skip | 同上 | `class User<T>` / `interface Repository<T>` | |
+| `namespace.traits` | trait 展開後の model のみ出力 (trait 自体は出さない) | 同上 | 同上 | parse 時展開なので downstream 透過 |
+| `view.composition` | codegen 対象外 (描画専用) | 対象外 | 対象外 | |
+| backtick 識別子 (`limit` 等) | `@map("limit")` で quoted column に | `"limit"` (PG) / `` `limit` `` (MySQL) | そのままプロパティ名 | 方言別 quoting が必要 |
+
 ## 参照
 
 - IR: [`packages/spec/src/ir.schema.json`](../../packages/spec/src/ir.schema.json)

@@ -208,6 +208,59 @@ Accepted by the parser but **reserved and unavailable as identifiers**:
 
 Canonical source: `RESERVED_KEYWORDS` in [`packages/spec/src/index.ts`](../../packages/spec/src/index.ts).
 
+**Escape hatch (spec 1.3+)**: wrap a field name in backticks to use any
+reserved word or SQL keyword as an attribute: `` +`limit` int! ``. The
+IR stores the unwrapped form, so `@ref(Model.limit)` resolves the same.
+
+## spec 1.3 additions
+
+Features to keep in mind while authoring:
+
+### RFC 0033 — `@composite` view
+Stitch multiple views onto one canvas:
+```umlay
+view overview @composite @intent("architect one-pager") {
+  @@include(auth-er)
+  @@include(login-flow)
+  layout: direction(LR)
+}
+```
+
+### RFC 0034 — `trait` (attribute mixin)
+Factor out repeating audit / tenancy / soft-delete columns; expanded at
+parse time into each model.
+```umlay
+trait Timestamped { -createdAt Timestamp!  -updatedAt Timestamp! }
+trait Audited { @@include(Timestamped)  -createdBy UUID! }
+
+model Order @aggregate_root {
+  @@include(Audited)      // createdAt / updatedAt / createdBy flow in
+  +id UUID! @id
+}
+```
+
+### UML modifiers (class-diagram rendering)
+| Annotation | Effect |
+| --- | --- |
+| `@abstract` (model) | italic name + dashed border |
+| `@static` (attribute) | underlined row |
+| `@readonly` (attribute) | `{readonly}` chip |
+| `@derived` (attribute) | `/name` prefix |
+
+### `type X = Y` alias form
+```umlay
+type ISBN = string
+type UserId = UUID
+```
+
+### `~` package visibility
+Joins `+ / - / #`. `~name` marks an attribute/method as package-private.
+
+### ER layout auto-optimization
+When `layout.direction` is unset and tables ≥ 8, the ER renderer
+auto-switches to `DOWN` with `aspectRatio: 1.6`. Explicit `direction(LR)`
+in the view still wins.
+
 ## Checklist (before finalizing)
 
 - [ ] Exactly one `namespace` declared at file top

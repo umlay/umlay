@@ -49,6 +49,9 @@ All rules used for review are normatively defined in [`packages/spec/src/lint-ru
 ### Layer 2: Lint violations — see `lint-rules.md` L section
 
 - L001–L016 (as of spec 0.8.0); Draft / Strict severities defined in the catalog
+- L034–L036 — view selectors (RFC 0032, spec 1.2+)
+- **L037–L039** — `@composite` views (spec 1.3+): `@@include` in a non-composite / unresolved view id / include cycle
+- **L040–L045** — traits (spec 1.3+): model ↔ trait name collision / two traits contributing the same attr / include cycle / unused trait / tiny trait / unknown trait
 - `@@mode(strict)` will promote all rules to error at spec 1.0 (see migration-guide-1.0.md)
 
 ### Layer 3: Design risks — see `lint-rules.md` R section
@@ -169,6 +172,25 @@ Review checklist:
 - Are L034 (unknown selector) or L035 (zero-match exclude) firing?
 
 See RFC 0032 and [dsl-guide §10.6](../../docs/en/dsl-guide.md).
+
+## spec 1.3 review checkpoints
+
+- **trait (RFC 0034)**: flag traits with < 2 attrs (L044, possible
+  over-abstraction). Unused traits → L043 warn. Include cycles → L042
+  error.
+- **@composite (RFC 0033)**: watch for L038 (unresolved child view id
+  — usually a typo). Composite-of-composite loops → L039 error.
+- **@abstract models**: ensure at least one concrete model realises
+  the abstract one; otherwise the hierarchy has no users.
+- **@static / @readonly / @derived**: when codegen is in play
+  (Prisma / SQL / TS), call out how each modifier should map — e.g.
+  `@derived` typically becomes a getter, not a DB column.
+- **Backtick idents** (`` `limit` ``): reviewer must confirm whether
+  the downstream DBMS quotes identifiers (MySQL backticks, Postgres
+  double quotes). Codegen dialect matters.
+- **ER layout**: with ≥ 8 tables and no `layout.direction`, the
+  renderer auto-switches to DOWN. If the reviewer expects LR (wide
+  screen docs), add `layout: direction(LR)` explicitly.
 
 ## References
 

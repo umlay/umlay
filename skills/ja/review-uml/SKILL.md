@@ -49,7 +49,10 @@ references:
 ### Layer 2: Lint 違反 — 正本: `lint-rules.md` L 節
 
 - L001〜L016 (spec 0.8.0 時点)。Draft / Strict の重大度は正本参照
-- `@@mode(strict)` で全ルール error 化する予定 (Phase 1.0 で固定、migration-guide-1.0.md)
+- L034〜L036 — view selector 関連 (RFC 0032, spec 1.2+)
+- **L037〜L039** — `@composite` view 関連 (spec 1.3+): 非 composite での `@@include` / 未解決 view id / composite の循環参照
+- **L040〜L045** — trait 関連 (spec 1.3+): model/trait 属性衝突 / 2 trait の二重提供 / 循環 include / 未使用 trait / 過抽象 trait / 未定義 trait
+- `@@mode(strict)` で全ルール error 化 (Phase 1.0 で固定、migration-guide-1.0.md)
 
 ### Layer 3: 設計リスク — 正本: `lint-rules.md` R 節
 
@@ -169,6 +172,15 @@ view er-overview @er_diagram {
 - L034 (未知 selector 混入)、L035 (マッチ 0 件) が出ていないか
 
 詳細は RFC 0032 と [dsl-guide §10.6](../../docs/ja/dsl-guide.md)。
+
+## spec 1.3 のレビュー観点
+
+- **trait (RFC 0034)**: 2 属性未満の trait は過抽象の可能性 (L044 info)。使われていない trait は L043 warn として出る。循環 include は L042 error
+- **@composite (RFC 0033)**: 子 view id の typo が L038 warning で出るか確認。循環 (composite A → B → A) は L039 error
+- **@abstract**: 実装されない抽象モデル (protocol 未経由で孤立) は設計意図を確認
+- **@static / @readonly / @derived**: UML 修飾子が使われている場合、codegen target (Prisma / SQL / TS) への期待挙動をレビュアーが明示する
+- **backtick ident**: `` `limit` `` 等が使われた場合、codegen 側 (Prisma / SQL) で quoted identifier として出すか否か、DBMS 方言に依存するので明示
+- **ER 図のレイアウト**: テーブル数 ≥ 8 で direction 未指定は自動 DOWN — 必要なら `layout: direction(LR)` で上書き
 
 ## 参照
 

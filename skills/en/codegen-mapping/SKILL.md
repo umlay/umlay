@@ -340,6 +340,19 @@ export interface Order {
 - [ ] `@service` / `@interface` skipped from DDL output
 - [ ] Output order matches IR traversal (deterministic)
 
+## spec 1.3 additions → target mapping
+
+| IR field | Prisma | SQL DDL | TypeScript | Notes |
+| --- | --- | --- | --- | --- |
+| `model.abstract: true` | Emit interface / parent type only; mark with `@@ignore` if a row table would otherwise be produced | Skip physical table | `abstract class` | Concrete bindings flow via `@@implements` |
+| `attribute.static: true` | N/A (not a row column) | N/A | `static readonly` property | Class constant |
+| `attribute.readonly: true` | `readonly` in the generated model type | No DB-level readonly (enforce in app layer) | `readonly` property | No post-construction writes |
+| `attribute.derived: true` | Skip column | Skip column | Emit a getter (`get name() { … }`) | Computed value, not persisted |
+| `model.typeParams` (generic) | Skip (no DB mapping) | Skip | `class User<T>` / `interface Repository<T>` | |
+| `namespace.traits` | Emit only the expanded models (traits themselves are ignored) | Same | Same | Parse-time expansion is transparent to downstream |
+| `view.composition` | Not applicable (rendering only) | N/A | N/A | |
+| Backtick idents (`` `limit` ``) | `@map("limit")` to quote the column | `"limit"` (PG) / `` `limit` `` (MySQL) | Use as-is for the property name | Dialect-specific quoting |
+
 ## References
 
 - IR: [`packages/spec/src/ir.schema.json`](../../packages/spec/src/ir.schema.json)
