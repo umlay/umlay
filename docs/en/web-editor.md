@@ -46,6 +46,42 @@ The editor compresses the current DSL into a URL fragment (up to ~8 KB
 encoded). Paste a shared link, get the same IR — no login, no server
 state.
 
+## Diff review mode (spec 1.3+)
+
+The **Diff tab** in the right sidebar compares the current IR against
+the last snapshot persisted in IndexedDB.
+
+### 1. Risk classification header
+Every delta is auto-bucketed by `@umlay/core` field-level rules:
+
+| Level | Examples | Color |
+| --- | --- | --- |
+| 🔴 **Breaking** | model removed, attribute removed, nullable→non-null, PK change | red |
+| 🟡 **Caution** | stereotype changed, renamed, `onDelete: CASCADE` added, UNIQUE added, type change, non-null attribute added without a default | amber |
+| 🟢 **Safe** | model added, nullable attribute added, default-backed add, doc-only edits | green |
+
+### 2. Per-model delta chips
+Each model row shows a `+2 / −1 / ~3 / ⇄1` attribute-delta badge and a
+red/amber left border corresponding to the worst risk touching it.
+
+### 3. SVG hotspot overlay
+On the ER / class canvases, **added models get a thick green outline
+with a halo, modified models get an amber outline**. Reviewers see
+which boxes need attention without leaving the diagram view.
+
+### 4. Impact report
+Each changed model's `<details>` block lists who references it:
+- **ref** — attributes with `@ref(Model.id)` or a relation pointing here
+- **view** — views that `include:` this model (exact or `ns.*` / `**`)
+- **participant** — sequence-diagram participants resolving to this model
+
+### 5. AI narrative summary (BYOK)
+A "🤖 Summarize" button calls the configured LLM with the DSL + risk
+counts + model-change list and returns three sentences:
+(1) what changed, (2) why it matters (risk level), (3) the top
+follow-up the reviewer should check. Works with Anthropic / OpenAI
+/ **WebGPU** providers.
+
 ## Export
 
 | Format | Notes |

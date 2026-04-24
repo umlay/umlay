@@ -173,6 +173,27 @@ Review checklist:
 
 See RFC 0032 and [dsl-guide §10.6](../../docs/en/dsl-guide.md).
 
+## Recommended workflow — use the Web Diff tab
+
+Avoid reviewing a bare DSL text diff; prefer the **structural IR diff**:
+
+1. Open the right sidebar → **Diff tab**
+2. Read the **Risk header**: 🔴 Breaking ≥ 1 ⇒ prioritise those first
+3. Scan the ER / Class canvas for **hotspot overlays** (green = added,
+   amber = modified) to see where changes cluster
+4. For each changed model, expand its **Impact `<details>`** block:
+   - Many `ref` hits = high ripple effect
+   - `view: **` hits = documentation-level review needed
+   - `participant` hits = verify the sequence flows still make sense
+5. Click **🤖 AI 3-line summary** for fast intent grasp; use it as the
+   seed for the PR description
+
+Fall back to Layers 1–4 when there's no baseline snapshot (first-time
+review, fresh branch).
+
+Canonical source of the risk rules: `@umlay/core`'s `buildIrDiffSummary`
+plus `apps/web/lib/ir-diff-risk.ts`.
+
 ## spec 1.3 review checkpoints
 
 - **trait (RFC 0034)**: flag traits with < 2 attrs (L044, possible

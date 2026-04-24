@@ -39,6 +39,34 @@ Web エディタは **添付ファイルパネル** 経由で外部 sample を�
 現在の DSL を URL フラグメントに圧縮 (~8 KB 以下)。共有リンクを開くと
 同じ IR が再構築される。ログイン不要、サーバ状態なし。
 
+## Diff レビュー機能 (spec 1.3+)
+
+右サイドバーの **Diff タブ** は、最後に保存した IR スナップショット (IndexedDB) と現在の IR を構造比較します。
+
+### 1. Risk 分類ヘッダ
+各変更を `@umlay/core` の field-level ルールで 3 バケットに自動分類:
+
+| レベル | 代表例 | 色 |
+| --- | --- | --- |
+| 🔴 **Breaking** | model 削除、attribute 削除、nullable→not-null 昇格、PK 変更 | 赤 |
+| 🟡 **Caution** | stereotype 変更、rename、`onDelete: CASCADE` 追加、UNIQUE 追加、型変更、非 null 属性追加 (default なし) | 橙 |
+| 🟢 **Safe** | model 追加、nullable 属性追加、default 付き追加、ドキュメント更新 | 緑 |
+
+### 2. モデルごと delta chip
+各モデル行に `+2 / −1 / ~3 / ⇄1` のバッジで attribute 変更を要約 + Breaking/Caution の左側ボーダー。
+
+### 3. SVG ホットスポットオーバーレイ
+**ER / Class 図のキャンバス上**で、追加 model は緑の太枠 + ハロー、変更 model は橙の太枠で強調。どの model が diff の対象か、**描画されたグラフを見ただけで把握**できる。
+
+### 4. 影響範囲レポート
+各変更モデルの `<details>` 内に「誰がこの model を参照しているか」を列挙:
+- **ref**: `@ref(Model.id)` / 関連で参照している attribute
+- **view**: `include: ns.Model` / `ns.*` / `**` でこの model を含む view
+- **participant**: sequence 図の participant として使われている
+
+### 5. AI 3 行要約 (BYOK)
+🤖 ボタンで LLM を呼び、「何が変わったか / なぜ重要か / レビュアーが次に見るべき点」の 3 文サマリを生成。Anthropic / OpenAI / **WebGPU** いずれのプロバイダでも動作。
+
 ## エクスポート
 
 | 形式 | 備考 |

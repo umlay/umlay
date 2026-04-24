@@ -173,6 +173,23 @@ view er-overview @er_diagram {
 
 詳細は RFC 0032 と [dsl-guide §10.6](../../docs/ja/dsl-guide.md)。
 
+## Web エディタの Diff タブを使う (推奨ワークフロー)
+
+単発 DSL を目視レビューせず、**構造 diff ベースのレビュー手順**を推奨:
+
+1. 右サイドバー → **Diff タブ**を開く
+2. **Risk ヘッダ**を見る: 🔴 Breaking が 1+ あるなら最優先で検証
+3. ER / Class 図の**ホットスポットオーバーレイ** (緑=追加 / 橙=変更) で差分の分布を把握
+4. 各モデルの**影響範囲 `<details>`** を展開して referrers を確認:
+   - `ref` が多い model の変更 = 波及大
+   - `view: **` で全 view に出る model の変更 = ドキュメント観点も必要
+   - `participant` がある model = sequence 図のフロー確認必須
+5. **🤖 AI 3 行要約**で変更意図を高速把握 → PR description 素案に
+
+構造 diff が使えない場合 (初回レビュー / snapshot なし) は従来通り Layer 1〜4 の手順で。
+
+Risk 分類ルールの正本: `@umlay/core` の `buildIrDiffSummary` + apps/web `ir-diff-risk.ts`。
+
 ## spec 1.3 のレビュー観点
 
 - **trait (RFC 0034)**: 2 属性未満の trait は過抽象の可能性 (L044 info)。使われていない trait は L043 warn として出る。循環 include は L042 error
