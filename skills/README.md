@@ -13,6 +13,8 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 | `evolve-schema` | 既存 DSL を後方互換性を守って拡張 | Safely evolve existing DSL |
 | `codegen-mapping` | IR を Prisma / SQL / TS へ決定論的に変換 | Deterministic IR → Prisma / SQL / TS mapping |
 | `reverse-engineer` | 既存 Prisma / SQL / TS を `.umlay` に取り込み | Import existing Prisma / SQL / TS into `.umlay` (round-trip inverse of codegen-mapping) |
+| `change-impact-diff` | 概念先行の change-impact レポート (行 diff ではない) | Concept-first change-impact report (Purpose / Touch-points / Do-not-miss, not a line diff) |
+| `plan-from-diff` | impact から順序付き実装計画 (phase / PR / rollback) | Turn an impact report into a sequenced plan (phases, PR bundles, rollback points) |
 
 ## 日本語 🇯🇵
 
@@ -23,6 +25,8 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 | evolve-schema | [`ja/evolve-schema/SKILL.md`](./ja/evolve-schema/SKILL.md) |
 | codegen-mapping | [`ja/codegen-mapping/SKILL.md`](./ja/codegen-mapping/SKILL.md) |
 | reverse-engineer | [`ja/reverse-engineer/SKILL.md`](./ja/reverse-engineer/SKILL.md) |
+| change-impact-diff | [`ja/change-impact-diff/SKILL.md`](./ja/change-impact-diff/SKILL.md) |
+| plan-from-diff | [`ja/plan-from-diff/SKILL.md`](./ja/plan-from-diff/SKILL.md) |
 
 ## English 🇬🇧
 
@@ -33,6 +37,8 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 | evolve-schema | [`en/evolve-schema/SKILL.md`](./en/evolve-schema/SKILL.md) |
 | codegen-mapping | [`en/codegen-mapping/SKILL.md`](./en/codegen-mapping/SKILL.md) |
 | reverse-engineer | [`en/reverse-engineer/SKILL.md`](./en/reverse-engineer/SKILL.md) |
+| change-impact-diff | [`en/change-impact-diff/SKILL.md`](./en/change-impact-diff/SKILL.md) |
+| plan-from-diff | [`en/plan-from-diff/SKILL.md`](./en/plan-from-diff/SKILL.md) |
 
 ## Claude Code への導入 / Install into Claude Code
 
@@ -51,6 +57,8 @@ ln -s ~/src/umlay/umlay-oss/skills/ja/review-uml       ~/.claude/skills/review-u
 ln -s ~/src/umlay/umlay-oss/skills/ja/evolve-schema    ~/.claude/skills/evolve-schema
 ln -s ~/src/umlay/umlay-oss/skills/ja/codegen-mapping  ~/.claude/skills/codegen-mapping
 ln -s ~/src/umlay/umlay-oss/skills/ja/reverse-engineer ~/.claude/skills/reverse-engineer
+ln -s ~/src/umlay/umlay-oss/skills/ja/change-impact-diff ~/.claude/skills/change-impact-diff
+ln -s ~/src/umlay/umlay-oss/skills/ja/plan-from-diff     ~/.claude/skills/plan-from-diff
 
 # 英語版を使いたい場合は `ja/` を `en/` に読み替え
 ```
@@ -91,6 +99,8 @@ ln -s ../../vendor/umlay/umlay-oss/skills/ja/write-uml .claude/skills/write-uml
 /evolve-schema User モデルに role: UserRole を追加したい
 /codegen-mapping この IR を Prisma schema に変換して
 /reverse-engineer 既存の schema.prisma を取り込んで .umlay にして
+/change-impact-diff 前回保存と現在の IR を比較して影響を教えて
+/plan-from-diff この impact レポートから PR に分けた計画を出して
 ```
 
 また、各 skill の frontmatter `description` を見て Claude が文脈から**自動起動**します (例: 「この DSL をレビューして」だけで `review-uml` が選ばれる)。自動起動を止めたい場合は skill の frontmatter に `disable-model-invocation: true` を追加。
