@@ -309,7 +309,34 @@ model Task @entity
 }
 
 // ============================================================================
-// Views — 全 10 kind
+// UML modifier + backtick identifier demo (spec 1.3)
+// ============================================================================
+
+model Shape @entity @abstract @intent("抽象基底 — 具体型は circle / square 等") {
+  +id       UUID!   @id
+  +kind     string! @maxLength(32)
+  +area     decimal! @derived                         // /area — DB には保持しない
+}
+
+model Circle @entity @intent("Shape の具体化") {
+  @@implements(Repository<Circle>)
+  +id       UUID!    @id
+  +kind     string!  @default("circle") @readonly     // {readonly} チップ
+  +radius   decimal!
+  +VERSION  string!  @static @default("2.0")          // 下線 — クラス定数
+}
+
+// SQL 予約語・Umlay 予約キーワードを backtick でエスケープ
+model Page @entity @intent("ページネーション応答 (SQL 予約語を属性名に)") {
+  +id         UUID!   @id
+  +`limit`    int!    @default(100)
+  +`from`     string! @intent("カーソル開始位置")
+  +`type`     string! @intent("list | detail")
+  +createdAt  Timestamp! @auto
+}
+
+// ============================================================================
+// Views — 全 11 kind (composite 含む)
 // ============================================================================
 
 // (1) ER

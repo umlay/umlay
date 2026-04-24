@@ -1408,6 +1408,271 @@
           "codegen": [],
           "implements": [],
           "includedTraits": []
+        },
+        "Shape": {
+          "_id": "ed00c68f01d7",
+          "name": "Shape",
+          "stereotype": "entity",
+          "abstract": true,
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "bc871abefa43",
+              "name": "kind",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "37acfec4a509",
+              "name": "area",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "derived": true
+            }
+          ],
+          "relations": [],
+          "methods": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "抽象基底 — 具体型は circle / square 等",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
+        },
+        "Circle": {
+          "_id": "48e2f264ca92",
+          "name": "Circle",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "bc871abefa43",
+              "name": "kind",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "circle",
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "readonly": true
+            },
+            {
+              "_id": "95848452b4bc",
+              "name": "radius",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "d842350b1df2",
+              "name": "VERSION",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "2.0",
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "static": true
+            }
+          ],
+          "relations": [],
+          "methods": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "Shape の具体化",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [
+            {
+              "ref": "Repository",
+              "args": [
+                "Circle"
+              ]
+            }
+          ],
+          "includedTraits": []
+        },
+        "Page": {
+          "_id": "374a49786563",
+          "name": "Page",
+          "stereotype": "entity",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "48e0b6ed6d05",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "22028ece70d6",
+              "name": "limit",
+              "type": "int",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "default": "100",
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            },
+            {
+              "_id": "d22778c495dd",
+              "name": "from",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "intent": "カーソル開始位置",
+                "invariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            },
+            {
+              "_id": "a12b9f6e83ab",
+              "name": "type",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "intent": "list | detail",
+                "invariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
+            },
+            {
+              "_id": "fb5ef328f9d6",
+              "name": "createdAt",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": []
+            }
+          ],
+          "relations": [],
+          "methods": [],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "ページネーション応答 (SQL 予約語を属性名に)",
+            "invariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": []
         }
       },
       "types": {

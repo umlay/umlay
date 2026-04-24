@@ -1,6 +1,6 @@
 # Umlay Lint Rule Catalog
 
-**spec version**: 1.1.0 (RFC 0031 Markdown integration を取り込み)
+**spec version**: 1.3.0 (RFC 0033 composite views + RFC 0034 traits + UML modifiers)
 
 `skills/*/review-uml.md` から Lint ルールを一元化した正本カタログ。全実装は本カタログに記載されたルール ID / 重大度 / mandatory 区分を尊重する。
 
