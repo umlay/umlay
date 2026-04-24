@@ -515,6 +515,57 @@ Composites-of-composites are allowed (recursive). Layout defaults to `TB`.
 
 Real example: `packages/examples/samples/composite-overview.umlay`.
 
+## 10.9 UML class-diagram modifiers (spec 1.3+)
+
+UML-friendly flags for class / attribute rendering.
+
+| Annotation | DSL | Rendered as |
+| --- | --- | --- |
+| `@abstract` | `model Shape @entity @abstract { ... }` | italic class name + dashed border |
+| `@static` | `+total int! @static` | underlined attribute row |
+| `@readonly` | `+createdAt Timestamp! @readonly` | `{readonly}` chip |
+| `@derived` | `+discount decimal! @derived` | `/discount` prefix (UML derived-attribute) |
+
+Protocol generic type params appear in the class-diagram header
+verbatim: `Repository<T>`, `Collection<out R, in W>`.
+
+## 10.10 Backtick identifiers — reserved-keyword escape (spec 1.3+)
+
+Wrap a field name in backticks to use a SQL reserved word (`limit`,
+`from`, `order`, …) or an Umlay-reserved keyword (`type`, `cache`,
+`stream`, …) as an attribute name. The IR stores the unwrapped form,
+so `@ref(X.limit)` resolves exactly like any other identifier.
+
+```umlay
+namespace api
+
+model Page @entity @intent("paginated list response") {
+  +id         UUID!   @id
+  +`limit`    int!    @default(100)
+  +`from`     string! @intent("cursor start")
+  +`type`     string! @intent("list | detail")
+  +createdAt  Timestamp! @auto
+}
+```
+
+- Non-reserved names are NOT re-wrapped on `irToDsl` round-trip.
+- Reserved names (per a built-in SQL + Umlay hot zone) are automatically
+  backticked when the formatter emits them.
+
+## 10.11 View layout direction (spec 1.3+)
+
+`view.layout: direction(...)` accepts `LR` (default) / `TB` / `RL` / `BT`.
+For ER views specifically, ≥ 8 tables **auto-switches to DOWN** with
+`elk.aspectRatio: 1.6` so a 30-table schema doesn't become a single
+unreadable horizontal strip. Explicit `direction(...)` always wins.
+
+```umlay
+view wide-er @er_diagram {
+  include: shop.*
+  layout: direction(TB), spacing(40)
+}
+```
+
 ## 11. References
 
 - [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) — canonical grammar

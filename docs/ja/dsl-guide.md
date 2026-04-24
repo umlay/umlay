@@ -521,6 +521,55 @@ view overview @composite @intent("Architect 向け 1 枚俯瞰") {
 
 実例: `packages/examples/samples/composite-overview.umlay`。
 
+## 10.9. UML class-diagram modifier (spec 1.3+)
+
+クラス図の UML 慣習に合わせた属性 / クラスの修飾子。
+
+| アノテーション | DSL | 描画 |
+| --- | --- | --- |
+| `@abstract` | `model Shape @entity @abstract { ... }` | クラス名が**斜体** + 枠が破線 |
+| `@static` | `+total int! @static` | 属性行に**下線** |
+| `@readonly` | `+createdAt Timestamp! @readonly` | 行末に `{readonly}` チップ |
+| `@derived` | `+discount decimal! @derived` | 行頭が `/discount` (UML 派生属性) |
+
+`protocol<T>` の generic type params はクラス図ヘッダにそのまま表示
+(`Repository<T>` / `Collection<out R, in W>`)。
+
+## 10.10. Backtick 識別子 — 予約語エスケープ (spec 1.3+)
+
+SQL 予約語 (`limit` / `from` / `order` / …) や Umlay の予約キーワード
+(`type` / `cache` / `stream` / …) を属性名に使いたいときは backtick で
+囲む。IR 上は backtick を剥がした通常の名前として格納される。
+
+```umlay
+namespace api
+
+model Page @entity @intent("ページネーション付きリスト応答") {
+  +id         UUID!   @id
+  +`limit`    int!    @default(100)
+  +`from`     string!  @intent("カーソルの開始位置")
+  +`type`     string!  @intent("list | detail")
+  +createdAt  Timestamp! @auto
+}
+```
+
+- `@ref(Page.limit)` は通常名として解決 — backtick は書き側の装飾のみ
+- `irToDsl` (format-on-save) は予約語を自動 backtick 化、通常名はそのまま
+- `reserved-keywords.umlay` のコメントアウト例は backtick があれば実用可
+
+## 10.11. View layout direction (spec 1.3+)
+
+`view.layout: direction(...)` に `LR` (既定) / `TB` (縦) / `RL` / `BT` を指定。
+ER 図では **テーブル数 ≥ 8 で自動的に DOWN** に切り替わる (`aspectRatio: 1.6`
+で縦横バランスされるので横スクロールの悲劇を回避)。明示指定があれば常にそれを尊重。
+
+```umlay
+view wide-er @er_diagram {
+  include: shop.*
+  layout: direction(TB), spacing(40)
+}
+```
+
 ## 11. 参考
 
 - [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) — 文法の正本

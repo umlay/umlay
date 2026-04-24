@@ -81,6 +81,8 @@ Stereotype      ::= "@entity" | "@aggregate_root" | "@value_object"
                   | "@service" | "@interface"
 ModelMember     ::= Field | Relation | FnMethod | BlockDirective
 ModelAnnotation ::= IntentAnnotation | CodegenNameAnnotation | ImplementsAnnotation
+                  | AbstractAnnotation                    (* spec 1.3.0 *)
+AbstractAnnotation ::= "@abstract"                         (* italic name + dashed border *)
 
 (* RFC 0006: protocol / union / module *)
 
@@ -118,9 +120,13 @@ ImplementsAnnotation ::= "@@implements" "(" QualifiedName
 
 (* ─────────────── 属性 (field) ─────────────── *)
 
-Field           ::= Visibility? Identifier Type Nullability FieldAnnotation*
+Field           ::= Visibility? FieldName Type Nullability FieldAnnotation*
 (* spec 1.3.0: `~` = package visibility joined the existing three sigils. *)
 Visibility      ::= "+" | "-" | "#" | "~"
+(* spec 1.3.0: backtick-quoted identifier escape for reserved keywords
+ * (e.g. `limit`, `from`, `type`). Strips backticks in IR. *)
+FieldName       ::= Identifier | BacktickIdentifier
+BacktickIdentifier ::= "`" (Char - "`" - Newline)+ "`"
 Nullability     ::= "!" | "?" | "??"
 Type            ::= QualifiedName
 QualifiedName   ::= Identifier ("." Identifier)*
@@ -138,6 +144,13 @@ FieldAnnotation ::= IdAnnotation
                   | InvAnnotation
                   | AutoAnnotation
                   | DeprecatedAnnotation
+                  | StaticAnnotation                     (* RFC 0035, spec 1.3.0 *)
+                  | ReadonlyAnnotation                   (* RFC 0035, spec 1.3.0 *)
+                  | DerivedAnnotation                    (* RFC 0035, spec 1.3.0 *)
+
+StaticAnnotation     ::= "@static"                       (* UML class-diagram: underlined *)
+ReadonlyAnnotation   ::= "@readonly"                     (* UML: `{readonly}` chip *)
+DerivedAnnotation    ::= "@derived"                      (* UML: `/name` prefix *)
 
 IdAnnotation         ::= "@id"
 RefAnnotation        ::= "@ref" "(" RefTarget ("," RefOption)* ")"
