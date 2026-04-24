@@ -36,7 +36,7 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
 | 機能 | 使い方 |
 | --- | --- |
 | シンタックスハイライト | `.umlay` + `.umlay.md`(Markdown 注入) |
-| 診断(54 ルール) | Problems パネル + 波線 |
+| 診断(69 ルール) | Problems パネル + 波線 |
 | Hover | モデルの intent / `@@doc` / `@@md` / 属性一覧 |
 | Go to Definition | F12 で `@ref(X.y)` / dotted 型 / view-id に跳躍 |
 | 補完 | `@stereotype` / `@@directive` / view kind / `@ref` / `include:` |
@@ -61,6 +61,11 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
   に反映。ワークスペース外のファイルは読まない
 - **エクスプローラ右クリック → Open Preview to the Side** / **エディタ右クリック同**
 - **Umlay: Export Diagram as Image…** — SVG / PNG (2×)、個別 view / All views
+- **Review mode (diff strip + hotspot overlay) — 0.4.8+**:
+  - `workspaceState` に baseline IR を自動保存 (クリーンパース時のみ更新)
+  - ER / Class 図の変更モデルを緑 (added) / 橙 (modified) でハイライト
+  - タブ直下に `baseline 差分: + ModelA  ~ ModelB  − ModelC` ストリップ、名前クリックで宣言へジャンプ
+  - **Umlay: Reset Diff Baseline (start a fresh review)** コマンドで基準を張り直し
 
 ## 設定
 
@@ -99,8 +104,8 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
    │
    ├─ @umlay/core (parse → IR)
    │    │
-   │    ├─ @umlay/lint           (54 ルール)
-   │    ├─ @umlay/renderer-er    (10 view kind → SVG)
+   │    ├─ @umlay/lint           (69 ルール)
+   │    ├─ @umlay/renderer-er    (11 view kind → SVG)
    │    └─ @umlay/webview-ui     (React 共通コンポーネント — apps/web と共有)
    │
    └─ @umlay/lsp  (診断 / hover / goto / 補完 / symbols / format / rename / code actions)

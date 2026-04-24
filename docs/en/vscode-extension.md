@@ -36,7 +36,7 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
 | Feature | Surface |
 | --- | --- |
 | Syntax highlighting | `.umlay` + `.umlay.md` (Markdown injection) |
-| Diagnostics (54 rules) | Problems panel, inline squiggles |
+| Diagnostics (69 rules) | Problems panel, inline squiggles |
 | Hover | model intent / `@@doc` / `@@md` / attribute table |
 | Go to Definition | F12 from `@ref(X.y)` / dotted types / view-id |
 | Completion | `@stereotype`, `@@directive`, view kinds, `@ref`, `include:` |
@@ -66,6 +66,16 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
   menu offers the same.
 - **Umlay: Export Diagram as Image…** — SVG or PNG (`@2x` with white
   background), per-view or All views to a folder.
+- **Review mode (diff strip + hotspot overlay) — 0.4.8+**:
+  - Baseline IR is auto-persisted to `workspaceState` (only on clean
+    parses).
+  - Changed models on ER / Class canvases are highlighted green (added)
+    / amber (modified).
+  - A `baseline diff: + ModelA  ~ ModelB  − ModelC` strip appears
+    directly under the view tabs — click a name to jump to its
+    declaration.
+  - **Umlay: Reset Diff Baseline (start a fresh review)** command
+    re-anchors the baseline.
 
 ## Settings
 
@@ -96,6 +106,9 @@ Users can override per-workspace or per-user as usual.
 - `Umlay: Open Preview`
 - `Umlay: Open Preview to the Side`
 - `Umlay: Configure LLM API key` — interactive provider / model / key setup
+- `Umlay: Reset Diff Baseline (start a fresh review)` — clears the
+  stored baseline IR so the next clean parse becomes the new reference
+  point for review mode
 
 ## Architecture
 
@@ -104,8 +117,8 @@ Users can override per-workspace or per-user as usual.
    │
    ├─ @umlay/core (parse → IR)
    │    │
-   │    ├─ @umlay/lint           (54 rules)
-   │    ├─ @umlay/renderer-er    (10 view kinds → SVG)
+   │    ├─ @umlay/lint           (69 rules)
+   │    ├─ @umlay/renderer-er    (11 view kinds → SVG)
    │    └─ @umlay/webview-ui     (React components — shared with apps/web)
    │
    └─ @umlay/lsp  (diagnostics / hover / goto / completion / symbols / format / rename / code actions)

@@ -2,7 +2,7 @@
 
 > **UML, relaid.** — レガシーUMLを現代のNode/クラウド/AI時代に置き直すモデリングツール。
 
-[![spec](https://img.shields.io/badge/spec-1.1.0-3b82f6)](./packages/spec)
+[![spec](https://img.shields.io/badge/spec-1.3.0-3b82f6)](./packages/spec)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-green.svg)](./LICENSE)
 [![License: MIT (examples)](https://img.shields.io/badge/examples-MIT-blue.svg)](./packages/examples)
 [![GitHub Repo stars](https://img.shields.io/github/stars/umlay/umlay?style=social)](https://github.com/umlay/umlay)
