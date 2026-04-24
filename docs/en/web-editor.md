@@ -75,12 +75,41 @@ Each changed model's `<details>` block lists who references it:
 - **view** — views that `include:` this model (exact or `ns.*` / `**`)
 - **participant** — sequence-diagram participants resolving to this model
 
-### 5. AI narrative summary (BYOK)
-A "🤖 Summarize" button calls the configured LLM with the DSL + risk
-counts + model-change list and returns three sentences:
-(1) what changed, (2) why it matters (risk level), (3) the top
-follow-up the reviewer should check. Works with Anthropic / OpenAI
-/ **WebGPU** providers.
+### 5. AI change-impact summary (BYOK)
+The 🤖 button calls the configured LLM with a **fixed 3-sentence
+structure**:
+- **Purpose** — the business / product outcome this change enables
+- **Touch points** — downstream components that should pick up the
+  change (specific model / view names from the impact list)
+- **Do-not-miss** — the single thing a naive diff read would miss
+
+Intent + impact are injected into the prompt, so the response is
+actual change-impact analysis rather than a paraphrase of the diff.
+Works with Anthropic / OpenAI / **WebGPU** providers.
+
+### 6. Before/After comparison
+The 🔀 button lazy-imports the ER renderer and draws the baseline
+IR and current IR side-by-side for a visual sanity check.
+
+### 7. Reviewer checklist (rule-based, no AI)
+`apps/web/lib/review-checklist.ts` joins Risk × Impact and emits
+actionable TODOs:
+- attribute removed → "Plan DB column-drop migration" + "Update N
+  referrer sites"
+- CASCADE added → "Verify cascading delete is intended"
+- stereotype changed → "Document the semantic shift (ADR)"
+- view includes changed model → "Re-review N views"
+- participant resolves to changed model → "Re-validate sequence flow"
+
+### 8. Namespace grouping
+Changed models cluster under a namespace header
+(`auth (3 changes) / billing (1 change)`) for feature-level
+orientation before drilling into rows.
+
+### 9. Model intent surfacing
+Each changed model shows its `rationale.intent` italicised directly
+under the name — the *purpose* is anchored before every attribute
+diff, so reviewers never lose sight of why the model exists.
 
 ## Export
 

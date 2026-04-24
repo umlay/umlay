@@ -175,24 +175,55 @@ See RFC 0032 and [dsl-guide §10.6](../../docs/en/dsl-guide.md).
 
 ## Recommended workflow — use the Web Diff tab
 
-Avoid reviewing a bare DSL text diff; prefer the **structural IR diff**:
+Umlay's Diff tab is designed for **change-impact analysis**, not
+git-style line diffs. It surfaces *what a change is for / where it
+ripples / what a naive read would miss* instead of "here's every field
+that moved".
 
-1. Open the right sidebar → **Diff tab**
-2. Read the **Risk header**: 🔴 Breaking ≥ 1 ⇒ prioritise those first
-3. Scan the ER / Class canvas for **hotspot overlays** (green = added,
-   amber = modified) to see where changes cluster
-4. For each changed model, expand its **Impact `<details>`** block:
-   - Many `ref` hits = high ripple effect
-   - `view: **` hits = documentation-level review needed
-   - `participant` hits = verify the sequence flows still make sense
-5. Click **🤖 AI 3-line summary** for fast intent grasp; use it as the
-   seed for the PR description
+### Reading order (top-down)
 
-Fall back to Layers 1–4 when there's no baseline snapshot (first-time
-review, fresh branch).
+1. **Risk header** (🔴 Breaking / 🟡 Caution / 🟢 Safe) — 1+ breaking ⇒
+   prioritise verifying those
+2. **🤖 AI change-impact summary** button → three fixed sentences:
+   - ① **Purpose**: the business/product outcome this change enables
+   - ② **Touch points**: downstream components that must pick it up
+     (specific model / view names)
+   - ③ **Do-not-miss**: the single thing a naive diff read misses
+     (migration, cascading delete, semantic shift, etc.)
+3. **🔀 Before/After comparison** button → side-by-side ER of the
+   baseline IR vs. the current IR, purely for visual sanity check
+4. **Reviewer checklist** (☑ rule-based, no AI): auto-generated
+   actionable TODOs from the Risk × Impact crossjoin:
+   - attribute removed → "Plan DB column-drop migration" + "Update
+     N referrer sites"
+   - CASCADE added → "Verify cascading delete is intended"
+   - stereotype changed → "Document the semantic shift (ADR)"
+   - view include hit → "Re-review N views"
+   - sequence participant hit → "Re-validate sequence flow"
+5. **Namespace grouping**: `auth (3 changes) / billing (1 change)`
+   headers let you see feature-level impact before drilling in
+6. Each changed model row shows its **intent** ("User is the
+   authenticated end-user…") italicised — purpose is anchored before
+   the attribute diffs
+7. **Impact `<details>`** per model, broken into `ref` / `view` /
+   `participant` hits
+8. **Hotspot overlay** on the ER / Class canvas (green = added,
+   amber = modified) shows visual distribution
 
-Canonical source of the risk rules: `@umlay/core`'s `buildIrDiffSummary`
-plus `apps/web/lib/ir-diff-risk.ts`.
+### Severity matrix
+
+| Color | Criterion | Examples |
+| --- | --- | --- |
+| 🔴 Breaking | Existing data / callers break | model removed, attribute removed, nullable→not-null, PK change |
+| 🟡 Caution | Needs a migration plan or an ADR | stereotype change, rename, `onDelete: CASCADE` added, UNIQUE added, type change, non-null attribute added w/o default |
+| 🟢 Safe | Additive-only, backward-compatible | model added, nullable attr added, default-backed add, doc-only |
+
+### When the structural diff isn't available
+
+First-time review / no snapshot yet → fall back to Layers 1–4.
+
+Canonical: `@umlay/core`'s `buildIrDiffSummary` + `apps/web/lib/ir-diff-risk.ts`.
+Checklist generation rules: `apps/web/lib/review-checklist.ts`.
 
 ## spec 1.3 review checkpoints
 

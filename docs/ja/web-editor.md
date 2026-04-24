@@ -64,8 +64,30 @@ Web エディタは **添付ファイルパネル** 経由で外部 sample を�
 - **view**: `include: ns.Model` / `ns.*` / `**` でこの model を含む view
 - **participant**: sequence 図の participant として使われている
 
-### 5. AI 3 行要約 (BYOK)
-🤖 ボタンで LLM を呼び、「何が変わったか / なぜ重要か / レビュアーが次に見るべき点」の 3 文サマリを生成。Anthropic / OpenAI / **WebGPU** いずれのプロバイダでも動作。
+### 5. AI change-impact 要約 (BYOK)
+🤖 ボタンで LLM を呼び、**固定 3 文構造**で生成:
+- **Purpose** — この変更が実現しようとしているビジネス / プロダクト成果
+- **Touch points** — 変更を拾うべき下流コンポーネント (具体的な model / view 名を引用)
+- **Do-not-miss** — 素朴な diff 読みでは見落とす 1 点
+
+Intent + Impact を prompt に注入しているので、paraphrasing ではなく **change-impact 分析**が返る。Anthropic / OpenAI / **WebGPU** いずれのプロバイダでも動作。
+
+### 6. Before/After 比較
+🔀 ボタンで前 IR と現 IR の ER 図を並置描画。構造変化を視覚的に sanity check できる (ELK レイアウトで 2 回レンダリング)。
+
+### 7. Reviewer checklist (rule-based)
+Risk × Impact のクロスから actionable TODO を自動生成。AI 不使用:
+- 属性削除 → 「column-drop migration を計画」「N 箇所の referrer 修正」
+- CASCADE 追加 → 「削除の連鎖が意図通りか検証」
+- stereotype 変更 → 「ADR 記載を推奨」
+- view include 一致 → 「N 件の view を再確認」
+- participant 一致 → 「sequence 図のフロー再検証」
+
+### 8. Namespace grouping
+変更モデルを namespace 単位 (`auth / billing / ...`) で集約。機能単位で PR 全体の影響を俯瞰できる。
+
+### 9. Model intent surfacing
+各変更モデル名の下に `rationale.intent` を斜体で表示。「User は認証主体…」等の目的が attribute diff の前に読める。
 
 ## エクスポート
 

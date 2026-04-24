@@ -175,20 +175,41 @@ view er-overview @er_diagram {
 
 ## Web エディタの Diff タブを使う (推奨ワークフロー)
 
-単発 DSL を目視レビューせず、**構造 diff ベースのレビュー手順**を推奨:
+Umlay の Diff タブは **git-style な行差分ではなく、change-impact 分析**に振り切った設計。単なる「何が変わったか」ではなく「**何を目的とした変更か / どこに波及するか / 何を絶対に見逃してはいけないか**」を出す:
 
-1. 右サイドバー → **Diff タブ**を開く
-2. **Risk ヘッダ**を見る: 🔴 Breaking が 1+ あるなら最優先で検証
-3. ER / Class 図の**ホットスポットオーバーレイ** (緑=追加 / 橙=変更) で差分の分布を把握
-4. 各モデルの**影響範囲 `<details>`** を展開して referrers を確認:
-   - `ref` が多い model の変更 = 波及大
-   - `view: **` で全 view に出る model の変更 = ドキュメント観点も必要
-   - `participant` がある model = sequence 図のフロー確認必須
-5. **🤖 AI 3 行要約**で変更意図を高速把握 → PR description 素案に
+### 読み順 (上から順に)
 
-構造 diff が使えない場合 (初回レビュー / snapshot なし) は従来通り Layer 1〜4 の手順で。
+1. **Risk ヘッダ** (🔴 Breaking / 🟡 Caution / 🟢 Safe): 1+ Breaking があれば最優先で検証
+2. **🤖 AI change-impact 要約**ボタン → 3 文を生成 (固定構造):
+   - ① **Purpose**: この変更が実現しようとしているビジネス / プロダクト成果
+   - ② **Touch points**: 変更を拾うべき下流コンポーネント (具体的な model / view 名)
+   - ③ **Do-not-miss**: 素朴な diff 読みでは見落とす 1 点 (migration / CASCADE / stereotype 変化 等)
+3. **🔀 Before/After 比較**ボタン → 前 IR と現 IR の ER 図を並置、視覚的 sanity check
+4. **Reviewer checklist** (☑ rule-based、AI 不要): Risk × Impact から自動生成された actionable TODO:
+   - 属性削除 → 「column-drop migration を計画」「N 箇所の referrer 修正」
+   - CASCADE 追加 → 「削除の連鎖が意図通りか検証」
+   - stereotype 変更 → 「ADR 記載を推奨」
+   - view include 一致 → 「N 件の view を再確認」
+   - sequence participant 一致 → 「sequence 図のフロー再検証」
+5. **namespace 単位のグルーピング**: `auth (3 changes) / billing (1 change)` で機能単位に俯瞰
+6. 各モデル行には **intent (「User は認証主体…」)** が斜体で出る — *何のための model か* を見失わない
+7. **影響範囲 `<details>`**: `ref` / `view` / `participant` 別に列挙 → どこに波及するか明示
+8. ER / Class 図上の **hotspot overlay** (緑=追加 / 橙=変更) で分布を視覚化
 
-Risk 分類ルールの正本: `@umlay/core` の `buildIrDiffSummary` + apps/web `ir-diff-risk.ts`。
+### レビュアーの判断基準
+
+| 色 | 基準 | 例 |
+| --- | --- | --- |
+| 🔴 Breaking | 既存データ / 既存 caller が壊れる | model 削除 / attribute 削除 / nullable→not-null 昇格 / PK 変更 |
+| 🟡 Caution | migration 手順 or ADR が必要 | stereotype 変更 / rename / CASCADE 追加 / UNIQUE 追加 / 型変更 / 非 null 追加 (default なし) |
+| 🟢 Safe | 追加のみ、後方互換 | model 追加 / nullable 追加 / default 付き追加 / doc のみ変更 |
+
+### 構造 diff が使えない場合
+
+初回レビュー / snapshot 未保存のときは従来通り Layer 1〜4 の手順で。
+
+Risk 分類の正本: `@umlay/core` の `buildIrDiffSummary` + `apps/web/lib/ir-diff-risk.ts`。
+Checklist 生成ルール: `apps/web/lib/review-checklist.ts`。
 
 ## spec 1.3 のレビュー観点
 
