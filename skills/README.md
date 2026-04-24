@@ -12,6 +12,7 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 | `review-uml` | DSL / IR を spec + lint + リスクでレビュー | Review DSL / IR across spec / lint / risk layers |
 | `evolve-schema` | 既存 DSL を後方互換性を守って拡張 | Safely evolve existing DSL |
 | `codegen-mapping` | IR を Prisma / SQL / TS へ決定論的に変換 | Deterministic IR → Prisma / SQL / TS mapping |
+| `reverse-engineer` | 既存 Prisma / SQL / TS を `.umlay` に取り込み | Import existing Prisma / SQL / TS into `.umlay` (round-trip inverse of codegen-mapping) |
 
 ## 日本語 🇯🇵
 
@@ -21,6 +22,7 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 | review-uml | [`ja/review-uml/SKILL.md`](./ja/review-uml/SKILL.md) |
 | evolve-schema | [`ja/evolve-schema/SKILL.md`](./ja/evolve-schema/SKILL.md) |
 | codegen-mapping | [`ja/codegen-mapping/SKILL.md`](./ja/codegen-mapping/SKILL.md) |
+| reverse-engineer | [`ja/reverse-engineer/SKILL.md`](./ja/reverse-engineer/SKILL.md) |
 
 ## English 🇬🇧
 
@@ -30,6 +32,7 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 | review-uml | [`en/review-uml/SKILL.md`](./en/review-uml/SKILL.md) |
 | evolve-schema | [`en/evolve-schema/SKILL.md`](./en/evolve-schema/SKILL.md) |
 | codegen-mapping | [`en/codegen-mapping/SKILL.md`](./en/codegen-mapping/SKILL.md) |
+| reverse-engineer | [`en/reverse-engineer/SKILL.md`](./en/reverse-engineer/SKILL.md) |
 
 ## Claude Code への導入 / Install into Claude Code
 
@@ -47,6 +50,7 @@ ln -s ~/src/umlay/umlay-oss/skills/ja/write-uml        ~/.claude/skills/write-um
 ln -s ~/src/umlay/umlay-oss/skills/ja/review-uml       ~/.claude/skills/review-uml
 ln -s ~/src/umlay/umlay-oss/skills/ja/evolve-schema    ~/.claude/skills/evolve-schema
 ln -s ~/src/umlay/umlay-oss/skills/ja/codegen-mapping  ~/.claude/skills/codegen-mapping
+ln -s ~/src/umlay/umlay-oss/skills/ja/reverse-engineer ~/.claude/skills/reverse-engineer
 
 # 英語版を使いたい場合は `ja/` を `en/` に読み替え
 ```
@@ -86,6 +90,7 @@ ln -s ../../vendor/umlay/umlay-oss/skills/ja/write-uml .claude/skills/write-uml
 /review-uml 現在開いている .umlay ファイルをレビューして
 /evolve-schema User モデルに role: UserRole を追加したい
 /codegen-mapping この IR を Prisma schema に変換して
+/reverse-engineer 既存の schema.prisma を取り込んで .umlay にして
 ```
 
 また、各 skill の frontmatter `description` を見て Claude が文脈から**自動起動**します (例: 「この DSL をレビューして」だけで `review-uml` が選ばれる)。自動起動を止めたい場合は skill の frontmatter に `disable-model-invocation: true` を追加。
