@@ -8,6 +8,7 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 
 | Skill | 目的 (JA) | Purpose (EN) |
 | --- | --- | --- |
+| `umlay` | どの skill から始めるか 2 質問で振り分ける相談窓口 | Consultation entry-point — 2 questions to pick the right skill |
 | `write-uml` | 要件から `.umlay` を書き起こす | Produce a spec-conformant `.umlay` from requirements |
 | `review-uml` | DSL / IR を spec + lint + リスクでレビュー | Review DSL / IR across spec / lint / risk layers |
 | `evolve-schema` | 既存 DSL を後方互換性を守って拡張 | Safely evolve existing DSL |
@@ -20,6 +21,7 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 
 | Skill | リンク |
 | --- | --- |
+| umlay | [`ja/umlay/SKILL.md`](./ja/umlay/SKILL.md) |
 | write-uml | [`ja/write-uml/SKILL.md`](./ja/write-uml/SKILL.md) |
 | review-uml | [`ja/review-uml/SKILL.md`](./ja/review-uml/SKILL.md) |
 | evolve-schema | [`ja/evolve-schema/SKILL.md`](./ja/evolve-schema/SKILL.md) |
@@ -32,6 +34,7 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 
 | Skill | Link |
 | --- | --- |
+| umlay | [`en/umlay/SKILL.md`](./en/umlay/SKILL.md) |
 | write-uml | [`en/write-uml/SKILL.md`](./en/write-uml/SKILL.md) |
 | review-uml | [`en/review-uml/SKILL.md`](./en/review-uml/SKILL.md) |
 | evolve-schema | [`en/evolve-schema/SKILL.md`](./en/evolve-schema/SKILL.md) |
@@ -52,6 +55,7 @@ git clone https://github.com/umlay/umlay.git ~/src/umlay
 
 # 2. skill フォルダごとシンボリックリンク
 mkdir -p ~/.claude/skills
+ln -s ~/src/umlay/umlay-oss/skills/ja/umlay            ~/.claude/skills/umlay
 ln -s ~/src/umlay/umlay-oss/skills/ja/write-uml        ~/.claude/skills/write-uml
 ln -s ~/src/umlay/umlay-oss/skills/ja/review-uml       ~/.claude/skills/review-uml
 ln -s ~/src/umlay/umlay-oss/skills/ja/evolve-schema    ~/.claude/skills/evolve-schema
@@ -94,6 +98,7 @@ ln -s ../../vendor/umlay/umlay-oss/skills/ja/write-uml .claude/skills/write-uml
 インストール後、Claude Code のチャットで `/<skill-name>` として明示呼び出しが可能:
 
 ```
+/umlay 「Umlay 試したい。何から始めれば?」     # 迷ったとき
 /write-uml 「ECサイトで商品・カート・注文を扱う最小 DSL を書いて」
 /review-uml 現在開いている .umlay ファイルをレビューして
 /evolve-schema User モデルに role: UserRole を追加したい
