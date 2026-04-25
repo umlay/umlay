@@ -163,7 +163,8 @@
             "PENDING",
             "IN_PROGRESS",
             "DONE"
-          ]
+          ],
+          "docs": []
         }
       },
       "reservedBlocks": [],

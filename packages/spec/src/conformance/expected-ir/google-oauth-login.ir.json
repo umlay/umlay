@@ -495,7 +495,8 @@
             "ACTIVE",
             "EXPIRED",
             "REVOKED"
-          ]
+          ],
+          "docs": []
         }
       },
       "reservedBlocks": [],

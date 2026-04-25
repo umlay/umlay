@@ -472,7 +472,8 @@
             "ADMIN",
             "MEMBER",
             "GUEST"
-          ]
+          ],
+          "docs": []
         },
         "InviteStatus": {
           "_id": "484ccaec6a4f",
@@ -482,7 +483,8 @@
             "ACCEPTED",
             "REVOKED",
             "EXPIRED"
-          ]
+          ],
+          "docs": []
         }
       },
       "reservedBlocks": [],

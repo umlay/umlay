@@ -372,7 +372,8 @@
               "reviews": [],
               "fixes": []
             }
-          ]
+          ],
+          "docs": []
         }
       },
       "enums": {
@@ -384,7 +385,8 @@
             "CONFIRMED",
             "SHIPPED",
             "CANCELLED"
-          ]
+          ],
+          "docs": []
         }
       },
       "reservedBlocks": [],

@@ -300,7 +300,8 @@
             "IN_PROGRESS",
             "DONE",
             "BLOCKED"
-          ]
+          ],
+          "docs": []
         }
       },
       "reservedBlocks": [],

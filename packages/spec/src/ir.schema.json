@@ -738,6 +738,13 @@
                     },
                     "aliasOf": {
                       "type": "string"
+                    },
+                    "docs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "default": []
                     }
                   },
                   "required": [
@@ -763,6 +770,13 @@
                       "items": {
                         "type": "string"
                       }
+                    },
+                    "docs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "default": []
                     }
                   },
                   "required": [

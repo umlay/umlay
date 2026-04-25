@@ -552,6 +552,36 @@ model Page @entity @intent("paginated list response") {
 - Reserved names (per a built-in SQL + Umlay hot zone) are automatically
   backticked when the formatter emits them.
 
+## 10.10b Attaching docs to enum / type / model (RFC 0035 / spec 1.4+)
+
+Place `@@doc(...)` / `@@md(...)` immediately before a top-level declaration
+to attach its content to that declaration's **`docs: string[]`**. Spec 1.3
+only allowed top-level directives **before the first declaration**;
+inserting one between declarations failed with `Expecting EOF`. Spec 1.4
+lifts that restriction.
+
+```umlay
+namespace messaging
+
+@@doc("Order lifecycle as observed by the warehouse system.")
+enum OrderStatus { DRAFT, CONFIRMED, SHIPPED, CANCELLED }
+
+@@md("""
+Internal: settlement states are not user-visible.
+Used by the finance pipeline only.
+""")
+enum SettlementStatus { PENDING, RECONCILED, WRITTEN_OFF }
+```
+
+- `EnumSchema`, `TypeDefSchema`, and `ModelSchema` all carry
+  `docs: string[]`.
+- `@@mode(...)` / `@@theme(...)` remain file-level regardless of position.
+- A trailing `@@doc` not followed by a declaration is silently dropped
+  (a future L046 lint may surface this).
+
+Use this for **per-enum documentation** in namespaces with many enums
+(typical reverse-engineer / write-uml output).
+
 ## 10.11 View layout direction (spec 1.3+)
 
 `view.layout: direction(...)` accepts `LR` (default) / `TB` / `RL` / `BT`.

@@ -1,7 +1,7 @@
 ---
 name: reverse-engineer
-version: 1.3.0
-spec: "@umlay/spec >= 1.3.0 (DSL 1.0 / IR 1.0)"
+version: 1.4.0
+spec: "@umlay/spec >= 1.4.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer, architect]
 summary: 既存の Prisma schema / SQL DDL / TypeScript 型から spec 準拠の Umlay DSL (.umlay) を起こす
 description: 既存コードベース — Prisma `schema.prisma`、PostgreSQL / MySQL DDL、TypeScript の `class` / `interface` / `type` — を Umlay に取り込みたいときに起動する。取り込み後は review-uml / evolve-schema / codegen-mapping にそのまま渡せる形にする。
@@ -168,6 +168,26 @@ enum OrderStatus {
 ```
 
 値の並びは入力順を保つ。
+
+### enum / type に doc を attach (spec 1.4+ / RFC 0035)
+
+ソース側に enum / type のコメントがあるなら、**その宣言の直前**に `@@doc(...)` /
+`@@md(...)` を出す。spec 1.4 以降は宣言と宣言の間に挟めるようになり、IR では
+`enum.docs[]` / `type.docs[]` に attach される (Model と同じ仕組み)。
+
+```umlay
+@@doc("TS source: lowercase of enum value")
+enum OrderStatus { DRAFT, CONFIRMED, SHIPPED, CANCELLED }
+
+@@md("""
+内部用の決済 enum。
+ユーザーには露出しない。
+""")
+enum SettlementStatus { PENDING, RECONCILED, WRITTEN_OFF }
+```
+
+⚠️ spec 1.3 以前の parser に渡す予定があるなら、enum 直前の `@@doc` は
+`// コメント` に降格すること (1.3 では `Expecting EOF` で reject される)。
 
 ## 7. Stereotype 推定 (ヒューリスティック — 安全側 + フラグ)
 

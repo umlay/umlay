@@ -1367,7 +1367,8 @@
               "reviews": [],
               "fixes": []
             }
-          ]
+          ],
+          "docs": []
         },
         "JwtSessionToken": {
           "_id": "8cbd0ce99043",
@@ -1413,7 +1414,8 @@
               "reviews": [],
               "fixes": []
             }
-          ]
+          ],
+          "docs": []
         }
       },
       "enums": {
@@ -1422,7 +1424,8 @@
           "name": "AuthProvider",
           "values": [
             "GOOGLE"
-          ]
+          ],
+          "docs": []
         },
         "SessionStatus": {
           "_id": "470f66304e5d",
@@ -1431,7 +1434,8 @@
             "ACTIVE",
             "EXPIRED",
             "REVOKED"
-          ]
+          ],
+          "docs": []
         }
       },
       "reservedBlocks": [],

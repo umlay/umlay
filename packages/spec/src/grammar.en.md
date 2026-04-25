@@ -279,6 +279,38 @@ model Order @aggregate_root {
 Captured into `model.docs[]` (string array). The first `@@doc` also fills
 `model.doc` (string) for backward compat.
 
+### Top-level `@@doc` / `@@md` preceding a declaration (RFC 0035, spec 1.4.0)
+
+Placing `@@doc(...)` / `@@md(...)` immediately before a top-level
+declaration (`enum`, `type`, or `model`) attaches the directive content
+to that declaration's **`docs[]`**. Spec 1.3 only allowed top-level
+directives **before the first declaration**; inserting one between
+declarations produced `Expecting EOF`. Spec 1.4 lifts that restriction.
+
+```prisma
+namespace messaging
+
+@@doc("Order lifecycle as observed by the warehouse system.")
+enum OrderStatus {
+  DRAFT, CONFIRMED, SHIPPED, CANCELLED
+}
+
+@@md("""
+Internal: settlement states are not user-visible.
+Used by the finance pipeline only.
+""")
+enum SettlementStatus {
+  PENDING, RECONCILED, WRITTEN_OFF
+}
+```
+
+- Accumulated directives are attached to the next `enum` / `type` / `model`
+  in source order. `EnumSchema`, `TypeDefSchema`, and `ModelSchema` all
+  carry a `docs: string[]` field.
+- `@@mode(...)` / `@@theme(...)` are file-level regardless of position.
+- Trailing `@@doc` at end of file (no following declaration) is silently
+  dropped (a future L046 lint may surface this).
+
 ## 9. Sequence diagram body
 
 ```

@@ -1,7 +1,7 @@
 ---
 name: reverse-engineer
-version: 1.3.0
-spec: "@umlay/spec >= 1.3.0 (DSL 1.0 / IR 1.0)"
+version: 1.4.0
+spec: "@umlay/spec >= 1.4.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer, architect]
 summary: Produce a spec-conformant Umlay DSL (.umlay) from an existing Prisma schema / SQL DDL / TypeScript type source
 description: Use when the user wants to import an existing codebase — Prisma `schema.prisma`, PostgreSQL / MySQL DDL, or TypeScript `class` / `interface` / `type` declarations — into Umlay, so the rest of the pipeline (review-uml, evolve-schema, codegen-mapping) can operate on it.
@@ -168,6 +168,27 @@ enum OrderStatus {
 ```
 
 Preserve source order.
+
+### Attaching docs to an enum / type (spec 1.4+ / RFC 0035)
+
+When the source has comments documenting an enum or type, emit `@@doc(...)`
+/ `@@md(...)` **immediately preceding the declaration**. As of spec 1.4
+the parser accepts directives interleaved with declarations and the IR
+attaches them to `enum.docs[]` / `type.docs[]` (same mechanism as Model).
+
+```umlay
+@@doc("TS source: lowercase of enum value")
+enum OrderStatus { DRAFT, CONFIRMED, SHIPPED, CANCELLED }
+
+@@md("""
+Internal settlement enum.
+Not user-visible.
+""")
+enum SettlementStatus { PENDING, RECONCILED, WRITTEN_OFF }
+```
+
+⚠️ If output may be fed to a spec ≤ 1.3 parser, demote per-enum `@@doc`
+to a regular `// comment` — pre-1.4 parsers reject it with `Expecting EOF`.
 
 ## 7. Stereotype inference (heuristic — safe defaults, flag for review)
 

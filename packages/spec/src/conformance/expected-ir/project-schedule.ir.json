@@ -672,7 +672,8 @@
             "IN_PROGRESS",
             "DONE",
             "BLOCKED"
-          ]
+          ],
+          "docs": []
         },
         "Priority": {
           "_id": "d34c6e1b5b29",
@@ -682,7 +683,8 @@
             "MEDIUM",
             "HIGH",
             "CRITICAL"
-          ]
+          ],
+          "docs": []
         },
         "DependencyKind": {
           "_id": "7fe6b9f614c8",
@@ -692,7 +694,8 @@
             "SS",
             "FF",
             "SF"
-          ]
+          ],
+          "docs": []
         }
       },
       "reservedBlocks": [],

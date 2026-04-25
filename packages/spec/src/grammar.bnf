@@ -18,15 +18,24 @@
 (* ─────────────── ファイル構造 ─────────────── *)
 
 (* RFC 0031: ファイル末尾の `---` 単独行以降は IR.docTrailer に格納される *)
-File            ::= FileDirective* NamespaceDecl ImportDecl* TopLevel*
+(* RFC 0035 (spec 1.4.0): TopLevelDirective が宣言の間に自由に挟める。
+ *   - FileDirective (`@@mode`, `@@theme`) は位置に関わらずファイルレベルで処理。
+ *   - `@@doc` / `@@md` は直後の EnumDecl / TypeDecl / ModelDecl の `docs[]` に
+ *     蓄積される (visitor が pendingDocs として保持し attach する)。
+ *)
+File            ::= TopLevelDirective* NamespaceDecl ImportDecl* TopLevelChunk*
                     DocTrailerSeparator?
 DocTrailerSeparator ::= "---" Newline /* 任意 Markdown 本文 */
 NamespaceDecl   ::= "namespace" Identifier
-TopLevel        ::= TypeDecl | EnumDecl | ModelDecl | ViewDecl
+TopLevelChunk   ::= TopLevelDirective | TopLevelDecl
+TopLevelDecl    ::= TypeDecl | EnumDecl | ModelDecl | ViewDecl
                   | ProtocolDecl | UnionDecl | ModuleDecl
                   | ImplBlock                           (* RFC 0016 *)
                   | TraitDecl                           (* RFC 0034 *)
-                  | FileDirective
+TopLevelDirective ::= FileDirective | DocBlock | MdBlock | UnknownAtAtDirective
+UnknownAtAtDirective ::= "@@" Identifier "(" /* ... */ ")"   (* 不明な @@ は無視される *)
+(* 互換性のため旧 `TopLevel` を残す (= TopLevelDecl の別名) *)
+TopLevel        ::= TopLevelDecl | FileDirective
 
 (* RFC 0016: impl ブロック + RFC 0020: blanket impl 対応 *)
 ImplBlock       ::= "impl" TypeParams? ProtocolRef "for" ImplTarget

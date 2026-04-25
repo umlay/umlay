@@ -463,7 +463,8 @@
             "ACTIVE",
             "FROZEN",
             "CLOSED"
-          ]
+          ],
+          "docs": []
         },
         "TxStatus": {
           "_id": "06a9976c516d",
@@ -472,7 +473,8 @@
             "PENDING",
             "COMMITTED",
             "REVERTED"
-          ]
+          ],
+          "docs": []
         }
       },
       "reservedBlocks": [],

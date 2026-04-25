@@ -150,7 +150,8 @@
             "CONFIRMED",
             "SHIPPED",
             "CANCELLED"
-          ]
+          ],
+          "docs": []
         }
       },
       "reservedBlocks": [],

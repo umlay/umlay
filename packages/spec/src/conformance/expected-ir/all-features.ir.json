@@ -1680,7 +1680,8 @@
           "_id": "af4f248e3a8c",
           "name": "Money",
           "fields": [],
-          "aliasOf": "decimal"
+          "aliasOf": "decimal",
+          "docs": []
         }
       },
       "enums": {
@@ -1693,7 +1694,8 @@
             "RESERVED",
             "LOST",
             "WITHDRAWN"
-          ]
+          ],
+          "docs": []
         },
         "LoanStatus": {
           "_id": "2bba911ee316",
@@ -1702,7 +1704,8 @@
             "ACTIVE",
             "RETURNED",
             "OVERDUE"
-          ]
+          ],
+          "docs": []
         },
         "UserRole": {
           "_id": "0385fc40ab22",
@@ -1711,7 +1714,8 @@
             "MEMBER",
             "LIBRARIAN",
             "ADMIN"
-          ]
+          ],
+          "docs": []
         },
         "TaskStatus": {
           "_id": "40eea94ad446",
@@ -1721,7 +1725,8 @@
             "IN_PROGRESS",
             "DONE",
             "BLOCKED"
-          ]
+          ],
+          "docs": []
         }
       },
       "reservedBlocks": [],

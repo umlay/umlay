@@ -299,6 +299,36 @@ model Order @aggregate_root {
 IR 内で `model.docs[]` に append される (`@@doc` の最初の 1 つは
 `model.doc` (string) と `model.docs[0]` の両方に入る、後方互換のため)。
 
+### `@@doc` / `@@md` を宣言の前に置く形 (RFC 0035, spec 1.4.0)
+
+トップレベルの宣言 (`enum` / `type` / `model`) の直前に `@@doc(...)` /
+`@@md(...)` を置くと、その**宣言の `docs[]` に蓄積**される。spec 1.3 までは
+**最初の宣言の前**にしか書けず、宣言の間に挟むと `Expecting EOF` エラーに
+なっていたが、1.4 で interleave が解禁された。
+
+```prisma
+namespace messaging
+
+@@doc("Order lifecycle as observed by the warehouse system.")
+enum OrderStatus {
+  DRAFT, CONFIRMED, SHIPPED, CANCELLED
+}
+
+@@md("""
+Internal: settlement states are not user-visible.
+Used by the finance pipeline only.
+""")
+enum SettlementStatus {
+  PENDING, RECONCILED, WRITTEN_OFF
+}
+```
+
+- 蓄積された `@@doc` / `@@md` は次の `enum` / `type` / `model` 宣言の
+  `docs: string[]` に source 順で attach される (`EnumSchema` / `TypeDefSchema`
+  / `ModelSchema` のいずれにも `docs[]` が存在)。
+- `@@mode(...)` / `@@theme(...)` は位置に関わらずファイルレベルとして処理。
+- ファイル末尾の宣言なし `@@doc` は silently drop (将来 L046 lint 候補)。
+
 ## 9. Sequence diagram 本体
 
 ```

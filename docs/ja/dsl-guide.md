@@ -557,6 +557,34 @@ model Page @entity @intent("ページネーション付きリスト応答") {
 - `irToDsl` (format-on-save) は予約語を自動 backtick 化、通常名はそのまま
 - `reserved-keywords.umlay` のコメントアウト例は backtick があれば実用可
 
+## 10.10b. enum / type / model に doc を attach (RFC 0035 / spec 1.4+)
+
+トップレベル宣言の**直前**に `@@doc(...)` / `@@md(...)` を置くと、
+その宣言の **`docs: string[]`** に source 順で attach される。spec 1.3 までは
+**最初の宣言の前**にしか書けず、間に挟むと parse error (`Expecting EOF`) に
+なっていた。
+
+```umlay
+namespace messaging
+
+@@doc("Order lifecycle as observed by the warehouse system.")
+enum OrderStatus { DRAFT, CONFIRMED, SHIPPED, CANCELLED }
+
+@@md("""
+Internal: settlement states are not user-visible.
+Used by the finance pipeline only.
+""")
+enum SettlementStatus { PENDING, RECONCILED, WRITTEN_OFF }
+```
+
+- `EnumSchema` / `TypeDefSchema` / `ModelSchema` はいずれも `docs: string[]`
+  を持つ。
+- `@@mode(...)` / `@@theme(...)` は位置に関わらずファイルレベル扱い。
+- ファイル末尾で宣言を伴わない `@@doc` は silently drop (将来 L046 lint 候補)。
+
+reverse-engineer / write-uml で大量の enum を持つ namespace に **per-enum
+ドキュメンテーション**を載せる用途で使う。
+
 ## 10.11. View layout direction (spec 1.3+)
 
 `view.layout: direction(...)` に `LR` (既定) / `TB` (縦) / `RL` / `BT` を指定。

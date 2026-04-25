@@ -1,7 +1,7 @@
 ---
 name: plan-from-diff
-version: 1.3.0
-spec: "@umlay/spec >= 1.3.0 (DSL 1.0 / IR 1.0)"
+version: 1.4.0
+spec: "@umlay/spec >= 1.4.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer, architect]
 summary: Turn a change-impact report (or raw IR diff) into a sequenced implementation plan — tasks, files, PR boundaries, rollback strategy
 description: Use when the user has an Umlay IR delta (new → old) and needs the **next step** — a concrete, ordered set of engineering tasks to ship the change safely. Consumes the output of `change-impact-diff` (or a raw diff) and emits a plan with migration phasing, PR splits, verification hooks, and rollback points.

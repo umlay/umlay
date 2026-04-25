@@ -209,7 +209,8 @@
             "WARN",
             "ERROR",
             "TRACE"
-          ]
+          ],
+          "docs": []
         }
       },
       "reservedBlocks": [],
