@@ -186,6 +186,81 @@ write-uml  write-uml   review-uml  evolve-    codegen-
 | 詳細設計 | `evolve-schema` で差分積み上げ | `evolve-schema` → `change-impact-diff` → `plan-from-diff` (**改修スコープに絞る**) |
 | 実装 | `codegen-mapping` | `codegen-mapping` (差分のみ) |
 
+### English version
+
+The two recipes below map the four design phases — *requirements gathering → requirements definition → basic design → detailed design* — onto the seven skills, then descend into code generation. Every phase produces a `.umlay` file that is **a single Git-reviewable artefact**; later phases **add information** rather than replace it.
+
+#### 1. Greenfield — building a new system
+
+```
+Requirements        Requirements      Basic            Detailed         Implementation
+gathering    →      definition   →    design     →     design      →
+   │                  │                 │                │                │
+   ▼                  ▼                 ▼                ▼                ▼
+write-uml          write-uml         review-uml       evolve-          codegen-
+(skeleton)         (vocabulary)      (quality          schema           mapping
+                                      audit)          (incremental
+                                                       diffs)
+```
+
+| Phase | Primary skill | Aim | What the `.umlay` contains |
+| --- | --- | --- | --- |
+| **Requirements gathering** | `write-uml` | Convert natural-language requirements into a minimum DSL — candidate models / actors / primary views. Stereotypes default to `@entity`; uncertainty is captured as `@@doc` | namespaces / primary models + `rationale.intent` |
+| **Requirements definition** | `write-uml` (cont.) | Lock in relationships (`@ref`), identifiers, and enums. Pin representative data shape via `@@sample(from:)` | all models + attributes + enums + sample bindings + key sequences |
+| **Basic design** | `review-uml` | Audit across spec / lint / risk / compatibility (S / L / R / W+C). Confirm aggregate-root candidates and bounded-context boundaries | finalised stereotypes, fleshed-out `rationale.intent`, audience-specific views |
+| **Detailed design** | `evolve-schema` | Add `@@inv` / `@@pre` / `@@post`, refine PK / FK / unique, compose composite views, design protocols. Incremental, backward-compatible | invariants + complete view set + protocols (impl boundary) |
+| **Implementation** | `codegen-mapping` | Deterministic IR → Prisma / SQL DDL / TypeScript types. Test data flows from `@@sample` | (outside Umlay: `schema.prisma`, `*.sql`, `types.ts`) |
+
+> ✅ Run `review-uml` at the end of every phase. Catching a design flaw one phase later costs one reviewer-hour; catching it after implementation costs a release.
+
+#### 2. Brownfield — modifying an existing system
+
+When a database / code base already exists, **import the current state into `.umlay` first** ("reconstruct the current system's requirements / design") before issuing a new detailed design **scoped only to the part being changed**.
+
+```
+[Current] schema.prisma / DDL / TS
+              │
+              ▼  reverse-engineer (structure-only import + TODO header)
+[Current] umlay (first pass)
+              │
+              ▼  review-uml (lint / risk / lock in stereotypes)
+[Current] umlay (basic-design level — current intent restored)
+              │
+              ▼  human / write-uml (fill rationale.intent / @@inv)
+[Current] umlay (detailed-design level — the "as it should be" of today)
+              │
+              ▼  evolve-schema (apply diff DSL to ONLY the part being modified)
+[Next]    umlay (after change)
+              │
+              ▼  change-impact-diff   ← current vs next: Purpose / Touch / Miss + risk
+              ▼  plan-from-diff       ← detailed plan SCOPED to the change
+              ▼  codegen-mapping      ← only the delta of Prisma / SQL / TS
+```
+
+| Phase | Primary skill | Aim | Output |
+| --- | --- | --- | --- |
+| **Import current state** | `reverse-engineer` | Convert existing `schema.prisma` / DDL / TS into `.umlay` (structure only). Stereotype / intent are not guessed — they are flagged in `@@doc` | `current.umlay` (first pass) + TODO header |
+| **Reconstruct current requirements** | `review-uml` + human | Run quality audit on the first pass and lock in stereotypes. Add `rationale.intent` and `@@md` to **document the existing "why"** | `current.umlay` (requirements-definition level) |
+| **Restore current basic / detailed design** | `write-uml` (fill-in) + `review-uml` | Add audience-specific views, `@@inv` / `@@pre` / `@@post`, detailed sequences. Establish **the "as it should be" of today** in Umlay | `current.umlay` (detailed-design level) |
+| **Diff for the modification** | `evolve-schema` | Change only the in-scope models / attributes / views, preserving backward compatibility. **Stay inside the modification scope** — do not widen | `next.umlay` |
+| **Impact analysis** | `change-impact-diff` | Emit Risk / Impact / Purpose-Touch-Miss for `current.umlay` ↔ `next.umlay`. Enumerate downstream models / views / participants by name | impact report (YAML / Markdown) |
+| **Detailed design = execution plan for the modification** | `plan-from-diff` | Turn impact into a plan with phases (schema / backfill / dual-write / cutover / cleanup / verify), PR splits, rollback annotations. **Touches nothing outside the modification scope** | plan YAML / `@gantt_chart` view |
+| **Implementation** | `codegen-mapping` | Generate the **delta** of Prisma / SQL / TS for the DSL that the plan's phases reference | migration files + type diff |
+
+> ✅ "Umlay-ifying the current system" feels heavy up front, but **once done it amortises across every future change**. `change-impact-diff` and `plan-from-diff` cannot return high-precision impact without a `current.umlay`.
+>
+> ✅ Even when the modification is small, **do not throw away the rest of `current.umlay`**. `evolve-schema` applies a diff to the whole model, so the more context (intent / related models / existing views) is present, the more reliably stereotype conflicts and duplicate traits are caught.
+
+#### Phase mapping — at a glance
+
+| Design phase | Greenfield (new) | Brownfield (existing) |
+| --- | --- | --- |
+| Requirements gathering | `write-uml` (skeleton) | `reverse-engineer` + `review-uml` to reconstruct the current "why" |
+| Requirements definition | `write-uml` (vocabulary) | continue above; fill `rationale.intent` / `@@md` |
+| Basic design | `review-uml` | `review-uml` (current state + reconcile with proposed change) |
+| Detailed design | `evolve-schema` (incremental) | `evolve-schema` → `change-impact-diff` → `plan-from-diff` (**scoped to the modification**) |
+| Implementation | `codegen-mapping` | `codegen-mapping` (delta only) |
+
 ## フォーマット / Format
 
 各 skill ファイルはフロントマター (YAML) と本文 (Markdown) で構成されます。
