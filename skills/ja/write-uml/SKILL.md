@@ -220,11 +220,12 @@ Strict モードでは、未指定の `visibility` / `multiplicity` / `intent` �
 
 Umlay は **Prisma / TypeScript / GraphQL とは違う**ので、それらに引きずられたミスが多発する。以下は parser エラーになる典型例:
 
-| ❌ 間違い (他言語の癖) | ✅ Umlay 正解 | エラー文 |
+| 形 | 状態 | エラー文 (古い場合) |
 | --- | --- | --- |
-| `id: UUID! @id` | `id UUID! @id` | `Expecting Identifier, found ':'` |
-| `email: string?` | `email string?` | 同上 |
-| `model User:` | `model User { ... }` | 同上 |
+| `id UUID! @id` | ✅ canonical (no colon) | — |
+| `id: UUID! @id` | ✅ **1.6.3+ 受理** (Prisma / TS 風) | (1.6.2 まで `Expecting Identifier, found ':'`) |
+| `email: string?` | ✅ 受理 (1.6.3+) | 同上 |
+| `model User:` | ❌ model body は `{}`、`:` 不可 | `Expecting LCurly, found ':'` |
 | `fn pay(): Receipt` | `fn pay() -> Receipt` | `Expecting Identifier, found ':'` (戻り型直前) |
 | `fn pay() => Receipt` | `fn pay() -> Receipt` | parser reject |
 | `name = string` | `name string` | `=` は `type X = Y` (alias) 専用 |

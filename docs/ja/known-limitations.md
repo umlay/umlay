@@ -6,6 +6,24 @@
 
 ---
 
+## 0. attribute の `name: Type` 形式 (1.6.3+ で受理)
+
+spec **1.6.3 以降**は **attribute 宣言で `name: Type` (Prisma / TS 風コロン) を受理**します。
+
+```umlay
+model User @entity {
+  id UUID! @id            // ✅ canonical (no colon)
+  email: string!          // ✅ accepted (1.6.3+)、IR は同一
+  age: int? @min(0)       // ✅ コロン + 制約も OK
+}
+```
+
+`irToDsl` (formatter) は常に no-colon 形式を canonical として出力します。
+
+> ⚠️ **`@@directive` の位置ルール (§1)** と区別してください:
+> - attribute の **値型コロン** (`name: Type`) は OK
+> - **`@@directive` を model header に置く** (例: `model X @aggregate_root @@confidence(0.3)`) は NG (§1 参照)
+
 ## 1. ディレクティブの**位置 (scope)** に注意するもの
 
 Umlay の `@` (single-at) と `@@` (double-at) は**位置が違う**:

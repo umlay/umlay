@@ -225,11 +225,12 @@ Strict mode turns missing `visibility` / `multiplicity` / `intent` into errors.
 Umlay's syntax is **not Prisma / TypeScript / GraphQL** — habits from
 those languages produce parse errors. The most common offenders:
 
-| ❌ Wrong (foreign habit) | ✅ Umlay correct | Parser error |
+| Form | Status | Pre-1.6.3 parser error |
 | --- | --- | --- |
-| `id: UUID! @id` | `id UUID! @id` | `Expecting Identifier, found ':'` |
-| `email: string?` | `email string?` | same |
-| `model User:` | `model User { ... }` | same |
+| `id UUID! @id` | ✅ canonical (no colon) | — |
+| `id: UUID! @id` | ✅ **accepted (1.6.3+)** as Prisma / TS sugar | `Expecting Identifier, found ':'` (≤ 1.6.2) |
+| `email: string?` | ✅ accepted (1.6.3+) | same |
+| `model User:` | ❌ model body must be `{}` — `:` is not allowed there | `Expecting LCurly, found ':'` |
 | `fn pay(): Receipt` | `fn pay() -> Receipt` | `Expecting Identifier, found ':'` (before return type) |
 | `fn pay() => Receipt` | `fn pay() -> Receipt` | parser reject |
 | `name = string` | `name string` | `=` is reserved for `type X = Y` (alias) |
