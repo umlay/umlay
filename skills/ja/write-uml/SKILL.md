@@ -195,6 +195,26 @@ Strict モードでは、未指定の `visibility` / `multiplicity` / `intent` �
 | 6 | `@@id` と `@id` の併用 | 主キー定義は一方のみ |
 | 7 | view の kind に未定義値を指定 | IR スキーマ enum 外は rejected |
 
+## **AI が頻発する文法ミス (必読)**
+
+Umlay は **Prisma / TypeScript / GraphQL とは違う**ので、それらに引きずられたミスが多発する。以下は parser エラーになる典型例:
+
+| ❌ 間違い (他言語の癖) | ✅ Umlay 正解 | エラー文 |
+| --- | --- | --- |
+| `id: UUID! @id` | `id UUID! @id` | `Expecting Identifier, found ':'` |
+| `email: string?` | `email string?` | 同上 |
+| `model User:` | `model User { ... }` | 同上 |
+| `fn pay(): Receipt` | `fn pay() -> Receipt` | `Expecting Identifier, found ':'` (戻り型直前) |
+| `fn pay() => Receipt` | `fn pay() -> Receipt` | parser reject |
+| `name = string` | `name string` | `=` は `type X = Y` (alias) 専用 |
+| `field UUID @id?` | `field UUID? @id` | 注釈は型 + nullability の**後** |
+| `attribute "comment"` | `attribute @@doc("comment")` | bare 文字列は不可 |
+| `foreignKey(User.id)` | `@ref(User.id)` | 関数呼び出し風は不可 |
+
+特に **「属性名と型の間に `:` を入れない」** が最大の落とし穴。Prisma / TS スキーマからの取り込みは `reverse-engineer` skill が変換するので、AI が手書きする場合は `name Type` 形式を厳守する。
+
+parser は v1.6.1+ から **これらのパターンに「Hint:」を付加**してエラー出力するので、エラー文末尾の Hint を読めば修正方針がわかる。
+
 ## 予約語リスト
 
 以下は **パーサに受理されるが、本スキーマでは識別子として使えない**。将来実装用に予約されている。

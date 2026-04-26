@@ -195,6 +195,31 @@ Strict mode turns missing `visibility` / `multiplicity` / `intent` into errors.
 | 6 | Using both `@@id` and `@id` | Pick one primary-key form |
 | 7 | Using an unknown view kind | Rejected by IR schema |
 
+## **Common AI mistakes (must read)**
+
+Umlay's syntax is **not Prisma / TypeScript / GraphQL** — habits from
+those languages produce parse errors. The most common offenders:
+
+| ❌ Wrong (foreign habit) | ✅ Umlay correct | Parser error |
+| --- | --- | --- |
+| `id: UUID! @id` | `id UUID! @id` | `Expecting Identifier, found ':'` |
+| `email: string?` | `email string?` | same |
+| `model User:` | `model User { ... }` | same |
+| `fn pay(): Receipt` | `fn pay() -> Receipt` | `Expecting Identifier, found ':'` (before return type) |
+| `fn pay() => Receipt` | `fn pay() -> Receipt` | parser reject |
+| `name = string` | `name string` | `=` is reserved for `type X = Y` (alias) |
+| `field UUID @id?` | `field UUID? @id` | nullability goes between type and annotations |
+| `attribute "comment"` | `attribute @@doc("comment")` | bare strings not allowed |
+| `foreignKey(User.id)` | `@ref(User.id)` | function-call style not allowed |
+
+The single biggest pitfall: **no colon between attribute name and type**.
+If you import from Prisma / TS schemas, use the `reverse-engineer`
+skill — when authoring by hand, stick to `name Type` form.
+
+The parser appends a **"Hint:"** line to these specific failures
+starting in spec 1.6.1, so the error message itself tells you what to
+write instead.
+
 ## Reserved keyword list
 
 Accepted by the parser but **reserved and unavailable as identifiers**:
