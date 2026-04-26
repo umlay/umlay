@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "draft",
-  "specVersion": "1.6.1",
+  "specVersion": "1.6.2",
   "namespaces": {
     "billing": {
       "models": {

@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.1",
+  "specVersion": "1.6.2",
   "namespaces": {
     "payments": {
       "models": {

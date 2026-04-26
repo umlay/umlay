@@ -120,6 +120,26 @@ L046 で **info-level** の info 表示するだけ。**実際に edit を防ぐ
 - ❌ namespace `@@boundary` 自動推定
 - ❌ ADR 紐付け (`@@adrRef`)
 
+## 8.5. 文字列リテラルのクォート
+
+spec 1.6.2+ は **`"…"` と `'…'` の両方を受理**します (TS / Prisma の習慣で AI が single quote を出すケースに対応)。`irToDsl` は正規化として常に **double quote** を出力。
+
+```umlay
+@codegenName('account_id')   // ✅ OK
+@codegenName("account_id")   // ✅ OK (canonical)
+```
+
+## 8.6. ハイフン入りディレクティブ名
+
+`@@min-spec-version("1.6.0")` のようなハイフン名は **1.6.2+ で解禁** (前は token 分解で parse error)。canonical な camelCase 別名 (`@@minSpecVersion("1.6.0")`) も同等に効きます。
+
+```umlay
+@@min-spec-version("1.6.0")     // ✅ kebab — IR.meta.minSpecVersion = "1.6.0"
+@@minSpecVersion("1.6.0")       // ✅ camel — 同じ結果
+```
+
+L001–L045 等のメッセージは ja のままなので注意。
+
 ## 9. CLI / VS Code 拡張の制限
 
 | 機能 | 状態 |
