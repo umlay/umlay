@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "demo": {
       "models": {
@@ -85,6 +85,7 @@
           "rationale": {
             "intent": "Identifiable + Comparable 準拠ユーザー",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -134,6 +135,7 @@
           "rationale": {
             "intent": "Repository<User> の具象実装。User が Identifiable 準拠なので受理される",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

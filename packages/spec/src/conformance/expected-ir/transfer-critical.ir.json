@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "banking": {
       "models": {
@@ -54,6 +54,7 @@
                 "invariants": [
                   "balance >= 0"
                 ],
+                "structuredInvariants": [],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -83,6 +84,7 @@
           "rationale": {
             "intent": "銀行口座",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -163,6 +165,7 @@
                 "invariants": [
                   "amount > 0"
                 ],
+                "structuredInvariants": [],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -205,6 +208,7 @@
           "rationale": {
             "intent": "口座間送金トランザクション",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -247,6 +251,7 @@
           "rationale": {
             "intent": "送金 API",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -289,6 +294,7 @@
           "rationale": {
             "intent": "分散ロックサービス",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -331,6 +337,7 @@
           "rationale": {
             "intent": "永続化",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -373,6 +380,7 @@
           "rationale": {
             "intent": "送金元口座アクセサ",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -415,6 +423,7 @@
           "rationale": {
             "intent": "送金先口座アクセサ",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -457,6 +466,7 @@
           "rationale": {
             "intent": "監査ログ",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

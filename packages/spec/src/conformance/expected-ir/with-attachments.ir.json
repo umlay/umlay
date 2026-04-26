@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "draft",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "ordering": {
       "models": {
@@ -69,6 +69,7 @@
           "rationale": {
             "intent": "顧客発注。実装前にワイヤフレームを参照のこと",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

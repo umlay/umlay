@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "meta": {
     "theme": "\"./themes/brand.css\""
   },
@@ -51,6 +51,7 @@
           "rationale": {
             "intent": "購入顧客",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -132,6 +133,7 @@
           "rationale": {
             "intent": "販売商品",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -191,6 +193,7 @@
           "rationale": {
             "intent": "顧客の購入注文",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

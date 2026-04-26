@@ -93,6 +93,10 @@ spec 1.0 RC までに catalog に昇格予定の参照実装ルール:
 | L043 | 宣言されただけで `@@include` されない trait | — / warn / warn | trait | ✅ (RFC 0034) |
 | L044 | trait の attribute が 2 未満 (過抽象化の疑い) | — / info / info | trait | ✅ (RFC 0034) |
 | L045 | `@@include(UnknownTrait)` — 未定義の trait 参照 | error / error / error | model | ✅ (RFC 0034) |
+| L046 | `@@locked` 要素はレビュー必須 (info で常時可視化) + `@@adrRef` 推奨 | info / info / info | model / attribute | ✅ (RFC 0042 / spec 1.6.1) |
+| L047 | `@@boundary.exposes` / `hides` の参照先が IR に存在しない | warn / warn / error | namespace | ✅ (RFC 0044 / spec 1.6.1) |
+| L048 | PII / GDPR / PCI-DSS タグ付き attribute を持つ model に `@@example(expect: reject)` が無い | info / warn / error | model | ✅ (RFC 0040 / spec 1.6.1) |
+| L049 | `@@example(input: ...)` が構造化 `@@inv(field, op, value)` と矛盾する | warn / warn / error | model | ✅ (RFC 0049 / spec 1.6.1) |
 
 ## R — Risk (設計ヒューリスティック、常に warn/info)
 

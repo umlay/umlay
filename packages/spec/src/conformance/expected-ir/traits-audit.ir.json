@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "shop": {
       "models": {
@@ -100,6 +100,7 @@
           "rationale": {
             "intent": "顧客ユーザー",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -216,6 +217,7 @@
                 "invariants": [
                   "total >= 0"
                 ],
+                "structuredInvariants": [],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -231,6 +233,7 @@
           "rationale": {
             "intent": "SaaS の注文",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

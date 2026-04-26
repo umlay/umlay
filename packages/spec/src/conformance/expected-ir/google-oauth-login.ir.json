@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "beta",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "auth": {
       "models": {
@@ -100,6 +100,7 @@
           "rationale": {
             "intent": "サービスを利用する人間。email 一意",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -212,6 +213,7 @@
           "rationale": {
             "intent": "認証済みユーザのセッション",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -319,6 +321,7 @@
           "rationale": {
             "intent": "監査用ログ。失敗回数で BOT 検知",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -361,6 +364,7 @@
           "rationale": {
             "intent": "ユーザのブラウザ",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -403,6 +407,7 @@
           "rationale": {
             "intent": "本アプリ (frontend + API)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -445,6 +450,7 @@
           "rationale": {
             "intent": "Google OAuth 2.0 サーバ",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -487,6 +493,7 @@
           "rationale": {
             "intent": "App 側 /oauth/callback エンドポイント",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

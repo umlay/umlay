@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "login": {
       "models": {
@@ -114,6 +114,7 @@
           "rationale": {
             "intent": "認証されたエンドユーザー。emails は一意 (Google の verified email 前提)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -217,6 +218,7 @@
           "rationale": {
             "intent": "User と外部 OAuth プロバイダの紐付け。同一 provider に対して多重ログイン不可",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -297,6 +299,7 @@
                 "invariants": [
                   "sessionToken.expiresAt > sessionToken.issuedAt"
                 ],
+                "structuredInvariants": [],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -382,6 +385,7 @@
           "rationale": {
             "intent": "ログイン成功後に発行されるアクティブセッション。JWT は private 属性",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -424,6 +428,7 @@
           "rationale": {
             "intent": "エンドユーザーのブラウザ / SPA ランタイム",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -479,6 +484,7 @@
           "rationale": {
             "intent": "エッジ CDN。/ は S3 オリジン、/api/* は API Gateway オリジンにルーティング",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -534,6 +540,7 @@
           "rationale": {
             "intent": "Next.js 静的エクスポート (out/) のホスト。OAC 経由で CloudFront からのみアクセス可",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -590,6 +597,7 @@
           "rationale": {
             "intent": "HTTP API。/api/auth/google と /api/auth/google/callback の 2 ルートを持つ",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -660,6 +668,7 @@
           "rationale": {
             "intent": "GET /api/auth/google を処理。state / nonce を生成し Google 認可エンドポイントへ 302",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -730,6 +739,7 @@
           "rationale": {
             "intent": "GET /api/auth/google/callback を処理。code 交換 → userinfo → User/Session を upsert",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -800,6 +810,7 @@
           "rationale": {
             "intent": "単一テーブル設計。PK=`USER#{userId}` SK=`PROFILE` / `OAUTH#{provider}` / `SESSION#{sessionId}`",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -898,6 +909,7 @@
           "rationale": {
             "intent": "外部 IdP (Google)。Authorization Code + PKCE フローを用いる",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -998,6 +1010,7 @@
           "rationale": {
             "intent": "ログイン画面 (/)。認証前のユーザーに 'Sign in with Google' を提示する",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1064,6 +1077,7 @@
           "rationale": {
             "intent": "Google 側の OAuth 2.0 同意画面 (外部)。scope=openid email profile を確認",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1164,6 +1178,7 @@
           "rationale": {
             "intent": "ログイン後のダッシュボード (/dashboard)。認証必須",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1244,6 +1259,7 @@
           "rationale": {
             "intent": "認可失敗時の画面 (/auth/error)。state mismatch / user denied consent / token 交換失敗など",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1328,6 +1344,7 @@
           "rationale": {
             "intent": "LoginPage 上のユーザー操作",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

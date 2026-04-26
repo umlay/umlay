@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "core": {
       "models": {
@@ -61,6 +61,7 @@
           "rationale": {
             "intent": "ユーザー (core で型を宣言、契約は別ファイル)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -132,6 +133,7 @@
           "rationale": {
             "intent": "注文 (core で型を宣言、契約は別ファイル)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "orders": {
       "models": {
@@ -68,6 +68,7 @@
                 "invariants": [
                   "total >= 0"
                 ],
+                "structuredInvariants": [],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -90,6 +91,7 @@
                 "invariants": [
                   "version >= 0"
                 ],
+                "structuredInvariants": [],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -129,6 +131,7 @@
           "rationale": {
             "intent": "注文 (Event Sourcing 集約)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

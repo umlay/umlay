@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "experimental_demo": {
       "models": {
@@ -65,6 +65,7 @@
           "rationale": {
             "intent": "ユーザー (安定)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -133,6 +134,7 @@
           "rationale": {
             "intent": "非同期ストリーム処理",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -181,6 +183,7 @@
           "rationale": {
             "intent": "旧版、deprecated へ移行中",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "pm": {
       "models": {
@@ -81,6 +81,7 @@
                 "invariants": [
                   "capacity > 0 && capacity <= 1.0"
                 ],
+                "structuredInvariants": [],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -110,6 +111,7 @@
           "rationale": {
             "intent": "プロジェクトメンバー。Task.assigneeId の参照先",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -226,6 +228,7 @@
                 "invariants": [
                   "plannedEnd >= plannedStart"
                 ],
+                "structuredInvariants": [],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -274,6 +277,7 @@
                 "invariants": [
                   "progress >= 0.0 && progress <= 1.0"
                 ],
+                "structuredInvariants": [],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -367,6 +371,7 @@
           "rationale": {
             "intent": "WBS の最小作業単位 / Gantt のバー 1 本に対応",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -597,6 +602,7 @@
                 "invariants": [
                   "lagDays >= -60 && lagDays <= 365"
                 ],
+                "structuredInvariants": [],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -612,6 +618,7 @@
           "rationale": {
             "intent": "Task 間の先行関係。Gantt の矢印 1 本に対応",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

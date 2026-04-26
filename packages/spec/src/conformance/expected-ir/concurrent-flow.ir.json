@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "orders": {
       "models": {
@@ -67,6 +67,7 @@
                 "invariants": [
                   "total >= 0"
                 ],
+                "structuredInvariants": [],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -109,6 +110,7 @@
           "rationale": {
             "intent": "注文",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -151,6 +153,7 @@
           "rationale": {
             "intent": "API 呼び出し元",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -193,6 +196,7 @@
           "rationale": {
             "intent": "HTTP API エンドポイント",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -235,6 +239,7 @@
           "rationale": {
             "intent": "永続化 (RDB)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -277,6 +282,7 @@
           "rationale": {
             "intent": "Redis 等のキャッシュ",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -319,6 +325,7 @@
           "rationale": {
             "intent": "メッセージキュー",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -361,6 +368,7 @@
           "rationale": {
             "intent": "メール配送サービス",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -403,6 +411,7 @@
           "rationale": {
             "intent": "分析イベント収集",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

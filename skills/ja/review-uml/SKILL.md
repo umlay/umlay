@@ -1,7 +1,7 @@
 ---
 name: review-uml
-version: 1.6.0
-spec: "@umlay/spec >= 1.6.0 (DSL 1.0 / IR 1.0)"
+version: 1.6.1
+spec: "@umlay/spec >= 1.6.1 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, reviewer]
 summary: Umlay DSL / IR を仕様準拠性・設計品質の両面から機械的にレビューする手順
 description: 既存の Umlay DSL / IR をレビュー・監査・分析したいときに起動する。spec 準拠・lint 違反・設計リスクを検出し、`@review` / `@fix` 形式で返す。
@@ -52,6 +52,11 @@ references:
 - L034〜L036 — view selector 関連 (RFC 0032, spec 1.2+)
 - **L037〜L039** — `@composite` view 関連 (spec 1.3+): 非 composite での `@@include` / 未解決 view id / composite の循環参照
 - **L040〜L045** — trait 関連 (spec 1.3+): model/trait 属性衝突 / 2 trait の二重提供 / 循環 include / 未使用 trait / 過抽象 trait / 未定義 trait
+- **L046〜L049** — メタデータバンドル整合 (RFC 0049 / spec 1.6.1+):
+  - L046: `@@locked` 要素を info で常時可視化 + `@@adrRef` 推奨
+  - L047: `@@boundary.exposes` / `hides` の幽霊参照
+  - L048: PII / GDPR / PCI-DSS attribute を持つ model に reject `@@example` 不在
+  - L049: `@@example` と構造化 `@@inv(field, op, value)` の矛盾 (expect=accept なのに inv 違反 / expect=reject なのに inv 充足)
 - `@@mode(strict)` で全ルール error 化 (Phase 1.0 で固定、migration-guide-1.0.md)
 
 ### Layer 3: 設計リスク — 正本: `lint-rules.md` R 節

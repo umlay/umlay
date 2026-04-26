@@ -5,7 +5,7 @@
  * Grammar and IR schema live as sibling files; this module exposes metadata only.
  */
 
-export const SPEC_VERSION = '1.6.0' as const;
+export const SPEC_VERSION = '1.6.1' as const;
 export const IR_SCHEMA_VERSION = '1.0' as const;
 export const DSL_VERSION = '1.0' as const;
 

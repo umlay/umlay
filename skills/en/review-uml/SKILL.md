@@ -1,7 +1,7 @@
 ---
 name: review-uml
-version: 1.6.0
-spec: "@umlay/spec >= 1.6.0 (DSL 1.0 / IR 1.0)"
+version: 1.6.1
+spec: "@umlay/spec >= 1.6.1 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, reviewer]
 summary: Mechanically review Umlay DSL / IR for spec conformance and design quality
 description: Use when the user asks to review, audit, or analyse an existing Umlay DSL / IR for spec conformance, lint violations, and design risks. Produces structured `@review` / `@fix` annotations.
@@ -52,6 +52,11 @@ All rules used for review are normatively defined in [`packages/spec/src/lint-ru
 - L034–L036 — view selectors (RFC 0032, spec 1.2+)
 - **L037–L039** — `@composite` views (spec 1.3+): `@@include` in a non-composite / unresolved view id / include cycle
 - **L040–L045** — traits (spec 1.3+): model ↔ trait name collision / two traits contributing the same attr / include cycle / unused trait / tiny trait / unknown trait
+- **L046–L049** — metadata-bundle consistency (RFC 0049 / spec 1.6.1+):
+  - L046: surface every `@@locked` element as info, recommend `@@adrRef`
+  - L047: `@@boundary.exposes` / `hides` ghost references
+  - L048: PII / GDPR / PCI-DSS attribute in a model that has no reject `@@example`
+  - L049: `@@example` × structured `@@inv(field, op, value)` mismatch (expect=accept but inv broken / expect=reject but inv satisfied)
 - `@@mode(strict)` will promote all rules to error at spec 1.0 (see migration-guide-1.0.md)
 
 ### Layer 3: Design risks — see `lint-rules.md` R section

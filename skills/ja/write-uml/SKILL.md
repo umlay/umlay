@@ -1,7 +1,7 @@
 ---
 name: write-uml
-version: 1.6.0
-spec: "@umlay/spec >= 1.6.0 (DSL 1.0 / IR 1.0)"
+version: 1.6.1
+spec: "@umlay/spec >= 1.6.1 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer]
 summary: 要件や既存の説明文から Umlay DSL (.umlay) を仕様準拠で書き起こす手順
 description: ユーザが新しい Umlay DSL (.umlay) を要件・自然言語説明・既存コード/スキーマから書き起こしたいときに起動する。`@umlay/spec` に準拠し、パース → IR v1.0 へ通る .umlay を生成する。

@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "shopdemo": {
       "models": {
@@ -48,6 +48,7 @@
           "rationale": {
             "intent": "購入者",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -134,6 +135,7 @@
           "rationale": {
             "intent": "注文",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -176,6 +178,7 @@
           "rationale": {
             "intent": "HTTP API",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -218,6 +221,7 @@
           "rationale": {
             "intent": "PostgreSQL",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

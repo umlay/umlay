@@ -1,7 +1,7 @@
 ---
 name: change-impact-diff
-version: 1.6.0
-spec: "@umlay/spec >= 1.6.0 (DSL 1.0 / IR 1.0)"
+version: 1.6.1
+spec: "@umlay/spec >= 1.6.1 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, reviewer, architect]
 summary: baseline + current の Umlay IR ペアから「概念先行」の change-impact レポートを生成 (git 行 diff ではない)
 description: 変更の「行」ではなく「意味」を知りたいときに起動する。2 本の `.umlay` / IR スナップショットから Purpose / Touch-points / Do-not-miss + リスク分類 + 影響スキャン + レビュー checklist を生成。Web Diff タブ外 (PR コメント / リリースノート / Slack) でも再利用可能な契約。

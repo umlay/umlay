@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "blog": {
       "models": {
@@ -74,6 +74,7 @@
           "rationale": {
             "intent": "ブログの著者 / 読者",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -187,6 +188,7 @@
           "rationale": {
             "intent": "ブログ記事",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -277,6 +279,7 @@
           "rationale": {
             "intent": "記事へのコメント",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -332,6 +335,7 @@
           "rationale": {
             "intent": "記事の分類ラベル",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

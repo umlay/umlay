@@ -1,7 +1,7 @@
 ---
 name: reverse-engineer
-version: 1.6.0
-spec: "@umlay/spec >= 1.6.0 (DSL 1.0 / IR 1.0)"
+version: 1.6.1
+spec: "@umlay/spec >= 1.6.1 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer, architect]
 summary: Produce a spec-conformant Umlay DSL (.umlay) from an existing Prisma schema / SQL DDL / TypeScript type source
 description: Use when the user wants to import an existing codebase — Prisma `schema.prisma`, PostgreSQL / MySQL DDL, or TypeScript `class` / `interface` / `type` declarations — into Umlay, so the rest of the pipeline (review-uml, evolve-schema, codegen-mapping) can operate on it.

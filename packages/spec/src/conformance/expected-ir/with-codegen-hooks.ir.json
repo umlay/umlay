@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "hooked": {
       "models": {
@@ -189,6 +189,7 @@
           "rationale": {
             "intent": "User、target 別にカスタマイズ",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -298,6 +299,7 @@
           "rationale": {
             "intent": "集計用ビュー model、DB 出力不要",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -405,6 +407,7 @@
           "rationale": {
             "intent": "監査ログ、独自 template で挿入時刻を SQL TRIGGER 化",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "saas": {
       "models": {
@@ -61,6 +61,7 @@
           "rationale": {
             "intent": "テナント単位の組織",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -129,6 +130,7 @@
           "rationale": {
             "intent": "プラットフォーム横断のユーザー",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -209,6 +211,7 @@
           "rationale": {
             "intent": "組織とユーザーの所属関係 (役割付き)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -282,6 +285,7 @@
           "rationale": {
             "intent": "組織内のチーム",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -348,6 +352,7 @@
           "rationale": {
             "intent": "チームとユーザーの所属関係",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -461,6 +466,7 @@
           "rationale": {
             "intent": "メール招待 (受諾 / 失効 / 期限切れ対応)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "meta": {
     "imports": [
       {
@@ -127,6 +127,7 @@
           "rationale": {
             "intent": "機能 B のタスク。pm_core + pm_feature_a に依存",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -221,6 +222,7 @@
           "rationale": {
             "intent": "feature B 内の先行関係",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -272,6 +274,7 @@
           "rationale": {
             "intent": "feature B は core のインフラと feature A の完了に依存",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

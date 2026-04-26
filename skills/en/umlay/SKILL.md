@@ -1,7 +1,7 @@
 ---
 name: umlay
-version: 1.6.0
-spec: "@umlay/spec >= 1.6.0 (DSL 1.0 / IR 1.0)"
+version: 1.6.1
+spec: "@umlay/spec >= 1.6.1 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer, architect, reviewer]
 summary: Consultation skill that picks the right Umlay skill in at most 2 questions
 description: Use only when the user is starting from "I want to use Umlay but don't know which skill to invoke" — i.e. their intent has not yet been narrowed to a verb. When the intent is concrete (review / import / plan / etc.) the dedicated skill (review-uml / reverse-engineer / plan-from-diff …) auto-invokes directly; this consultation should NOT intercept those.

@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "blanket_demo": {
       "models": {
@@ -48,6 +48,7 @@
           "rationale": {
             "intent": "User は Display / Hashable / Identifiable を実装 → 自動で ToString / SortKey / CacheKey も取得",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -113,6 +114,7 @@
           "rationale": {
             "intent": "Product は Identifiable + Display のみ → ToString / SortKey 自動取得 (CacheKey は取得されない、Hashable 未実装)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

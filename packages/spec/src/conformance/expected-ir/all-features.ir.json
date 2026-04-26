@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "lib": {
       "models": {
@@ -61,6 +61,7 @@
           "rationale": {
             "intent": "著者",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -324,6 +325,7 @@
               "copies >= 0",
               "status in {AVAILABLE, ON_LOAN, RESERVED, LOST, WITHDRAWN}"
             ],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -439,6 +441,7 @@
           "rationale": {
             "intent": "表紙画像など",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -549,6 +552,7 @@
             "invariants": [
               "role in {MEMBER, LIBRARIAN, ADMIN}"
             ],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -679,6 +683,7 @@
           "rationale": {
             "intent": "貸出レコード",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [
               "book.status == AVAILABLE"
             ],
@@ -795,6 +800,7 @@
           "rationale": {
             "intent": "予約",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -862,6 +868,7 @@
           "rationale": {
             "intent": "HTTP API (Next.js)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -911,6 +918,7 @@
           "rationale": {
             "intent": "通知配送 (mail / push)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -960,6 +968,7 @@
           "rationale": {
             "intent": "延滞料請求",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1002,6 +1011,7 @@
           "rationale": {
             "intent": "RDB (Prisma)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1044,6 +1054,7 @@
           "rationale": {
             "intent": "キャッシュ",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1086,6 +1097,7 @@
           "rationale": {
             "intent": "SMTP (外部)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1128,6 +1140,7 @@
           "rationale": {
             "intent": "Stripe (外部)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1170,6 +1183,7 @@
           "rationale": {
             "intent": "UserRepository 準拠 = Repository<User> + Auditable + Cacheable<User>",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1216,6 +1230,7 @@
           "rationale": {
             "intent": "Book 専用 Repository",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1379,6 +1394,7 @@
           "rationale": {
             "intent": "実装タスク (Gantt + WBS)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1499,6 +1515,7 @@
           "rationale": {
             "intent": "抽象基底 — 具体型は circle / square 等",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1584,6 +1601,7 @@
           "rationale": {
             "intent": "Shape の具体化",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -1652,6 +1670,7 @@
               "rationale": {
                 "intent": "カーソル開始位置",
                 "invariants": [],
+                "structuredInvariants": [],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -1672,6 +1691,7 @@
               "rationale": {
                 "intent": "list | detail",
                 "invariants": [],
+                "structuredInvariants": [],
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
@@ -1700,6 +1720,7 @@
           "rationale": {
             "intent": "ページネーション応答 (SQL 予約語を属性名に)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

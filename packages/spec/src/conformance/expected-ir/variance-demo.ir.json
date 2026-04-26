@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "variance_demo": {
       "models": {
@@ -35,6 +35,7 @@
           "rationale": {
             "intent": "Dog を生産。Producer<Animal> としても扱える (共変)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -84,6 +85,7 @@
           "rationale": {
             "intent": "Animal を消費。Consumer<Dog> としても扱える (反変)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

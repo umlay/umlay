@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "meta": {
     "imports": [
       {
@@ -123,6 +123,7 @@
           "rationale": {
             "intent": "機能 A のタスク。一部タスクは pm_core に依存",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -254,6 +255,7 @@
           "rationale": {
             "intent": "feature A 内の先行関係 (cross-ns の on を許容)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -313,6 +315,7 @@
           "rationale": {
             "intent": "cross-namespace の代表依存 (pm_core.Task → Feature A)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

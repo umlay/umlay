@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "draft",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "shop": {
       "models": {
@@ -48,6 +48,7 @@
           "rationale": {
             "intent": "最小の顧客発注",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -123,6 +124,7 @@
           "rationale": {
             "intent": "注文明細 (複合主キー)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []

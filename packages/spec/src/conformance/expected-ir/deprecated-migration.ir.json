@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.0",
+  "specVersion": "1.6.1",
   "namespaces": {
     "migrate": {
       "models": {
@@ -122,6 +122,7 @@
           "rationale": {
             "intent": "ユーザー (移行中の model)",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
@@ -177,6 +178,7 @@
           "rationale": {
             "intent": "旧 User モデル、移行完了次第削除",
             "invariants": [],
+            "structuredInvariants": [],
             "preconditions": [],
             "postconditions": [],
             "raises": []
