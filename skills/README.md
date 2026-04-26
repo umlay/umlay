@@ -55,14 +55,14 @@ git clone https://github.com/umlay/umlay.git ~/src/umlay
 
 # 2. skill フォルダごとシンボリックリンク
 mkdir -p ~/.claude/skills
-ln -s ~/src/umlay/umlay-oss/skills/ja/umlay            ~/.claude/skills/umlay
-ln -s ~/src/umlay/umlay-oss/skills/ja/write-uml        ~/.claude/skills/write-uml
-ln -s ~/src/umlay/umlay-oss/skills/ja/review-uml       ~/.claude/skills/review-uml
-ln -s ~/src/umlay/umlay-oss/skills/ja/evolve-schema    ~/.claude/skills/evolve-schema
-ln -s ~/src/umlay/umlay-oss/skills/ja/codegen-mapping  ~/.claude/skills/codegen-mapping
-ln -s ~/src/umlay/umlay-oss/skills/ja/reverse-engineer ~/.claude/skills/reverse-engineer
-ln -s ~/src/umlay/umlay-oss/skills/ja/change-impact-diff ~/.claude/skills/change-impact-diff
-ln -s ~/src/umlay/umlay-oss/skills/ja/plan-from-diff     ~/.claude/skills/plan-from-diff
+ln -s ~/src/umlay/skills/ja/umlay            ~/.claude/skills/umlay
+ln -s ~/src/umlay/skills/ja/write-uml        ~/.claude/skills/write-uml
+ln -s ~/src/umlay/skills/ja/review-uml       ~/.claude/skills/review-uml
+ln -s ~/src/umlay/skills/ja/evolve-schema    ~/.claude/skills/evolve-schema
+ln -s ~/src/umlay/skills/ja/codegen-mapping  ~/.claude/skills/codegen-mapping
+ln -s ~/src/umlay/skills/ja/reverse-engineer ~/.claude/skills/reverse-engineer
+ln -s ~/src/umlay/skills/ja/change-impact-diff ~/.claude/skills/change-impact-diff
+ln -s ~/src/umlay/skills/ja/plan-from-diff     ~/.claude/skills/plan-from-diff
 
 # 英語版を使いたい場合は `ja/` を `en/` に読み替え
 ```
@@ -78,8 +78,8 @@ mkdir -p .claude/skills
 git clone --depth=1 --filter=blob:none --sparse \
   https://github.com/umlay/umlay.git /tmp/umlay-skills
 cd /tmp/umlay-skills
-git sparse-checkout set umlay-oss/skills/ja
-cp -r umlay-oss/skills/ja/write-uml <your-project>/.claude/skills/
+git sparse-checkout set skills/ja
+cp -r skills/ja/write-uml <your-project>/.claude/skills/
 # 必要な skill 分だけ繰り返す
 ```
 
@@ -89,7 +89,7 @@ cp -r umlay-oss/skills/ja/write-uml <your-project>/.claude/skills/
 cd <your-project>
 git submodule add https://github.com/umlay/umlay.git vendor/umlay
 mkdir -p .claude/skills
-ln -s ../../vendor/umlay/umlay-oss/skills/ja/write-uml .claude/skills/write-uml
+ln -s ../../vendor/umlay/skills/ja/write-uml .claude/skills/write-uml
 # 他 skill も同様
 ```
 
