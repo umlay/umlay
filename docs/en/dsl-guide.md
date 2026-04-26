@@ -554,6 +554,12 @@ model Page @entity @intent("paginated list response") {
 
 ## 10.10e Metadata bundle — RFC 0038–0044 / spec 1.6+
 
+> ⚠️ **`@` (single-at) and `@@` (double-at) live in different positions**:
+> - `@directive(...)` (single-at) → declaration **header** (annotation slot). Example: `model Order @aggregate_root @intent("...")`
+> - `@@directive(...)` (double-at) → **inside** the model / view body. Example: `{ @@inv("...") @@owner(...) ... }`
+>
+> Mixing them produces `Expecting LCurly, found '@@'` (the 1.6.1+ parser appends a Hint line). See [`docs/ja/known-limitations.md`](../ja/known-limitations.md) §1.
+
 Eight optional, additive directives that attach reviewer / AI / PM
 metadata to model / attribute / namespace declarations.
 

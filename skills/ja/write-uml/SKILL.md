@@ -231,6 +231,8 @@ Umlay は **Prisma / TypeScript / GraphQL とは違う**ので、それらに引
 | `field UUID @id?` | `field UUID? @id` | 注釈は型 + nullability の**後** |
 | `attribute "comment"` | `attribute @@doc("comment")` | bare 文字列は不可 |
 | `foreignKey(User.id)` | `@ref(User.id)` | 関数呼び出し風は不可 |
+| `model X @aggregate_root @@confidence(0.3) {` | body 内に置く: `model X @aggregate_root { @@confidence(0.3) ... }` | `@` (header) と `@@` (body) は位置別物 |
+| header に `@@inv(...)` / `@@owner(...)` / `@@status(...)` | header は single-at: `@inv("...")` `@intent("...")`、`@@` 系は body 内 | 同上 |
 
 特に **「属性名と型の間に `:` を入れない」** が最大の落とし穴。Prisma / TS スキーマからの取り込みは `reverse-engineer` skill が変換するので、AI が手書きする場合は `name Type` 形式を厳守する。
 

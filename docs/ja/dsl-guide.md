@@ -559,6 +559,12 @@ model Page @entity @intent("ページネーション付きリスト応答") {
 
 ## 10.10e. メタデータバンドル — RFC 0038–0044 / spec 1.6+
 
+> ⚠️ **`@` (single-at) と `@@` (double-at) は位置が違う**:
+> - `@directive(...)` (single-at) → declaration の **header 位置 (annotation)**。例: `model Order @aggregate_root @intent("...")`
+> - `@@directive(...)` (double-at) → model / view の **body の中**。例: `{ @@inv("...") @@owner(...) ... }`
+>
+> 混同すると `Expecting LCurly, found '@@'` という parse エラーになります (1.6.1+ の parser は Hint を appendします)。詳細は [`docs/ja/known-limitations.md`](./known-limitations.md) §1。
+
 レビュワー / AI / PM 視点のメタデータを model / attribute / namespace に付ける 8 つのディレクティブ。すべて optional・additive。
 
 ```umlay

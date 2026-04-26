@@ -236,6 +236,8 @@ those languages produce parse errors. The most common offenders:
 | `field UUID @id?` | `field UUID? @id` | nullability goes between type and annotations |
 | `attribute "comment"` | `attribute @@doc("comment")` | bare strings not allowed |
 | `foreignKey(User.id)` | `@ref(User.id)` | function-call style not allowed |
+| `model X @aggregate_root @@confidence(0.3) {` | move into body: `{ @@confidence(0.3) ... }` | `@` (header) and `@@` (body) live in different positions |
+| `@@inv(...)` / `@@owner(...)` / `@@status(...)` at the header | header takes single-at: `@inv("...")` / `@intent("...")` — the `@@`-form is body-only | same rule |
 
 The single biggest pitfall: **no colon between attribute name and type**.
 If you import from Prisma / TS schemas, use the `reverse-engineer`
