@@ -129,6 +129,25 @@ spec 1.6.2+ は **`"…"` と `'…'` の両方を受理**します (TS / Prisma
 @codegenName("account_id")   // ✅ OK (canonical)
 ```
 
+## 8.55. 値域制約 annotation (`@maxLength` / `@min` / `@pattern` 等)
+
+spec 1.6.2+ で **任意の単純な annotation を `attribute.constraints[]` に格納**するようになりました。canonical 名は **camelCase** (`@maxLength`)、`@max_length` / `@MaxLength` も自動正規化されます。
+
+```umlay
+model Account @entity {
+  name        string!  @maxLength(1024)              // ✅ canonical
+  age         int!     @min(0) @max(150)             // ✅
+  email       string!  @pattern("^[^@]+@[^@]+$")     // ✅
+  description string?  @max_length(500)              // ✅ snake_case → maxLength に正規化
+}
+```
+
+数値リテラルは number として、`"..."` は string として、引数なし annotation は `true` として格納。
+
+**L011 (制約未指定の info)** はこれらが付いていれば**発火しません**。L011 が認識する constraint キー: `length` / `maxLength` / `minLength` / `min` / `max` / `pattern` / `format` / `scale` / `enum`。
+
+未知の annotation も IR に保存されますが L011 は黙ったままなので、将来 spec 化される予定の名前を先取りできます。
+
 ## 8.6. ハイフン入りディレクティブ名
 
 `@@min-spec-version("1.6.0")` のようなハイフン名は **1.6.2+ で解禁** (前は token 分解で parse error)。canonical な camelCase 別名 (`@@minSpecVersion("1.6.0")`) も同等に効きます。
