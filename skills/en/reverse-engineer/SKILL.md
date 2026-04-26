@@ -372,6 +372,27 @@ model User @entity {
 
 Note the backtick-quoted reserved word and the `@codegenName` preserving the snake_case column.
 
+## spec 1.6 — required `@@provenance` / `@@confidence` template
+
+Every model emitted by reverse-engineer must carry `@@provenance` and
+`@@confidence`:
+
+```umlay
+model Order @aggregate_root {
+  @@provenance(agent: "claude-opus-4-7", from: "schema.prisma", at: "2026-04-26")
+  @@confidence(0.6)                           // confidence in the stereotype guess
+  @@status("in-review", since: "2026-04-26")  // pending human review
+  id ...
+}
+```
+
+- `confidence` reflects the §7 stereotype-inference table: high / medium /
+  low confidence → 0.9 / 0.6 / 0.3 as a rule of thumb.
+- `@@status` stays `"in-review"` until a human runs `review-uml` and
+  promotes the model to `"active"`.
+- Compliance / PII info goes into `@@compliance(tags: [...])`, **not**
+  inline string `@@doc`.
+
 ## spec 1.3 notes
 
 - Source uses Prisma 5+ composite types → emit `type X @value_object { ... }` inside the namespace

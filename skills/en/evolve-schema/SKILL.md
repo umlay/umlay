@@ -138,6 +138,29 @@ model Order {
 - [ ] Docs / skills updated
 - [ ] IR version bump decision made (2.0 if breaking)
 
+## spec 1.6 — leave a lifecycle marker on every change
+
+When `evolve-schema` modifies a model / attribute, **stamp the change**:
+
+```umlay
+// new attribute
+contactEmail string! @unique @@since("1.6.0")
+
+// rename — flag the old name with a removal target
+email string! @@deprecated(since: "1.6.0", until: "2.0.0", replaceWith: "contactEmail")
+
+// model whose rules are now fully captured
+model Order @aggregate_root {
+  @@status("active", since: "2026-04-26")   // promote from in-review
+  @@inv(field: total, op: ge, value: 0)
+  @@example(input: { total: -1 }, expect: reject)
+}
+```
+
+**Why**: `change-impact-diff` uses `@@since` / `@@deprecated` to bucket
+risks more precisely (additive vs breaking). `@@status` is the
+pre-merge checklist key — leaving "in-review" dangling is a common bug.
+
 ## Incremental refactors enabled by spec 1.3
 
 - **De-duplicate audit columns**: `createdAt / updatedAt` scattered

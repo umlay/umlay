@@ -371,6 +371,23 @@ model User @entity {
 
 予約語列をバッククォートで escape し、`@codegenName` で snake_case 列名を保持していることに注意。
 
+## spec 1.6 — provenance / confidence の必須化
+
+reverse-engineer の出力は `@@provenance` と `@@confidence` を**必ず**付ける:
+
+```umlay
+model Order @aggregate_root {
+  @@provenance(agent: "claude-opus-4-7", from: "schema.prisma", at: "2026-04-26")
+  @@confidence(0.6)                           // 推定 stereotype の信頼度
+  @@status("in-review", since: "2026-04-26")  // 人間レビュー前
+  id ...
+}
+```
+
+- `confidence` は **stereotype 推定の確信度**: §7 表の「高/中/低」 → 0.9 / 0.6 / 0.3 を目安
+- `@@status` は**人間レビューが終わるまで `"in-review"`**。`review-uml` 完了後にユーザが `"active"` へ変更
+- PII / コンプライアンス情報は `@@compliance(tags: [...])` に正規化 (`@@doc` の中に文字列で書かない)
+
 ## spec 1.3 ノート
 
 - Prisma 5+ の composite type → namespace 内に `type X @value_object { ... }`

@@ -249,6 +249,33 @@ Checklist generation rules: `apps/web/lib/review-checklist.ts`.
   renderer auto-switches to DOWN. If the reviewer expects LR (wide
   screen docs), add `layout: direction(LR)` explicitly.
 
+## spec 1.6 review checkpoints (RFC 0038–0044 + RFC 0049)
+
+Metadata-bundle review checklist:
+
+| Concern | Directive / lint | What to inspect |
+| --- | --- | --- |
+| Ownership | `@@owner(team:..., reviewer:...)` | Aggregate-roots / public-API models without `@@owner` block follow-ups; in strict mode, warn → error candidate |
+| Lifecycle state | `@@status("in-review", blockedBy:...)` | Confirm `state == "in-review"` is not left dangling at merge time |
+| ADR trail | `@@adrRef("ADR-…")` (L046 recommends one for `@@locked` items) | Design-critical models should reference an ADR |
+| AI-import confidence | `@@provenance` / `@@confidence` | Promote `confidence < 0.7` rows to verified one-by-one |
+| Compliance | `@@compliance(tags: ["PII", "GDPR"])` | Tags attached at namespace / model / attribute scope; L048 fires when a PII attr has no reject `@@example` |
+| Locked elements | `@@locked(reason:...)` | L046 surfaces these as info; cross-check the PR diff against the locked surface |
+| Boundary contract | namespace `@@boundary(exposes:[...], hides:[...])` | L047 detects ghost references (rename / delete leftovers) |
+| Testable invariants | `@@inv(field:..., op:..., value:...)` + `@@example` | L049 catches example × invariant mismatches — flag "invariant is just a string" anti-pattern |
+
+### Recommended review output
+
+Run the corpus aggregator first, then drill into the highest-firing
+rules:
+
+```sh
+umlay check schema.umlay --stats --json | jq '.byRule[] | select(.severity != "info")'
+```
+
+The structured output feeds directly into `change-impact-diff` and
+`plan-from-diff` as input.
+
 ## References
 
 - Grammar: [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md)

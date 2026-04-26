@@ -138,6 +138,28 @@ model Order {
 - [ ] docs / skill に変更点を追記した
 - [ ] IR バージョンバンプの要否を確認した (破壊的なら 2.0)
 
+## spec 1.6 — 変更したら lifecycle metadata を更新する
+
+`evolve-schema` で `.umlay` を変更した model / attribute には**変更マーカーを残す**:
+
+```umlay
+// 新しい attribute を追加した場合
+contactEmail string! @unique @@since("1.6.0")
+
+// rename した場合 (旧名側に予告):
+email string! @@deprecated(since: "1.6.0", until: "2.0.0", replaceWith: "contactEmail")
+
+// 業務ルールが固まった model
+model Order @aggregate_root {
+  @@status("active", since: "2026-04-26")   // in-review → active に昇格
+  @@inv(field: total, op: ge, value: 0)
+  @@example(input: { total: -1 }, expect: reject)
+  // ...
+}
+```
+
+**理由**: `change-impact-diff` が `@@since` / `@@deprecated` の存在で**破壊的変更の自動分類**に使う (Risk バケツの精度向上)。`@@status` は merge 前の最終チェックリスト (in-review が残っていないか) の鍵。
+
 ## spec 1.3 を使った漸進的リファクタリング
 
 反復する属性や抽象化を導入する際の推奨パターン:

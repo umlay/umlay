@@ -225,6 +225,31 @@ Checklist 生成ルール: `apps/web/lib/review-checklist.ts`。
 - **backtick ident**: `` `limit` `` 等が使われた場合、codegen 側 (Prisma / SQL) で quoted identifier として出すか否か、DBMS 方言に依存するので明示
 - **ER 図のレイアウト**: テーブル数 ≥ 8 で direction 未指定は自動 DOWN — 必要なら `layout: direction(LR)` で上書き
 
+## spec 1.6 のレビュー観点 (RFC 0038–0044 + RFC 0049)
+
+メタデータバンドル機能を使った review チェックリスト:
+
+| 観点 | 着目する directive / lint | 何を見る |
+| --- | --- | --- |
+| **所有者明示** | `@@owner(team:..., reviewer:...)` | aggregate_root / public-API model に owner が無いとフォロー不能。strict なら error 候補 |
+| **ライフサイクル状態** | `@@status("in-review", blockedBy:...)` | merge 直前に `state == "in-review"` のまま残っていないか確認 |
+| **ADR 紐付け** | `@@adrRef("ADR-xxx")` (L046 が `@@locked` 時に推奨) | 設計上重要な model に ADR 記録があるか |
+| **自動取込の信頼度** | `@@provenance / @@confidence` | reverse-engineer 由来 (`confidence < 0.7`) を 1 つずつ昇格させる |
+| **コンプライアンス** | `@@compliance(tags:["PII", "GDPR"])` | namespace / model / attribute 単位でタグが付いているか。L048 が PII 列に reject example 不在を warn |
+| **ロックされた要素** | `@@locked(reason:...)` | L046 が常時 info で出す。CI で grep して PR 差分とクロスチェック可能 |
+| **境界契約** | namespace `@@boundary(exposes:[...], hides:[...])` | L047 で幽霊参照 (rename / 削除取り残し) を検知 |
+| **テスト可能な不変条件** | `@@inv(field:..., op:..., value:...)` + `@@example` | L049 で `@@example` と `@@inv` の矛盾を検知 — invariant が "string で書いてあるだけ" になっていないか |
+
+### 推奨レビュー出力フォーマット
+
+`umlay check --stats --json` で集計したものをまず確認 → 多発するルールから順に対処。
+
+```sh
+umlay check schema.umlay --stats --json | jq '.byRule[] | select(.severity != "info")'
+```
+
+→ 構造化されているので `change-impact-diff` / `plan-from-diff` の input にも流せる。
+
 ## 参照
 
 - 文法: [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md)
