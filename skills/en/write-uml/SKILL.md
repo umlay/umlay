@@ -123,8 +123,11 @@ Boost AI generation and review quality by adding:
 
 ```prisma
 model Order @aggregate_root
-  @intent("Customer order aggregate") {
-  total Money! @inv("total >= 0")
+  @intent("Customer order aggregate")
+  @inv("total.amount >= 0")
+  @inv("status in ['DRAFT', 'CONFIRMED', 'CANCELLED']") {
+  total  Money!
+  status OrderStatus!
 
   fn confirm() -> void
     @pre("status == DRAFT")
@@ -133,6 +136,28 @@ model Order @aggregate_root
     @intent("Confirm draft")
 }
 ```
+
+**⚠️ L021 pitfall (strict error)**: `@aggregate_root` requires **at
+least one `@inv("...")` on the model header**. Attribute-level `@inv`
+does NOT satisfy L021.
+
+```prisma
+// ❌ NG (L021 fires) — only attribute-level @inv
+model Order @aggregate_root @intent("...") {
+  total Money! @inv("total >= 0")
+}
+
+// ✅ OK — header carries one or more @inv
+model Order @aggregate_root
+  @intent("...")
+  @inv("total.amount >= 0") {
+  total Money!
+}
+```
+
+Treat **model-level invariants** as cross-attribute / business rules
+and **attribute-level invariants** as single-field value-range
+constraints. Both can coexist; both flow into different lint surfaces.
 
 ### Step 8 — Declare views
 

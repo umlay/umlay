@@ -123,8 +123,11 @@ AI 生成・レビューの品質を高めるため、以下を**積極的に**�
 
 ```prisma
 model Order @aggregate_root
-  @intent("顧客発注のアグリゲート") {
-  total Money! @inv("total >= 0")
+  @intent("顧客発注のアグリゲート")
+  @inv("total.amount >= 0")
+  @inv("status in ['DRAFT', 'CONFIRMED', 'CANCELLED']") {
+  total  Money!
+  status OrderStatus!
 
   fn confirm() -> void
     @pre("status == DRAFT")
@@ -133,6 +136,24 @@ model Order @aggregate_root
     @intent("下書きを確定")
 }
 ```
+
+**⚠️ L021 (strict で error) の落とし穴**: `@aggregate_root` には**model ヘッダ位置の `@inv("...")`** が 1 つ以上必須。**attribute レベルの `@inv` では満たされない**。
+
+```prisma
+// ❌ NG (L021 エラー) — attribute 側にしか @inv が無い
+model Order @aggregate_root @intent("...") {
+  total Money! @inv("total >= 0")
+}
+
+// ✅ OK — model ヘッダに @inv を 1 つ以上
+model Order @aggregate_root
+  @intent("...")
+  @inv("total.amount >= 0") {
+  total Money!
+}
+```
+
+**model レベル**は不変条件 (cross-attribute 制約 / 業務ルール)、**attribute レベル**は単一フィールドの値域とみなす。両方書いて構わない。
 
 ### Step 8 — ビューを宣言
 
