@@ -23,7 +23,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "c49ddec513d7",
@@ -36,7 +37,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "5c0fb0db7c5a",
@@ -50,7 +52,8 @@
               "default": "DRAFT",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "213b307c8f79",
@@ -72,7 +75,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "constraints": {}
             },
             {
               "_id": "3cbd979e4539",
@@ -95,7 +99,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "constraints": {}
             }
           ],
           "relations": [],

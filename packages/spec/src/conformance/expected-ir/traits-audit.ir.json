@@ -23,7 +23,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "aafe3495a397",
@@ -36,7 +37,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "c32178aa7f6d",
@@ -49,7 +51,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "6c69f183cb58",
@@ -62,7 +65,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "1f9944978dbe",
@@ -75,7 +79,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "df601ab0b3ed",
@@ -88,7 +93,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -134,7 +140,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "f6385dd3fefe",
@@ -147,7 +154,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "b53c79672ef2",
@@ -160,7 +168,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "5aef76912dd2",
@@ -173,7 +182,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "aafe3495a397",
@@ -186,7 +196,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "6c69f183cb58",
@@ -199,7 +210,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "0eddc670f56c",
@@ -221,7 +233,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -274,7 +287,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "aafe3495a397",
@@ -287,7 +301,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -308,7 +323,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -329,7 +345,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -350,7 +367,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "b53c79672ef2",
@@ -363,7 +381,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],

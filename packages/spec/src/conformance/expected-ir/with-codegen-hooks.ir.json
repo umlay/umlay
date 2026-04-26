@@ -23,7 +23,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "ac2b3f21c2a3",
@@ -36,7 +37,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "aa74c6fbfccb",
@@ -58,7 +60,8 @@
                 }
               ],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "b283d2a5bca6",
@@ -79,7 +82,8 @@
                 }
               ],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "eccab44bab92",
@@ -107,7 +111,8 @@
                 }
               ],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "d9c0ad18cf6a",
@@ -128,7 +133,8 @@
                 }
               ],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "acccecdbd669",
@@ -161,7 +167,8 @@
                 }
               ],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "988f359c555f",
@@ -177,7 +184,8 @@
               "fixes": [],
               "deprecated": {
                 "message": "use metadata instead"
-              }
+              },
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -261,7 +269,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "eab9e5acc924",
@@ -274,7 +283,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "2c8aebd61fd9",
@@ -287,7 +297,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -343,7 +354,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "46c17a3fd535",
@@ -356,7 +368,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "d3d794d367f7",
@@ -369,7 +382,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "4a2e416e1d58",
@@ -382,7 +396,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "807966dd716f",
@@ -395,7 +410,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "auto": true
+              }
             }
           ],
           "relations": [],

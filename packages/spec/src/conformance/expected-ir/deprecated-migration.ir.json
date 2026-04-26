@@ -23,7 +23,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "b8214cbfaee2",
@@ -36,7 +37,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "413045c0e4eb",
@@ -52,7 +54,8 @@
               "fixes": [],
               "deprecated": {
                 "message": "use displayName instead since 0.3"
-              }
+              },
+              "constraints": {}
             },
             {
               "_id": "f438d06917c0",
@@ -65,7 +68,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "6d341518c390",
@@ -84,7 +88,8 @@
                 "since": "0.5.0",
                 "removeIn": "1.0.0",
                 "replaceWith": "User.displayName"
-              }
+              },
+              "constraints": {}
             },
             {
               "_id": "64358f67bf86",
@@ -97,7 +102,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "64d8b76cbe04",
@@ -110,7 +116,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -153,7 +160,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "b8214cbfaee2",
@@ -166,7 +174,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],

@@ -23,7 +23,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "95cc3bec8161",
@@ -37,7 +38,8 @@
               "codegenName": "email",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "f763bfaad9f4",
@@ -51,7 +53,8 @@
               "codegenName": "name",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -94,7 +97,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "c039f8816754",
@@ -112,7 +116,8 @@
               "codegenName": "customerId",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "22968932fd27",
@@ -126,7 +131,8 @@
               "codegenName": "total",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "2d278f9c3950",
@@ -141,7 +147,8 @@
               "codegenName": "status",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -192,7 +199,8 @@
               "codegenName": "orderId",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "540b19daabc2",
@@ -206,7 +214,8 @@
               "codegenName": "lineNo",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "d0a7659db6d8",
@@ -220,7 +229,8 @@
               "codegenName": "qty",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],

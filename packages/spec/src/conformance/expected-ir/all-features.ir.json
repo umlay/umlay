@@ -23,7 +23,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "c79789153c73",
@@ -36,7 +37,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "maxLength": 100
+              }
             },
             {
               "_id": "2648fa689242",
@@ -49,7 +53,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -92,7 +97,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "fb5ef328f9d6",
@@ -105,7 +111,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "69030bf51437",
@@ -118,7 +125,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "48e0b6ed6d05",
@@ -131,7 +139,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "42a89f90d06e",
@@ -144,7 +153,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "maxLength": 13
+              }
             },
             {
               "_id": "0e15d6aa0063",
@@ -157,7 +169,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "maxLength": 300
+              }
             },
             {
               "_id": "eb6195e10a18",
@@ -175,7 +190,8 @@
               },
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "9e9cc6cd3af8",
@@ -189,7 +205,11 @@
               "default": "1",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "min": 0,
+                "max": 9999
+              }
             },
             {
               "_id": "5bf06006998c",
@@ -203,7 +223,8 @@
               "default": "AVAILABLE",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "f5a28ba888b4",
@@ -216,7 +237,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "7b061d8c2088",
@@ -239,7 +261,8 @@
                   "text": "v2 で `BookSummary` モデルに切り出す",
                   "replies": []
                 }
-              ]
+              ],
+              "constraints": {}
             },
             {
               "_id": "dda9bfeffd80",
@@ -255,7 +278,8 @@
               "fixes": [],
               "experimental": {
                 "since": "1.2.0"
-              }
+              },
+              "constraints": {}
             },
             {
               "_id": "b80d257e618f",
@@ -274,7 +298,8 @@
                 "since": "1.2.0",
                 "removeIn": "2.0.0",
                 "replaceWith": "Book.summary"
-              }
+              },
+              "constraints": {}
             },
             {
               "_id": "c35c00630416",
@@ -287,7 +312,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [
@@ -403,7 +429,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "82bccee2c089",
@@ -416,7 +443,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "maxLength": 500
+              }
             },
             {
               "_id": "0ad4c9469d8b",
@@ -429,7 +459,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "maxLength": 64
+              }
             }
           ],
           "relations": [],
@@ -472,7 +505,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "ed164310987e",
@@ -485,7 +519,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "maxLength": 255
+              }
             },
             {
               "_id": "43c91c312e26",
@@ -499,7 +536,8 @@
               "default": "MEMBER",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "fb5ef328f9d6",
@@ -512,7 +550,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "auto": true
+              }
             },
             {
               "_id": "9e37abfe1e47",
@@ -525,7 +566,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [
@@ -583,7 +625,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "6ac5de020d19",
@@ -601,7 +644,8 @@
               },
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "8a61f5643542",
@@ -618,7 +662,8 @@
               },
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "b8e899db89a3",
@@ -631,7 +676,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "auto": true
+              }
             },
             {
               "_id": "d5457e47beee",
@@ -644,7 +692,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "0905756fa523",
@@ -657,7 +706,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "5bf06006998c",
@@ -671,7 +721,8 @@
               "default": "ACTIVE",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -727,7 +778,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "6ac5de020d19",
@@ -744,7 +796,8 @@
               },
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "8a61f5643542",
@@ -761,7 +814,8 @@
               },
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "fb5ef328f9d6",
@@ -774,7 +828,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "auto": true
+              }
             },
             {
               "_id": "b29612d3cbb8",
@@ -788,7 +845,8 @@
               "default": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -831,7 +889,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [
@@ -899,7 +958,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [
@@ -949,7 +1009,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [
@@ -999,7 +1060,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -1042,7 +1104,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -1085,7 +1148,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -1128,7 +1192,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -1171,7 +1236,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -1218,7 +1284,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -1271,7 +1338,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "c79789153c73",
@@ -1284,7 +1352,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "maxLength": 120
+              }
             },
             {
               "_id": "9dab0fcd30c2",
@@ -1302,7 +1373,8 @@
               },
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "1d03c4db1944",
@@ -1315,7 +1387,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "c0f7f20afce9",
@@ -1328,7 +1401,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "56f7a53be5df",
@@ -1342,7 +1416,11 @@
               "default": "0",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "min": 0,
+                "max": 100
+              }
             },
             {
               "_id": "5bf06006998c",
@@ -1356,7 +1434,8 @@
               "default": "PENDING",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "e2daeae7e08d",
@@ -1369,7 +1448,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "maxLength": 64
+              }
             },
             {
               "_id": "be0b7bc442ba",
@@ -1382,7 +1464,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -1476,7 +1559,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "bc871abefa43",
@@ -1489,7 +1573,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "maxLength": 32
+              }
             },
             {
               "_id": "37acfec4a509",
@@ -1503,7 +1590,8 @@
               "codegen": [],
               "reviews": [],
               "fixes": [],
-              "derived": true
+              "derived": true,
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -1546,7 +1634,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "bc871abefa43",
@@ -1561,7 +1650,8 @@
               "codegen": [],
               "reviews": [],
               "fixes": [],
-              "readonly": true
+              "readonly": true,
+              "constraints": {}
             },
             {
               "_id": "95848452b4bc",
@@ -1574,7 +1664,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "d842350b1df2",
@@ -1589,7 +1680,8 @@
               "codegen": [],
               "reviews": [],
               "fixes": [],
-              "static": true
+              "static": true,
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -1639,7 +1731,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "22028ece70d6",
@@ -1653,7 +1746,8 @@
               "default": "100",
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "d22778c495dd",
@@ -1674,7 +1768,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "constraints": {}
             },
             {
               "_id": "a12b9f6e83ab",
@@ -1695,7 +1790,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "constraints": {}
             },
             {
               "_id": "fb5ef328f9d6",
@@ -1708,7 +1804,10 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {
+                "auto": true
+              }
             }
           ],
           "relations": [],
@@ -2189,7 +2288,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             },
             {
               "_id": "69030bf51437",
@@ -2202,7 +2302,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],
@@ -2223,7 +2324,8 @@
               "index": false,
               "codegen": [],
               "reviews": [],
-              "fixes": []
+              "fixes": [],
+              "constraints": {}
             }
           ],
           "relations": [],

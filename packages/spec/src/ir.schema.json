@@ -516,6 +516,11 @@
                               }
                             },
                             "additionalProperties": true
+                          },
+                          "constraints": {
+                            "type": "object",
+                            "additionalProperties": {},
+                            "default": {}
                           }
                         },
                         "required": [
