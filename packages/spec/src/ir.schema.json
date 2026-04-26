@@ -616,6 +616,9 @@
                           "visibility": {
                             "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/attributes/items/properties/visibility",
                             "default": "public"
+                          },
+                          "rationale": {
+                            "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/attributes/items/properties/rationale"
                           }
                         },
                         "required": [

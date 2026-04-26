@@ -321,7 +321,8 @@
               "kind": "composition",
               "target": "Loan",
               "multiplicity": "0..*",
-              "role": "loans"
+              "role": "loans",
+              "doc": "この本の貸出履歴"
             },
             {
               "kind": "aggregation",
@@ -1928,7 +1929,16 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [
+                  "get(entity.id) != null"
+                ],
+                "raises": []
+              }
             },
             {
               "name": "delete",

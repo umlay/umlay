@@ -28,7 +28,17 @@
               "returns": {
                 "ref": "int"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "AST を評価して整数を返す (変数未定義時は raises)",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": [
+                  "UndefinedVariable"
+                ]
+              }
             }
           ]
         }

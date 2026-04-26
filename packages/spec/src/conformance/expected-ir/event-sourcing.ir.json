@@ -118,7 +118,15 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "イベントを state に反映 (event sourcing の再生)",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             },
             {
               "name": "confirm",
@@ -126,7 +134,19 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "Confirmed variant を発行",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [
+                  "status == DRAFT"
+                ],
+                "postconditions": [
+                  "status == CONFIRMED"
+                ],
+                "raises": []
+              }
             }
           ],
           "docs": [],

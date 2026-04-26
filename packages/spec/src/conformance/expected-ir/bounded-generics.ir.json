@@ -63,7 +63,17 @@
               "returns": {
                 "ref": "UUID"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "Identifiable 実装",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [
+                  "result == id"
+                ],
+                "raises": []
+              }
             },
             {
               "name": "compareTo",
@@ -78,7 +88,15 @@
               "returns": {
                 "ref": "int"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "username で辞書順比較",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             }
           ],
           "docs": [],
@@ -197,7 +215,15 @@
               "returns": {
                 "ref": "int"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "self < other なら負、等しければ 0、大きければ正",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             }
           ]
         },

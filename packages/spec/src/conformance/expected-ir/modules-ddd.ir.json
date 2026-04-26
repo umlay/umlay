@@ -44,7 +44,15 @@
               "returns": {
                 "ref": "T"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "ID で単体取得",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             },
             {
               "name": "save",
@@ -59,7 +67,17 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "upsert",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [
+                  "get(entity.id) != null"
+                ],
+                "raises": []
+              }
             },
             {
               "name": "delete",
@@ -74,7 +92,15 @@
               "returns": {
                 "ref": "bool"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "削除、対象存在時 true",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             }
           ]
         },
@@ -100,7 +126,15 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "購読者に event を配送",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             }
           ]
         },
@@ -121,7 +155,15 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "操作ログに 1 行追記",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             }
           ]
         },
@@ -147,7 +189,15 @@
               "returns": {
                 "ref": "string"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "キャッシュキーを生成",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             },
             {
               "name": "invalidate",
@@ -162,7 +212,15 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "指定 ID のキャッシュを無効化",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             }
           ]
         },
@@ -203,7 +261,15 @@
               "returns": {
                 "ref": "User"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "メールアドレスで単体取得",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             }
           ]
         }

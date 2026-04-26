@@ -21,7 +21,15 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "挨拶する",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             },
             {
               "name": "describe",
@@ -29,7 +37,15 @@
               "returns": {
                 "ref": "string"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "自己記述",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             }
           ]
         },
@@ -47,7 +63,15 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "Left 流の挨拶",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             },
             {
               "name": "leftOnly",
@@ -55,7 +79,15 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "Left 固有メソッド",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             }
           ]
         },
@@ -73,7 +105,15 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "Right 流の挨拶",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             },
             {
               "name": "rightOnly",
@@ -81,7 +121,15 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "Right 固有メソッド",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             }
           ]
         },
@@ -135,7 +183,15 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "Diamond 独自の挨拶",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             }
           ]
         },

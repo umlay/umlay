@@ -386,7 +386,19 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "セッションを手動失効させる",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [
+                  "status == ACTIVE"
+                ],
+                "postconditions": [
+                  "status == REVOKED"
+                ],
+                "raises": []
+              }
             },
             {
               "name": "isExpired",
@@ -394,7 +406,15 @@
               "returns": {
                 "ref": "bool"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "rationale": {
+                "intent": "expiresAt < now を返す純粋関数",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              }
             }
           ],
           "docs": [],
