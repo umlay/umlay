@@ -36,7 +36,7 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
 | Feature | Surface |
 | --- | --- |
 | Syntax highlighting | `.umlay` + `.umlay.md` (Markdown injection) |
-| Diagnostics (69 rules) | Problems panel, inline squiggles |
+| Diagnostics (73 rules) | Problems panel, inline squiggles |
 | Hover | model intent / `@@doc` / `@@md` / attribute table |
 | Go to Definition | F12 from `@ref(X.y)` / dotted types / view-id |
 | Completion | `@stereotype`, `@@directive`, view kinds, `@ref`, `include:` |
@@ -62,8 +62,10 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
   paths resolve against the current doc, constrained to open workspace
   folders (no arbitrary-path reads). Parsed rows land in
   `model.sampleSources`.
-- **Explorer right-click → Open Preview to the Side** / editor context
-  menu offers the same.
+- **Explorer / editor right-click (0.5.2+)** offers two entries: "Open
+  Preview" (same column, no split) and "Open Preview to the Side"
+  (split). The editor-title icon at the top-right of the tab keeps
+  the split-pane behaviour.
 - **Umlay: Export Diagram as Image…** — SVG or PNG (`@2x` with white
   background), per-view or All views to a folder.
 - **Review mode (diff strip + hotspot overlay) — 0.4.8+**:
@@ -117,7 +119,7 @@ Users can override per-workspace or per-user as usual.
    │
    ├─ @umlay/core (parse → IR)
    │    │
-   │    ├─ @umlay/lint           (69 rules)
+   │    ├─ @umlay/lint           (73 rules)
    │    ├─ @umlay/renderer-er    (11 view kinds → SVG)
    │    └─ @umlay/webview-ui     (React components — shared with apps/web)
    │

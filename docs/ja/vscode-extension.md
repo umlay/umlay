@@ -36,7 +36,7 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
 | 機能 | 使い方 |
 | --- | --- |
 | シンタックスハイライト | `.umlay` + `.umlay.md`(Markdown 注入) |
-| 診断(69 ルール) | Problems パネル + 波線 |
+| 診断(73 ルール) | Problems パネル + 波線 |
 | Hover | モデルの intent / `@@doc` / `@@md` / 属性一覧 |
 | Go to Definition | F12 で `@ref(X.y)` / dotted 型 / view-id に跳躍 |
 | 補完 | `@stereotype` / `@@directive` / view kind / `@ref` / `include:` |
@@ -59,7 +59,7 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
 - **`@@sample(from: "./file.jsonl")` 展開 (spec 1.3.0)** — 開いている
   workspace folder 内の相対パスを `fs.readFile` で解決し `model.sampleSources`
   に反映。ワークスペース外のファイルは読まない
-- **エクスプローラ右クリック → Open Preview to the Side** / **エディタ右クリック同**
+- **エクスプローラ / エディタ右クリック (0.5.2+)** → 「Open Preview」(同タブ、分割なし) と「Open Preview to the Side」(分割) を選択可。エディタタブ右上のアイコンは引き続き分割版
 - **Umlay: Export Diagram as Image…** — SVG / PNG (2×)、個別 view / All views
 - **Review mode (diff strip + hotspot overlay) — 0.4.8+**:
   - `workspaceState` に baseline IR を自動保存 (クリーンパース時のみ更新)
@@ -96,6 +96,7 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
 - `Umlay: Open Preview`
 - `Umlay: Open Preview to the Side`
 - `Umlay: Configure LLM API key`(provider / model / key を対話的に設定)
+- `Umlay: Reset Diff Baseline (start a fresh review)` — 保存済み baseline IR を消去し、次のクリーンパースを新しいレビュー基準にする
 
 ## アーキテクチャ
 
@@ -104,7 +105,7 @@ pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
    │
    ├─ @umlay/core (parse → IR)
    │    │
-   │    ├─ @umlay/lint           (69 ルール)
+   │    ├─ @umlay/lint           (73 ルール)
    │    ├─ @umlay/renderer-er    (11 view kind → SVG)
    │    └─ @umlay/webview-ui     (React 共通コンポーネント — apps/web と共有)
    │
