@@ -1088,6 +1088,13 @@
                 },
                 "default": []
               },
+              "refs": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "detailLevel": {
+                "type": "string"
+              },
               "layout": {
                 "type": "object",
                 "additionalProperties": {}
@@ -1482,6 +1489,30 @@
                           },
                           "required": [
                             "kind"
+                          ],
+                          "additionalProperties": true
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "detailGroup"
+                            },
+                            "level": {
+                              "type": "string"
+                            },
+                            "body": {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/definitions/UmlayIR/properties/views/items/properties/sequenceBody/properties/statements/items"
+                              }
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "level",
+                            "body"
                           ],
                           "additionalProperties": true
                         }

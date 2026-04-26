@@ -557,6 +557,57 @@ model Page @entity @intent("ページネーション付きリスト応答") {
 - `irToDsl` (format-on-save) は予約語を自動 backtick 化、通常名はそのまま
 - `reserved-keywords.umlay` のコメントアウト例は backtick があれば実用可
 
+## 10.10c. クラス図の参照ホップ (`refs: N`) — RFC 0036 / spec 1.5+
+
+クラス / ER 図で seed `include:` を **N ホップ拡張**する。spec 1.5 以前は手書きで `include:` に近隣を全列挙する必要があった。
+
+```umlay
+view user-only       @class_diagram { include: shop.User }                    // 単独
+view user-with-refs  @class_diagram { include: shop.User; refs: 1 }           // 1 ホップ近隣
+view user-deep       @class_diagram { include: shop.User; refs: 2 }           // 2 ホップ
+view user-no-address @class_diagram { include: shop.User; refs: 2; exclude: shop.Address }
+```
+
+- `refs: 0` (省略時) は exact include。
+- BFS で `attribute.ref.target` と `relations[].target` を辿る。**outgoing のみ** (逆方向は将来 RFC 候補)。
+- `exclude:` は seed / hop 拡張の両方に効く (拡張で入った model も exclude で消せる)。
+- 対象 view kind: `er_diagram` / `class_diagram` / `package_diagram` / `component_diagram`。他は無視。
+
+## 10.10d. シーケンス図の詳細レベル (`@@detail` + `level:`) — RFC 0037 / spec 1.5+
+
+シーケンス図の本体を**1 か所**に書き、view 側の `level:` で詳細表示を切り替える。
+
+```umlay
+view checkout-skeleton @sequence_diagram {
+  level: high
+  participants: shop.OrderService as S, shop.OrderDao as D, shop.OrderEntity as E
+  seq {
+    S ->> D: "save"
+    @@detail("low") {
+      S ->> S: "validate"
+      S ->> S: "calcTax"
+    }
+    D ->> E: "insert"
+    @@detail("low") {
+      D ->> D: "buildSql"
+    }
+  }
+}
+
+view checkout-detail @sequence_diagram {
+  level: low
+  participants: ...; seq { ...同じ本体... }
+}
+```
+
+- `@@detail("<level>") { ... }` は seq 本体内で任意の statement をラップ。`level` は任意の文字列 (慣例: `"low"` / `"high"` / domain 名)。
+- view 側 `level: X` で:
+  - グループ外の statement は常に表示
+  - `level == X` のグループは inline 展開
+  - `level != X` のグループは**まるごと drop**
+- view 側 `level:` 未設定なら**全グループを inline 展開** (旧 1.4 互換)
+- ネスト可。マッチはグループごと、伝播しない。
+
 ## 10.10b. enum / type / model に doc を attach (RFC 0035 / spec 1.4+)
 
 トップレベル宣言の**直前**に `@@doc(...)` / `@@md(...)` を置くと、

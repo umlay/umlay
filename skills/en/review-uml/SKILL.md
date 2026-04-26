@@ -1,7 +1,7 @@
 ---
 name: review-uml
-version: 1.4.0
-spec: "@umlay/spec >= 1.4.0 (DSL 1.0 / IR 1.0)"
+version: 1.5.0
+spec: "@umlay/spec >= 1.5.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, reviewer]
 summary: Mechanically review Umlay DSL / IR for spec conformance and design quality
 description: Use when the user asks to review, audit, or analyse an existing Umlay DSL / IR for spec conformance, lint violations, and design risks. Produces structured `@review` / `@fix` annotations.

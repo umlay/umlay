@@ -552,6 +552,64 @@ model Page @entity @intent("paginated list response") {
 - Reserved names (per a built-in SQL + Umlay hot zone) are automatically
   backticked when the formatter emits them.
 
+## 10.10c Class / ER reference-hop (`refs: N`) — RFC 0036 / spec 1.5+
+
+Expand a class or ER view's seed `include:` set by N reference hops at
+projection time. Pre-1.5 you had to hand-list every neighbour in
+`include:`; the view fell out of sync silently when `User` gained or
+dropped a reference.
+
+```umlay
+view user-only       @class_diagram { include: shop.User }                    // exact only
+view user-with-refs  @class_diagram { include: shop.User; refs: 1 }           // + 1-hop
+view user-deep       @class_diagram { include: shop.User; refs: 2 }           // + 2-hops
+view user-no-address @class_diagram { include: shop.User; refs: 2; exclude: shop.Address }
+```
+
+- `refs: 0` (default if omitted) = exact include.
+- BFS walks `attribute.ref.target` and `relations[].target`.
+  Outgoing references only (reverse navigation is a future RFC).
+- `exclude:` applies after expansion — it removes hop-added models too.
+- Honored by `er_diagram` / `class_diagram` / `package_diagram` /
+  `component_diagram`. Other kinds ignore it.
+
+## 10.10d Sequence detail levels (`@@detail` + `level:`) — RFC 0037 / spec 1.5+
+
+Write the sequence body **once** and switch granularity via the view's
+`level:` setting.
+
+```umlay
+view checkout-skeleton @sequence_diagram {
+  level: high
+  participants: shop.OrderService as S, shop.OrderDao as D, shop.OrderEntity as E
+  seq {
+    S ->> D: "save"
+    @@detail("low") {
+      S ->> S: "validate"
+      S ->> S: "calcTax"
+    }
+    D ->> E: "insert"
+    @@detail("low") {
+      D ->> D: "buildSql"
+    }
+  }
+}
+
+view checkout-detail @sequence_diagram {
+  level: low
+  participants: ...; seq { ...same body... }
+}
+```
+
+- `@@detail("<level>") { ... }` wraps inner statements with a tag of
+  any string (conventional: `"low"` / `"high"` / domain names).
+- View `level: X`:
+  - statements outside any group are always shown
+  - groups with `level == X` are expanded inline
+  - groups with a different level are **dropped**
+- View without `level:` expands every group inline (legacy behavior).
+- Groups may nest. Matching is per-group, not transitive.
+
 ## 10.10b Attaching docs to enum / type / model (RFC 0035 / spec 1.4+)
 
 Place `@@doc(...)` / `@@md(...)` immediately before a top-level declaration

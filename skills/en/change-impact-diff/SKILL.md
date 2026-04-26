@@ -1,7 +1,7 @@
 ---
 name: change-impact-diff
-version: 1.4.0
-spec: "@umlay/spec >= 1.4.0 (DSL 1.0 / IR 1.0)"
+version: 1.5.0
+spec: "@umlay/spec >= 1.5.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, reviewer, architect]
 summary: Produce a concept-first change-impact report (not a git-line diff) from a baseline + current Umlay IR pair
 description: Use when the user wants to analyse what a change means — not which lines moved. Given two `.umlay` / IR snapshots, produce Purpose / Touch-points / Do-not-miss + risk classification + impact scan + reviewer checklist. Reusable outside the Web Diff tab (PR comments, release notes, Slack summaries).
