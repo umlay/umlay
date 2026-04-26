@@ -2,6 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
+  "specVersion": "1.6.0",
   "namespaces": {
     "blog": {
       "models": {
@@ -82,7 +83,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Post": {
           "_id": "10a7041372b8",
@@ -193,7 +196,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Comment": {
           "_id": "3ff9da208076",
@@ -281,7 +286,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Tag": {
           "_id": "d88094c6b1a3",
@@ -334,7 +341,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         }
       },
       "types": {},

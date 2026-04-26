@@ -2,6 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
+  "specVersion": "1.6.0",
   "namespaces": {
     "orders": {
       "models": {
@@ -56,7 +57,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Order": {
           "_id": "2e6fca7b9211",
@@ -127,7 +130,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         }
       },
       "types": {},

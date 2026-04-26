@@ -552,6 +552,45 @@ model Page @entity @intent("paginated list response") {
 - Reserved names (per a built-in SQL + Umlay hot zone) are automatically
   backticked when the formatter emits them.
 
+## 10.10e Metadata bundle — RFC 0038–0044 / spec 1.6+
+
+Eight optional, additive directives that attach reviewer / AI / PM
+metadata to model / attribute / namespace declarations.
+
+```umlay
+@@boundary(exposes: ["Order.id", "Order.status"], hides: ["Order.internalSeq"])
+@@compliance(tags: ["PII"], residency: "EU")
+
+namespace billing
+
+model Order @aggregate_root {
+  @@owner(team: "billing-platform", reviewer: "@taro")     // RFC 0038
+  @@status("in-review", since: "2026-04-26", blockedBy: "ADR-007")
+  @@adrRef("ADR-005")
+  @@provenance(agent: "claude-opus-4-7", from: "schema.prisma", at: "2026-04-26")
+  @@confidence(0.6)                                         // RFC 0039
+  @@compliance(tags: ["PII", "GDPR"], residency: "EU")      // RFC 0040
+  @@since("1.6.0")                                          // RFC 0041
+  @@locked(reason: "PCI-DSS — change requires security review")  // RFC 0042
+  @@example(input: { total: -1 }, expect: reject, reason: "non-negative invariant")  // RFC 0043
+  @@example(input: { total: 100 }, expect: accept)
+
+  id        UUID! @id
+  email     string!  @@compliance(tags: ["PII"])            // inline on attribute
+  cardLast4 string!  @@locked(reason: "do not log")
+}
+```
+
+- Arrays `[ ... ]`, objects `{ ... }`, negative numbers, booleans, and
+  quoted strings are accepted as directive arguments.
+- IR gains typed fields: `Model.owner / status / adrRefs / provenance /
+  confidence / compliance / since / locked / examples`,
+  `Attribute.compliance / since / locked`, and `Namespace.boundary /
+  compliance`.
+- IR root carries `specVersion: "1.6.0"` (distinct from IR schema
+  version `version: "1.0"`).
+- Lint enforcement (L046+) is staged in subsequent RFCs.
+
 ## 10.10c Class / ER reference-hop (`refs: N`) — RFC 0036 / spec 1.5+
 
 Expand a class or ER view's seed `include:` set by N reference hops at

@@ -2,6 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
+  "specVersion": "1.6.0",
   "namespaces": {
     "pm": {
       "models": {
@@ -147,7 +148,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Task": {
           "_id": "1348706cdc2c",
@@ -514,7 +517,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "TaskDependency": {
           "_id": "f0bb3ceee8c8",
@@ -659,7 +664,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         }
       },
       "types": {},

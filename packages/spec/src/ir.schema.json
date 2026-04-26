@@ -25,6 +25,9 @@
           ],
           "default": "draft"
         },
+        "specVersion": {
+          "type": "string"
+        },
         "meta": {
           "type": "object",
           "additionalProperties": {}
@@ -442,6 +445,40 @@
                           },
                           "derived": {
                             "type": "boolean"
+                          },
+                          "compliance": {
+                            "type": "object",
+                            "properties": {
+                              "tags": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "default": []
+                              },
+                              "residency": {
+                                "type": "string"
+                              },
+                              "retention": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": true
+                          },
+                          "since": {
+                            "type": "string"
+                          },
+                          "locked": {
+                            "type": "object",
+                            "properties": {
+                              "reason": {
+                                "type": "string"
+                              },
+                              "by": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": true
                           }
                         },
                         "required": [
@@ -703,6 +740,109 @@
                       "type": "array",
                       "items": {
                         "type": "string"
+                      },
+                      "default": []
+                    },
+                    "owner": {
+                      "type": "object",
+                      "properties": {
+                        "team": {
+                          "type": "string"
+                        },
+                        "reviewer": {
+                          "type": "string"
+                        },
+                        "contact": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "state": {
+                          "type": "string"
+                        },
+                        "since": {
+                          "type": "string"
+                        },
+                        "blockedBy": {
+                          "type": "string"
+                        },
+                        "note": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "state"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "adrRefs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "default": []
+                    },
+                    "provenance": {
+                      "type": "object",
+                      "properties": {
+                        "agent": {
+                          "type": "string"
+                        },
+                        "from": {
+                          "type": "string"
+                        },
+                        "at": {
+                          "type": "string"
+                        },
+                        "prompt": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "confidence": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "compliance": {
+                      "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/attributes/items/properties/compliance"
+                    },
+                    "since": {
+                      "type": "string"
+                    },
+                    "locked": {
+                      "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/attributes/items/properties/locked"
+                    },
+                    "examples": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "input": {
+                            "type": "object",
+                            "additionalProperties": {},
+                            "default": {}
+                          },
+                          "expect": {
+                            "type": "string",
+                            "enum": [
+                              "accept",
+                              "reject"
+                            ]
+                          },
+                          "reason": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "expect"
+                        ],
+                        "additionalProperties": true
                       },
                       "default": []
                     }
@@ -1044,6 +1184,29 @@
                   "additionalProperties": true
                 },
                 "default": {}
+              },
+              "boundary": {
+                "type": "object",
+                "properties": {
+                  "exposes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "default": []
+                  },
+                  "hides": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "default": []
+                  }
+                },
+                "additionalProperties": true
+              },
+              "compliance": {
+                "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/attributes/items/properties/compliance"
               }
             },
             "additionalProperties": true

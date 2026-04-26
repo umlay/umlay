@@ -2,6 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
+  "specVersion": "1.6.0",
   "namespaces": {
     "blanket_demo": {
       "models": {
@@ -66,7 +67,9 @@
               "ref": "Identifiable"
             }
           ],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Product": {
           "_id": "67da85a7776a",
@@ -126,7 +129,9 @@
               "ref": "Identifiable"
             }
           ],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         }
       },
       "types": {},

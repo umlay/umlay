@@ -2,6 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
+  "specVersion": "1.6.0",
   "namespaces": {
     "variance_demo": {
       "models": {
@@ -50,7 +51,9 @@
               ]
             }
           ],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "AnimalConsumer": {
           "_id": "23ae6a203e26",
@@ -97,7 +100,9 @@
               ]
             }
           ],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         }
       },
       "types": {},

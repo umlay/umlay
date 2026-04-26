@@ -557,6 +557,39 @@ model Page @entity @intent("ページネーション付きリスト応答") {
 - `irToDsl` (format-on-save) は予約語を自動 backtick 化、通常名はそのまま
 - `reserved-keywords.umlay` のコメントアウト例は backtick があれば実用可
 
+## 10.10e. メタデータバンドル — RFC 0038–0044 / spec 1.6+
+
+レビュワー / AI / PM 視点のメタデータを model / attribute / namespace に付ける 8 つのディレクティブ。すべて optional・additive。
+
+```umlay
+@@boundary(exposes: ["Order.id", "Order.status"], hides: ["Order.internalSeq"])
+@@compliance(tags: ["PII"], residency: "EU")
+
+namespace billing
+
+model Order @aggregate_root {
+  @@owner(team: "billing-platform", reviewer: "@taro")    // RFC 0038
+  @@status("in-review", since: "2026-04-26", blockedBy: "ADR-007")
+  @@adrRef("ADR-005")
+  @@provenance(agent: "claude-opus-4-7", from: "schema.prisma", at: "2026-04-26")
+  @@confidence(0.6)                                        // RFC 0039
+  @@compliance(tags: ["PII", "GDPR"], residency: "EU")     // RFC 0040
+  @@since("1.6.0")                                         // RFC 0041
+  @@locked(reason: "PCI-DSS — 変更は security review が必須")  // RFC 0042
+  @@example(input: { total: -1 }, expect: reject, reason: "non-negative invariant")  // RFC 0043
+  @@example(input: { total: 100 }, expect: accept)
+
+  id        UUID! @id
+  email     string!  @@compliance(tags: ["PII"])           // attribute inline
+  cardLast4 string!  @@locked(reason: "do not log")
+}
+```
+
+- 配列 `[...]` / オブジェクト `{...}` / 負数 `-1` / 真偽 / 文字列が引数として書ける
+- IR には専用フィールドが追加される: `Model.owner / status / adrRefs / provenance / confidence / compliance / since / locked / examples`、`Attribute.compliance / since / locked`、`Namespace.boundary / compliance`
+- IR root に `specVersion: "1.6.0"` が出力される (IR schema version `version: "1.0"` とは別)
+- Lint enforcement (L046+) は別 RFC で段階導入予定
+
 ## 10.10c. クラス図の参照ホップ (`refs: N`) — RFC 0036 / spec 1.5+
 
 クラス / ER 図で seed `include:` を **N ホップ拡張**する。spec 1.5 以前は手書きで `include:` に近隣を全列挙する必要があった。

@@ -2,6 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
+  "specVersion": "1.6.0",
   "namespaces": {
     "migrate": {
       "models": {
@@ -130,7 +131,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "LegacyUser": {
           "_id": "db728921611d",
@@ -189,7 +192,9 @@
             "removeIn": "1.0.0",
             "replaceWith": "User"
           },
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         }
       },
       "types": {},

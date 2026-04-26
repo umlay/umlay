@@ -2,6 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
+  "specVersion": "1.6.0",
   "namespaces": {
     "受発注": {
       "models": {
@@ -71,7 +72,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "注文": {
           "_id": "ffe35f86bd68",
@@ -158,7 +161,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "注文明細": {
           "_id": "7c0fe42e99ed",
@@ -234,7 +239,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         }
       },
       "types": {},

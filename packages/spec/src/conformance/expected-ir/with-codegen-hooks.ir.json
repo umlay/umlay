@@ -2,6 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
+  "specVersion": "1.6.0",
   "namespaces": {
     "hooked": {
       "models": {
@@ -238,7 +239,9 @@
             }
           ],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "UserStats": {
           "_id": "b8939008e268",
@@ -317,7 +320,9 @@
             }
           ],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "AuditLog": {
           "_id": "ac914af01fe0",
@@ -428,7 +433,9 @@
             }
           ],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         }
       },
       "types": {},

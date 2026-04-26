@@ -1,7 +1,7 @@
 ---
 name: codegen-mapping
-version: 1.5.0
-spec: "@umlay/spec >= 1.5.0 (DSL 1.0 / IR 1.0)"
+version: 1.6.0
+spec: "@umlay/spec >= 1.6.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, codegen-author, tool-author]
 summary: Umlay 正規IR を Prisma / SQL DDL / TypeScript 型へ決定論的にマッピングする規則
 description: Umlay IR を Prisma schema / SQL DDL / TypeScript 型に変換したい、もしくは変換規則 (型マッピング、NULL 取扱、リレーション → FK 等) を確認したいときに起動する。

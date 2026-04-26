@@ -2,6 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
+  "specVersion": "1.6.0",
   "namespaces": {
     "demo": {
       "models": {
@@ -100,7 +101,9 @@
               "ref": "Comparable"
             }
           ],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "UserRepository": {
           "_id": "66d9b956a685",
@@ -147,7 +150,9 @@
               ]
             }
           ],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         }
       },
       "types": {},

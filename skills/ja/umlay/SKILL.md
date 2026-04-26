@@ -1,7 +1,7 @@
 ---
 name: umlay
-version: 1.5.0
-spec: "@umlay/spec >= 1.5.0 (DSL 1.0 / IR 1.0)"
+version: 1.6.0
+spec: "@umlay/spec >= 1.6.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer, architect, reviewer]
 summary: Umlay の skill 7 本のうちどれから始めるべきかを 2 質問以内で決める「相談窓口」skill
 description: 「Umlay を使い始めたいが何から?」「どの skill を呼べばいい?」「.umlay をどう作る?」など、ユーザの意図がまだ skill 名に落ちていないときに起動する。レビュー / 取り込み / 計画など個別目的が明確なときは個別 skill (review-uml / reverse-engineer / plan-from-diff など) が直接動くため、本 skill を経由する必要はない。

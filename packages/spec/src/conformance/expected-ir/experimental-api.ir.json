@@ -2,6 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
+  "specVersion": "1.6.0",
   "namespaces": {
     "experimental_demo": {
       "models": {
@@ -73,7 +74,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "StreamProcessor": {
           "_id": "90d7b7c9776f",
@@ -145,7 +148,9 @@
             "stabilizeIn": "1.0.0",
             "trackingIssue": "umlay/umlay#456"
           },
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "OldStreamProcessor": {
           "_id": "d8f3c70cb2db",
@@ -195,7 +200,9 @@
             "since": "0.6.0",
             "note": "superseded by StreamProcessor"
           },
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         }
       },
       "types": {},

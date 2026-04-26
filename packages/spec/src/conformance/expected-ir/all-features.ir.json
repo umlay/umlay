@@ -2,6 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
+  "specVersion": "1.6.0",
   "namespaces": {
     "lib": {
       "models": {
@@ -69,7 +70,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Book": {
           "_id": "9a67cc225bc0",
@@ -377,7 +380,9 @@
           "implements": [],
           "includedTraits": [
             "Audited"
-          ]
+          ],
+          "adrRefs": [],
+          "examples": []
         },
         "MediaAsset": {
           "_id": "390fd280124d",
@@ -443,7 +448,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "User": {
           "_id": "6d50eb5dfd4e",
@@ -551,7 +558,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Loan": {
           "_id": "6ac803fedf0b",
@@ -692,7 +701,9 @@
           ],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Reservation": {
           "_id": "27c06d743bfb",
@@ -793,7 +804,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "LibraryAPI": {
           "_id": "26d852df322a",
@@ -858,7 +871,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "NotificationSvc": {
           "_id": "c8d1e6447895",
@@ -905,7 +920,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "PaymentSvc": {
           "_id": "e71785c5af86",
@@ -952,7 +969,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Postgres": {
           "_id": "21103052e4e5",
@@ -992,7 +1011,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Redis": {
           "_id": "b53dadd802a9",
@@ -1032,7 +1053,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "SmtpGateway": {
           "_id": "52099ef339ad",
@@ -1072,7 +1095,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "StripeGateway": {
           "_id": "d29fbd5cff2d",
@@ -1112,7 +1137,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "UserRepositoryImpl": {
           "_id": "b5caaa516353",
@@ -1156,7 +1183,9 @@
               "ref": "UserRepository"
             }
           ],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "BookRepositoryImpl": {
           "_id": "627ce70e1209",
@@ -1206,7 +1235,9 @@
               "ref": "Auditable"
             }
           ],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Task": {
           "_id": "e36556ce48e3",
@@ -1407,7 +1438,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Shape": {
           "_id": "ed00c68f01d7",
@@ -1475,7 +1508,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Circle": {
           "_id": "48e2f264ca92",
@@ -1565,7 +1600,9 @@
               ]
             }
           ],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         },
         "Page": {
           "_id": "374a49786563",
@@ -1672,7 +1709,9 @@
           "dependencies": [],
           "codegen": [],
           "implements": [],
-          "includedTraits": []
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
         }
       },
       "types": {

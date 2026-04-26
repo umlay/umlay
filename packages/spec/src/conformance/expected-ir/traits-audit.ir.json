@@ -2,6 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
+  "specVersion": "1.6.0",
   "namespaces": {
     "shop": {
       "models": {
@@ -111,7 +112,9 @@
           "includedTraits": [
             "Timestamped",
             "SoftDelete"
-          ]
+          ],
+          "adrRefs": [],
+          "examples": []
         },
         "Order": {
           "_id": "51e58540cd15",
@@ -240,7 +243,9 @@
           "includedTraits": [
             "Tenanted",
             "Audited"
-          ]
+          ],
+          "adrRefs": [],
+          "examples": []
         }
       },
       "types": {},
