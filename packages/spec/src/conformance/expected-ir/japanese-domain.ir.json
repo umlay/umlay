@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.3",
+  "specVersion": "1.6.4",
   "namespaces": {
     "受発注": {
       "models": {
@@ -190,7 +190,7 @@
               "visibility": "public",
               "nullable": false,
               "unique": false,
-              "pk": false,
+              "pk": true,
               "index": false,
               "ref": {
                 "target": "注文.id",
@@ -209,7 +209,7 @@
               "visibility": "public",
               "nullable": false,
               "unique": false,
-              "pk": false,
+              "pk": true,
               "index": false,
               "codegenName": "lineNo",
               "codegen": [],

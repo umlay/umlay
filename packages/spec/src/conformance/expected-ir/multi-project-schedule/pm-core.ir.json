@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.3",
+  "specVersion": "1.6.4",
   "namespaces": {
     "pm_core": {
       "models": {

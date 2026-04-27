@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "draft",
-  "specVersion": "1.6.3",
+  "specVersion": "1.6.4",
   "namespaces": {
     "shop": {
       "models": {
@@ -80,7 +80,7 @@
               "visibility": "public",
               "nullable": false,
               "unique": false,
-              "pk": false,
+              "pk": true,
               "index": false,
               "ref": {
                 "target": "Order.id",
@@ -98,7 +98,7 @@
               "visibility": "public",
               "nullable": false,
               "unique": false,
-              "pk": false,
+              "pk": true,
               "index": false,
               "codegen": [],
               "reviews": [],

@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.3",
+  "specVersion": "1.6.4",
   "meta": {
     "imports": [
       {
@@ -192,7 +192,7 @@
               "visibility": "public",
               "nullable": false,
               "unique": false,
-              "pk": false,
+              "pk": true,
               "index": false,
               "ref": {
                 "target": "Task.id",
@@ -210,7 +210,7 @@
               "visibility": "public",
               "nullable": false,
               "unique": false,
-              "pk": false,
+              "pk": true,
               "index": false,
               "ref": {
                 "target": "Task.id",

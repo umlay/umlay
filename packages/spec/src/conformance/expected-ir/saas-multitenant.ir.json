@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.3",
+  "specVersion": "1.6.4",
   "namespaces": {
     "saas": {
       "models": {
@@ -166,7 +166,7 @@
               "visibility": "public",
               "nullable": false,
               "unique": false,
-              "pk": false,
+              "pk": true,
               "index": false,
               "ref": {
                 "target": "Organization.id",
@@ -184,7 +184,7 @@
               "visibility": "public",
               "nullable": false,
               "unique": false,
-              "pk": false,
+              "pk": true,
               "index": false,
               "ref": {
                 "target": "User.id",
@@ -327,7 +327,7 @@
               "visibility": "public",
               "nullable": false,
               "unique": false,
-              "pk": false,
+              "pk": true,
               "index": false,
               "ref": {
                 "target": "Team.id",
@@ -345,7 +345,7 @@
               "visibility": "public",
               "nullable": false,
               "unique": false,
-              "pk": false,
+              "pk": true,
               "index": false,
               "ref": {
                 "target": "User.id",
