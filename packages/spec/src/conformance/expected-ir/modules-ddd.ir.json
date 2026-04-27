@@ -2,12 +2,13 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.4",
+  "specVersion": "1.7.0",
   "namespaces": {
     "shop": {
       "models": {},
       "types": {},
       "enums": {},
+      "events": {},
       "reservedBlocks": [
         {
           "keyword": "module",
@@ -52,7 +53,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             },
             {
               "name": "save",
@@ -77,7 +79,8 @@
                   "get(entity.id) != null"
                 ],
                 "raises": []
-              }
+              },
+              "emits": []
             },
             {
               "name": "delete",
@@ -100,7 +103,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             }
           ]
         },
@@ -117,7 +121,7 @@
               "name": "publish",
               "params": [
                 {
-                  "name": "event",
+                  "name": "evt",
                   "type": {
                     "ref": "E"
                   }
@@ -134,7 +138,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             }
           ]
         },
@@ -163,7 +168,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             }
           ]
         },
@@ -197,7 +203,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             },
             {
               "name": "invalidate",
@@ -220,7 +227,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             }
           ]
         },
@@ -269,7 +277,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             }
           ]
         }

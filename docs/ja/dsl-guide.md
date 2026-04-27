@@ -688,6 +688,48 @@ view wide-er @er_diagram {
 }
 ```
 
+### 10.x event + @states + @emits — ステートマシンとビューの整合 (RFC 0050 / 0051 / 0052、spec 1.7.0)
+
+ER / クラス / ステートマシン / シーケンスを **同じイベント名** で
+リンクし、リントで整合性を強制する。
+
+```umlay
+event OrderConfirmed { orderId UUID!; at Timestamp! }
+event OrderShipped   { orderId UUID!; trackingNo string! }
+
+model Order @aggregate_root {
+  status OrderStatus! @states(initial: DRAFT, final: [SHIPPED, CANCELLED])
+
+  fn confirm()
+    @pre("status == DRAFT")
+    @post("status == CONFIRMED")
+    @emits(OrderConfirmed)
+
+  fn ship()
+    @pre("status == CONFIRMED")
+    @post("status == SHIPPED")
+    @emits(OrderShipped)
+}
+
+view order-life @state_machine { include: shop.Order, shop.OrderStatus }
+
+view confirm-flow @sequence_diagram {
+  participants: Customer as c, Order as o, EventBus as eb
+  seq {
+    c ->> o  : "confirm()"
+    o ->> eb : "OrderConfirmed"   // event 名 → イベント風表示にレンダリング
+  }
+}
+```
+
+- `@states(initial: ...)` は state machine view の起点を確定する
+- `fn @pre/@post` から **状態遷移は自動推論** される (RFC 0050)
+- `@emits(EventName)` で発行する event を宣言と紐付ける
+- sequence の message label が宣言された event 名と一致すると `«event»` 表記でレンダリング
+- 関連リント: **L050** 遷移網羅 / **L055** event 参照 / **L056** event 未使用
+
+完全なサンプルは [`packages/examples/samples/order-events.umlay`](../../packages/examples/samples/order-events.umlay) を参照。
+
 ## 11. 参考
 
 - [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) — 文法の正本

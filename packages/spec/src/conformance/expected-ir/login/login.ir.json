@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.4",
+  "specVersion": "1.7.0",
   "namespaces": {
     "login": {
       "models": {
@@ -398,7 +398,8 @@
                   "status == REVOKED"
                 ],
                 "raises": []
-              }
+              },
+              "emits": []
             },
             {
               "name": "isExpired",
@@ -414,7 +415,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             }
           ],
           "docs": [],
@@ -1572,6 +1574,7 @@
           "docs": []
         }
       },
+      "events": {},
       "reservedBlocks": [],
       "cloudPrimitives": [],
       "protocols": [],

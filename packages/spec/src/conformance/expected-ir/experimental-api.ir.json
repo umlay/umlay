@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.4",
+  "specVersion": "1.7.0",
   "namespaces": {
     "experimental_demo": {
       "models": {
@@ -230,6 +230,7 @@
           "docs": []
         }
       },
+      "events": {},
       "reservedBlocks": [],
       "cloudPrimitives": [],
       "protocols": [
@@ -249,7 +250,8 @@
               "returns": {
                 "ref": "T"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             },
             {
               "name": "release",
@@ -264,7 +266,8 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             }
           ]
         }

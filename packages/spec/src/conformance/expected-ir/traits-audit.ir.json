@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.4",
+  "specVersion": "1.7.0",
   "namespaces": {
     "shop": {
       "models": {
@@ -266,6 +266,7 @@
       },
       "types": {},
       "enums": {},
+      "events": {},
       "reservedBlocks": [],
       "cloudPrimitives": [],
       "protocols": [],

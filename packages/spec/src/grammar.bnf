@@ -91,6 +91,10 @@ EnumDecl        ::= "enum" Identifier ModelAnnotation*
                     "{" EnumValue ("," EnumValue)* ","? "}"
 EnumValue       ::= Identifier
 
+(* RFC 0052 — spec 1.7.0: first-class event declaration *)
+EventDecl       ::= "event" Identifier ModelAnnotation*
+                    "{" (Field | BlockDirective)* "}"
+
 ModelDecl       ::= "model" Identifier Stereotype ModelAnnotation*
                     "{" ModelMember* "}"
 Stereotype      ::= "@entity" | "@aggregate_root" | "@value_object"

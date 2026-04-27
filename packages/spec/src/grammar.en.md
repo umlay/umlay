@@ -120,6 +120,42 @@ Each `@@include(viewId)` embeds that view's rendered SVG; layout
 `direction(LR|TB|…)` controls tiling. Selectors on child views still
 apply. Missing targets render as red-dashed placeholder panels.
 
+### 4.x event (RFC 0052, spec 1.7.0)
+
+First-class domain event declarations. The same name is referenced by
+`fn @emits(...)` and by sequence-diagram messages, so state-machine /
+sequence / component diagrams can be cross-checked mechanically.
+
+```prisma
+event OrderConfirmed {
+  orderId UUID!
+  at      Timestamp!
+}
+
+model Order @aggregate_root {
+  status OrderStatus! @states(initial: DRAFT, final: [SHIPPED, CANCELLED])
+  fn confirm()
+    @pre("status == DRAFT")
+    @post("status == CONFIRMED")
+    @emits(OrderConfirmed)
+}
+
+view confirm-flow @sequence_diagram {
+  participants:
+    Customer as c, Order as o, EventBus as eb
+  seq {
+    c ->> o  : "confirm()"
+    o ->> eb : "OrderConfirmed"   // links to the declared event when names match
+  }
+}
+```
+
+- The body holds typed fields only (no relations, no methods).
+- `event` is a reserved keyword. Using `event` as an identifier (e.g.
+  `fn apply(event: ...)`) is no longer valid — rename to `evt` or similar.
+- Lint: **L055** (`@emits(X)` references a declared event) and **L056**
+  (every declared event is emitted somewhere).
+
 ### 4.2 protocol / union / module (RFC 0006 + 0010)
 
 ```prisma
@@ -184,6 +220,7 @@ module catalog @intent("Product catalog") {
 | `@inv("<expr>")` | Invariant |
 | `@auto` | Auto-generated value |
 | `@deprecated("<note>")` | Deprecation marker |
+| `@states(initial: <Value>, final: [<V1>, ...])` | RFC 0051 — state-machine driver marker (1.7+) |
 
 ## 6. Relations (`->`)
 
@@ -201,10 +238,12 @@ fn <name>(<arg>: <type>[, ...]) -> <return-type>
   [@pre("<expr>")]
   [@post("<expr>")]
   [@raises(<ExceptionType>)]
+  [@emits(<EventA>[, <EventB>, ...])]   // RFC 0052, spec 1.7+
   [@intent("...")]
 ```
 
-Declared inside `model`, `type`, or `protocol` bodies.
+Declared inside `model`, `type`, or `protocol` bodies. Names listed in
+`@emits(...)` must match an `event` declaration (lint L055).
 
 ## 8. Block directives
 

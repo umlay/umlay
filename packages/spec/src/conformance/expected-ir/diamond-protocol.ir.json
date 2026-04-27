@@ -2,12 +2,13 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.4",
+  "specVersion": "1.7.0",
   "namespaces": {
     "didemo": {
       "models": {},
       "types": {},
       "enums": {},
+      "events": {},
       "reservedBlocks": [],
       "cloudPrimitives": [],
       "protocols": [
@@ -29,7 +30,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             },
             {
               "name": "describe",
@@ -45,7 +47,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             }
           ]
         },
@@ -71,7 +74,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             },
             {
               "name": "leftOnly",
@@ -87,7 +91,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             }
           ]
         },
@@ -113,7 +118,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             },
             {
               "name": "rightOnly",
@@ -129,7 +135,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             }
           ]
         },
@@ -162,7 +169,8 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             }
           ]
         },
@@ -191,7 +199,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             }
           ]
         },

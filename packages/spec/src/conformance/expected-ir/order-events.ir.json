@@ -1,0 +1,385 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "draft",
+  "specVersion": "1.7.0",
+  "namespaces": {
+    "shop": {
+      "models": {
+        "Order": {
+          "_id": "51e58540cd15",
+          "name": "Order",
+          "stereotype": "aggregate_root",
+          "identity": "id",
+          "attributes": [
+            {
+              "_id": "6c69f183cb58",
+              "name": "id",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": true,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "constraints": {}
+            },
+            {
+              "_id": "83914cc3b883",
+              "name": "status",
+              "type": "OrderStatus",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "constraints": {},
+              "states": {
+                "initial": "DRAFT",
+                "final": [
+                  "SHIPPED",
+                  "CANCELLED"
+                ]
+              }
+            },
+            {
+              "_id": "0eddc670f56c",
+              "name": "total",
+              "type": "decimal",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "rationale": {
+                "invariants": [
+                  "total >= 0"
+                ],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [],
+                "raises": []
+              },
+              "constraints": {}
+            }
+          ],
+          "relations": [],
+          "methods": [
+            {
+              "name": "confirm",
+              "params": [],
+              "visibility": "public",
+              "rationale": {
+                "intent": "ドラフト注文を確定し、発送ワークフローへ送る",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [
+                  "status == DRAFT"
+                ],
+                "postconditions": [
+                  "status == CONFIRMED"
+                ],
+                "raises": []
+              },
+              "emits": [
+                "OrderConfirmed"
+              ]
+            },
+            {
+              "name": "ship",
+              "params": [],
+              "visibility": "public",
+              "rationale": {
+                "intent": "配送業者へ引き渡し、トラッキング番号を発行する",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [
+                  "status == CONFIRMED"
+                ],
+                "postconditions": [
+                  "status == SHIPPED"
+                ],
+                "raises": []
+              },
+              "emits": [
+                "OrderShipped"
+              ]
+            },
+            {
+              "name": "cancel",
+              "params": [
+                {
+                  "name": "reason",
+                  "type": {
+                    "ref": "string"
+                  }
+                }
+              ],
+              "visibility": "public",
+              "rationale": {
+                "intent": "どの状態からでもキャンセル可能",
+                "invariants": [],
+                "structuredInvariants": [],
+                "preconditions": [],
+                "postconditions": [
+                  "status == CANCELLED"
+                ],
+                "raises": []
+              },
+              "emits": [
+                "OrderCancelled"
+              ]
+            }
+          ],
+          "docs": [],
+          "attachments": [],
+          "reviews": [],
+          "fixes": [],
+          "rationale": {
+            "intent": "顧客の単一購入。状態遷移は DRAFT → CONFIRMED → SHIPPED、いつでも CANCELLED へ。",
+            "invariants": [],
+            "structuredInvariants": [],
+            "preconditions": [],
+            "postconditions": [],
+            "raises": []
+          },
+          "sampleSources": [],
+          "sampleFileRefs": [],
+          "dependencies": [],
+          "codegen": [],
+          "implements": [],
+          "includedTraits": [],
+          "adrRefs": [],
+          "examples": []
+        }
+      },
+      "types": {},
+      "enums": {
+        "OrderStatus": {
+          "_id": "22e0a6eaa734",
+          "name": "OrderStatus",
+          "values": [
+            "DRAFT",
+            "CONFIRMED",
+            "SHIPPED",
+            "CANCELLED"
+          ],
+          "docs": []
+        }
+      },
+      "events": {
+        "OrderConfirmed": {
+          "_id": "621aadb0ef34",
+          "name": "OrderConfirmed",
+          "fields": [
+            {
+              "_id": "6b9aad7874a8",
+              "name": "orderId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "constraints": {}
+            },
+            {
+              "_id": "801348d90023",
+              "name": "at",
+              "type": "Timestamp",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "constraints": {}
+            }
+          ],
+          "docs": []
+        },
+        "OrderShipped": {
+          "_id": "9cc2ffcb74dd",
+          "name": "OrderShipped",
+          "fields": [
+            {
+              "_id": "6b9aad7874a8",
+              "name": "orderId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "constraints": {}
+            },
+            {
+              "_id": "fd8a74251294",
+              "name": "trackingNo",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "constraints": {}
+            }
+          ],
+          "docs": []
+        },
+        "OrderCancelled": {
+          "_id": "c9576da27f7d",
+          "name": "OrderCancelled",
+          "fields": [
+            {
+              "_id": "6b9aad7874a8",
+              "name": "orderId",
+              "type": "UUID",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "constraints": {}
+            },
+            {
+              "_id": "dac865f94d64",
+              "name": "reason",
+              "type": "string",
+              "visibility": "public",
+              "nullable": false,
+              "unique": false,
+              "pk": false,
+              "index": false,
+              "codegen": [],
+              "reviews": [],
+              "fixes": [],
+              "constraints": {}
+            }
+          ],
+          "docs": []
+        }
+      },
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": [],
+      "traits": {}
+    }
+  },
+  "views": [
+    {
+      "id": "orders-er",
+      "kind": "er_diagram",
+      "include": [
+        "shop.*"
+      ],
+      "exclude": [],
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "order-lifecycle",
+      "kind": "state_machine",
+      "include": [
+        "shop.Order",
+        "shop.OrderStatus"
+      ],
+      "exclude": [],
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "ganttTasks": []
+    },
+    {
+      "id": "confirm-flow",
+      "kind": "sequence_diagram",
+      "include": [],
+      "exclude": [],
+      "docs": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "c",
+          "label": "Customer",
+          "ref": "Customer"
+        },
+        {
+          "id": "o",
+          "label": "Order",
+          "ref": "Order"
+        },
+        {
+          "id": "eb",
+          "label": "EventBus",
+          "ref": "EventBus"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "c",
+            "label": "Customer",
+            "ref": "Customer"
+          },
+          {
+            "id": "o",
+            "label": "Order",
+            "ref": "Order"
+          },
+          {
+            "id": "eb",
+            "label": "EventBus",
+            "ref": "EventBus"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "message",
+            "from": "c",
+            "to": "o",
+            "arrow": "sync",
+            "label": "confirm()"
+          },
+          {
+            "kind": "message",
+            "from": "o",
+            "to": "eb",
+            "arrow": "sync",
+            "label": "OrderConfirmed",
+            "eventRef": "OrderConfirmed"
+          }
+        ]
+      },
+      "ganttTasks": []
+    }
+  ]
+}

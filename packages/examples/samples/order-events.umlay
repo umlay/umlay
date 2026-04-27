@@ -1,0 +1,71 @@
+// order-events.umlay — RFC 0050 / 0051 / 0052 (spec 1.7)
+//
+// 1 つの Order モデルから ER / State machine / Sequence の 3 図を出し、
+// state machine と sequence を `@states` + `fn @pre/@post @emits` で
+// 紐付けるサンプル。lint L050 / L055 / L056 の正例。
+
+namespace shop
+
+enum OrderStatus { DRAFT, CONFIRMED, SHIPPED, CANCELLED }
+
+event OrderConfirmed {
+  orderId   UUID!
+  at        Timestamp!
+}
+
+event OrderShipped {
+  orderId   UUID!
+  trackingNo string!
+}
+
+event OrderCancelled {
+  orderId UUID!
+  reason  string!
+}
+
+model Order @aggregate_root
+  @intent("顧客の単一購入。状態遷移は DRAFT → CONFIRMED → SHIPPED、いつでも CANCELLED へ。")
+{
+  id      UUID!         @id
+  status  OrderStatus!  @states(initial: DRAFT, final: [SHIPPED, CANCELLED])
+  total   decimal!      @inv("total >= 0")
+
+  fn confirm()
+    @pre("status == DRAFT")
+    @post("status == CONFIRMED")
+    @emits(OrderConfirmed)
+    @intent("ドラフト注文を確定し、発送ワークフローへ送る")
+
+  fn ship()
+    @pre("status == CONFIRMED")
+    @post("status == SHIPPED")
+    @emits(OrderShipped)
+    @intent("配送業者へ引き渡し、トラッキング番号を発行する")
+
+  fn cancel(reason: string!)
+    @post("status == CANCELLED")
+    @emits(OrderCancelled)
+    @intent("どの状態からでもキャンセル可能")
+}
+
+view orders-er @er_diagram { include: shop.* }
+
+view order-lifecycle @state_machine
+  @intent("Order.status の遷移 — fn @pre/@post から導出される")
+{
+  include: shop.Order, shop.OrderStatus
+}
+
+view confirm-flow @sequence_diagram
+  @intent("確定操作の流れ — Order ->> EventBus: OrderConfirmed は event 名指定")
+{
+  participants:
+    Customer  as c,
+    Order     as o,
+    EventBus  as eb
+
+  seq {
+    c ->> o  : "confirm()"
+    o ->> eb : "OrderConfirmed"
+  }
+}

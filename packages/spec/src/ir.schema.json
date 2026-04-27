@@ -521,6 +521,25 @@
                             "type": "object",
                             "additionalProperties": {},
                             "default": {}
+                          },
+                          "states": {
+                            "type": "object",
+                            "properties": {
+                              "initial": {
+                                "type": "string"
+                              },
+                              "final": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "default": []
+                              }
+                            },
+                            "required": [
+                              "initial"
+                            ],
+                            "additionalProperties": true
                           }
                         },
                         "required": [
@@ -619,6 +638,13 @@
                           },
                           "rationale": {
                             "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/attributes/items/properties/rationale"
+                          },
+                          "emits": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "default": []
                           }
                         },
                         "required": [
@@ -967,6 +993,57 @@
                   "required": [
                     "name",
                     "values"
+                  ],
+                  "additionalProperties": true
+                },
+                "default": {}
+              },
+              "events": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "fields": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/attributes/items"
+                      },
+                      "default": []
+                    },
+                    "docs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "default": []
+                    },
+                    "owner": {
+                      "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/owner"
+                    },
+                    "status": {
+                      "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/status"
+                    },
+                    "provenance": {
+                      "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/provenance"
+                    },
+                    "since": {
+                      "type": "string"
+                    },
+                    "deprecated": {
+                      "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/attributes/items/properties/deprecated"
+                    },
+                    "experimental": {
+                      "$ref": "#/definitions/UmlayIR/properties/namespaces/additionalProperties/properties/models/additionalProperties/properties/attributes/items/properties/experimental"
+                    }
+                  },
+                  "required": [
+                    "name"
                   ],
                   "additionalProperties": true
                 },
@@ -1376,6 +1453,9 @@
                     },
                     "fragmentLabel": {
                       "type": "string"
+                    },
+                    "eventRef": {
+                      "type": "string"
                     }
                   },
                   "required": [
@@ -1424,6 +1504,9 @@
                               ]
                             },
                             "label": {
+                              "type": "string"
+                            },
+                            "eventRef": {
                               "type": "string"
                             }
                           },

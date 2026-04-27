@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.6.4",
+  "specVersion": "1.7.0",
   "namespaces": {
     "demo": {
       "models": {
@@ -73,7 +73,8 @@
                   "result == id"
                 ],
                 "raises": []
-              }
+              },
+              "emits": []
             },
             {
               "name": "compareTo",
@@ -96,7 +97,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             }
           ],
           "docs": [],
@@ -181,6 +183,7 @@
       },
       "types": {},
       "enums": {},
+      "events": {},
       "reservedBlocks": [],
       "cloudPrimitives": [],
       "protocols": [
@@ -194,7 +197,8 @@
               "returns": {
                 "ref": "UUID"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             }
           ]
         },
@@ -223,7 +227,8 @@
                 "preconditions": [],
                 "postconditions": [],
                 "raises": []
-              }
+              },
+              "emits": []
             }
           ]
         },
@@ -237,7 +242,8 @@
               "returns": {
                 "ref": "bigint"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             }
           ]
         },
@@ -256,7 +262,8 @@
               "returns": {
                 "ref": "F"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             },
             {
               "name": "deserialize",
@@ -271,7 +278,8 @@
               "returns": {
                 "ref": "Self"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             }
           ]
         },
@@ -302,7 +310,8 @@
               "returns": {
                 "ref": "T"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             },
             {
               "name": "save",
@@ -317,7 +326,8 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             },
             {
               "name": "delete",
@@ -332,7 +342,8 @@
               "returns": {
                 "ref": "bool"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             }
           ]
         },
@@ -375,7 +386,8 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             },
             {
               "name": "get",
@@ -390,7 +402,8 @@
               "returns": {
                 "ref": "V"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             },
             {
               "name": "range",
@@ -411,7 +424,8 @@
               "returns": {
                 "ref": "string"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             }
           ]
         },
@@ -453,7 +467,8 @@
               "returns": {
                 "ref": "void"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             },
             {
               "name": "loadSorted",
@@ -461,7 +476,8 @@
               "returns": {
                 "ref": "T"
               },
-              "visibility": "public"
+              "visibility": "public",
+              "emits": []
             }
           ]
         }

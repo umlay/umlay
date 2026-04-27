@@ -24,7 +24,7 @@ model Order @aggregate_root @intent("注文 (Event Sourcing 集約)") {
   +version     int!          @default(0)
                              @inv("version >= 0")
 
-  fn apply(event: OrderEvent!) -> void
+  fn apply(evt: OrderEvent!) -> void
     @intent("イベントを state に反映 (event sourcing の再生)")
 
   fn confirm() -> void

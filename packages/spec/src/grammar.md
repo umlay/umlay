@@ -129,6 +129,40 @@ view overview @composite {
 - 未解決 id は赤点線のプレースホルダ panel で描画 (lint L038 warning)
 - `@composite` 以外で `@@include(viewId)` を使うと無視 (lint L037 info)
 
+### 4.x event (RFC 0052, spec 1.7.0)
+
+ドメインイベントを一級宣言として扱う。`fn @emits(...)` と sequence
+diagram のメッセージから同じ名前で参照でき、状態遷移 / シーケンス /
+コンポーネントの 3 図を機械的にリンクできる。
+
+```prisma
+event OrderConfirmed {
+  orderId UUID!
+  at      Timestamp!
+}
+
+model Order @aggregate_root {
+  status OrderStatus! @states(initial: DRAFT, final: [SHIPPED, CANCELLED])
+  fn confirm()
+    @pre("status == DRAFT")
+    @post("status == CONFIRMED")
+    @emits(OrderConfirmed)
+}
+
+view confirm-flow @sequence_diagram {
+  participants:
+    Customer as c, Order as o, EventBus as eb
+  seq {
+    c ->> o  : "confirm()"
+    o ->> eb : "OrderConfirmed"   // ← この label が宣言された event 名と一致するとリンク
+  }
+}
+```
+
+- 本体は `field Type!` の列のみ (relation や fn は持たない)
+- `event` は **予約語**。`fn apply(event: ...)` のような識別子用途は不可
+- 関連 lint: **L055** (`@emits(X)` の参照が宣言と一致するか) / **L056** (宣言された event がどこからも参照されないか)
+
 ### 4.2 protocol / union / module (RFC 0006 + 0010 + 0011 + 0012)
 
 ```prisma
@@ -205,6 +239,7 @@ module catalog @intent("商品カタログ") {
 | `@inv("<expr>")` | 不変条件 |
 | `@auto` | 自動生成値 |
 | `@deprecated("<note>")` | 非推奨マーク |
+| `@states(initial: <Value>, final: [<V1>, ...])` | RFC 0051 — state_machine view の駆動側マーカー (1.7+) |
 
 ## 6. リレーション (`->`)
 
@@ -221,10 +256,12 @@ fn <name>(<arg>: <type>[, ...]) -> <return-type>
   [@pre("<expr>")]
   [@post("<expr>")]
   [@raises(<ExceptionType>)]
+  [@emits(<EventA>[, <EventB>, ...])]   // RFC 0052, spec 1.7+
   [@intent("...")]
 ```
 
-`model` / `type` / `protocol` の body 内で宣言。
+`model` / `type` / `protocol` の body 内で宣言。`@emits` で参照する
+名前は `event` 宣言と一致する必要がある (lint L055)。
 
 ## 8. ブロックディレクティブ
 

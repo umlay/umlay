@@ -699,6 +699,42 @@ view wide-er @er_diagram {
 }
 ```
 
+## 10.x event + @states + @emits — state machine ↔ view consistency (RFC 0050 / 0051 / 0052, spec 1.7.0)
+
+Cross-link ER / Class / State machine / Sequence diagrams via shared
+event names, with lint enforcement.
+
+```umlay
+event OrderConfirmed { orderId UUID!; at Timestamp! }
+
+model Order @aggregate_root {
+  status OrderStatus! @states(initial: DRAFT, final: [SHIPPED, CANCELLED])
+  fn confirm()
+    @pre("status == DRAFT")
+    @post("status == CONFIRMED")
+    @emits(OrderConfirmed)
+}
+
+view order-life @state_machine { include: shop.Order, shop.OrderStatus }
+
+view confirm-flow @sequence_diagram {
+  participants: Customer as c, Order as o, EventBus as eb
+  seq {
+    c ->> o  : "confirm()"
+    o ->> eb : "OrderConfirmed"   // matches the declared event → rendered as «event»
+  }
+}
+```
+
+- `@states(initial: ...)` pins the state machine's starting point.
+- Transitions are **auto-derived** from `fn @pre/@post` (RFC 0050).
+- `@emits(EventName)` binds a method to a declared event.
+- Sequence-message labels matching a declared event get the `«event»`
+  stereotype prefix.
+- Related lint: **L050** transition coverage / **L055** event ref / **L056** event unused.
+
+Full sample: [`packages/examples/samples/order-events.umlay`](../../packages/examples/samples/order-events.umlay).
+
 ## 11. References
 
 - [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) — canonical grammar

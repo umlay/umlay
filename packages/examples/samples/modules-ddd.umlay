@@ -23,7 +23,7 @@ protocol Repository<T> @intent("永続化の汎用契約 (DDD の Repository)") 
 }
 
 protocol EventPublisher<E> @intent("ドメインイベントの発行契約") {
-  fn publish(event: E!) -> void
+  fn publish(evt: E!) -> void
     @intent("購読者に event を配送")
 }
 
