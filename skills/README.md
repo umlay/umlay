@@ -14,6 +14,7 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 | `evolve-schema` | 既存 DSL を後方互換性を守って拡張 | Safely evolve existing DSL |
 | `codegen-mapping` | IR を Prisma / SQL / TS へ決定論的に変換 | Deterministic IR → Prisma / SQL / TS mapping |
 | `reverse-engineer` | 既存 Prisma / SQL / TS を `.umlay` に取り込み | Import existing Prisma / SQL / TS into `.umlay` (round-trip inverse of codegen-mapping) |
+| `transcribe-design` | 既存設計書 (Markdown / Word / PDF) を `.umlay` に転記 | Lift an existing natural-language design doc into a `.umlay` skeleton (NL counterpart of reverse-engineer) |
 | `change-impact-diff` | 概念先行の change-impact レポート (行 diff ではない) | Concept-first change-impact report (Purpose / Touch-points / Do-not-miss, not a line diff) |
 | `plan-from-diff` | impact から順序付き実装計画 (phase / PR / rollback) | Turn an impact report into a sequenced plan (phases, PR bundles, rollback points) |
 
@@ -27,6 +28,7 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 | evolve-schema | [`ja/evolve-schema/SKILL.md`](./ja/evolve-schema/SKILL.md) |
 | codegen-mapping | [`ja/codegen-mapping/SKILL.md`](./ja/codegen-mapping/SKILL.md) |
 | reverse-engineer | [`ja/reverse-engineer/SKILL.md`](./ja/reverse-engineer/SKILL.md) |
+| transcribe-design | [`ja/transcribe-design/SKILL.md`](./ja/transcribe-design/SKILL.md) |
 | change-impact-diff | [`ja/change-impact-diff/SKILL.md`](./ja/change-impact-diff/SKILL.md) |
 | plan-from-diff | [`ja/plan-from-diff/SKILL.md`](./ja/plan-from-diff/SKILL.md) |
 
@@ -40,6 +42,7 @@ Skill definitions for developers and AI agents working with Umlay DSL / IR. Ever
 | evolve-schema | [`en/evolve-schema/SKILL.md`](./en/evolve-schema/SKILL.md) |
 | codegen-mapping | [`en/codegen-mapping/SKILL.md`](./en/codegen-mapping/SKILL.md) |
 | reverse-engineer | [`en/reverse-engineer/SKILL.md`](./en/reverse-engineer/SKILL.md) |
+| transcribe-design | [`en/transcribe-design/SKILL.md`](./en/transcribe-design/SKILL.md) |
 | change-impact-diff | [`en/change-impact-diff/SKILL.md`](./en/change-impact-diff/SKILL.md) |
 | plan-from-diff | [`en/plan-from-diff/SKILL.md`](./en/plan-from-diff/SKILL.md) |
 
@@ -61,6 +64,7 @@ ln -s ~/src/umlay/skills/ja/review-uml       ~/.claude/skills/review-uml
 ln -s ~/src/umlay/skills/ja/evolve-schema    ~/.claude/skills/evolve-schema
 ln -s ~/src/umlay/skills/ja/codegen-mapping  ~/.claude/skills/codegen-mapping
 ln -s ~/src/umlay/skills/ja/reverse-engineer ~/.claude/skills/reverse-engineer
+ln -s ~/src/umlay/skills/ja/transcribe-design ~/.claude/skills/transcribe-design
 ln -s ~/src/umlay/skills/ja/change-impact-diff ~/.claude/skills/change-impact-diff
 ln -s ~/src/umlay/skills/ja/plan-from-diff     ~/.claude/skills/plan-from-diff
 
@@ -104,6 +108,7 @@ ln -s ../../vendor/umlay/skills/ja/write-uml .claude/skills/write-uml
 /evolve-schema User モデルに role: UserRole を追加したい
 /codegen-mapping この IR を Prisma schema に変換して
 /reverse-engineer 既存の schema.prisma を取り込んで .umlay にして
+/transcribe-design 既存の設計書 (Markdown) を .umlay に転記して
 /change-impact-diff 前回保存と現在の IR を比較して影響を教えて
 /plan-from-diff この impact レポートから PR に分けた計画を出して
 ```
@@ -117,6 +122,121 @@ pnpm add -D @umlay/core @umlay/lint @umlay/renderer-er
 # または VS Code 拡張 (LSP 内蔵):
 # Marketplace で "Umlay" を検索
 ```
+
+## 運用マニュアル / Operating manual
+
+skill を実運用するための実践ガイド。**「どの skill を呼ぶ?」の決定木**、**入出力の橋渡しルール**、**よくある質問**の 3 部構成。
+
+### 1. 起点 — どの skill から始めるか
+
+迷ったら **`/umlay`** に聞く (2 質問で振り分け)。よくある起点パターン:
+
+| 起点となる "資産" | 最初に呼ぶ skill | 補足 |
+| --- | --- | --- |
+| 自然言語の要件 (口頭 / メモ) | `/write-uml` | ゼロから `.umlay` を起こす |
+| **既存の設計書** (Markdown / Word / PDF / Confluence) | **`/transcribe-design`** | NL→`.umlay` 転記、`@@confidence` でフラグ |
+| 既存コード (Prisma / SQL DDL / TypeScript) | `/reverse-engineer` | 構造のみ決定論的取り込み |
+| 既存 `.umlay` をレビュー | `/review-uml` | 4 層監査 (S / L / R / W+C) |
+| 既存 `.umlay` を改修 | `/evolve-schema` | 後方互換差分 |
+| 改修の影響範囲 | `/change-impact-diff` | Purpose / Touch / Miss + Risk |
+| 改修の実装計画 | `/plan-from-diff` | phase / PR 分割 / rollback |
+| 確定 IR をコードへ | `/codegen-mapping` | Prisma / SQL / TS |
+
+### 2. skill 間の橋渡しルール
+
+**前段の出力 → 後段の入力**として常に IR (`.umlay` か `IR JSON`) を渡す。skill 間は**ファイルベース**で繋ぐと再現性が高まる。
+
+```
+口頭/メモ ──► /write-uml ──► first.umlay
+設計書    ──► /transcribe-design ──► first.umlay (+ TODO ヘッダ)
+コード    ──► /reverse-engineer ──► first.umlay (+ TODO ヘッダ)
+                                     │
+                                     ▼
+                                /review-uml ──► first.umlay (intent / @inv 補完)
+                                     │
+                                     ▼
+                                /evolve-schema "<変更内容>" ──► next.umlay
+                                     │
+                                     ▼
+                                /change-impact-diff first.umlay next.umlay ──► impact.yaml
+                                     │
+                                     ▼
+                                /plan-from-diff impact.yaml ──► plan.yaml
+                                     │
+                                     ▼
+                                /codegen-mapping next.umlay --target prisma|sql|ts
+```
+
+各 skill は**独立に呼べる**ので、途中段階だけやり直しも可能。
+
+### 3. ステータス遷移 (`@@status`) の運用
+
+新規 model は `@@status("in-review")` で始まり、人間レビュー後に `"active"` に昇格させる:
+
+| 状態 | 意味 | 出口 |
+| --- | --- | --- |
+| `in-review` | AI が起こした / 改修中 — 人間未確認 | レビュー後 → `active` |
+| `active` | 安定運用中 | 改修時 → `in-review` |
+| `deprecated` | 削除予告 | 削除完了 → 行ごと削除 |
+| `blocked` | ADR 待ち / 議論中 | ADR 確定 → `active` or `deprecated` |
+
+**`@@status` は merge 前 CI gate の核**。`/review-uml` 完了 → 人間が `"active"` に書き換え → PR を merge、というフロー。
+
+### 4. `@@confidence` の閾値ガイド (transcribe-design / reverse-engineer 出力時)
+
+| 値 | 意味 | 推奨アクション |
+| --- | --- | --- |
+| 0.9–1.0 | ほぼ確定 | レビュー軽め |
+| 0.7–0.9 | 中信頼 | 個別確認推奨 |
+| 0.5–0.7 | 推測色強 | 1 つずつ確認 |
+| 0.0–0.5 | ほぼ推測 | **必ず人間が判断** |
+
+`/review-uml` は `@@confidence < 0.7` を info で持ち上げます (将来 lint 化検討)。
+
+### 5. ファイル分割の原則
+
+1 ファイル = 1 namespace 推奨。namespace ごとに別ファイルにし、cross-namespace 参照は `@ref(other_ns.Model.id)` で記述。
+
+```
+docs/design/
+  index.md                  ← 全体像 (人間記述)
+  auth.umlay                ← namespace auth
+  billing.umlay             ← namespace billing
+  shared.umlay              ← 共通の type / enum
+```
+
+`/transcribe-design` は**単一ファイル**を出力します。設計書が複数 namespace を扱う場合は、章ごとに分けて skill を複数回呼ぶか、出力後に手分割。
+
+### 6. よくある質問
+
+**Q. AI が `.umlay` を書くと毎回同じミスをする**
+
+A. spec 1.6.4 時点で以下は parser が**寛容に受理**:
+- `id: UUID!` (Prisma 風 colon)
+- `'foo'` (single quote)
+- `@@min-spec-version("1.6.0")` (kebab-case directive)
+- `@@identity(a, b, ` `` `date` `` `)` (backtick escape inside directive)
+
+それでも parse error が出る場合、エラー文末尾の **「Hint:」** を読めば修正方針が分かります。
+
+**Q. `/review-uml` の指摘が大量に出すぎる**
+
+A. `umlay check --stats --json` で頻発ルールから対処してください。`@@mode(strict)` で運用中なら一旦 `draft` に落として優先度を見直すのも手。
+
+**Q. `/transcribe-design` と `/reverse-engineer` どちらを使えばいい?**
+
+| 入力 | skill |
+| --- | --- |
+| schema.prisma / *.sql / *.ts | `/reverse-engineer` |
+| 仕様書 .md / .docx (text) / .pdf (text) | `/transcribe-design` |
+| 仕様書の図 (画像のみ) | OCR してから `/transcribe-design` |
+| 両方ある | `/reverse-engineer` 先行 → 結果と仕様書を見比べて `/transcribe-design` で intent / @inv を補完 |
+
+**Q. skill が auto-invoke されない**
+
+A. AI が文脈から判断できる材料が薄い可能性。明示呼び `/skill-name <args>` で起動してください。または `/umlay` (相談窓口) に聞く。
+
+---
 
 ## ユースケース別フロー / Workflow recipes
 
