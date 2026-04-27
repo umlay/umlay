@@ -2,11 +2,13 @@
 
 > **UML, relaid.** — レガシーUMLを現代のNode/クラウド/AI時代に置き直すモデリングツール。
 
-[![spec](https://img.shields.io/badge/spec-1.3.0-3b82f6)](./packages/spec)
+[![spec](https://img.shields.io/badge/spec-1.7.0-3b82f6)](./packages/spec)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-green.svg)](./LICENSE)
 [![License: MIT (examples)](https://img.shields.io/badge/examples-MIT-blue.svg)](./packages/examples)
 [![GitHub Repo stars](https://img.shields.io/github/stars/umlay/umlay?style=social)](https://github.com/umlay/umlay)
 [![Website](https://img.shields.io/badge/web-umlay.keydrop.net-0ea5e9)](https://umlay.keydrop.net)
+[![VS Code](https://img.shields.io/visual-studio-marketplace/v/Umlay.umlay?label=VS%20Code&color=007acc)](https://marketplace.visualstudio.com/items?itemName=Umlay.umlay)
+[![npm](https://img.shields.io/npm/v/%40umlay%2Fcli?label=%40umlay%2Fcli&color=cb3837)](https://www.npmjs.com/package/@umlay/cli)
 [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%98%95%20ofuse.me-ec4899)](https://ofuse.me/umlay)
 
 Umlay は、UML / ER をテキスト DSL として記述し、Git/PR でレビュー可能な形で扱うためのモデリング基盤です。このリポジトリでは **DSL 仕様 (spec) / サンプル (examples) / 開発者・AI 向け skill 定義 (skills)** を公開します。実装 (パーサ、Lint、レンダラー、Web エディタ) は別リポジトリで開発中です。
@@ -26,6 +28,14 @@ umlay-oss/
 | --- | --- | --- |
 | `@umlay/spec` | DSL 文法 & 正規IR JSON Schema | Apache-2.0 |
 | `@umlay/examples` | サンプル DSL | MIT |
+
+## Umlay を使う
+
+| ツール | リンク | 用途 |
+| --- | --- | --- |
+| **Web エディタ** | [umlay.keydrop.net](https://umlay.keydrop.net/) | ブラウザだけで動く完全 OSS のオンラインエディタ |
+| **VS Code 拡張** | [Marketplace `Umlay.umlay`](https://marketplace.visualstudio.com/items?itemName=Umlay.umlay) | エディタ統合 — シンタックスハイライト / 診断 / プレビュー / F12 / F2 / フォーマット |
+| **CLI** | `npm i -g @umlay/cli` | parse / lint / render `.umlay` をコマンドラインで |
 
 ## 仕様
 
