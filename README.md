@@ -7,7 +7,7 @@
 [![License: MIT (examples)](https://img.shields.io/badge/examples-MIT-blue.svg)](./packages/examples)
 [![GitHub Repo stars](https://img.shields.io/github/stars/umlay/umlay?style=social)](https://github.com/umlay/umlay)
 [![Website](https://img.shields.io/badge/web-umlay.keydrop.net-0ea5e9)](https://umlay.keydrop.net)
-[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%98%95%20BMAC-ff813f)](https://buymeacoffee.com/umlay)
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%98%95%20ofuse.me-ec4899)](https://ofuse.me/umlay)
 
 Umlay は、UML / ER をテキスト DSL として記述し、Git/PR でレビュー可能な形で扱うためのモデリング基盤です。このリポジトリでは **DSL 仕様 (spec) / サンプル (examples) / 開発者・AI 向け skill 定義 (skills)** を公開します。実装 (パーサ、Lint、レンダラー、Web エディタ) は別リポジトリで開発中です。
 
@@ -67,7 +67,7 @@ Node バージョンは `.node-version` に固定されています (Volta / fnm
 
 ## Sponsor
 
-Umlay の開発を支援いただける場合は [Buy Me a Coffee](https://buymeacoffee.com/umlay) からお願いします。いただいたサポートはドキュメント整備 / 新しい view kind の実装 / AI 協働ループの改善に使います。
+Umlay の開発を支援いただける場合は [ofuse.me](https://ofuse.me/umlay) からお願いします。いただいたサポートはドキュメント整備 / 新しい view kind の実装 / AI 協働ループの改善に使います。
 
 ---
 
