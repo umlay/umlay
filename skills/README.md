@@ -136,7 +136,7 @@ skill を実運用するための実践ガイド。**「どの skill を呼ぶ?�
 | 自然言語の要件 (口頭 / メモ) | `/write-uml` | ゼロから `.umlay` を起こす |
 | **既存の設計書** (Markdown / Word / PDF / Confluence) | **`/transcribe-design`** | NL→`.umlay` 転記、`@@confidence` でフラグ |
 | 既存コード (Prisma / SQL DDL / TypeScript) | `/reverse-engineer` | 構造のみ決定論的取り込み |
-| 既存 `.umlay` をレビュー | `/review-uml` | 4 層監査 (S / L / R / W+C) |
+| 既存 `.umlay` をレビュー | `/review-uml` | 5 層監査 (Parse / S / L / R / W+C) — Layer 0 で `LEX` / `PARSE` / `IR` を最優先 |
 | 既存 `.umlay` を改修 | `/evolve-schema` | 後方互換差分 |
 | 改修の影響範囲 | `/change-impact-diff` | Purpose / Touch / Miss + Risk |
 | 改修の実装計画 | `/plan-from-diff` | phase / PR 分割 / rollback |

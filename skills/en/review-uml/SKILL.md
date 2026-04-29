@@ -1,10 +1,10 @@
 ---
 name: review-uml
-version: 1.6.1
-spec: "@umlay/spec >= 1.6.1 (DSL 1.0 / IR 1.0)"
+version: 1.7.0
+spec: "@umlay/spec >= 1.7.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, reviewer]
 summary: Mechanically review Umlay DSL / IR for spec conformance and design quality
-description: Use when the user asks to review, audit, or analyse an existing Umlay DSL / IR for spec conformance, lint violations, and design risks. Produces structured `@review` / `@fix` annotations.
+description: Use when the user asks to review, audit, or analyse an existing Umlay DSL / IR. **First check that the input parses** (LEX / PARSE / IR errors), then walk through spec conformance, lint violations, and design risks. Produces structured `@review` / `@fix` annotations.
 references:
   grammar: ../../../packages/spec/src/grammar.md
   schema: ../../../packages/spec/src/ir.schema.json
@@ -15,11 +15,12 @@ references:
 
 ## Goal
 
-Given a `.umlay` file (or IR JSON), detect issues across three layers:
+Given a `.umlay` file (or IR JSON), detect issues across **four layers**:
 
-1. **Spec violations** — rejected by parser or IR schema
-2. **Lint violations** — syntactically fine but missing / vague
-3. **Design risks** — structural antipatterns
+0. **Parse errors** — input doesn't tokenise, parse, or build an IR. **Highest priority — block other layers when present.**
+1. **Spec violations** — input parses but trips an `S` rule (S11–S17)
+2. **Lint violations** — syntactically fine but missing / vague (L001–L056)
+3. **Design risks** — structural antipatterns (R01–R12)
 
 ## Inputs / Outputs
 
@@ -32,17 +33,69 @@ Given a `.umlay` file (or IR JSON), detect issues across three layers:
 
 All rules used for review are normatively defined in [`packages/spec/src/lint-rules.md`](../../packages/spec/src/lint-rules.md). This skill does **not** restate the full tables; it only references the category prefixes and rule IDs.
 
-| Prefix | Purpose | Severity | Range |
+| Prefix / Code | Purpose | Severity | Range |
 | --- | --- | --- | --- |
+| **`LEX` / `PARSE` / `IR`** | Parser-emitted diagnostics (Layer 0) | error (blocker) | single string codes |
 | **S** | Spec violation (grammar violation, blocker) | error (blocker) | S01–S99 |
 | **L** | Lint (mode-dependent conventions) | mode-dependent | L001–L199 |
 | **R** | Risk (design antipattern, heuristic) | warn / info | R01–R99 |
 | **W** | Warning (deprecated / experimental use) | info | W001–W099 |
 | **C** | Compatibility (spec version mismatch) | warn | C001–C099 |
 
+### Layer 0: Parse errors (top blocker)
+
+`@umlay/core` emits these **before** the lint package even runs, so they
+never appear in the `S/L/R/W/C` catalog. Three codes:
+
+| `code` | Meaning | Source |
+| --- | --- | --- |
+| `LEX` | Tokeniser cannot read the bytes | Chevrotain lexer |
+| `PARSE` | Token stream doesn't match the grammar | Chevrotain parser |
+| `IR` | Parsed but Zod IR build failed | `IRSchema.parse()` |
+
+If any error-severity Layer-0 finding exists, **stop the review here**.
+Layers 1–3 assume a complete IR; running them on a partial IR yields
+false positives and false negatives.
+
+#### Pitfall hints (auto-attached by the parser)
+
+For `code: PARSE`, `addPitfallHint` recognises five patterns AI agents
+and newcomers commonly hit and appends a `\n  Hint: ...` line to the
+message. Always read the hint when surfacing the finding:
+
+| Hint | Pattern | Fix |
+| --- | --- | --- |
+| **A** | `attr: Type` (Prisma-style colon) | drop the colon (`attr Type`). Spec 1.6.3+ tolerates it inside attribute decls but not in enum bodies / view headers |
+| **B** | `attr = Type` | colon / equals are not separators; `=` is reserved for `type X = Y` aliases only |
+| **C** | `model Foo:` (Python/YAML style) | model bodies use `{ ... }`, not `:` |
+| **D** | `fn name() => T` / `fn name(): T` | `fn name() -> T` (single arrow) |
+| **E** | `@@directive(...)` at a header | `@@` is body-only; headers take single-`@` annotations |
+
+#### Already-tolerated AI traps (no hint, just works since 1.6.x)
+
+These were rejected before 1.6 but are now accepted by parser tolerance
+upgrades — useful to know when reviewing pre-1.6 samples migrating
+forward:
+
+| Input | Pre-1.5 behaviour | Current behaviour |
+| --- | --- | --- |
+| `'single-quoted'` strings | `LEX` | accepted (1.6.0+) |
+| `@@min-spec-version("1.7")` hyphenated arg | `PARSE` | accepted (1.6.1+) |
+| `@maxLength(1024)` retained in IR | silently dropped | stored on `attribute.constraints.maxLength` (1.6.2+) |
+| `@@identity(a, b, \`date\`)` backtick-escaped reserved word | `PARSE` | accepted (1.6.4+) |
+
+#### How to extract them
+
+```sh
+umlay check schema.umlay --json | jq '.diagnostics[] | select(.code == "LEX" or .code == "PARSE" or .code == "IR")'
+```
+
+Filter by `code` to isolate parser-layer findings; each one carries a
+`range` with line / column.
+
 ### Layer 1: Spec violations (blocker) — see `lint-rules.md` S section
 
-- Rejected as errors by the parser or IR schema validation (S01–S17 at 0.8.0)
+- Parser succeeded but an S-rule (S11–S17) flagged the IR
 - All modes: **error** (mandatory)
 - Any single hit → report as blocker and do NOT proceed to later layers
 
@@ -57,6 +110,14 @@ All rules used for review are normatively defined in [`packages/spec/src/lint-ru
   - L047: `@@boundary.exposes` / `hides` ghost references
   - L048: PII / GDPR / PCI-DSS attribute in a model that has no reject `@@example`
   - L049: `@@example` × structured `@@inv(field, op, value)` mismatch (expect=accept but inv broken / expect=reject but inv satisfied)
+- **L050–L056** — state machine ↔ event ↔ sequence integrity (RFC 0050 / 0051 / 0052, spec 1.7+):
+  - L050: a `state_machine` view has a transition with no covering `fn @pre/@post`
+  - L051: `fn @pre/@post` references a state name that isn't in the enum
+  - L052: enum value is unreachable (not the initial state, not the target of any `@post`)
+  - L053: `fn` on a state-bearing model that doesn't transition state and isn't called from any sequence
+  - L054: a sequence message calls a method that doesn't change state (likely consistency drift)
+  - L055: `@emits(EventName)` references an undeclared event
+  - L056: a declared event is never emitted or referenced
 - `@@mode(strict)` will promote all rules to error at spec 1.0 (see migration-guide-1.0.md)
 
 ### Layer 3: Design risks — see `lint-rules.md` R section
@@ -71,12 +132,30 @@ All rules used for review are normatively defined in [`packages/spec/src/lint-ru
 
 ## Procedure
 
+### Step 0 — Parsability check (top blocker)
+
+1. Run `umlay check <file> --json` (or call `parse(source)` directly)
+2. Filter `diagnostics[]` for `code in {LEX, PARSE, IR}`
+3. If any error-severity finding exists, **stop here and return**:
+
+   ```yaml
+   findings:
+     - layer: parse
+       rule: PARSE
+       severity: error
+       location: { line: 12, column: 8 }
+       message: "Expecting token of type --> Identifier <-- but found --> ':' <--"
+       hint: "Hint A — Umlay's canonical attribute form omits the colon (`id UUID! @id`, not `id: UUID!`)..."
+       fix: "Drop the colon: `attr Type` (not `attr: Type`)"
+   ```
+
+4. Only when parsing is clean do we move to Steps 1–3.
+
 ### Step 1 — Spec conformance
 
-1. Parse the `.umlay` (or inspect the syntax)
-2. Validate the IR JSON against the schema (Draft 2020-12)
-3. Walk through `lint-rules.md` S section (S01–S17)
-4. **If even one violation exists, return them as blockers without proceeding to later layers**
+1. The IR is already validated by Step 0 (Zod runs as part of `parse`)
+2. Walk through `lint-rules.md` S section (S11–S17) using `@umlay/lint`
+3. **If even one violation exists, return them as blockers without proceeding to later layers**
 
 ### Step 2 — Lint detection
 
@@ -98,19 +177,32 @@ All rules used for review are normatively defined in [`packages/spec/src/lint-ru
 
 ```yaml
 findings:
-  - layer: spec
+  - layer: parse                         # Layer 0
+    rule: PARSE
+    severity: error
+    location: { line: 8, column: 12 }
+    message: "Expecting token of type --> Identifier <-- but found --> '@@' <--"
+    hint: "Hint E — `@@directive(...)` is body-only. Move @@confidence inside `{ ... }`."
+    fix: "Move `@@confidence(0.6)` into the model body"
+  - layer: spec                          # Layer 1
     rule: S03
     severity: error
     location: "ordering.Invoice"
     message: "Unknown stereotype '@master'. Allowed: entity / aggregate_root / value_object / service / interface"
     fix: "Replace '@master' with '@aggregate_root'"
-  - layer: lint
+  - layer: lint                          # Layer 2
     rule: L001
     severity: warn
     location: "ordering.Order.total"
     message: "Attribute lacks explicit visibility"
     fix: "Prefix with '-' (private) or '+' (public)"
-  - layer: risk
+  - layer: lint                          # Layer 2 (spec 1.7)
+    rule: L055
+    severity: warn
+    location: "shop.Order.confirm"
+    message: "@emits(OrderConfirmed) — そのような event 宣言が見つかりません"
+    fix: "Declare `event OrderConfirmed { ... }` or rename the @emits target"
+  - layer: risk                          # Layer 3
     rule: R04
     severity: info
     location: "ordering.Order"

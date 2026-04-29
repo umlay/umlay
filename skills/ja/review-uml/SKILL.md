@@ -1,10 +1,10 @@
 ---
 name: review-uml
-version: 1.6.1
-spec: "@umlay/spec >= 1.6.1 (DSL 1.0 / IR 1.0)"
+version: 1.7.0
+spec: "@umlay/spec >= 1.7.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, reviewer]
 summary: Umlay DSL / IR を仕様準拠性・設計品質の両面から機械的にレビューする手順
-description: 既存の Umlay DSL / IR をレビュー・監査・分析したいときに起動する。spec 準拠・lint 違反・設計リスクを検出し、`@review` / `@fix` 形式で返す。
+description: 既存の Umlay DSL / IR をレビュー・監査・分析したいときに起動する。**まずパース可能性を確認** (LEX / PARSE / IR エラー) し、次に spec 準拠・lint 違反・設計リスクを検出し、`@review` / `@fix` 形式で返す。
 references:
   grammar: ../../../packages/spec/src/grammar.md
   schema: ../../../packages/spec/src/ir.schema.json
@@ -15,11 +15,12 @@ references:
 
 ## ゴール
 
-`.umlay` ファイル (または IR JSON) を受け取り、以下の 3 レイヤで問題を検出する。
+`.umlay` ファイル (または IR JSON) を受け取り、以下の **4 レイヤ** で問題を検出する。
 
-1. **Spec 違反** — パーサ / IR スキーマが受理しない形
-2. **Lint 違反** — spec は通るが書き忘れや命名の問題
-3. **設計リスク** — 構造的アンチパターン
+0. **パースエラー** — そもそもパースが通らない形 (lexer / grammar / IR build)。**他のレイヤより最優先**
+1. **Spec 違反** — パースは通るが S ルール (S11–S17) に該当する形
+2. **Lint 違反** — spec は通るが書き忘れや命名の問題 (L001–L056)
+3. **設計リスク** — 構造的アンチパターン (R01–R12)
 
 ## 入力 / 出力
 
@@ -32,17 +33,69 @@ references:
 
 レビューで使う全ルールは [`packages/spec/src/lint-rules.md`](../../packages/spec/src/lint-rules.md) を**正本**とし、本 skill では再掲しない。以下 5 カテゴリの prefix を理解したうえで、正本カタログのルール ID を参照する:
 
-| Prefix | 用途 | Severity | 範囲 |
+| Prefix / Code | 用途 | Severity | 範囲 |
 | --- | --- | --- | --- |
+| **`LEX` / `PARSE` / `IR`** | パーサ自身が出す診断 (Layer 0) | error (blocker) | 単一コード、文字列のまま |
 | **S** | Spec violation (文法違反、blocker) | error (blocker) | S01〜S99 |
 | **L** | Lint (mode 依存の慣習違反) | mode-dependent | L001〜L199 |
 | **R** | Risk (設計アンチパターン、heuristic) | warn / info | R01〜R99 |
 | **W** | Warning (deprecated / experimental 使用等) | info | W001〜W099 |
 | **C** | Compatibility (spec バージョン差分) | warn | C001〜C099 |
 
+### Layer 0: パースエラー (最優先 blocker)
+
+`@umlay/core` のパーサ自身が **lint より前の段階で** 発する診断。lint
+ルールカタログには載らない (lint package を呼ぶ前に発生する)。`code` は
+3 種類:
+
+| code | 意味 | 出処 |
+| --- | --- | --- |
+| `LEX` | トークナイザが文字を読めない | Chevrotain lexer |
+| `PARSE` | トークン列が文法に合わない | Chevrotain parser |
+| `IR` | パースは通ったが Zod での IR 構築に失敗 | `IRSchema.parse()` |
+
+**1 件でも error が出ればレビューはここで止まる**。Layer 1〜3 のルール
+群は IR が完成していること前提なので、IR が未完成な状態で評価しても
+偽陽性 / false negative になる。
+
+#### Pitfall hints (パーサが自動付加)
+
+`PARSE` 系エラーには `addPitfallHint` が AI / 初学者が陥りやすい 5
+パターンを検出して `\n  Hint: ...` を末尾に付加する。`code: PARSE` を
+受け取ったら必ず Hint も読むこと:
+
+| Hint | パターン | 修正 |
+| --- | --- | --- |
+| **A** | `attr: Type` (Prisma 風コロン) | コロン省略 (`attr Type`)。spec 1.6.3+ は属性宣言中なら受理されるが、enum 本体や view header での誤用は依然 PARSE |
+| **B** | `attr = Type` | コロン / 等号は型宣言用。`type X = Y` のみ等号可 |
+| **C** | `model Foo:` (Python/YAML 風) | `{ ... }` 必須 |
+| **D** | `fn name() => T` / `fn name(): T` | `fn name() -> T` (single arrow) |
+| **E** | header 位置に `@@directive(...)` | `@@` は body-only。header は `@annotation` (single-at) |
+
+#### よく踏む追加パターン (spec 1.6.x 以降で吸収済 — Hint なしで通る)
+
+下記は 1.6.2〜1.6.4 で parser tolerance を上げて受理するようになった。
+1.5 以前のサンプルを 1.7 で動かす際にチェック:
+
+| 入力 | 1.5 以前の挙動 | 1.6.x 以降 |
+| --- | --- | --- |
+| `'single-quoted'` 文字列 | `LEX` | 受理 (1.6.0+) |
+| `@@min-spec-version("1.7")` のハイフン引数 | `PARSE` | 受理 (1.6.1+) |
+| `@maxLength(1024)` を IR に保存 | 黙って drop | `attribute.constraints.maxLength` に保存 (1.6.2+) |
+| `@@identity(a, b, \`date\`)` のバックティック識別子 | `PARSE` | 受理 (1.6.4+) |
+
+#### 入手方法
+
+```sh
+umlay check schema.umlay --json | jq '.diagnostics[] | select(.code == "LEX" or .code == "PARSE" or .code == "IR")'
+```
+
+`code` でフィルタすれば parse 系だけ抜ける。`range` フィールドで行・列が
+取れる。
+
 ### Layer 1: Spec 違反 (blocker) — 正本: `lint-rules.md` S 節
 
-- パーサ / IR schema validation が error として reject するパターン (S01〜S17)
+- パースは通ったが S 系 lint ルール (S11–S17) が拒否するパターン
 - 全 mode で **error** (mandatory)
 - 1 件でも該当すれば Layer 2/3 に進まず blocker として返す
 
@@ -57,6 +110,14 @@ references:
   - L047: `@@boundary.exposes` / `hides` の幽霊参照
   - L048: PII / GDPR / PCI-DSS attribute を持つ model に reject `@@example` 不在
   - L049: `@@example` と構造化 `@@inv(field, op, value)` の矛盾 (expect=accept なのに inv 違反 / expect=reject なのに inv 充足)
+- **L050〜L056** — ステートマシン × イベント × シーケンスの整合性 (RFC 0050/0051/0052, spec 1.7+):
+  - L050: `state_machine` view 上の遷移に対応する `fn @pre/@post` が無い
+  - L051: `fn @pre/@post` で参照される状態名が enum に存在しない
+  - L052: 到達不能な enum 値 (初期状態でも `@post` 対象でもない)
+  - L053: 状態を持つ model 上で、状態遷移にもシーケンスにも現れない孤立した `fn`
+  - L054: sequence のメソッド呼び出しが状態を変えない (整合性違反の疑い)
+  - L055: `@emits(EventName)` の参照先 `event` が宣言されていない
+  - L056: 宣言された `event` がどこからも emit / 参照されていない
 - `@@mode(strict)` で全ルール error 化 (Phase 1.0 で固定、migration-guide-1.0.md)
 
 ### Layer 3: 設計リスク — 正本: `lint-rules.md` R 節
@@ -71,12 +132,30 @@ references:
 
 ## レビュー手順
 
+### Step 0 — パース可能性チェック (blocker)
+
+1. `umlay check <file> --json` を実行 (もしくは `parse(source)` を直接呼ぶ)
+2. `diagnostics[]` から `code in {LEX, PARSE, IR}` のエントリを抜く
+3. 1 件でも error 重大度があれば、**ここで止めて以下のフォーマットで返す**:
+
+   ```yaml
+   findings:
+     - layer: parse
+       rule: PARSE
+       severity: error
+       location: { line: 12, column: 8 }
+       message: "Expecting token of type --> Identifier <-- but found --> ':' <--"
+       hint: "Hint A — Umlay's canonical attribute form omits the colon (`id UUID! @id` rather than `id: UUID!`)..."
+       fix: "Remove the colon: `attr Type` (not `attr: Type`)"
+   ```
+
+4. パースが通った時のみ Step 1〜3 へ進む
+
 ### Step 1 — Spec 準拠性チェック
 
-1. `.umlay` をパーサに通す (または構文を目視)
-2. IR JSON を schema validation (Draft 2020-12) に通す
-3. `lint-rules.md` S 節 (S01〜S17) を順にチェック
-4. **1 件でも違反があれば以降の Layer に進まず、blocker として返す**
+1. パース済 IR を schema validation (Draft 2020-12) に通す (Step 0 で済んでいる)
+2. `lint-rules.md` S 節 (S11〜S17) を順にチェック (`@umlay/lint` の出力で確認)
+3. **1 件でも違反があれば以降の Layer に進まず、blocker として返す**
 
 ### Step 2 — Lint 違反検出
 
@@ -98,19 +177,32 @@ references:
 
 ```yaml
 findings:
-  - layer: spec
+  - layer: parse                         # Layer 0
+    rule: PARSE
+    severity: error
+    location: { line: 8, column: 12 }
+    message: "Expecting token of type --> Identifier <-- but found --> '@@' <--"
+    hint: "Hint E — `@@directive(...)` is body-only. Move @@confidence inside `{ ... }`."
+    fix: "Move `@@confidence(0.6)` into the model body"
+  - layer: spec                          # Layer 1
     rule: S03
     severity: error
     location: "ordering.Invoice"
     message: "Unknown stereotype '@master'. Allowed: entity / aggregate_root / value_object / service / interface"
     fix: "Replace '@master' with '@aggregate_root'"
-  - layer: lint
+  - layer: lint                          # Layer 2
     rule: L001
     severity: warn
     location: "ordering.Order.total"
     message: "Attribute lacks explicit visibility"
     fix: "Prefix with '-' (private) or '+' (public)"
-  - layer: risk
+  - layer: lint                          # Layer 2 (spec 1.7)
+    rule: L055
+    severity: warn
+    location: "shop.Order.confirm"
+    message: "@emits(OrderConfirmed) — そのような event 宣言が見つかりません"
+    fix: "Declare `event OrderConfirmed { ... }` or rename @emits target"
+  - layer: risk                          # Layer 3
     rule: R04
     severity: info
     location: "ordering.Order"
