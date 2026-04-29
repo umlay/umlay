@@ -1,10 +1,10 @@
 ---
 name: write-uml
-version: 1.6.1
-spec: "@umlay/spec >= 1.6.1 (DSL 1.0 / IR 1.0)"
+version: 1.7.0
+spec: "@umlay/spec >= 1.7.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer]
 summary: 要件や既存の説明文から Umlay DSL (.umlay) を仕様準拠で書き起こす手順
-description: ユーザが新しい Umlay DSL (.umlay) を要件・自然言語説明・既存コード/スキーマから書き起こしたいときに起動する。`@umlay/spec` に準拠し、パース → IR v1.0 へ通る .umlay を生成する。
+description: ユーザが新しい Umlay DSL (.umlay) を要件・自然言語説明・既存コード/スキーマから書き起こしたいときに起動する。**要件・基本設計の文書情報は `@@md` / `@@doc` で必ず併記**し、構造図 (ER / class / sequence) と要件ドキュメントを `er.umlay` / `class.umlay` / `requirement.umlay` 等にファイル分割する。生成物は `@umlay/spec` に準拠し、パース → IR v1.0 へ通ること。
 references:
   grammar: ../../../packages/spec/src/grammar.md
   schema: ../../../packages/spec/src/ir.schema.json
@@ -31,6 +31,45 @@ references:
 | 出力 | 1 つ以上の `.umlay` ファイル |
 
 ## 手順
+
+### Step 0 — 出力ファイルの分割を決める (重要)
+
+`.umlay` を **1 枚に押し込まない**。レビュアーは「ER だけ見たい」「要件
+だけ見たい」と粒度ごとに読みたいので、**ファイルを目的別に分割**する。
+分割パターン (推奨):
+
+| ファイル名 | 主要内容 | `@@md` の比率 | レビュー対象 |
+| --- | --- | --- | --- |
+| **`<domain>.requirement.umlay`** | **要件 / 基本設計 / ADR / 制約** を `@@md` 中心で記述 + 主要 model のスケルトン | **高 (本文の半分以上)** | プロダクトオーナー、アーキテクト |
+| `<domain>.er.umlay` | model / 属性 / `@ref` / `view @er_diagram` | 低 (model `@intent` のみ) | DB 設計者、バックエンド |
+| `<domain>.class.umlay` | `fn` / `@pre` / `@post` / `protocol` / `view @class_diagram` | 中 (契約説明) | ロジック実装者 |
+| `<domain>.sequence.umlay` | `view @sequence_diagram` 中心、`@@detail` で骨格/詳細切替 | 中 | API / フロー設計者 |
+| `<domain>.umlay` (任意) | 上記を `import` で集約した「全体」ファイル | — | 図全体を 1 枚で見たいとき |
+
+**重要原則:**
+
+1. **要件ファイル (`requirement.umlay`) を最初に書く** — ここで決めた
+   intent / 制約が他ファイルの `@intent` / `@inv` に流れる
+2. **構造ファイル (`er.umlay` / `class.umlay`) は構造のみ** — ER ファイル
+   に長い `@@md` を書かない (ER 図は構造比較に使うので、説明は要件
+   ファイル側で参照する)
+3. **同じ namespace を共有する場合は `import` で参照**:
+
+```umlay
+// requirement.umlay 側で model を定義
+namespace shop
+@@md("""…要件本文…""")
+model Order @aggregate_root { id UUID! @id; total decimal! }
+
+// er.umlay 側
+namespace shop-er
+import "./requirement.umlay"      // shop の model 群を読み込む
+view shop-overview @er_diagram { include: shop.* }
+```
+
+`import` ができない / 重複定義になる場合は、**model の正本を 1 つの
+ファイルに置き、view/doc 専用ファイルから `import` で参照する** Pattern A
+が安全。同じ model を 2 つ以上のファイルで宣言しない。
 
 ### Step 1 — namespace を決める
 
@@ -154,6 +193,103 @@ model Order @aggregate_root
 ```
 
 **model レベル**は不変条件 (cross-attribute 制約 / 業務ルール)、**attribute レベル**は単一フィールドの値域とみなす。両方書いて構わない。
+
+### Step 7.5 — ドキュメント層を厚くする (`@@md` / `@@doc` / Markdown trailer) **必須**
+
+要件ファイル (`requirement.umlay`) では構造定義よりも **ドキュメント層**
+を厚くする。レビュー時に `.umlay` だけで「何を作ろうとしているか」「なぜ
+この境界か」「どう使われるか」を説明できる状態を目指す。
+
+#### 4 つの記述レイヤを使い分ける (RFC 0031 / 0035, spec 1.1+)
+
+| レイヤ | 構文 | 用途 |
+| --- | --- | --- |
+| **A. 文字列内 Markdown** | `@intent("...")` / `@inv("...")` | 1〜2 行で「何のため / 何を守るか」 |
+| **B. `@@md(""" ... """)`** | model / 宣言前にも置ける (RFC 0035) | 多段落・表・コードフェンス・図表説明。**要件本文の主役** |
+| **C. `@@doc("""...""")`** | 同上 | 公開 API ドキュメント風の単段落説明 |
+| **D. Markdown trailer (`---` 以降)** | ファイル末尾 | クロスカット (制約 / 用語集 / 開放課題 / 参考リンク) |
+
+#### 原則
+
+1. **要件ファイルは Markdown 比率 ≥ 50%** を目標にする。`@@md` ブロック
+   なしの `requirement.umlay` は「ただの ER 図ファイル」に退化している
+2. **宣言前 `@@md` / `@@doc` (RFC 0035)** で **「この model の存在理由 /
+   ビジネス的位置付け / レビュアーが知るべき制約」** を 1 段落 + 表で書く
+3. **宣言ヘッダ `@intent("...")`** は Markdown ブロックの **1 行サマリ**
+   とする。両者を組み合わせると「目次的な intent」+「本文 `@@md`」になる
+4. **末尾 trailer (`---`)** は ADR / 用語集 / Open Questions の置き場。
+   IR には `IR.docTrailer` として保存され、Document mode で表示される
+
+#### 例: requirement.umlay の冒頭
+
+```umlay
+namespace shop
+
+@@md("""
+# 注文ドメイン — 基本設計
+
+## 背景
+2026-Q2 リニューアルで、レガシー基幹の Order テーブル相当を
+新しい集約境界で再設計する。下記 ADR-021 (集約境界の決定)、
+ADR-024 (在庫モデルの分離) に依拠する。
+
+## 業務ルール (要約)
+- 注文は **DRAFT → CONFIRMED → SHIPPED** の片道遷移 (CANCELLED は任意状態から)
+- 確定後の合計金額は不変。差額発生時は別注文 (返金 / 追加) を作る
+- 1 注文あたりの明細は 1〜200 行
+
+## スコープ外
+- 在庫引当は別 namespace `inventory` で管理 (本ファイルでは `@ref` のみ)
+- 配送状況は `shipping` ドメインの責務
+
+## 関連 view
+- `shop.requirement` (本ファイル末尾): 用語集 / Open Questions
+- `shop.er` (`er.umlay`): スキーマ俯瞰
+- `shop.class` (`class.umlay`): メソッド契約
+""")
+
+@@md("""
+## 集約: Order
+
+注文確定の唯一の入口。**OrderLine とは composition** (Order 削除時に
+連鎖削除)。`status` の遷移ルールは `confirm()` / `ship()` / `cancel()` の
+`@pre` / `@post` を真とする。
+""")
+model Order @aggregate_root
+  @intent("顧客発注のアグリゲート — 確定後は不変")
+  @inv("total >= 0")
+{
+  id     UUID!         @id
+  status OrderStatus!  @states(initial: DRAFT, final: [SHIPPED, CANCELLED])
+  total  decimal!
+
+  fn confirm()
+    @pre("status == DRAFT")
+    @post("status == CONFIRMED")
+}
+
+---
+
+# 用語集
+
+| 語 | 定義 |
+| --- | --- |
+| 注文 | Order 集約の代表名。レガシー Order テーブルとは別物 |
+| 確定 | `confirm()` 呼び出し以降の状態 |
+
+# Open Questions
+- [ ] 部分キャンセルは 1.0 ではスコープ外 (一括キャンセルのみ)。次期で?
+- [ ] 在庫引当との同期点は `confirm()` 以前 / 以後どちらか — ADR-025 待ち
+```
+
+#### アンチパターン
+
+| ❌ NG | ✅ OK |
+| --- | --- |
+| `requirement.umlay` に `@intent("注文")` だけで `@@md` なし | 宣言前 `@@md` で 1 段落 + 業務ルール表 |
+| 全文書を 1 つの巨大 `@@md` に押し込む (model ヘッダの `@intent` を抜く) | 宣言前 `@@md` (本文) + ヘッダ `@intent` (1 行サマリ) を併記 |
+| `er.umlay` に長文 `@@md` (構造ファイルが要件を抱え込む) | 構造ファイルは `@intent` のみ。要件は `requirement.umlay` 側 |
+| 用語集を `@@md` 各所に散らばせる | 末尾の `---` trailer に集約 |
 
 ### Step 8 — ビューを宣言
 
@@ -302,6 +438,8 @@ type UserId = UUID
 
 ## チェックリスト (完成前に確認)
 
+### 構造 (全ファイル共通)
+
 - [ ] `namespace` がファイル先頭に 1 つある
 - [ ] すべての `model` に `@id` または `@@id(...)` がある
 - [ ] すべての `@ref(X.y)` の `X.y` が他の model に実在する
@@ -315,12 +453,48 @@ type UserId = UUID
       (`exclude: seq:critical` / `stereotype:service` / `visibility:private` 等)
       で切り分ける。読者ごとに `.umlay` を複製しない
 
-## 完全なサンプル
+### ファイル分割 (Step 0 準拠)
 
-```prisma
+- [ ] 要件 / 基本設計のドキュメントは `requirement.umlay` (または同等) に
+      集約され、ER / class ファイルが要件本文を抱え込んでいない
+- [ ] 同じ model が 2 つ以上のファイルで宣言されていない (`import` で参照)
+- [ ] レビュー対象の audience ごとにファイルが分かれている
+
+### ドキュメント層 (`requirement.umlay` 必須、他ファイルは推奨)
+
+- [ ] **要件ファイルは Markdown 比率 ≥ 50%**
+- [ ] 各 model に **宣言前 `@@md` または `@@doc`** で本文がある
+      (1 行 `@intent` だけで終わっていない)
+- [ ] ファイル末尾に `---` trailer で **用語集 / Open Questions / ADR 参照**
+      がある
+- [ ] `@intent("...")` (1 行) と `@@md(""" ... """)` (本文) の役割が
+      混同されていない
+
+## 完全なサンプル — 3 ファイル構成
+
+### `ordering.requirement.umlay` (要件・基本設計、`@@md` 主体)
+
+```umlay
 @@mode(strict)
 
 namespace ordering
+
+@@md("""
+# 注文ドメイン — 基本設計 (v1)
+
+## 背景
+2026-Q2 リニューアルで、レガシー Order テーブルを集約境界で再設計。
+ADR-021 (集約境界決定) / ADR-024 (在庫モデル分離) に依拠。
+
+## 業務ルール
+- 注文は **DRAFT → CONFIRMED → SHIPPED** の片道遷移
+- CANCELLED はいつでも遷移可能
+- 確定後の `total` は不変
+
+## スコープ外
+- 在庫引当 (`inventory` namespace の責務)
+- 配送状況 (`shipping` namespace の責務)
+""")
 
 type Money @value_object {
   amount   decimal @scale(2)
@@ -329,18 +503,27 @@ type Money @value_object {
 
 enum OrderStatus { DRAFT, CONFIRMED, SHIPPED, CANCELLED }
 
-model Customer @aggregate_root @intent("購入者") {
-  id    UUID!   @id
-  email string! @unique
-}
-
-model Order @aggregate_root @intent("顧客発注") {
-  id          UUID!       @id
-  customerId  UUID!       @ref(Customer.id, onDelete: RESTRICT, inverse: "orders")
-  total       Money!      @inv("total.amount >= 0")
-  status      OrderStatus = DRAFT
+@@md("""
+## 集約: Order
+注文確定の唯一の入口。OrderLine とは composition (Order 削除時に連鎖)。
+""")
+model Order @aggregate_root
+  @intent("顧客発注のアグリゲート — 確定後は不変")
+  @inv("total.amount >= 0")
+{
+  id          UUID!         @id
+  customerId  UUID!         @ref(Customer.id, onDelete: RESTRICT, inverse: "orders")
+  total       Money!
+  status      OrderStatus!  @states(initial: DRAFT, final: [SHIPPED, CANCELLED])
 
   -> composition 1..* lines: OrderLine
+}
+
+model Customer @aggregate_root
+  @intent("購入者")
+{
+  id    UUID!   @id
+  email string! @unique
 }
 
 model OrderLine @entity {
@@ -351,10 +534,46 @@ model OrderLine @entity {
   price   Money!
 }
 
-view ordering-er @er_diagram {
+---
+
+# 用語集
+
+| 語 | 定義 |
+| --- | --- |
+| 注文 | Order 集約の代表名 |
+| 確定 | `confirm()` 呼び出し以降の状態 |
+
+# Open Questions
+- [ ] 部分キャンセルは v2 でスコープ
+- [ ] 在庫引当の同期点は ADR-025 待ち
+```
+
+### `ordering.er.umlay` (ER 図専用、構造のみ)
+
+```umlay
+namespace ordering-er
+import "./ordering.requirement.umlay"
+
+view ordering-er @er_diagram
+  @intent("注文ドメインのスキーマ俯瞰")
+{
   include: ordering.*
 }
 ```
+
+### `ordering.class.umlay` (メソッド契約、クラス図用)
+
+```umlay
+namespace ordering-class
+import "./ordering.requirement.umlay"
+
+view ordering-class @class_diagram { include: ordering.* }
+view ordering-life @state_machine { include: ordering.Order, ordering.OrderStatus }
+```
+
+`ordering.requirement.umlay` だけでも独立して読めるが、ER 図 / state
+machine の SVG が必要なときは `ordering.er.umlay` / `ordering.class.umlay`
+を CLI に渡す。レビュアーは目的別にどれか 1 つだけ読めばよい。
 
 ## 参照
 

@@ -1,10 +1,10 @@
 ---
 name: write-uml
-version: 1.6.1
-spec: "@umlay/spec >= 1.6.1 (DSL 1.0 / IR 1.0)"
+version: 1.7.0
+spec: "@umlay/spec >= 1.7.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer]
-summary: Produce spec-conformant Umlay DSL (.umlay) from requirements or existing descriptions
-description: Use when the user wants to write a new Umlay DSL (.umlay) file from requirements, a natural-language description, or an existing codebase/schema. Produces a `@umlay/spec`-conformant file that parses into IR v1.0.
+summary: Produce spec-conformant Umlay DSL (.umlay) from requirements or existing descriptions, with the requirement / design narrative embedded as `@@md` documentation
+description: Use when the user wants to write a new Umlay DSL (.umlay) file from requirements, a natural-language description, or an existing codebase/schema. **Always co-author the requirement / basic-design narrative as `@@md` / `@@doc` blocks** and split structural views from prose into separate files (e.g. `er.umlay` / `class.umlay` / `requirement.umlay`). Produces a `@umlay/spec`-conformant file that parses into IR v1.0.
 references:
   grammar: ../../../packages/spec/src/grammar.md
   schema: ../../../packages/spec/src/ir.schema.json
@@ -31,6 +31,41 @@ Given natural-language requirements, an existing schema, or existing code, produ
 | Output | One or more `.umlay` files |
 
 ## Procedure
+
+### Step 0 — Decide the file split (important)
+
+**Don't cram the whole domain into one `.umlay`.** Reviewers read at
+different grains — "show me the ER", "show me the requirement" — so
+split by audience:
+
+| Filename | Main contents | `@@md` ratio | Audience |
+| --- | --- | --- | --- |
+| **`<domain>.requirement.umlay`** | **Requirements / basic design / ADRs / constraints** as `@@md` blocks plus the canonical model skeleton | **High (≥ 50% of the file)** | Product owner, architect |
+| `<domain>.er.umlay` | model / attributes / `@ref` / `view @er_diagram` | Low (model `@intent` only) | DB designer, backend |
+| `<domain>.class.umlay` | `fn` / `@pre` / `@post` / `protocol` / `view @class_diagram` | Medium (contract docs) | Logic implementer |
+| `<domain>.sequence.umlay` | `view @sequence_diagram`, with `@@detail` for skeleton/detail toggles | Medium | API / flow designer |
+| `<domain>.umlay` (optional) | Aggregator that `import`s the rest | — | One-page overview |
+
+**Principles:**
+
+1. **Write the requirement file first** — its intent / constraints flow
+   into other files' `@intent` / `@inv`.
+2. **Structural files (ER / class) stay structural** — don't bury long
+   `@@md` blocks in `er.umlay`; reference the requirement file.
+3. **Share canonical model defs via `import`** — never declare the same
+   model in two files:
+
+```umlay
+// requirement.umlay defines the canonical models
+namespace shop
+@@md("""…requirement narrative…""")
+model Order @aggregate_root { id UUID! @id; total decimal! }
+
+// er.umlay just adds the ER view
+namespace shop-er
+import "./requirement.umlay"
+view shop-overview @er_diagram { include: shop.* }
+```
 
 ### Step 1 — Pick the namespace
 
@@ -158,6 +193,102 @@ model Order @aggregate_root
 Treat **model-level invariants** as cross-attribute / business rules
 and **attribute-level invariants** as single-field value-range
 constraints. Both can coexist; both flow into different lint surfaces.
+
+### Step 7.5 — Layer the documentation (`@@md` / `@@doc` / Markdown trailer) **required for `requirement.umlay`**
+
+In requirement / basic-design files (`requirement.umlay`), the
+documentation layer should outweigh the structural layer. Aim for a
+review experience where the `.umlay` alone explains "what we're
+building", "why this boundary", and "how it'll be used".
+
+#### Four documentation layers (RFC 0031 / 0035, spec 1.1+)
+
+| Layer | Syntax | Use |
+| --- | --- | --- |
+| **A. Markdown in strings** | `@intent("...")` / `@inv("...")` | One-line "what for / what to uphold" |
+| **B. `@@md(""" ... """)`** | inside model bodies *or* before declarations (RFC 0035) | Multi-paragraph, tables, code fences, diagrams. **The body of the requirement file** |
+| **C. `@@doc("""...""")`** | Same positions as `@@md` | Single-paragraph public-doc-style description |
+| **D. Markdown trailer (after `---`)** | End of file | Cross-cutting (constraints / glossary / open questions / external links) |
+
+#### Principles
+
+1. **`requirement.umlay` should be ≥ 50% Markdown.** If it isn't, you've
+   made another ER file and forgotten the requirements.
+2. Use **pre-declaration `@@md` / `@@doc` (RFC 0035)** to give each
+   model a paragraph + table on **why it exists, its business role, what
+   reviewers must know**.
+3. Keep the **header `@intent("...")`** as the **one-line summary** of
+   the Markdown block — together they read as "TOC line + body".
+4. Use the **trailing `---`** for ADR pointers, glossaries, and open
+   questions. The parser stores it in `IR.docTrailer`; Document mode
+   surfaces it.
+
+#### Example: `requirement.umlay` opening
+
+```umlay
+namespace shop
+
+@@md("""
+# Order domain — basic design
+
+## Background
+The 2026-Q2 redesign moves the legacy `Order` table into a proper
+aggregate boundary. Anchored by ADR-021 (boundary decision) and
+ADR-024 (inventory split-off).
+
+## Business rules (summary)
+- Order moves **DRAFT → CONFIRMED → SHIPPED** one-way (CANCELLED is
+  reachable from any state)
+- After CONFIRMED the `total` is immutable; price corrections happen
+  via a new return / additional order
+- 1–200 lines per order
+
+## Out of scope
+- Inventory reservation lives in `inventory` namespace
+- Shipping status lives in `shipping` namespace
+""")
+
+@@md("""
+## Aggregate: Order
+The single entry point for confirmation. **OrderLine is composed**
+(deleted with the parent). Status transitions are governed by
+`confirm()` / `ship()` / `cancel()` `@pre` / `@post`.
+""")
+model Order @aggregate_root
+  @intent("Customer order aggregate — immutable after confirmation")
+  @inv("total >= 0")
+{
+  id     UUID!         @id
+  status OrderStatus!  @states(initial: DRAFT, final: [SHIPPED, CANCELLED])
+  total  decimal!
+
+  fn confirm()
+    @pre("status == DRAFT")
+    @post("status == CONFIRMED")
+}
+
+---
+
+# Glossary
+
+| Term | Definition |
+| --- | --- |
+| Order | The Order aggregate, distinct from the legacy DB table |
+| Confirmed | The state after `confirm()` returns |
+
+# Open questions
+- [ ] Partial cancellation is out of v1 scope (only full cancel).
+- [ ] Reservation sync point — pre- or post-`confirm()`? Awaiting ADR-025.
+```
+
+#### Anti-patterns
+
+| ❌ Don't | ✅ Do |
+| --- | --- |
+| `requirement.umlay` with just `@intent("Order")` and no `@@md` | Pre-decl `@@md` paragraph + business-rules table |
+| Cram everything into one giant `@@md` and drop header `@intent` | Both: pre-decl `@@md` (body) + header `@intent` (one-line summary) |
+| Write a long `@@md` inside `er.umlay` | Keep ER files structural; reference `requirement.umlay` for prose |
+| Scatter glossary entries across multiple `@@md` blocks | Concentrate them in the trailing `---` block |
 
 ### Step 8 — Declare views
 
@@ -316,6 +447,8 @@ in the view still wins.
 
 ## Checklist (before finalizing)
 
+### Structure (every file)
+
 - [ ] Exactly one `namespace` declared at file top
 - [ ] Every `model` has `@id` or `@@id(...)`
 - [ ] Every `@ref(X.y)` resolves to an existing model attribute
@@ -330,12 +463,51 @@ in the view still wins.
       `stereotype:service`, `visibility:private`, …) instead of forking
       the file per reader.
 
-## Complete sample
+### File split (per Step 0)
 
-```prisma
+- [ ] Requirement / basic-design narrative is concentrated in
+      `requirement.umlay` (or equivalent); ER / class files don't carry
+      requirement prose.
+- [ ] No model is declared in two files — share via `import`.
+- [ ] One file per audience is fine; no "everything for everyone" file.
+
+### Documentation layer (`requirement.umlay` mandatory, others recommended)
+
+- [ ] **Requirement file ≥ 50% Markdown by volume.**
+- [ ] Each model has a **pre-declaration `@@md` or `@@doc`** body
+      (not just a one-line `@intent`).
+- [ ] The trailing `---` carries the **glossary / open questions /
+      ADR pointers**.
+- [ ] `@intent("...")` (one line) and `@@md(""" ... """)` (body) are
+      not used interchangeably — the intent is the summary line, the
+      Markdown block is the body.
+
+## Complete sample — three-file split
+
+### `ordering.requirement.umlay` (requirements + basic design, `@@md` heavy)
+
+```umlay
 @@mode(strict)
 
 namespace ordering
+
+@@md("""
+# Order domain — basic design (v1)
+
+## Background
+The 2026-Q2 redesign moves the legacy `Order` table into a proper
+aggregate boundary. Anchored by ADR-021 (boundary decision) and
+ADR-024 (inventory split-off).
+
+## Business rules
+- Order moves **DRAFT → CONFIRMED → SHIPPED** one-way
+- CANCELLED is reachable from any state
+- After CONFIRMED the `total` is immutable
+
+## Out of scope
+- Inventory reservation (`inventory` namespace)
+- Shipping (`shipping` namespace)
+""")
 
 type Money @value_object {
   amount   decimal @scale(2)
@@ -344,18 +516,28 @@ type Money @value_object {
 
 enum OrderStatus { DRAFT, CONFIRMED, SHIPPED, CANCELLED }
 
-model Customer @aggregate_root @intent("Purchaser") {
-  id    UUID!   @id
-  email string! @unique
-}
-
-model Order @aggregate_root @intent("Customer order") {
-  id          UUID!       @id
-  customerId  UUID!       @ref(Customer.id, onDelete: RESTRICT, inverse: "orders")
-  total       Money!      @inv("total.amount >= 0")
-  status      OrderStatus = DRAFT
+@@md("""
+## Aggregate: Order
+The single confirmation entry point. **OrderLine is composed**
+(deleted with the parent).
+""")
+model Order @aggregate_root
+  @intent("Customer order aggregate — immutable after confirmation")
+  @inv("total.amount >= 0")
+{
+  id          UUID!         @id
+  customerId  UUID!         @ref(Customer.id, onDelete: RESTRICT, inverse: "orders")
+  total       Money!
+  status      OrderStatus!  @states(initial: DRAFT, final: [SHIPPED, CANCELLED])
 
   -> composition 1..* lines: OrderLine
+}
+
+model Customer @aggregate_root
+  @intent("Purchaser")
+{
+  id    UUID!   @id
+  email string! @unique
 }
 
 model OrderLine @entity {
@@ -366,10 +548,46 @@ model OrderLine @entity {
   price   Money!
 }
 
-view ordering-er @er_diagram {
+---
+
+# Glossary
+
+| Term | Definition |
+| --- | --- |
+| Order | The Order aggregate, distinct from the legacy DB table |
+| Confirmed | The state after `confirm()` returns |
+
+# Open questions
+- [ ] Partial cancellation is v2 scope.
+- [ ] Reservation sync point — pre- or post-`confirm()`? Awaiting ADR-025.
+```
+
+### `ordering.er.umlay` (ER diagram, structural only)
+
+```umlay
+namespace ordering-er
+import "./ordering.requirement.umlay"
+
+view ordering-er @er_diagram
+  @intent("Schema overview of the order domain")
+{
   include: ordering.*
 }
 ```
+
+### `ordering.class.umlay` (method contracts, class diagram)
+
+```umlay
+namespace ordering-class
+import "./ordering.requirement.umlay"
+
+view ordering-class @class_diagram { include: ordering.* }
+view ordering-life @state_machine { include: ordering.Order, ordering.OrderStatus }
+```
+
+`ordering.requirement.umlay` reads on its own; the other two files
+exist only to render specific diagram kinds. Reviewers pick whichever
+file matches their grain.
 
 ## References
 
