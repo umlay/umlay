@@ -95,6 +95,11 @@ EnumValue       ::= Identifier
 EventDecl       ::= "event" Identifier ModelAnnotation*
                     "{" (Field | BlockDirective)* "}"
 
+(* RFC 0053 — spec 1.8.0: multiple seq blocks per @sequence_diagram view *)
+SeqBlock        ::= "seq" Identifier? "{" SeqStatement* "}"
+SequenceView    ::= "view" Identifier "@sequence_diagram" Annotation*
+                    "{" (Participants | SeqBlock | ViewProperty | BlockDirective)* "}"
+
 ModelDecl       ::= "model" Identifier Stereotype ModelAnnotation*
                     "{" ModelMember* "}"
 Stereotype      ::= "@entity" | "@aggregate_root" | "@value_object"

@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.7.0",
+  "specVersion": "1.8.0",
   "namespaces": {
     "banking": {
       "models": {
@@ -789,6 +789,225 @@
           }
         ]
       },
+      "sequenceBodies": [
+        {
+          "participants": [
+            {
+              "id": "api",
+              "label": "API",
+              "ref": "API"
+            },
+            {
+              "id": "lock",
+              "label": "LockSvc",
+              "ref": "LockSvc"
+            },
+            {
+              "id": "db",
+              "label": "DB",
+              "ref": "DB"
+            },
+            {
+              "id": "a",
+              "label": "AccountA",
+              "ref": "AccountA"
+            },
+            {
+              "id": "b",
+              "label": "AccountB",
+              "ref": "AccountB"
+            },
+            {
+              "id": "audit",
+              "label": "AuditLog",
+              "ref": "AuditLog"
+            }
+          ],
+          "statements": [
+            {
+              "kind": "message",
+              "from": "api",
+              "to": "lock",
+              "arrow": "sync",
+              "label": "acquire(\\\"account-pair:{fromId},{toId}\\\")"
+            },
+            {
+              "kind": "message",
+              "from": "lock",
+              "to": "api",
+              "arrow": "reply",
+              "label": "acquired"
+            },
+            {
+              "kind": "critical",
+              "label": "残高チェックと資金移動",
+              "on": [
+                "a",
+                "b"
+              ],
+              "body": [
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "a",
+                  "arrow": "sync",
+                  "label": "read balance"
+                },
+                {
+                  "kind": "message",
+                  "from": "a",
+                  "to": "api",
+                  "arrow": "reply",
+                  "label": "{ balance }"
+                },
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "b",
+                  "arrow": "sync",
+                  "label": "read balance"
+                },
+                {
+                  "kind": "message",
+                  "from": "b",
+                  "to": "api",
+                  "arrow": "reply",
+                  "label": "{ balance }"
+                },
+                {
+                  "kind": "alt",
+                  "cases": [
+                    {
+                      "condition": "残高不足",
+                      "body": [
+                        {
+                          "kind": "message",
+                          "from": "api",
+                          "to": "lock",
+                          "arrow": "reply",
+                          "label": "release()"
+                        },
+                        {
+                          "kind": "message",
+                          "from": "api",
+                          "to": "audit",
+                          "arrow": "sync",
+                          "label": "log(\\\"transfer rejected: insufficient funds\\\")"
+                        }
+                      ]
+                    }
+                  ],
+                  "elseBody": [
+                    {
+                      "kind": "message",
+                      "from": "api",
+                      "to": "a",
+                      "arrow": "sync",
+                      "label": "debit(amount)"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "a",
+                      "to": "api",
+                      "arrow": "reply",
+                      "label": "ok"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "api",
+                      "to": "b",
+                      "arrow": "sync",
+                      "label": "credit(amount)"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "b",
+                      "to": "api",
+                      "arrow": "reply",
+                      "label": "ok"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "api",
+                      "to": "db",
+                      "arrow": "sync",
+                      "label": "commit transaction"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "db",
+                      "to": "api",
+                      "arrow": "reply",
+                      "label": "ok"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "par",
+              "branches": [
+                {
+                  "label": "ロック解放",
+                  "body": [
+                    {
+                      "kind": "message",
+                      "from": "api",
+                      "to": "lock",
+                      "arrow": "sync",
+                      "label": "release()"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "lock",
+                      "to": "api",
+                      "arrow": "reply",
+                      "label": "released"
+                    }
+                  ]
+                },
+                {
+                  "label": "監査ログ (fire-and-forget)",
+                  "body": [
+                    {
+                      "kind": "message",
+                      "from": "api",
+                      "to": "audit",
+                      "arrow": "sync",
+                      "label": "log(\\\"transfer committed\\\", { transferId })"
+                    }
+                  ]
+                }
+              ],
+              "awaitSpec": {
+                "labels": [
+                  "ロック解放"
+                ]
+              }
+            },
+            {
+              "kind": "opt",
+              "condition": "高額送金 (amount > 1000000) の場合",
+              "body": [
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "audit",
+                  "arrow": "sync",
+                  "label": "notify_compliance_team({ transferId, amount })"
+                }
+              ]
+            },
+            {
+              "kind": "message",
+              "from": "api",
+              "to": "a",
+              "arrow": "reply",
+              "label": "200 OK"
+            }
+          ]
+        }
+      ],
       "ganttTasks": []
     },
     {
@@ -803,6 +1022,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     }
   ]

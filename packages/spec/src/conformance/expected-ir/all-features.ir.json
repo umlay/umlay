@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.7.0",
+  "specVersion": "1.8.0",
   "namespaces": {
     "lib": {
       "models": {
@@ -2384,6 +2384,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -2403,6 +2404,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -2666,6 +2668,234 @@
           }
         ]
       },
+      "sequenceBodies": [
+        {
+          "participants": [
+            {
+              "id": "u",
+              "label": "User",
+              "ref": "User"
+            },
+            {
+              "id": "api",
+              "label": "LibraryAPI",
+              "ref": "LibraryAPI"
+            },
+            {
+              "id": "db",
+              "label": "Postgres",
+              "ref": "Postgres"
+            },
+            {
+              "id": "rds",
+              "label": "Redis",
+              "ref": "Redis"
+            },
+            {
+              "id": "notify",
+              "label": "NotificationSvc",
+              "ref": "NotificationSvc"
+            }
+          ],
+          "statements": [
+            {
+              "kind": "message",
+              "from": "u",
+              "to": "api",
+              "arrow": "sync",
+              "label": "POST /loans (bookId)"
+            },
+            {
+              "kind": "critical",
+              "label": "在庫ロック + 貸出行発行",
+              "timeout": {
+                "duration": "2s"
+              },
+              "retry": {
+                "attempts": 3,
+                "backoff": "exponential",
+                "initial": "200ms",
+                "jitter": true
+              },
+              "body": [
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "db",
+                  "arrow": "sync",
+                  "label": "SELECT Book WHERE id=? FOR UPDATE"
+                },
+                {
+                  "kind": "message",
+                  "from": "db",
+                  "to": "api",
+                  "arrow": "reply",
+                  "label": "book row"
+                },
+                {
+                  "kind": "alt",
+                  "cases": [
+                    {
+                      "condition": "AVAILABLE",
+                      "body": [
+                        {
+                          "kind": "message",
+                          "from": "api",
+                          "to": "db",
+                          "arrow": "sync",
+                          "label": "INSERT Loan (status=ACTIVE)"
+                        },
+                        {
+                          "kind": "message",
+                          "from": "api",
+                          "to": "db",
+                          "arrow": "sync",
+                          "label": "UPDATE Book SET status=ON_LOAN"
+                        }
+                      ]
+                    },
+                    {
+                      "condition": "ON_LOAN",
+                      "body": [
+                        {
+                          "kind": "message",
+                          "from": "api",
+                          "to": "u",
+                          "arrow": "reply",
+                          "label": "409 Conflict"
+                        }
+                      ]
+                    },
+                    {
+                      "condition": "LOST / WITHDRAWN",
+                      "body": [
+                        {
+                          "kind": "message",
+                          "from": "api",
+                          "to": "u",
+                          "arrow": "reply",
+                          "label": "410 Gone"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "kind": "opt",
+                  "condition": "待機中の予約あり",
+                  "body": [
+                    {
+                      "kind": "message",
+                      "from": "api",
+                      "to": "db",
+                      "arrow": "sync",
+                      "label": "SELECT Reservation WHERE bookId=? AND cancelled=false"
+                    },
+                    {
+                      "kind": "loop",
+                      "condition": "各予約者",
+                      "body": [
+                        {
+                          "kind": "message",
+                          "from": "api",
+                          "to": "notify",
+                          "arrow": "sync",
+                          "label": "wait-list 更新通知"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "catchBlock": {
+                "label": "DB 書き込み失敗",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "db",
+                    "arrow": "sync",
+                    "label": "INSERT AuditLog (outcome=NETWORK_ERROR)"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "u",
+                    "arrow": "reply",
+                    "label": "500 Internal Server Error"
+                  }
+                ]
+              },
+              "finallyBlock": {
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "api",
+                    "arrow": "self",
+                    "label": "metrics flush"
+                  }
+                ]
+              }
+            },
+            {
+              "kind": "par",
+              "branches": [
+                {
+                  "label": "メール通知",
+                  "body": [
+                    {
+                      "kind": "message",
+                      "from": "api",
+                      "to": "notify",
+                      "arrow": "sync",
+                      "label": "貸出確認メール"
+                    }
+                  ]
+                },
+                {
+                  "label": "プッシュ通知",
+                  "body": [
+                    {
+                      "kind": "message",
+                      "from": "api",
+                      "to": "notify",
+                      "arrow": "sync",
+                      "label": "プッシュ通知"
+                    }
+                  ]
+                },
+                {
+                  "label": "キャッシュ暖気",
+                  "body": [
+                    {
+                      "kind": "message",
+                      "from": "api",
+                      "to": "rds",
+                      "arrow": "sync",
+                      "label": "SET loan:<id> EX 3600"
+                    }
+                  ]
+                }
+              ],
+              "awaitSpec": {
+                "labels": [
+                  "メール通知",
+                  "プッシュ通知",
+                  "キャッシュ暖気"
+                ]
+              }
+            },
+            {
+              "kind": "message",
+              "from": "api",
+              "to": "u",
+              "arrow": "reply",
+              "label": "201 Created (Location: /loans/<id>)"
+            }
+          ]
+        }
+      ],
       "ganttTasks": []
     },
     {
@@ -2689,6 +2919,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -2704,6 +2935,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -2718,6 +2950,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -2733,6 +2966,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -2756,6 +2990,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -2773,6 +3008,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -2791,6 +3027,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": [],
       "criticalPath": "highlight"
     },
@@ -2808,6 +3045,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -2824,6 +3062,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -2839,6 +3078,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": [],
       "composition": {
         "includes": [

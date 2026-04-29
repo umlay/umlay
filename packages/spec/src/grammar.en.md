@@ -352,9 +352,15 @@ enum SettlementStatus {
 
 ## 9. Sequence diagram body
 
+A `@sequence_diagram` view may carry **one or more** `seq <Identifier>? { ... }`
+blocks (RFC 0053, spec 1.8+). A single block can be anonymous (`seq { ... }`)
+or named (`seq main { ... }`); **two or more blocks each require a unique
+name** (lint L057). All blocks share the view-level `participants:`.
+
 ```
 participants: <Model> as <alias>, ...
 
+// single seq (anonymous) — identical to pre-1.8 behaviour
 seq {
   <alias1> ->> <alias2> : "<label>"    /* sync */
   <alias2> -.> <alias1> : "<label>"    /* reply */

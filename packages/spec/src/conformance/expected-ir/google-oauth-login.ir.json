@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "beta",
-  "specVersion": "1.7.0",
+  "specVersion": "1.8.0",
   "namespaces": {
     "auth": {
       "models": {
@@ -667,6 +667,83 @@
           }
         ]
       },
+      "sequenceBodies": [
+        {
+          "participants": [
+            {
+              "id": "u",
+              "label": "Browser",
+              "ref": "Browser"
+            },
+            {
+              "id": "a",
+              "label": "App",
+              "ref": "App"
+            },
+            {
+              "id": "g",
+              "label": "Google",
+              "ref": "Google"
+            },
+            {
+              "id": "cb",
+              "label": "AppCallback",
+              "ref": "AppCallback"
+            }
+          ],
+          "statements": [
+            {
+              "kind": "message",
+              "from": "u",
+              "to": "a",
+              "arrow": "sync",
+              "label": "ログイン要求"
+            },
+            {
+              "kind": "message",
+              "from": "a",
+              "to": "g",
+              "arrow": "sync",
+              "label": "OAuth 認可リクエスト"
+            },
+            {
+              "kind": "message",
+              "from": "g",
+              "to": "u",
+              "arrow": "sync",
+              "label": "ログイン画面"
+            },
+            {
+              "kind": "message",
+              "from": "u",
+              "to": "g",
+              "arrow": "sync",
+              "label": "認可同意"
+            },
+            {
+              "kind": "message",
+              "from": "g",
+              "to": "cb",
+              "arrow": "sync",
+              "label": "code + state redirect"
+            },
+            {
+              "kind": "message",
+              "from": "cb",
+              "to": "a",
+              "arrow": "sync",
+              "label": "token 交換完了"
+            },
+            {
+              "kind": "message",
+              "from": "a",
+              "to": "u",
+              "arrow": "sync",
+              "label": "ログイン成功"
+            }
+          ]
+        }
+      ],
       "ganttTasks": []
     },
     {
@@ -802,6 +879,103 @@
           }
         ]
       },
+      "sequenceBodies": [
+        {
+          "participants": [
+            {
+              "id": "u",
+              "label": "Browser",
+              "ref": "Browser"
+            },
+            {
+              "id": "a",
+              "label": "App",
+              "ref": "App"
+            },
+            {
+              "id": "g",
+              "label": "Google",
+              "ref": "Google"
+            },
+            {
+              "id": "cb",
+              "label": "AppCallback",
+              "ref": "AppCallback"
+            }
+          ],
+          "statements": [
+            {
+              "kind": "message",
+              "from": "u",
+              "to": "a",
+              "arrow": "sync",
+              "label": "ログイン要求"
+            },
+            {
+              "kind": "message",
+              "from": "a",
+              "to": "g",
+              "arrow": "sync",
+              "label": "OAuth 認可リクエスト"
+            },
+            {
+              "kind": "message",
+              "from": "g",
+              "to": "u",
+              "arrow": "sync",
+              "label": "ログイン画面"
+            },
+            {
+              "kind": "message",
+              "from": "u",
+              "to": "g",
+              "arrow": "sync",
+              "label": "認可同意"
+            },
+            {
+              "kind": "message",
+              "from": "g",
+              "to": "cb",
+              "arrow": "sync",
+              "label": "code + state redirect"
+            },
+            {
+              "kind": "critical",
+              "label": "token-exchange",
+              "body": [
+                {
+                  "kind": "message",
+                  "from": "cb",
+                  "to": "g",
+                  "arrow": "sync",
+                  "label": "POST /token"
+                },
+                {
+                  "kind": "message",
+                  "from": "g",
+                  "to": "cb",
+                  "arrow": "reply",
+                  "label": "access_token"
+                }
+              ]
+            },
+            {
+              "kind": "message",
+              "from": "cb",
+              "to": "a",
+              "arrow": "sync",
+              "label": "session cookie 発行"
+            },
+            {
+              "kind": "message",
+              "from": "a",
+              "to": "u",
+              "arrow": "sync",
+              "label": "ログイン成功"
+            }
+          ]
+        }
+      ],
       "ganttTasks": []
     },
     {
@@ -823,6 +997,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -838,6 +1013,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -856,6 +1032,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     }
   ]

@@ -1,7 +1,7 @@
 ---
 name: review-uml
-version: 1.7.0
-spec: "@umlay/spec >= 1.7.0 (DSL 1.0 / IR 1.0)"
+version: 1.8.0
+spec: "@umlay/spec >= 1.8.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, reviewer]
 summary: Umlay DSL / IR を仕様準拠性・設計品質の両面から機械的にレビューする手順
 description: 既存の Umlay DSL / IR をレビュー・監査・分析したいときに起動する。**まずパース可能性を確認** (LEX / PARSE / IR エラー) し、次に spec 準拠・lint 違反・設計リスクを検出し、`@review` / `@fix` 形式で返す。
@@ -118,6 +118,8 @@ umlay check schema.umlay --json | jq '.diagnostics[] | select(.code == "LEX" or 
   - L054: sequence のメソッド呼び出しが状態を変えない (整合性違反の疑い)
   - L055: `@emits(EventName)` の参照先 `event` が宣言されていない
   - L056: 宣言された `event` がどこからも emit / 参照されていない
+- **L057** — 1 view の `seq` ブロック整合性 (RFC 0053, spec 1.8+):
+  同 view 内に 2+ の `seq` ブロックがある場合、各ブロックに名前必須・重複禁止
 - `@@mode(strict)` で全ルール error 化 (Phase 1.0 で固定、migration-guide-1.0.md)
 
 ### Layer 3: 設計リスク — 正本: `lint-rules.md` R 節

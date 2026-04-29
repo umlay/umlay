@@ -1,7 +1,7 @@
 ---
 name: write-uml
-version: 1.7.0
-spec: "@umlay/spec >= 1.7.0 (DSL 1.0 / IR 1.0)"
+version: 1.8.0
+spec: "@umlay/spec >= 1.8.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer]
 summary: 要件や既存の説明文から Umlay DSL (.umlay) を仕様準拠で書き起こす手順
 description: ユーザが新しい Umlay DSL (.umlay) を要件・自然言語説明・既存コード/スキーマから書き起こしたいときに起動する。**要件・基本設計の文書情報は `@@md` / `@@doc` で必ず併記**し、構造図 (ER / class / sequence) と要件ドキュメントを `er.umlay` / `class.umlay` / `requirement.umlay` 等にファイル分割する。生成物は `@umlay/spec` に準拠し、パース → IR v1.0 へ通ること。
@@ -290,6 +290,48 @@ model Order @aggregate_root
 | 全文書を 1 つの巨大 `@@md` に押し込む (model ヘッダの `@intent` を抜く) | 宣言前 `@@md` (本文) + ヘッダ `@intent` (1 行サマリ) を併記 |
 | `er.umlay` に長文 `@@md` (構造ファイルが要件を抱え込む) | 構造ファイルは `@intent` のみ。要件は `requirement.umlay` 側 |
 | 用語集を `@@md` 各所に散らばせる | 末尾の `---` trailer に集約 |
+
+### Step 7.7 — シーケンス図: 1 view に複数 `seq` を入れる選択肢 (RFC 0053, spec 1.8+)
+
+複数のシナリオ (success / failure / cancel など) を **1 つの報告書 view** に
+まとめたいときは、`view ... @sequence_diagram { seq <name> { ... } seq <name> { ... } }`
+で **複数 `seq` ブロックを 1 view に持たせられる**。各ブロックは縦に積まれ、
+`« seq: <name> »` ヘッダ + 横線で区切られる。
+
+```umlay
+view report @sequence_diagram
+  @intent("注文確定の主要パス・失敗パス・キャンセルを 1 枚に集約") {
+  participants: Customer as c, OrderService as svc, OrderDao as dao
+
+  seq success {
+    c   ->> svc : "confirm(orderId)"
+    svc ->> dao : "save(order)"
+    svc -.> c   : "ConfirmedOrder"
+  }
+
+  seq failure {
+    c   ->> svc : "confirm(orderId)"
+    svc ->> dao : "save(order)"
+    svc -.> c   : "503 ServiceUnavailable"
+  }
+}
+```
+
+**いつ複数 `seq` vs 別 view にすべきか:**
+
+| 観点 | 複数 `seq` を 1 view | 別 view に分ける |
+| --- | --- | --- |
+| 同じ participants が登場 | ✅ ライフライン共有でレポートに最適 | — |
+| 別の participants 集合 | — | ✅ |
+| 「対比して読ませたい」 | ✅ (success vs failure を 1 枚で) | — |
+| 個別に View Selector でフィルタしたい | — | ✅ |
+| Markdown export / 印刷で 1 ページに収めたい | ✅ | — |
+
+**ルール:**
+- 2 つ以上の `seq` を入れる場合、**各ブロックに名前必須** (lint L057)
+- 名前は同 view 内で一意
+- 1 つだけの場合は無名 (`seq { ... }`) でも命名 (`seq main { ... }`) でも OK
+- `participants:` は view レベルで宣言 (各 seq では再宣言不要、共有される)
 
 ### Step 8 — ビューを宣言
 

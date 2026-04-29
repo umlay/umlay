@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "draft",
-  "specVersion": "1.7.0",
+  "specVersion": "1.8.0",
   "namespaces": {
     "shop": {
       "models": {
@@ -302,6 +302,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -316,6 +317,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -379,6 +381,43 @@
           }
         ]
       },
+      "sequenceBodies": [
+        {
+          "participants": [
+            {
+              "id": "c",
+              "label": "Customer",
+              "ref": "Customer"
+            },
+            {
+              "id": "o",
+              "label": "Order",
+              "ref": "Order"
+            },
+            {
+              "id": "eb",
+              "label": "EventBus",
+              "ref": "EventBus"
+            }
+          ],
+          "statements": [
+            {
+              "kind": "message",
+              "from": "c",
+              "to": "o",
+              "arrow": "sync",
+              "label": "confirm()"
+            },
+            {
+              "kind": "message",
+              "from": "o",
+              "to": "eb",
+              "arrow": "sync",
+              "label": "OrderConfirmed"
+            }
+          ]
+        }
+      ],
       "ganttTasks": []
     }
   ]

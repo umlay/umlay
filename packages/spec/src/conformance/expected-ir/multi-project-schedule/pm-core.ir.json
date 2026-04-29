@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.7.0",
+  "specVersion": "1.8.0",
   "namespaces": {
     "pm_core": {
       "models": {
@@ -209,6 +209,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -222,6 +223,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     }
   ]

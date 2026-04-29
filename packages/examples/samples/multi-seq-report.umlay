@@ -1,0 +1,43 @@
+// multi-seq-report.umlay — RFC 0053 (spec 1.8) multi-seq block view.
+//
+// One `view report @sequence_diagram` carries three `seq <name> { ... }`
+// blocks: success-path / failure-path / cancel-path. Renderers stack the
+// blocks vertically with `« seq: <name> »` headers. Lint L057 forces
+// names + uniqueness when 2+ blocks coexist.
+
+namespace ops
+
+view report @sequence_diagram
+  @intent("注文確定の主要パス・失敗パス・キャンセルを 1 枚に集約した報告書 view") {
+  participants:
+    Customer        as c,
+    OrderService    as svc,
+    OrderDao        as dao,
+    OrderEntity     as ord,
+    Notifier        as notify
+
+  seq success {
+    c   ->> svc : "confirm(orderId)"
+    svc ->> dao : "save(order)"
+    dao ->> ord : "insert"
+    dao -.> svc : "Order"
+    svc ->> notify : "OrderConfirmed"
+    svc -.> c   : "ConfirmedOrder"
+  }
+
+  seq failure {
+    c   ->> svc : "confirm(orderId)"
+    svc ->> dao : "save(order)"
+    dao -.> svc : "DBError"
+    svc ->> notify : "alert(opsTeam)"
+    svc -.> c   : "503 ServiceUnavailable"
+  }
+
+  seq cancel {
+    c   ->> svc : "cancel(orderId)"
+    svc ->> dao : "delete(orderId)"
+    dao ->> ord : "remove"
+    svc ->> notify : "OrderCancelled"
+    svc -.> c   : "CancelAck"
+  }
+}

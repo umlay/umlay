@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.7.0",
+  "specVersion": "1.8.0",
   "namespaces": {
     "login": {
       "models": {
@@ -1597,6 +1597,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -1616,6 +1617,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -1636,6 +1638,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -1657,6 +1660,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -1674,6 +1678,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     },
     {
@@ -2138,6 +2143,400 @@
           }
         ]
       },
+      "sequenceBodies": [
+        {
+          "participants": [
+            {
+              "id": "browser",
+              "label": "Browser",
+              "ref": "Browser"
+            },
+            {
+              "id": "login_pg",
+              "label": "LoginPage",
+              "ref": "LoginPage"
+            },
+            {
+              "id": "consent",
+              "label": "GoogleConsentScreen",
+              "ref": "GoogleConsentScreen"
+            },
+            {
+              "id": "dash_pg",
+              "label": "DashboardPage",
+              "ref": "DashboardPage"
+            },
+            {
+              "id": "error_pg",
+              "label": "AuthErrorPage",
+              "ref": "AuthErrorPage"
+            },
+            {
+              "id": "cf",
+              "label": "CloudFront",
+              "ref": "CloudFront"
+            },
+            {
+              "id": "s3",
+              "label": "S3Bucket",
+              "ref": "S3Bucket"
+            },
+            {
+              "id": "api",
+              "label": "ApiGateway",
+              "ref": "ApiGateway"
+            },
+            {
+              "id": "fn_start",
+              "label": "LambdaAuthStart",
+              "ref": "LambdaAuthStart"
+            },
+            {
+              "id": "fn_cb",
+              "label": "LambdaAuthCallback",
+              "ref": "LambdaAuthCallback"
+            },
+            {
+              "id": "google",
+              "label": "GoogleOAuth",
+              "ref": "GoogleOAuth"
+            },
+            {
+              "id": "ddb",
+              "label": "DynamoDBTable",
+              "ref": "DynamoDBTable"
+            }
+          ],
+          "statements": [
+            {
+              "kind": "message",
+              "from": "browser",
+              "to": "cf",
+              "arrow": "sync",
+              "label": "GET /"
+            },
+            {
+              "kind": "message",
+              "from": "cf",
+              "to": "s3",
+              "arrow": "sync",
+              "label": "GET /index.html"
+            },
+            {
+              "kind": "message",
+              "from": "s3",
+              "to": "cf",
+              "arrow": "reply",
+              "label": "200 HTML + JS bundle"
+            },
+            {
+              "kind": "message",
+              "from": "cf",
+              "to": "browser",
+              "arrow": "reply",
+              "label": "200 HTML + JS bundle"
+            },
+            {
+              "kind": "message",
+              "from": "browser",
+              "to": "login_pg",
+              "arrow": "sync",
+              "label": "render LoginPage (path=\\\"/\\\")"
+            },
+            {
+              "kind": "message",
+              "from": "login_pg",
+              "to": "browser",
+              "arrow": "sync",
+              "label": "dispatch LoginAction(id=\\\"signin-google\\\")"
+            },
+            {
+              "kind": "message",
+              "from": "browser",
+              "to": "cf",
+              "arrow": "sync",
+              "label": "GET /api/auth/google"
+            },
+            {
+              "kind": "message",
+              "from": "cf",
+              "to": "api",
+              "arrow": "sync",
+              "label": "/api/auth/google"
+            },
+            {
+              "kind": "message",
+              "from": "api",
+              "to": "fn_start",
+              "arrow": "sync",
+              "label": "invoke authStart"
+            },
+            {
+              "kind": "message",
+              "from": "fn_start",
+              "to": "browser",
+              "arrow": "reply",
+              "label": "302 Location: accounts.google.com/o/oauth2/v2/auth?... (state+nonce+code_challenge)"
+            },
+            {
+              "kind": "message",
+              "from": "browser",
+              "to": "google",
+              "arrow": "sync",
+              "label": "GET /o/oauth2/v2/auth"
+            },
+            {
+              "kind": "message",
+              "from": "google",
+              "to": "consent",
+              "arrow": "sync",
+              "label": "render GoogleConsentScreen"
+            },
+            {
+              "kind": "alt",
+              "cases": [
+                {
+                  "condition": "User が Allow",
+                  "body": [
+                    {
+                      "kind": "message",
+                      "from": "consent",
+                      "to": "browser",
+                      "arrow": "reply",
+                      "label": "302 Location: /api/auth/google/callback?code=...&state=..."
+                    },
+                    {
+                      "kind": "message",
+                      "from": "browser",
+                      "to": "cf",
+                      "arrow": "sync",
+                      "label": "GET /api/auth/google/callback?code=..."
+                    },
+                    {
+                      "kind": "message",
+                      "from": "cf",
+                      "to": "api",
+                      "arrow": "sync",
+                      "label": "/api/auth/google/callback"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "api",
+                      "to": "fn_cb",
+                      "arrow": "sync",
+                      "label": "invoke authCallback"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "fn_cb",
+                      "to": "google",
+                      "arrow": "sync",
+                      "label": "POST /token (code + code_verifier)"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "google",
+                      "to": "fn_cb",
+                      "arrow": "reply",
+                      "label": "{ access_token, id_token, expires_in }"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "fn_cb",
+                      "to": "google",
+                      "arrow": "sync",
+                      "label": "GET /userinfo (Authorization: Bearer access_token)"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "google",
+                      "to": "fn_cb",
+                      "arrow": "reply",
+                      "label": "{ sub, email, name, picture }"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "fn_cb",
+                      "to": "ddb",
+                      "arrow": "sync",
+                      "label": "GetItem USER#<email-hash> / PROFILE"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "ddb",
+                      "to": "fn_cb",
+                      "arrow": "reply",
+                      "label": "User | null"
+                    },
+                    {
+                      "kind": "alt",
+                      "cases": [
+                        {
+                          "condition": "未登録ユーザー",
+                          "body": [
+                            {
+                              "kind": "message",
+                              "from": "fn_cb",
+                              "to": "ddb",
+                              "arrow": "sync",
+                              "label": "PutItem User (PROFILE)"
+                            },
+                            {
+                              "kind": "message",
+                              "from": "fn_cb",
+                              "to": "ddb",
+                              "arrow": "sync",
+                              "label": "PutItem OAuthAccount (OAUTH#GOOGLE)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "message",
+                      "from": "fn_cb",
+                      "to": "ddb",
+                      "arrow": "sync",
+                      "label": "PutItem Session (SESSION#<sessionId>, status=ACTIVE)"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "ddb",
+                      "to": "fn_cb",
+                      "arrow": "reply",
+                      "label": "ok"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "fn_cb",
+                      "to": "browser",
+                      "arrow": "reply",
+                      "label": "302 Location: /dashboard  Set-Cookie: session=<JWT>; Secure; HttpOnly; SameSite=Lax"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "browser",
+                      "to": "cf",
+                      "arrow": "sync",
+                      "label": "GET /dashboard (Cookie: session=<JWT>)"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "cf",
+                      "to": "s3",
+                      "arrow": "sync",
+                      "label": "GET /dashboard/index.html"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "s3",
+                      "to": "browser",
+                      "arrow": "reply",
+                      "label": "200 HTML (認証済 UI)"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "browser",
+                      "to": "dash_pg",
+                      "arrow": "sync",
+                      "label": "render DashboardPage (path=\\\"/dashboard\\\", session=active)"
+                    }
+                  ]
+                },
+                {
+                  "condition": "User が Deny",
+                  "body": [
+                    {
+                      "kind": "message",
+                      "from": "consent",
+                      "to": "browser",
+                      "arrow": "reply",
+                      "label": "302 Location: /auth/error?reason=access_denied"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "browser",
+                      "to": "cf",
+                      "arrow": "sync",
+                      "label": "GET /auth/error"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "cf",
+                      "to": "s3",
+                      "arrow": "sync",
+                      "label": "GET /auth/error.html"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "s3",
+                      "to": "browser",
+                      "arrow": "reply",
+                      "label": "200 HTML"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "browser",
+                      "to": "error_pg",
+                      "arrow": "sync",
+                      "label": "render AuthErrorPage"
+                    }
+                  ]
+                },
+                {
+                  "condition": "タイムアウト / 閉じる",
+                  "body": [
+                    {
+                      "kind": "message",
+                      "from": "consent",
+                      "to": "browser",
+                      "arrow": "reply",
+                      "label": "(画面閉じる / セッション失効)"
+                    }
+                  ]
+                }
+              ],
+              "elseBody": [
+                {
+                  "kind": "message",
+                  "from": "consent",
+                  "to": "browser",
+                  "arrow": "reply",
+                  "label": "302 Location: /auth/error?reason=unknown"
+                },
+                {
+                  "kind": "message",
+                  "from": "browser",
+                  "to": "cf",
+                  "arrow": "sync",
+                  "label": "GET /auth/error"
+                },
+                {
+                  "kind": "message",
+                  "from": "cf",
+                  "to": "s3",
+                  "arrow": "sync",
+                  "label": "GET /auth/error.html"
+                },
+                {
+                  "kind": "message",
+                  "from": "s3",
+                  "to": "browser",
+                  "arrow": "reply",
+                  "label": "200 HTML"
+                },
+                {
+                  "kind": "message",
+                  "from": "browser",
+                  "to": "error_pg",
+                  "arrow": "sync",
+                  "label": "render AuthErrorPage"
+                }
+              ]
+            }
+          ]
+        }
+      ],
       "ganttTasks": []
     },
     {
@@ -2152,6 +2551,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     }
   ]

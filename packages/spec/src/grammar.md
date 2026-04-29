@@ -368,9 +368,16 @@ enum SettlementStatus {
 
 ## 9. Sequence diagram 本体
 
+`@sequence_diagram` view では `seq <Identifier>? { ... }` を **1 つ以上**
+記述できる (RFC 0053, spec 1.8+)。1 つだけの場合は無名 (`seq { ... }`) /
+命名 (`seq main { ... }`) どちらでも可。**2 つ以上の場合は各ブロックに
+名前必須・重複禁止** (lint L057)。すべての block は view レベルで宣言した
+`participants:` を共有する。
+
 ```
 participants: <Model> as <alias>, ...
 
+// 単一 seq (匿名) — 1.7 までと完全に同じ動作
 seq {
   <alias1> ->> <alias2> : "<label>"    /* 同期 */
   <alias2> -.> <alias1> : "<label>"    /* 応答 (reply) */

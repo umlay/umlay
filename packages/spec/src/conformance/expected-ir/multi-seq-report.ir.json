@@ -1,0 +1,343 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "draft",
+  "specVersion": "1.8.0",
+  "namespaces": {
+    "ops": {
+      "models": {},
+      "types": {},
+      "enums": {},
+      "events": {},
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": [],
+      "traits": {}
+    }
+  },
+  "views": [
+    {
+      "id": "report",
+      "kind": "sequence_diagram",
+      "include": [],
+      "exclude": [],
+      "docs": [],
+      "attachments": [],
+      "participants": [
+        {
+          "id": "c",
+          "label": "Customer",
+          "ref": "Customer"
+        },
+        {
+          "id": "svc",
+          "label": "OrderService",
+          "ref": "OrderService"
+        },
+        {
+          "id": "dao",
+          "label": "OrderDao",
+          "ref": "OrderDao"
+        },
+        {
+          "id": "ord",
+          "label": "OrderEntity",
+          "ref": "OrderEntity"
+        },
+        {
+          "id": "notify",
+          "label": "Notifier",
+          "ref": "Notifier"
+        }
+      ],
+      "messages": [],
+      "sequenceBody": {
+        "participants": [
+          {
+            "id": "c",
+            "label": "Customer",
+            "ref": "Customer"
+          },
+          {
+            "id": "svc",
+            "label": "OrderService",
+            "ref": "OrderService"
+          },
+          {
+            "id": "dao",
+            "label": "OrderDao",
+            "ref": "OrderDao"
+          },
+          {
+            "id": "ord",
+            "label": "OrderEntity",
+            "ref": "OrderEntity"
+          },
+          {
+            "id": "notify",
+            "label": "Notifier",
+            "ref": "Notifier"
+          }
+        ],
+        "statements": [
+          {
+            "kind": "message",
+            "from": "c",
+            "to": "svc",
+            "arrow": "sync",
+            "label": "confirm(orderId)"
+          },
+          {
+            "kind": "message",
+            "from": "svc",
+            "to": "dao",
+            "arrow": "sync",
+            "label": "save(order)"
+          },
+          {
+            "kind": "message",
+            "from": "dao",
+            "to": "ord",
+            "arrow": "sync",
+            "label": "insert"
+          },
+          {
+            "kind": "message",
+            "from": "dao",
+            "to": "svc",
+            "arrow": "reply",
+            "label": "Order"
+          },
+          {
+            "kind": "message",
+            "from": "svc",
+            "to": "notify",
+            "arrow": "sync",
+            "label": "OrderConfirmed"
+          },
+          {
+            "kind": "message",
+            "from": "svc",
+            "to": "c",
+            "arrow": "reply",
+            "label": "ConfirmedOrder"
+          }
+        ],
+        "name": "success"
+      },
+      "sequenceBodies": [
+        {
+          "participants": [
+            {
+              "id": "c",
+              "label": "Customer",
+              "ref": "Customer"
+            },
+            {
+              "id": "svc",
+              "label": "OrderService",
+              "ref": "OrderService"
+            },
+            {
+              "id": "dao",
+              "label": "OrderDao",
+              "ref": "OrderDao"
+            },
+            {
+              "id": "ord",
+              "label": "OrderEntity",
+              "ref": "OrderEntity"
+            },
+            {
+              "id": "notify",
+              "label": "Notifier",
+              "ref": "Notifier"
+            }
+          ],
+          "statements": [
+            {
+              "kind": "message",
+              "from": "c",
+              "to": "svc",
+              "arrow": "sync",
+              "label": "confirm(orderId)"
+            },
+            {
+              "kind": "message",
+              "from": "svc",
+              "to": "dao",
+              "arrow": "sync",
+              "label": "save(order)"
+            },
+            {
+              "kind": "message",
+              "from": "dao",
+              "to": "ord",
+              "arrow": "sync",
+              "label": "insert"
+            },
+            {
+              "kind": "message",
+              "from": "dao",
+              "to": "svc",
+              "arrow": "reply",
+              "label": "Order"
+            },
+            {
+              "kind": "message",
+              "from": "svc",
+              "to": "notify",
+              "arrow": "sync",
+              "label": "OrderConfirmed"
+            },
+            {
+              "kind": "message",
+              "from": "svc",
+              "to": "c",
+              "arrow": "reply",
+              "label": "ConfirmedOrder"
+            }
+          ],
+          "name": "success"
+        },
+        {
+          "participants": [
+            {
+              "id": "c",
+              "label": "Customer",
+              "ref": "Customer"
+            },
+            {
+              "id": "svc",
+              "label": "OrderService",
+              "ref": "OrderService"
+            },
+            {
+              "id": "dao",
+              "label": "OrderDao",
+              "ref": "OrderDao"
+            },
+            {
+              "id": "ord",
+              "label": "OrderEntity",
+              "ref": "OrderEntity"
+            },
+            {
+              "id": "notify",
+              "label": "Notifier",
+              "ref": "Notifier"
+            }
+          ],
+          "statements": [
+            {
+              "kind": "message",
+              "from": "c",
+              "to": "svc",
+              "arrow": "sync",
+              "label": "confirm(orderId)"
+            },
+            {
+              "kind": "message",
+              "from": "svc",
+              "to": "dao",
+              "arrow": "sync",
+              "label": "save(order)"
+            },
+            {
+              "kind": "message",
+              "from": "dao",
+              "to": "svc",
+              "arrow": "reply",
+              "label": "DBError"
+            },
+            {
+              "kind": "message",
+              "from": "svc",
+              "to": "notify",
+              "arrow": "sync",
+              "label": "alert(opsTeam)"
+            },
+            {
+              "kind": "message",
+              "from": "svc",
+              "to": "c",
+              "arrow": "reply",
+              "label": "503 ServiceUnavailable"
+            }
+          ],
+          "name": "failure"
+        },
+        {
+          "participants": [
+            {
+              "id": "c",
+              "label": "Customer",
+              "ref": "Customer"
+            },
+            {
+              "id": "svc",
+              "label": "OrderService",
+              "ref": "OrderService"
+            },
+            {
+              "id": "dao",
+              "label": "OrderDao",
+              "ref": "OrderDao"
+            },
+            {
+              "id": "ord",
+              "label": "OrderEntity",
+              "ref": "OrderEntity"
+            },
+            {
+              "id": "notify",
+              "label": "Notifier",
+              "ref": "Notifier"
+            }
+          ],
+          "statements": [
+            {
+              "kind": "message",
+              "from": "c",
+              "to": "svc",
+              "arrow": "sync",
+              "label": "cancel(orderId)"
+            },
+            {
+              "kind": "message",
+              "from": "svc",
+              "to": "dao",
+              "arrow": "sync",
+              "label": "delete(orderId)"
+            },
+            {
+              "kind": "message",
+              "from": "dao",
+              "to": "ord",
+              "arrow": "sync",
+              "label": "remove"
+            },
+            {
+              "kind": "message",
+              "from": "svc",
+              "to": "notify",
+              "arrow": "sync",
+              "label": "OrderCancelled"
+            },
+            {
+              "kind": "message",
+              "from": "svc",
+              "to": "c",
+              "arrow": "reply",
+              "label": "CancelAck"
+            }
+          ],
+          "name": "cancel"
+        }
+      ],
+      "ganttTasks": []
+    }
+  ]
+}

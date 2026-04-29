@@ -1810,9 +1810,19 @@
                       ]
                     },
                     "default": []
+                  },
+                  "name": {
+                    "type": "string"
                   }
                 },
                 "additionalProperties": true
+              },
+              "sequenceBodies": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/UmlayIR/properties/views/items/properties/sequenceBody"
+                },
+                "default": []
               },
               "wbsRoot": {
                 "type": "object",

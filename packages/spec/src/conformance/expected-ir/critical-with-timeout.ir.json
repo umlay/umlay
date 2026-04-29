@@ -2,7 +2,7 @@
   "version": "1.0",
   "kind": "UmlModel",
   "mode": "strict",
-  "specVersion": "1.7.0",
+  "specVersion": "1.8.0",
   "namespaces": {
     "payments": {
       "models": {
@@ -549,6 +549,188 @@
           }
         ]
       },
+      "sequenceBodies": [
+        {
+          "participants": [
+            {
+              "id": "c",
+              "label": "Client",
+              "ref": "Client"
+            },
+            {
+              "id": "api",
+              "label": "API",
+              "ref": "API"
+            },
+            {
+              "id": "lock",
+              "label": "Lock",
+              "ref": "Lock"
+            },
+            {
+              "id": "db",
+              "label": "DB",
+              "ref": "DB"
+            },
+            {
+              "id": "gw",
+              "label": "Gateway",
+              "ref": "Gateway"
+            },
+            {
+              "id": "audit",
+              "label": "AuditLog",
+              "ref": "AuditLog"
+            }
+          ],
+          "statements": [
+            {
+              "kind": "message",
+              "from": "c",
+              "to": "api",
+              "arrow": "sync",
+              "label": "POST /payments"
+            },
+            {
+              "kind": "message",
+              "from": "api",
+              "to": "lock",
+              "arrow": "sync",
+              "label": "acquire(\\\"payment:{paymentId}\\\")"
+            },
+            {
+              "kind": "message",
+              "from": "lock",
+              "to": "api",
+              "arrow": "reply",
+              "label": "acquired"
+            },
+            {
+              "kind": "critical",
+              "label": "Gateway 決済処理",
+              "timeout": {
+                "duration": "5s"
+              },
+              "on": [
+                "gw",
+                "db"
+              ],
+              "body": [
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "gw",
+                  "arrow": "sync",
+                  "label": "charge(paymentId, amount)"
+                },
+                {
+                  "kind": "message",
+                  "from": "gw",
+                  "to": "api",
+                  "arrow": "reply",
+                  "label": "{ authCode }"
+                },
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "db",
+                  "arrow": "sync",
+                  "label": "insert Payment (status=COMMITTED)"
+                },
+                {
+                  "kind": "message",
+                  "from": "db",
+                  "to": "api",
+                  "arrow": "reply",
+                  "label": "ok"
+                }
+              ],
+              "catchBlock": {
+                "label": "timeout or gateway error",
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "db",
+                    "arrow": "sync",
+                    "label": "insert Payment (status=TIMED_OUT)"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "audit",
+                    "arrow": "sync",
+                    "label": "log(\\\"payment timeout\\\", { paymentId })"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "gw",
+                    "arrow": "sync",
+                    "label": "cancelIfPending(paymentId)"
+                  }
+                ]
+              },
+              "finallyBlock": {
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "lock",
+                    "arrow": "sync",
+                    "label": "release(\\\"payment:{paymentId}\\\")"
+                  },
+                  {
+                    "kind": "message",
+                    "from": "lock",
+                    "to": "api",
+                    "arrow": "reply",
+                    "label": "released"
+                  }
+                ]
+              }
+            },
+            {
+              "kind": "alt",
+              "cases": [
+                {
+                  "condition": "成功",
+                  "body": [
+                    {
+                      "kind": "message",
+                      "from": "api",
+                      "to": "c",
+                      "arrow": "reply",
+                      "label": "201 Created { paymentId, status }"
+                    }
+                  ]
+                },
+                {
+                  "condition": "タイムアウト",
+                  "body": [
+                    {
+                      "kind": "message",
+                      "from": "api",
+                      "to": "c",
+                      "arrow": "reply",
+                      "label": "504 Gateway Timeout { paymentId, status: \\\"TIMED_OUT\\\" }"
+                    }
+                  ]
+                }
+              ],
+              "elseBody": [
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "c",
+                  "arrow": "reply",
+                  "label": "500 Internal Server Error"
+                }
+              ]
+            }
+          ]
+        }
+      ],
       "ganttTasks": []
     },
     {
@@ -675,6 +857,102 @@
           }
         ]
       },
+      "sequenceBodies": [
+        {
+          "participants": [
+            {
+              "id": "api",
+              "label": "API",
+              "ref": "API"
+            },
+            {
+              "id": "lock",
+              "label": "Lock",
+              "ref": "Lock"
+            },
+            {
+              "id": "db",
+              "label": "DB",
+              "ref": "DB"
+            },
+            {
+              "id": "audit",
+              "label": "AuditLog",
+              "ref": "AuditLog"
+            }
+          ],
+          "statements": [
+            {
+              "kind": "critical",
+              "label": "audit 書き込み全体",
+              "timeout": {
+                "duration": "2s"
+              },
+              "on": [
+                "audit"
+              ],
+              "body": [
+                {
+                  "kind": "critical",
+                  "label": "DB への決済結果記録",
+                  "timeout": {
+                    "duration": "500ms"
+                  },
+                  "on": [
+                    "db"
+                  ],
+                  "body": [
+                    {
+                      "kind": "message",
+                      "from": "api",
+                      "to": "db",
+                      "arrow": "sync",
+                      "label": "update Payment"
+                    },
+                    {
+                      "kind": "message",
+                      "from": "db",
+                      "to": "api",
+                      "arrow": "reply",
+                      "label": "ok"
+                    }
+                  ],
+                  "catchBlock": {
+                    "label": "DB slow",
+                    "body": [
+                      {
+                        "kind": "message",
+                        "from": "api",
+                        "to": "audit",
+                        "arrow": "sync",
+                        "label": "log(\\\"DB timeout, payment may be inconsistent\\\")"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "kind": "message",
+                  "from": "api",
+                  "to": "audit",
+                  "arrow": "sync",
+                  "label": "log(\\\"payment audit recorded\\\")"
+                }
+              ],
+              "finallyBlock": {
+                "body": [
+                  {
+                    "kind": "message",
+                    "from": "api",
+                    "to": "lock",
+                    "arrow": "sync",
+                    "label": "release()"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
       "ganttTasks": []
     },
     {
@@ -689,6 +967,7 @@
       "attachments": [],
       "participants": [],
       "messages": [],
+      "sequenceBodies": [],
       "ganttTasks": []
     }
   ]

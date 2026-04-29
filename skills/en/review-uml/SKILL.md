@@ -1,7 +1,7 @@
 ---
 name: review-uml
-version: 1.7.0
-spec: "@umlay/spec >= 1.7.0 (DSL 1.0 / IR 1.0)"
+version: 1.8.0
+spec: "@umlay/spec >= 1.8.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, reviewer]
 summary: Mechanically review Umlay DSL / IR for spec conformance and design quality
 description: Use when the user asks to review, audit, or analyse an existing Umlay DSL / IR. **First check that the input parses** (LEX / PARSE / IR errors), then walk through spec conformance, lint violations, and design risks. Produces structured `@review` / `@fix` annotations.
@@ -118,6 +118,8 @@ Filter by `code` to isolate parser-layer findings; each one carries a
   - L054: a sequence message calls a method that doesn't change state (likely consistency drift)
   - L055: `@emits(EventName)` references an undeclared event
   - L056: a declared event is never emitted or referenced
+- **L057** — multi-seq integrity (RFC 0053, spec 1.8+): when a view has
+  2+ `seq` blocks, each must have a unique name (`seq <Identifier> { ... }`).
 - `@@mode(strict)` will promote all rules to error at spec 1.0 (see migration-guide-1.0.md)
 
 ### Layer 3: Design risks — see `lint-rules.md` R section

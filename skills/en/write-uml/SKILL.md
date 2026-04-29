@@ -1,7 +1,7 @@
 ---
 name: write-uml
-version: 1.7.0
-spec: "@umlay/spec >= 1.7.0 (DSL 1.0 / IR 1.0)"
+version: 1.8.0
+spec: "@umlay/spec >= 1.8.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer]
 summary: Produce spec-conformant Umlay DSL (.umlay) from requirements or existing descriptions, with the requirement / design narrative embedded as `@@md` documentation
 description: Use when the user wants to write a new Umlay DSL (.umlay) file from requirements, a natural-language description, or an existing codebase/schema. **Always co-author the requirement / basic-design narrative as `@@md` / `@@doc` blocks** and split structural views from prose into separate files (e.g. `er.umlay` / `class.umlay` / `requirement.umlay`). Produces a `@umlay/spec`-conformant file that parses into IR v1.0.
@@ -289,6 +289,48 @@ model Order @aggregate_root
 | Cram everything into one giant `@@md` and drop header `@intent` | Both: pre-decl `@@md` (body) + header `@intent` (one-line summary) |
 | Write a long `@@md` inside `er.umlay` | Keep ER files structural; reference `requirement.umlay` for prose |
 | Scatter glossary entries across multiple `@@md` blocks | Concentrate them in the trailing `---` block |
+
+### Step 7.7 — Sequence diagrams: multiple `seq` blocks per view (RFC 0053, spec 1.8+)
+
+When you want to put several scenarios (success / failure / cancel,
+etc.) into a single **report view**, declare multiple `seq <name> { ... }`
+blocks inside one `@sequence_diagram`. Each block stacks vertically
+under a `« seq: <name> »` header with a divider line.
+
+```umlay
+view report @sequence_diagram
+  @intent("Success / failure / cancel paths in one diagram") {
+  participants: Customer as c, OrderService as svc, OrderDao as dao
+
+  seq success {
+    c   ->> svc : "confirm(orderId)"
+    svc ->> dao : "save(order)"
+    svc -.> c   : "ConfirmedOrder"
+  }
+
+  seq failure {
+    c   ->> svc : "confirm(orderId)"
+    svc ->> dao : "save(order)"
+    svc -.> c   : "503 ServiceUnavailable"
+  }
+}
+```
+
+**When to multi-`seq` vs split into views:**
+
+| Concern | Multi-`seq` in one view | Separate views |
+| --- | --- | --- |
+| Same participants reappear | ✅ shared lifelines, ideal for reports | — |
+| Different participant sets | — | ✅ |
+| Want to read paths side-by-side | ✅ (success vs failure in one image) | — |
+| Want to filter individually with view selectors | — | ✅ |
+| Need to fit on one printed page | ✅ | — |
+
+**Rules:**
+- When ≥ 2 blocks coexist, **each block must have a unique name** (lint L057).
+- Names must be unique within the view.
+- Single-block views may be anonymous (`seq { ... }`) or named (`seq main { ... }`).
+- `participants:` is declared at the view level once and shared across all `seq` blocks.
 
 ### Step 8 — Declare views
 
