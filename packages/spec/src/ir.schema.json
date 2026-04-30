@@ -2000,6 +2000,15 @@
                   }
                 },
                 "additionalProperties": true
+              },
+              "style": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": [
+                    "string",
+                    "number"
+                  ]
+                }
               }
             },
             "required": [
