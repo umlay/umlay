@@ -1,7 +1,7 @@
 ---
 name: write-uml
-version: 1.8.0
-spec: "@umlay/spec >= 1.8.0 (DSL 1.0 / IR 1.0)"
+version: 1.9.0
+spec: "@umlay/spec >= 1.9.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer]
 summary: Produce spec-conformant Umlay DSL (.umlay) from requirements or existing descriptions, with the requirement / design narrative embedded as `@@md` documentation
 description: Use when the user wants to write a new Umlay DSL (.umlay) file from requirements, a natural-language description, or an existing codebase/schema. **Always co-author the requirement / basic-design narrative as `@@md` / `@@doc` blocks** and split structural views from prose into separate files (e.g. `er.umlay` / `class.umlay` / `requirement.umlay`). Produces a `@umlay/spec`-conformant file that parses into IR v1.0.

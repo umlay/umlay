@@ -1,7 +1,7 @@
 ---
 name: transcribe-design
-version: 1.6.4
-spec: "@umlay/spec >= 1.6.4 (DSL 1.0 / IR 1.0)"
+version: 1.9.0
+spec: "@umlay/spec >= 1.9.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer, architect]
 summary: Transcribe an existing natural-language design document into a `.umlay` skeleton — the NL counterpart of `reverse-engineer`
 description: Use when an existing design document (Markdown / Word / PDF / Confluence page) needs to be lifted into Umlay DSL. `reverse-engineer` handles "code → .umlay"; this skill handles "**natural-language doc → .umlay**" via NLU. Output structure only with `@@confidence` + `@@status("in-review")` flags so reviewers can verify before promotion.

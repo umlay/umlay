@@ -1,156 +1,129 @@
 # VS Code extension
 
-The **Umlay** VS Code extension delivers the full Umlay experience inside
-the editor: language server, live diagnostics, a React-based diagram
-preview that mirrors the web editor, 19 snippets, and completions.
+The **Umlay** VS Code extension delivers the full Umlay experience
+inside the editor: language server, live diagnostics, a React-based
+diagram preview that mirrors the web editor, 19 snippets, context-aware
+completion, workspace-wide navigation, and an opt-in Review Assistant.
 
-The extension is published from the reference implementation repo and
-shares its viewer React components with the web editor via
-`@umlay/webview-ui`, so the two surfaces stay in visual lock-step.
+The viewer-side React components are **shared verbatim** with the web
+editor through `@umlay/webview-ui`, so any UX improvement on either
+surface lands in the other on the next release.
 
 ## Install
 
-### From Marketplace (coming soon)
+### Marketplace
 
 ```sh
-code --install-extension keydrop.umlay-vscode
+code --install-extension Umlay.umlay
 ```
 
-### From a local `.vsix`
+[Marketplace listing](https://marketplace.visualstudio.com/items?itemName=Umlay.umlay)
+or search for "Umlay" in the Extensions sidebar.
 
-1. [Download a `.vsix`](https://github.com/e98AZQZxMsYeMNm/uml.keydrop.net/releases)
-   release asset (or build locally — see below).
-2. In VS Code: **Extensions → `…` menu → Install from VSIX…**
-3. Or via CLI: `code --install-extension umlay-vscode-<version>.vsix`
+### Local `.vsix`
+
+1. Download a `.vsix` from the [release assets](https://github.com/e98AZQZxMsYeMNm/uml.keydrop.net/releases)
+2. **Extensions → `…` → Install from VSIX…**
+   or `code --install-extension umlay-<version>.vsix`
 
 ### Build locally
 
 ```sh
 git clone https://github.com/e98AZQZxMsYeMNm/uml.keydrop.net.git
 cd uml.keydrop.net && pnpm install
-pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
+pnpm -F umlay package    # → apps/vscode/umlay-<version>.vsix
 ```
 
-## Feature map
+## Features
 
-| Feature | Surface |
+| Area | What you get |
 | --- | --- |
-| Syntax highlighting | `.umlay` + `.umlay.md` (Markdown injection) |
-| Diagnostics (73 rules) | Problems panel, inline squiggles |
-| Hover | model intent / `@@doc` / `@@md` / attribute table |
-| Go to Definition | F12 from `@ref(X.y)` / dotted types / view-id |
-| Completion | `@stereotype`, `@@directive`, view kinds, `@ref`, `include:` |
-| Document Symbols | Outline panel + breadcrumbs |
-| Rename | F2 on model / enum names |
-| Quick Fix | L001 / L002 / L008 automatic inserts |
-| Format Document | ⇧⌥F — canonical DSL via `irToDsl` |
-| **Diagram preview** | tabs (All / per-view / Document) + zoom + pan + jump |
-| **Diagnostics sidebar** | click → reveal source line |
-| **Theme-aware** | dark / light / high-contrast palette switch |
+| **Language** | Syntax highlighting (`.umlay` + `.umlay.md` Markdown injection) / Hover (intent + `@@doc` + `@@md` + attribute table) / F12 Go to Definition / F2 Rename / `⌘.` Quick Fix / `⇧⌥F` Format (canonical via `irToDsl`) / 19 snippets |
+| **Diagnostics** | Lint rules L001–L058 + S/W/C/R; `umlay.diagnostics.mode` switches `draft`/`beta`/`strict`; `disabledRules` / `severityOverrides` for per-rule tuning |
+| **Preview** | Tabs (All / Document / per-view) + per-view zoom/pan + IR-driven inline diagrams in Document tab (lazy mount) + Reference Docs aesthetic + 8 theme presets including high-contrast |
+| **Workspace tree** | Activity Bar "Umlay" entry — every `.umlay` in the workspace as a 3-tier file → namespace → model/enum tree, stereotype-aware icons, per-file lint badge (`2⚠ 5ℹ`) |
+| **Navigation** | Quick Switcher (`Ctrl/Cmd+Alt+U`) for fuzzy view + model search / `Alt+1`–`9` for nth view / `Alt+0` All / `Alt+D` Document / `F8` next diagnostic / `Show in Umlay` (jump from a model name in TS/Prisma/SQL to its `.umlay` declaration) |
+| **Status bar** | mode (click → settings UI) / lint count `✗⚠ℹ` (click → next diagnostic) / current theme (click → switcher) |
+| **Export** | Single view or All views to SVG / PNG (`umlay.export.defaultDpi` for resolution) |
+| **Diff review** | Baseline IR persisted to `workspaceState`; added / modified / removed rendered as hotspot overlays + Document tab diff summary |
+| **Review Assistant (opt-in)** | Enabled via `umlay.ai.enabled = true`. Anthropic / OpenAI keys live exclusively in `vscode.SecretStorage` (never in settings.json). `Umlay: Run Review Assistant` streams provider feedback (SSE) into a dedicated **Umlay AI** output channel |
 
-## Preview tips
+## Keyboard shortcuts
 
-- **Click any model box** → editor reveals that declaration.
-- **Click a diagnostic** in the right sidebar → editor jumps to the
-  reported line and column.
-- `+` / `-` / `0` / `F` keys zoom in / out / reset / fit the diagram.
-- Scale persists per view across reloads (localStorage).
-- **`.umlay.md` literate mode** — open a literate file (fenced
-  ` ```umlay ` blocks inside Markdown) and the preview renders every
-  fence's diagrams combined.
-- **`@@sample(from: "./file.jsonl")` expansion (spec 1.3.0)** — relative
-  paths resolve against the current doc, constrained to open workspace
-  folders (no arbitrary-path reads). Parsed rows land in
-  `model.sampleSources`.
-- **Explorer / editor right-click (0.5.2+)** offers two entries: "Open
-  Preview" (same column, no split) and "Open Preview to the Side"
-  (split). The editor-title icon at the top-right of the tab keeps
-  the split-pane behaviour.
-- **Umlay: Export Diagram as Image…** — SVG or PNG (`@2x` with white
-  background), per-view or All views to a folder.
-- **Review mode (diff strip + hotspot overlay) — 0.4.8+**:
-  - Baseline IR is auto-persisted to `workspaceState` (only on clean
-    parses).
-  - Changed models on ER / Class canvases are highlighted green (added)
-    / amber (modified).
-  - A `baseline diff: + ModelA  ~ ModelB  − ModelC` strip appears
-    directly under the view tabs — click a name to jump to its
-    declaration.
-  - **Umlay: Reset Diff Baseline (start a fresh review)** command
-    re-anchors the baseline.
+| Action | Keys (mac/Win) |
+| --- | --- |
+| Activate nth view | `Alt+1` … `Alt+9` |
+| All / Document tab | `Alt+0` / `Alt+D` |
+| Next/prev diagnostic (in preview) | `F8` / `Shift+F8` |
+| Next/prev diagnostic (from editor) | `Cmd/Ctrl+F8` / `Cmd/Ctrl+Shift+F8` |
+| Quick Switcher | `Cmd/Ctrl+Alt+U` |
+| Find widget inside preview | `Cmd/Ctrl+F` (built-in) |
 
-## Settings
+## Settings (`umlay.*`)
 
-| Setting | Default | Purpose |
+Search `umlay.` in the Settings UI. Highlights:
+
+| Category | Setting (selected) | Purpose |
 | --- | --- | --- |
-| `umlay.diagnostics.mode` | `draft` | Lint mode — `strict` promotes more rules to errors |
-| `umlay.preview.autoRefresh` | `true` | Re-render the preview when the source file changes |
-| `umlay.llm.provider` | `anthropic` | BYOK LLM provider (`anthropic` / `openai`) |
-| `umlay.llm.model` | `claude-sonnet-4-6` | Model id passed to the provider |
-| `umlay.llm.apiKey` | `""` | API key. Prefer setting via `Umlay: Configure LLM API key` (stored in User settings, not Workspace) |
+| **diagnostics** | `mode` / `disabledRules` / `severityOverrides` / `autoFixOnSave` | Lint mode / silence rules / per-rule severity / auto-fix on save |
+| **preview** | `theme` / `defaultTab` / `tabIcons` / `refreshDebounceMs` / `showDiagnosticsSidebar` / `diagnosticsSidebarWidth` | Auto/manual theme / initial tab / kind icons / debounce / sidebar visibility + width |
+| **document** | `showInlineDiagrams` / `maxInlineDiagramSize` / `density` / `showStereotypeBadges` | Document tab inline SVG / per-diagram byte cap / spacing density / stereotype chips |
+| **render** | `showReviews` / `allViewsLayout` / `zoomBehavior` | `@review`/`@fix` annotations / All Views grid/column/row / per-view initial zoom |
+| **format** | `attributeAlignment` | `none` / `column` (column-aligned attributes) |
+| **parse** | `specVersion` | `auto` / `1.8` / `1.9` (cap) |
+| **export** | `defaultFormat` / `defaultDpi` | svg/png / 72-600 dpi |
+| **workspace** | `fileGlob` | Activity Bar tree discovery glob |
+| **ai (opt-in)** | `enabled` / `provider` / `model` | Enable Review Assistant / `anthropic`/`openai` / model id |
 
-### Default editor settings (`[umlay]` scope)
+**Important:** there is **no** `umlay.ai.apiKey` setting. API keys live
+in `vscode.SecretStorage` (OS keychain) only — they never appear in
+`settings.json`, exported configs, or sync.
 
-Extension 0.4.0+ ships the following via **`configurationDefaults`**:
+## Review Assistant (opt-in)
 
-```jsonc
-"[umlay]": {
-  "editor.formatOnSave": true,      // irToDsl on save
-  "editor.tabSize": 2,
-  "editor.defaultFormatter": "keydrop.umlay-vscode"
-}
-```
+`umlay.ai.enabled` defaults to `false`, so a fresh install does no
+network traffic. To use it:
 
-Users can override per-workspace or per-user as usual.
+1. Set `umlay.ai.enabled = true`
+2. Command palette → `Umlay: Configure Review Assistant…`
+   → paste an API key (password-style input box, stored in
+   SecretStorage)
+3. With a `.umlay` open, run `Umlay: Run Review Assistant`
+4. Output streams (SSE) into the **Umlay AI** output channel —
+   the first bullet appears in ~1 second
 
-### Commands
+You can wipe the key any time with
+`Umlay: Remove Stored Review Assistant Credentials`. **The setting
+itself is never blanked out** — credentials only ever flow through
+SecretStorage.
 
-- `Umlay: Open Preview`
-- `Umlay: Open Preview to the Side`
-- `Umlay: Configure LLM API key` — interactive provider / model / key setup
-- `Umlay: Reset Diff Baseline (start a fresh review)` — clears the
-  stored baseline IR so the next clean parse becomes the new reference
-  point for review mode
+## Commands (`Umlay:`)
 
-## Architecture
-
-```
-.umlay source
-   │
-   ├─ @umlay/core (parse → IR)
-   │    │
-   │    ├─ @umlay/lint           (73 rules)
-   │    ├─ @umlay/renderer-er    (11 view kinds → SVG)
-   │    └─ @umlay/webview-ui     (React components — shared with apps/web)
-   │
-   └─ @umlay/lsp  (diagnostics / hover / goto / completion / symbols / format / rename / code actions)
-        ▲
-        │ stdio IPC
-        │
-   VS Code host ──▶ Webview (React preview)
-```
-
-The extension bundles the LSP and the React preview into `dist/` — zero
-workspace dependency at runtime.
-
-## Screenshots
-
-<!--
-Add these to `apps/vscode/icons/screenshots/` in the reference
-implementation repo and this doc will link them automatically:
-  - preview-dark.png   — dark theme, split view + diagnostics
-  - preview-light.png  — light theme equivalent
-  - hover.png          — hover popover on a model
-  - completion.png     — context-aware completion
--->
-
-| | |
+| Command | Use |
 | --- | --- |
-| ![Dark-theme preview](https://raw.githubusercontent.com/e98AZQZxMsYeMNm/uml.keydrop.net/main/apps/vscode/icons/screenshots/preview-dark.png) | ![Hover](https://raw.githubusercontent.com/e98AZQZxMsYeMNm/uml.keydrop.net/main/apps/vscode/icons/screenshots/hover.png) |
+| `Open Preview` / `Open Preview to the Side` | Open the diagram preview |
+| `Export Diagram as Image…` | SVG / PNG export |
+| `Reset Diff Baseline` | Start a fresh review cycle |
+| `Refresh Preview` | Force re-render every open preview |
+| `Go to Next/Previous Diagnostic` | Walk diagnostics from the editor |
+| `Pick Preview Theme…` | Switch theme (also from the status bar) |
+| `Quick Switch` | Fuzzy view + model search (`Cmd/Ctrl+Alt+U`) |
+| `Refresh Workspace` | Re-scan the Activity Bar tree |
+| `Configure Review Assistant…` / `Run Review Assistant` / `Remove Stored Review Assistant Credentials` | AI commands (opt-in) |
+| `Show in Umlay` | Jump from a model name in TS/Prisma/SQL to its `.umlay` declaration (editor context menu) |
 
-## Links
+## Versions and compatibility
 
-- Reference implementation repo:
-  https://github.com/e98AZQZxMsYeMNm/uml.keydrop.net
-- Web editor: https://umlay.keydrop.net
-- [Japanese version of this page](../ja/vscode-extension.md)
+- **VS Code**: `^1.118.0` (engines)
+- **Spec**: 1.9.0 (RFCs 0001–0054)
+- **Marketplace identifier**: `Umlay.umlay`
+
+## Related
+
+- The VS Code extension source lives in the reference implementation
+  repo
+  [e98AZQZxMsYeMNm/uml.keydrop.net](https://github.com/e98AZQZxMsYeMNm/uml.keydrop.net)
+  under `apps/vscode/`.
+- Spec (`@umlay/spec`) and public RFCs are in this repository
+  [umlay/umlay](https://github.com/umlay/umlay) under `packages/spec/`.
+- Site: <https://umlay.keydrop.net>

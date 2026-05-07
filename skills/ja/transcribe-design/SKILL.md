@@ -1,7 +1,7 @@
 ---
 name: transcribe-design
-version: 1.6.4
-spec: "@umlay/spec >= 1.6.4 (DSL 1.0 / IR 1.0)"
+version: 1.9.0
+spec: "@umlay/spec >= 1.9.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer, architect]
 summary: 既存の設計書 (自然言語) を `.umlay` の構造骨格に転記する。reverse-engineer の自然言語版
 description: 既存の Markdown / Word / PDF / Confluence ページなどに書かれた設計仕様を、Umlay DSL (`.umlay`) の構造骨格 (model / attribute / 関係 / view ヒント) に転記したいときに起動する。`reverse-engineer` skill が「コード → .umlay」なのに対し、本 skill は「**自然言語ドキュメント → .umlay**」を担当する。

@@ -1,7 +1,7 @@
 ---
 name: evolve-schema
-version: 1.6.1
-spec: "@umlay/spec >= 1.6.1 (DSL 1.0 / IR 1.0)"
+version: 1.9.0
+spec: "@umlay/spec >= 1.9.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer, architect]
 summary: 既存の Umlay DSL / IR を、後方互換と参照整合を維持しながら安全に拡張する手順
 description: 既存の Umlay model / enum / protocol / view を変更したいとき (フィールド追加、リネーム、リファクタ等) に起動する。後方互換と `@ref` 参照整合を崩さない安全な差分を提案する。

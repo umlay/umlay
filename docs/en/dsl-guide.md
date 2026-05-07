@@ -735,6 +735,76 @@ view confirm-flow @sequence_diagram {
 
 Full sample: [`packages/examples/samples/order-events.umlay`](../../packages/examples/samples/order-events.umlay).
 
+### 10.x Multiple `seq` blocks per view (RFC 0053 / spec 1.8.0)
+
+A `view ... @sequence_diagram { ... }` may carry **one or more
+`seq <name>? { ... }` blocks**. Participants are shared at the view
+level so the renderer stacks each block vertically with a
+`« seq: <name> »` heading and a horizontal divider between sections.
+
+```umlay
+view report @sequence_diagram {
+  participants: Customer as c, OrderService as svc
+
+  seq success {
+    c ->> svc: "confirm(orderId)"
+    svc -.> c: "ConfirmedOrder"
+  }
+
+  seq failure {
+    c ->> svc: "confirm(orderId)"
+    svc -.> c: "DBError"
+  }
+
+  seq cancel  { c ->> svc: "cancel" }
+}
+```
+
+- When a view has 2+ blocks, **each must have a unique name**
+  (lint **L057**).
+- Single-block views may be anonymous (`seq { ... }`) or named
+  (`seq main { ... }`).
+- IR canonical field is `View.sequenceBodies?: SequenceBody[]`;
+  `view.sequenceBody = sequenceBodies[0]` is kept for backward
+  compatibility.
+
+### 10.x Per-view `@@style(...)` override (RFC 0054 / spec 1.9.0)
+
+A view declaration may carry **`@@style(key: value, ...)`** with
+per-view color and layout overrides on top of the resolved theme.
+String values overlay theme tokens (`status_done`, `gantt_today_line`,
+…); numeric values configure Gantt layout knobs (`row_height`,
+`day_width`, `label_width`).
+
+```umlay
+view sprint1 @gantt_chart {
+  @@style(
+    status_done: "#10B981",
+    status_in_progress: "#F59E0B",
+    gantt_today_line: "#3B82F6",
+    row_height: 28,
+    day_width: 32,
+    label_width: 240
+  )
+  include: sprint1.*
+}
+```
+
+Allowed keys (1.9.0):
+
+| Category | Keys | Applies to |
+| --- | --- | --- |
+| Global colors | `bg` `surface` `text` `muted` `accent` `danger` `warn` `success` | all renderers |
+| Stereotype colors | `stereo_entity` `stereo_aggregate_root` `stereo_value_object` `stereo_service` `stereo_interface` | ER / class |
+| Status colors | `status_pending` `status_in_progress` `status_done` `status_blocked` | Gantt / WBS |
+| Gantt accents | `gantt_today_line` `gantt_critical` `gantt_progress_fg` | Gantt |
+| Gantt dimensions | `row_height` `day_width` `label_width` | Gantt |
+
+Keys outside the allowlist are ignored at render time; lint **L058**
+reports them as `info` so authors notice typos. See
+[`packages/spec/src/rfcs/0054-per-view-style-override.md`](../../packages/spec/src/rfcs/0054-per-view-style-override.md)
+for the full RFC.
+
 ## 11. References
 
 - [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) — canonical grammar

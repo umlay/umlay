@@ -730,6 +730,73 @@ view confirm-flow @sequence_diagram {
 
 完全なサンプルは [`packages/examples/samples/order-events.umlay`](../../packages/examples/samples/order-events.umlay) を参照。
 
+### 10.x 同一 view に複数 `seq` ブロック (RFC 0053 / spec 1.8.0)
+
+`view ... @sequence_diagram { ... }` 内に **`seq <name>? { ... }` を
+複数並べる** ことができる。`participants:` を共有しつつ、success /
+failure / cancel など複数シナリオを 1 枚に集約できる。レンダラは
+縦に積み、`« seq: <name> »` ヘッダ + 横線で区切る。
+
+```umlay
+view report @sequence_diagram {
+  participants: Customer as c, OrderService as svc
+
+  seq success {
+    c ->> svc: "confirm(orderId)"
+    svc -.> c: "ConfirmedOrder"
+  }
+
+  seq failure {
+    c ->> svc: "confirm(orderId)"
+    svc -.> c: "DBError"
+  }
+
+  seq cancel  { c ->> svc: "cancel" }
+}
+```
+
+- 2 つ以上の `seq` がある view では **各ブロックに名前必須**
+  (lint **L057**)
+- 1 ブロックのみは無名 (`seq { ... }`) でも名前付き (`seq main { ... }`)
+  でもよい
+- `View.sequenceBodies?: SequenceBody[]` が IR の正典フィールド。後方
+  互換のため `view.sequenceBody = sequenceBodies[0]` も保持される
+
+### 10.x per-view `@@style(...)` 上書き (RFC 0054 / spec 1.9.0)
+
+view 宣言の中に `@@style(key: value, ...)` を置くと、その view だけに
+適用される **テーマ色トークン上書き** (色) と **レイアウト微調整**
+(行高さ・列幅 など) を持てる。`theme` プリセットの上からマージされる。
+
+```umlay
+view sprint1 @gantt_chart {
+  @@style(
+    status_done: "#10B981",
+    status_in_progress: "#F59E0B",
+    gantt_today_line: "#3B82F6",
+    row_height: 28,
+    day_width: 32,
+    label_width: 240
+  )
+  include: sprint1.*
+}
+```
+
+許可キー (1.9.0):
+
+| カテゴリ | キー | 適用先 |
+| --- | --- | --- |
+| 全体色 | `bg` `surface` `text` `muted` `accent` `danger` `warn` `success` | 全レンダラ |
+| ステレオタイプ色 | `stereo_entity` `stereo_aggregate_root` `stereo_value_object` `stereo_service` `stereo_interface` | ER / class |
+| ステータス色 | `status_pending` `status_in_progress` `status_done` `status_blocked` | Gantt / WBS |
+| Gantt アクセント | `gantt_today_line` `gantt_critical` `gantt_progress_fg` | Gantt |
+| Gantt 寸法 | `row_height` `day_width` `label_width` | Gantt |
+
+許可リスト外のキーは無視され、lint **L058** が `未知のキー` を info
+で報告する。詳細は
+[`packages/spec/src/rfcs/0054-per-view-style-override.md`](../../packages/spec/src/rfcs/0054-per-view-style-override.md)
+を参照。
+
 ## 11. 参考
 
 - [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) — 文法の正本

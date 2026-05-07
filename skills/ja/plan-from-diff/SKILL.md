@@ -1,7 +1,7 @@
 ---
 name: plan-from-diff
-version: 1.6.1
-spec: "@umlay/spec >= 1.6.1 (DSL 1.0 / IR 1.0)"
+version: 1.9.0
+spec: "@umlay/spec >= 1.9.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer, architect]
 summary: change-impact レポート (または生 IR diff) から、順序付き実装計画 — タスク / ファイル / PR 境界 / ロールバック戦略 — を生成
 description: Umlay IR delta (new → old) を持っていて、次のアクション = 安全に出荷するための具体的で順序付けされたエンジニアリングタスク群が欲しいときに起動する。`change-impact-diff` の出力 (または生 diff) を入力に、migration フェーズ / PR 分割 / 検証ゲート / ロールバックポイント付きの計画を吐く。

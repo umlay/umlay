@@ -1,7 +1,7 @@
 ---
 name: reverse-engineer
-version: 1.6.1
-spec: "@umlay/spec >= 1.6.1 (DSL 1.0 / IR 1.0)"
+version: 1.9.0
+spec: "@umlay/spec >= 1.9.0 (DSL 1.0 / IR 1.0)"
 audience: [ai-agent, developer, architect]
 summary: 既存の Prisma schema / SQL DDL / TypeScript 型から spec 準拠の Umlay DSL (.umlay) を起こす
 description: 既存コードベース — Prisma `schema.prisma`、PostgreSQL / MySQL DDL、TypeScript の `class` / `interface` / `type` — を Umlay に取り込みたいときに起動する。取り込み後は review-uml / evolve-schema / codegen-mapping にそのまま渡せる形にする。

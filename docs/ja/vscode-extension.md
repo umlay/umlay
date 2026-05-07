@@ -2,139 +2,125 @@
 
 **Umlay** VS Code 拡張は Umlay の体験をエディタ内で完結させます — Language
 Server、ライブ診断、Web エディタと同じビジュアライザ、19 種のスニペット、
-コンテキスト認識の補完を含みます。
+コンテキスト認識の補完、ワークスペース横断ナビゲーション、オプトイン
+レビューアシスタントを含みます。
 
-拡張は参照実装リポジトリから配信され、ビューア側の React コンポーネントは
-`@umlay/webview-ui` を通じて Web エディタと**完全共有**。Web と VS Code の
-UX がずれません。
+ビューア側の React コンポーネントは `@umlay/webview-ui` を通じて Web
+エディタと**完全共有**しているため、Web と VS Code の UX は常に揃います。
 
 ## インストール
 
-### Marketplace(公開準備中)
+### Marketplace
 
 ```sh
-code --install-extension keydrop.umlay-vscode
+code --install-extension Umlay.umlay
 ```
+
+[Marketplace ページ](https://marketplace.visualstudio.com/items?itemName=Umlay.umlay)
+もしくは VS Code の Extensions サイドバーから「Umlay」を検索してください。
 
 ### ローカル `.vsix`
 
-1. [リリースアセット](https://github.com/e98AZQZxMsYeMNm/uml.keydrop.net/releases)
-   から `.vsix` をダウンロード(または下記でビルド)
-2. VS Code: **Extensions → `…` メニュー → Install from VSIX…**
-3. または CLI: `code --install-extension umlay-vscode-<version>.vsix`
+1. [リリースアセット](https://github.com/e98AZQZxMsYeMNm/uml.keydrop.net/releases) から `.vsix` をダウンロード
+2. **Extensions → `…` → Install from VSIX…**
+   または `code --install-extension umlay-<version>.vsix`
 
 ### ローカルビルド
 
 ```sh
 git clone https://github.com/e98AZQZxMsYeMNm/uml.keydrop.net.git
 cd uml.keydrop.net && pnpm install
-pnpm -F umlay-vscode package    # → apps/vscode/umlay-vscode-<v>.vsix
+pnpm -F umlay package    # → apps/vscode/umlay-<version>.vsix
 ```
 
 ## 機能一覧
 
-| 機能 | 使い方 |
+| 領域 | 機能 |
 | --- | --- |
-| シンタックスハイライト | `.umlay` + `.umlay.md`(Markdown 注入) |
-| 診断(73 ルール) | Problems パネル + 波線 |
-| Hover | モデルの intent / `@@doc` / `@@md` / 属性一覧 |
-| Go to Definition | F12 で `@ref(X.y)` / dotted 型 / view-id に跳躍 |
-| 補完 | `@stereotype` / `@@directive` / view kind / `@ref` / `include:` |
-| Document Symbols | Outline パネル + breadcrumbs |
-| Rename | F2 でモデル/enum 名を一括変更 |
-| Quick Fix | L001 / L002 / L008 の自動修正 |
-| Format Document | ⇧⌥F — `irToDsl` で正規化 |
-| **プレビュー** | タブ (All / 個別 view / Document) + ズーム/パン/ジャンプ |
-| **診断サイドバー** | クリックで該当行へ遷移 |
-| **テーマ連動** | ダーク/ライト/高コントラストで配色自動切替 |
+| **言語サポート** | シンタックスハイライト (`.umlay` + `.umlay.md` Markdown 注入) / Hover (intent + `@@doc` + `@@md` + 属性一覧) / F12 Go to Definition / F2 Rename / `⌘.` Quick Fix / `⇧⌥F` フォーマット (canonical → `irToDsl`) / 19 種のスニペット |
+| **診断** | L001–L058 + S/W/C/R 系の lint ルール、`umlay.diagnostics.mode` で `draft`/`beta`/`strict` 切替、`disabledRules` / `severityOverrides` で個別調整 |
+| **プレビュー** | タブ (All / Document / 個別 view) + per-view ズーム/パン + Document タブの IR-driven インライン図 (lazy mount) + Reference Docs 風レイアウト + 8 テーマプリセット (高コントラスト含む) |
+| **ワークスペースツリー** | Activity Bar に "Umlay" エントリ — 全 `.umlay` ファイル横断のファイル → namespace → model/enum 3 階層、ステレオタイプ別アイコン、各ファイルに lint バッジ (`2⚠ 5ℹ`) |
+| **ナビゲーション** | クイックスイッチャー (`Ctrl/Cmd+Alt+U`) で view + model fuzzy 検索 / `Alt+1〜9` で n 番目 view / `Alt+0` All / `Alt+D` Document / `F8` 次の診断 / `Show in Umlay` (TS/Prisma/SQL の model 名から `.umlay` 宣言にジャンプ) |
+| **ステータスバー** | mode (クリックで設定 UI) / lint count (✗⚠ℹ — クリックで次の診断) / 現在のテーマ (クリックで切替メニュー) |
+| **エクスポート** | 1 view または All views を SVG / PNG (`umlay.export.defaultDpi` で解像度) として出力 |
+| **差分レビュー** | baseline IR を `workspaceState` に保存し、追加/変更/削除を hotspot オーバーレイ + Document タブの差分サマリで表示 |
+| **レビューアシスタント (オプトイン)** | `umlay.ai.enabled = true` で有効化。Anthropic / OpenAI どちらかの API キーを `vscode.SecretStorage` に保管 (settings.json には出さない)、`Umlay: Run Review Assistant` でアクティブな `.umlay` を SSE ストリームでレビュー (Output Channel に逐次出力) |
 
-## プレビューの操作
+## キーボードショートカット
 
-- **モデルボックスをクリック** → エディタが該当行へジャンプ
-- 右の**診断エントリをクリック** → エラー箇所へ遷移
-- `+` / `-` / `0` / `F` キーでズーム操作(in / out / reset / fit)
-- スケールは view 単位で永続化(localStorage)
-- **`.umlay.md` リテラット形式** — Markdown 内の ` ```umlay ` フェンスを
-  すべて結合して 1 IR として描画
-- **`@@sample(from: "./file.jsonl")` 展開 (spec 1.3.0)** — 開いている
-  workspace folder 内の相対パスを `fs.readFile` で解決し `model.sampleSources`
-  に反映。ワークスペース外のファイルは読まない
-- **エクスプローラ / エディタ右クリック (0.5.2+)** → 「Open Preview」(同タブ、分割なし) と「Open Preview to the Side」(分割) を選択可。エディタタブ右上のアイコンは引き続き分割版
-- **Umlay: Export Diagram as Image…** — SVG / PNG (2×)、個別 view / All views
-- **Review mode (diff strip + hotspot overlay) — 0.4.8+**:
-  - `workspaceState` に baseline IR を自動保存 (クリーンパース時のみ更新)
-  - ER / Class 図の変更モデルを緑 (added) / 橙 (modified) でハイライト
-  - タブ直下に `baseline 差分: + ModelA  ~ ModelB  − ModelC` ストリップ、名前クリックで宣言へジャンプ
-  - **Umlay: Reset Diff Baseline (start a fresh review)** コマンドで基準を張り直し
+| 操作 | キー (mac/Win) |
+| --- | --- |
+| n 番目 view を開く | `Alt+1` 〜 `Alt+9` |
+| All タブ / Document タブ | `Alt+0` / `Alt+D` |
+| 次/前の診断 (プレビュー内) | `F8` / `Shift+F8` |
+| 次/前の診断 (エディタから) | `Cmd/Ctrl+F8` / `Cmd/Ctrl+Shift+F8` |
+| クイックスイッチャー | `Cmd/Ctrl+Alt+U` |
+| プレビュー内の find widget | `Cmd/Ctrl+F` (VS Code 標準) |
 
-## 設定
+## 設定 (`umlay.*`)
 
-| 設定キー | デフォルト | 用途 |
+Settings UI で `umlay.` を検索してください。主要なものを抜粋:
+
+| カテゴリ | 設定 (例) | 役割 |
 | --- | --- | --- |
-| `umlay.diagnostics.mode` | `draft` | `strict` にすると多くのルールが error に昇格 |
-| `umlay.preview.autoRefresh` | `true` | 保存/編集時に自動再レンダリング |
-| `umlay.llm.provider` | `anthropic` | BYOK LLM プロバイダ (`anthropic` / `openai`) |
-| `umlay.llm.model` | `claude-sonnet-4-6` | 使うモデル ID |
-| `umlay.llm.apiKey` | `""` | API キー。`Umlay: Configure LLM API key` コマンドで対話的に設定推奨(User settings に保存) |
+| **diagnostics** | `mode` / `disabledRules` / `severityOverrides` / `autoFixOnSave` | lint mode / ルール抑制 / 重要度上書き / 保存時自動修正 |
+| **preview** | `theme` / `defaultTab` / `tabIcons` / `refreshDebounceMs` / `showDiagnosticsSidebar` / `diagnosticsSidebarWidth` | テーマ自動/手動 / 初期タブ / kind アイコン / 編集→再描画遅延 / サイドバー表示 + 幅 |
+| **document** | `showInlineDiagrams` / `maxInlineDiagramSize` / `density` / `showStereotypeBadges` | Document タブのインライン SVG / 1 図上限 byte / 余白密度 / chip 表示 |
+| **render** | `showReviews` / `allViewsLayout` / `zoomBehavior` | `@review`/`@fix` 注釈 / All Views の grid/column/row / per-view 初期ズーム |
+| **format** | `attributeAlignment` | `none` / `column` (列揃え) |
+| **parse** | `specVersion` | `auto` / `1.8` / `1.9` (上限を pin) |
+| **export** | `defaultFormat` / `defaultDpi` | svg/png / 72-600 dpi |
+| **workspace** | `fileGlob` | Activity Bar ツリーの探索 glob |
+| **ai (オプトイン)** | `enabled` / `provider` / `model` | レビューアシスタント有効化 / `anthropic`/`openai` / モデル ID |
 
-### 既定の editor 設定(`[umlay]` scope)
+**重要:** `umlay.ai.apiKey` のような設定は **存在しません**。API キーは
+`vscode.SecretStorage` (OS keychain) のみで管理し、settings.json から
+リークしないようにしています。
 
-拡張 0.4.0+ は以下を **`configurationDefaults`** として提供:
+## レビューアシスタント (オプトイン)
 
-```jsonc
-"[umlay]": {
-  "editor.formatOnSave": true,      // irToDsl で保存時整形
-  "editor.tabSize": 2,
-  "editor.defaultFormatter": "keydrop.umlay-vscode"
-}
-```
+`umlay.ai.enabled = false` (既定) なので、フレッシュインストールでは
+ネットワーク通信は発生しません。利用には以下の手順が必要です:
 
-ユーザが上書きしたい場合は Workspace / User 設定で差し替え可能。
+1. Settings で `umlay.ai.enabled = true`
+2. コマンドパレット → `Umlay: Configure Review Assistant…`
+   → API キーを貼付 (password 入力欄、SecretStorage に保管)
+3. `.umlay` を開いた状態で `Umlay: Run Review Assistant`
+4. 出力は **Umlay AI** Output Channel に SSE ストリームで逐次出力
+   (最初の bullet が ~1 秒で表示)
 
-### コマンド
+キー削除は `Umlay: Remove Stored Review Assistant Credentials` でいつ
+でも実行可能。**設定値が空欄になることはなく、SecretStorage 経由のみで
+削除されます。**
 
-- `Umlay: Open Preview`
-- `Umlay: Open Preview to the Side`
-- `Umlay: Configure LLM API key`(provider / model / key を対話的に設定)
-- `Umlay: Reset Diff Baseline (start a fresh review)` — 保存済み baseline IR を消去し、次のクリーンパースを新しいレビュー基準にする
+## コマンド (`Umlay:`)
 
-## アーキテクチャ
-
-```
-.umlay ソース
-   │
-   ├─ @umlay/core (parse → IR)
-   │    │
-   │    ├─ @umlay/lint           (73 ルール)
-   │    ├─ @umlay/renderer-er    (11 view kind → SVG)
-   │    └─ @umlay/webview-ui     (React 共通コンポーネント — apps/web と共有)
-   │
-   └─ @umlay/lsp  (診断 / hover / goto / 補完 / symbols / format / rename / code actions)
-        ▲
-        │ stdio IPC
-        │
-   VS Code host ──▶ Webview (React プレビュー)
-```
-
-LSP + React プレビューを `dist/` にバンドルし、**ランタイムで workspace
-依存なし**で動きます。
-
-## スクリーンショット
-
-<!--
-以下を `apps/vscode/icons/screenshots/` に配置するとここから参照されます:
-  - preview-dark.png   ダークテーマの split view + 診断
-  - preview-light.png  ライトテーマ同等
-  - hover.png          モデル hover 時のポップオーバー
-  - completion.png     コンテキスト補完
--->
-
-| | |
+| コマンド | 用途 |
 | --- | --- |
-| ![ダークテーマ](https://raw.githubusercontent.com/e98AZQZxMsYeMNm/uml.keydrop.net/main/apps/vscode/icons/screenshots/preview-dark.png) | ![Hover](https://raw.githubusercontent.com/e98AZQZxMsYeMNm/uml.keydrop.net/main/apps/vscode/icons/screenshots/hover.png) |
+| `Open Preview` / `Open Preview to the Side` | プレビューを開く |
+| `Export Diagram as Image…` | SVG / PNG エクスポート |
+| `Reset Diff Baseline` | レビュー基準をリセット |
+| `Refresh Preview` | 全プレビュー強制再描画 |
+| `Go to Next/Previous Diagnostic` | エディタ上で前後の診断にジャンプ |
+| `Pick Preview Theme…` | テーマ切替 (status bar からも可) |
+| `Quick Switch` | view + model fuzzy 検索 (`Cmd/Ctrl+Alt+U`) |
+| `Refresh Workspace` | Activity Bar ツリー再走査 |
+| `Configure Review Assistant…` / `Run Review Assistant` / `Remove Stored Review Assistant Credentials` | AI レビュー関連 (オプトイン) |
+| `Show in Umlay` | TS/Prisma/SQL の model 名から `.umlay` 宣言にジャンプ (右クリックメニュー) |
 
-## リンク
+## バージョンと互換性
 
-- 参照実装: https://github.com/e98AZQZxMsYeMNm/uml.keydrop.net
-- Web エディタ: https://umlay.keydrop.net
-- [English version](../en/vscode-extension.md)
+- **VS Code**: `^1.118.0` (engines)
+- **Spec**: 1.9.0 (RFC 0001–0054)
+- **Marketplace 識別子**: `Umlay.umlay`
+
+## 関連
+
+- VS Code 拡張のソースはリファレンス実装リポジトリ
+  [e98AZQZxMsYeMNm/uml.keydrop.net](https://github.com/e98AZQZxMsYeMNm/uml.keydrop.net)
+  の `apps/vscode/` に配置
+- 仕様 (`@umlay/spec`) と公開 RFC は本リポジトリ
+  [umlay/umlay](https://github.com/umlay/umlay) の
+  `packages/spec/` に
+- 公式サイト: <https://umlay.keydrop.net>
