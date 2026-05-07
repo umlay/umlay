@@ -294,9 +294,11 @@ ViewKind        ::= "@er_diagram"        | "@class_diagram"
                   | "@activity_diagram"  | "@deployment_diagram"
                   | "@wbs_diagram"       | "@gantt_chart"
                   | "@composite"                           (* RFC 0033, spec 1.3.0 *)
+                  | "@flowchart_diagram"                   (* RFC 0055, spec 1.10.0 *)
 
 ViewBody        ::= IncludeClause ExcludeClause? LayoutClause?
                     CriticalPathClause? ThemeDirective? SequenceBody?
+                    FlowchartBody?                         (* RFC 0055, spec 1.10.0 *)
                     CompositeInclude*                      (* RFC 0033 *)
 
 (* RFC 0033 — `@composite` view bodies embed other views. `viewId` is a
@@ -389,6 +391,20 @@ Boolean         ::= "true" | "false"
 Null            ::= "null"
 
 ObjectField     ::= Identifier ":" (Expr | Identifier)
+
+(* ─────────────── flowchart diagram 本体 (RFC 0055, spec 1.10.0) ─────────────── *)
+(*
+ * `flow` is a contextual keyword: only the sequence `flow {` after a view
+ * body element is treated as the start of a flowchart body. Existing uses of
+ * `flow` as an identifier (`namespace flow`, `view payment-flow`,
+ * `flow.User`) keep parsing unchanged.
+ *)
+FlowchartBody     ::= "flow" "{" FlowchartElement* "}"
+FlowchartElement  ::= FlowchartNode | FlowchartEdge
+FlowchartNode     ::= FlowchartShape Identifier String?
+FlowchartShape    ::= "start" | "end" | "process" | "decision"
+                    | "io"    | "document" | "subroutine"
+FlowchartEdge     ::= Identifier ("->" Identifier)+ (":" String)?
 
 (* ─────────────── 語彙 (字句) ─────────────── *)
 

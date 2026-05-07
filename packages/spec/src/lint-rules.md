@@ -1,6 +1,15 @@
 # Umlay Lint Rule Catalog
 
-**spec version**: 1.3.0 (RFC 0033 composite views + RFC 0034 traits + UML modifiers)
+**spec version**: 1.10.0 (latest additions: RFC 0055 — `@flowchart_diagram` view kind + L059–L064)
+
+> Note: This catalog body is currently an L001–L016 snapshot taken at
+> spec 1.3.0. The reference implementation (`@umlay/lint`) ships
+> additional rules introduced by later spec releases — see the
+> "Spec 1.4.0+ additions (reference implementation)" section at the
+> bottom of this file for the recently-added rule IDs (L017–L064).
+> Backfilling each rule's full prose into this catalog is tracked
+> separately; until then, source-of-truth is the
+> [reference implementation](https://github.com/keydrop/umlay/blob/main/packages/lint/src/rules/index.ts).
 
 `skills/*/review-uml.md` から Lint ルールを一元化した正本カタログ。全実装は本カタログに記載されたルール ID / 重大度 / mandatory 区分を尊重する。
 
@@ -157,6 +166,49 @@ spec 1.0 RC までに catalog に昇格予定の参照実装ルール:
 | **L2 IR** | S01〜S17 + L003 / L005 / L007 | IR 生成時に検証 |
 | **L3 render** | L1 + L2 + view 関連 (L012) | renderer 自身の責務範囲 |
 | **Lint service (optional)** | L001〜L016 + R01〜R12 + W001〜W002 + C001〜C002 | Lint 専用パッケージが担当 |
+
+## Spec 1.4.0+ additions (reference implementation)
+
+Added by spec releases after this catalog body was authored.
+Each row is a one-liner; full prose lives in the rule source.
+
+| ID | Spec | RFC | 内容 (要約) |
+| --- | --- | --- | --- |
+| L017 | 1.4.0 | 0035 | namespace 未宣言 |
+| L020 | 1.4.0 | 0035 | model に `@@doc` / `@intent` が無い (rationale 不足) |
+| L021 | 1.4.0 | 0035 | `@aggregate_root` に `@inv` が無い |
+| L033 | 1.4.0 | — | モデルが画像添付に依存している疑い |
+| L034 | 1.2.0 | 0032 | view selector に未知の kind |
+| L035 | 1.2.0 | 0032 | exclude selector が 1 件もマッチしなかった |
+| L036 | 1.2.0 | 0032 | `exclude: visibility:X` で対象属性が無い |
+| L037 | 1.3.0 | 0033 | 非 `@composite` で `@@include(viewId)` 使用 |
+| L038 | 1.3.0 | 0033 | `@composite` 参照 viewId が存在しない |
+| L039 | 1.3.0 | 0033 | `@composite` の include に循環 |
+| L040 | 1.3.0 | 0034 | model 属性と trait 属性の同名衝突 |
+| L041 | 1.3.0 | 0034 | 2 trait が同名属性を提供 |
+| L042 | 1.3.0 | 0034 | trait の `@@include` に循環 |
+| L043 | 1.3.0 | 0034 | 宣言だけで `@@include` されない trait |
+| L044 | 1.3.0 | 0034 | trait 属性が 2 未満 (過抽象化) |
+| L045 | 1.3.0 | 0034 | `@@include(UnknownTrait)` |
+| L046 | 1.6.1 | 0042 | `@@locked` 要素はレビュー必須 |
+| L047 | 1.6.1 | 0044 | `@@boundary.exposes` / `hides` の参照先が無い |
+| L048 | 1.6.1 | 0040 | PII/GDPR/PCI-DSS 属性に `@@example(expect: reject)` 無し |
+| L049 | 1.6.1 | 0049 | `@@example(input: ...)` が `@@inv` と矛盾 |
+| L050 | 1.7.0 | 0050 | state 遷移と methodの`@pre/@post` 整合 |
+| L051 | 1.7.0 | 0050 | state を mutate する method は遷移として現れる |
+| L052 | 1.7.0 | 0051 | 到達不能な state 値 |
+| L053 | 1.7.0 | 0050 | state-bearing model に状態遷移と無関係な method |
+| L054 | 1.7.0 | 0050 | sequence message が state-bearing method を呼ぶ |
+| L055 | 1.7.0 | 0052 | `@emits(X)` が宣言済みイベントを参照 |
+| L056 | 1.7.0 | 0052 | 宣言済みイベントがどこかで `@emits` される |
+| L057 | 1.8.0 | 0053 | 同一 view の `seq` ブロックは命名+ユニーク |
+| L058 | 1.9.0 | 0054 | `@@style(...)` のキーは theme/layout 許可リスト内 |
+| L059 | 1.10.0 | 0055 | `@flowchart_diagram` に `start` / `end` ノード必須 |
+| L060 | 1.10.0 | 0055 | flowchart のノードは `start` から到達可能 |
+| L061 | 1.10.0 | 0055 | `end` 以外の flowchart ノードは出力エッジ必須 |
+| L062 | 1.10.0 | 0055 | flowchart エッジは宣言済みノードのみ参照可 |
+| L063 | 1.10.0 | 0055 | flowchart のノード ID は同一 view 内で一意 |
+| L064 | 1.10.0 | 0055 | 1 view あたり `flow { }` ブロックは 1 つを推奨 |
 
 ## ルールの書き方 (新規追加時)
 

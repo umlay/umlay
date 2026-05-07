@@ -80,7 +80,7 @@ Visibility prefixes the field name; nullability follows the type.
 
 Stereotypes (5 values): `@entity` / `@aggregate_root` / `@value_object` / `@service` / `@interface`.
 
-View kinds (**11 values**): `@er_diagram` / `@class_diagram` / `@sequence_diagram` / `@component_diagram` / `@package_diagram` / `@state_machine` / `@activity_diagram` / `@deployment_diagram` / `@wbs_diagram` / `@gantt_chart` / `@composite` (RFC 0033, spec 1.3.0).
+View kinds (**12 values**): `@er_diagram` / `@class_diagram` / `@sequence_diagram` / `@component_diagram` / `@package_diagram` / `@state_machine` / `@activity_diagram` / `@deployment_diagram` / `@wbs_diagram` / `@gantt_chart` / `@composite` (RFC 0033, spec 1.3.0) / `@flowchart_diagram` (RFC 0055, spec 1.10.0).
 
 ### 4.x trait (RFC 0034, spec 1.3.0)
 
@@ -446,6 +446,63 @@ seq {
 ```
 
 Array literals `[ ... ]` are also accepted. Object keys follow the same soft-identifier rule as `fieldNameToken`, so reserved words (`type`, `on`, ...) are allowed as keys.
+
+## 9.x Flowchart diagram body (RFC 0055, spec 1.10.0)
+
+A `@flowchart_diagram` view body wraps its content inside a **`flow { ... }`**
+block that describes a classic flowchart. `flow` is a contextual keyword —
+only the sequence `flow {` is interpreted as the flowchart marker, so
+`namespace flow`, `view payment-flow`, and `flow.User` keep working.
+
+```prisma
+view login-flow @flowchart_diagram {
+  flow {
+    start    begin    "Login start"
+    process  check    "Validate"
+    decision validate "OK?"
+    end      ok
+    end      ng
+
+    begin    -> check -> validate
+    validate -> ok    : "Yes"
+    validate -> ng    : "No"
+  }
+}
+```
+
+Grammar:
+
+```
+flowchartBody := "flow" "{" flowchartElement* "}"
+
+flowchartElement
+  := flowchartNode
+  |  flowchartEdge
+
+flowchartNode := shape Identifier StringLiteral?
+shape := "start" | "end" | "process" | "decision"
+       | "io" | "document" | "subroutine"
+
+flowchartEdge := Identifier ("->" Identifier)+ (":" StringLiteral)?
+```
+
+Nodes: `<shape> <id> "<label>"?` (label falls back to `id` when omitted).
+Edges: `A -> B (-> C)* (: "label")?`. Chain edges (`A -> B -> C`) are
+expanded into individual edges, and an edge label attaches to the **last
+hop only**. Multiple `flow { }` blocks within a single view are
+concatenated at the IR level; lint **L064** advises consolidating them
+into one block.
+
+Dedicated lint rules:
+
+| Rule | Purpose |
+| --- | --- |
+| **L059** | At least one `start` and one `end` node required |
+| **L060** | Every node must be reachable from a `start` |
+| **L061** | Non-`end` nodes must have at least one outgoing edge (no dead-ends) |
+| **L062** | Edges may only reference declared nodes |
+| **L063** | Node ids must be unique within a view |
+| **L064** | Prefer a single `flow { }` block per view |
 
 ## 10. View `layout:` (RFC 0002)
 

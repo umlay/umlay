@@ -80,7 +80,7 @@ import "./modules/{core,shared}/*.umlay"
 
 stereotype は 5 値: `@entity` / `@aggregate_root` / `@value_object` / `@service` / `@interface`。
 
-view kind は **11 値**: `@er_diagram` / `@class_diagram` / `@sequence_diagram` / `@component_diagram` / `@package_diagram` / `@state_machine` / `@activity_diagram` / `@deployment_diagram` / `@wbs_diagram` / `@gantt_chart` / `@composite` (RFC 0033, spec 1.3.0)。
+view kind は **12 値**: `@er_diagram` / `@class_diagram` / `@sequence_diagram` / `@component_diagram` / `@package_diagram` / `@state_machine` / `@activity_diagram` / `@deployment_diagram` / `@wbs_diagram` / `@gantt_chart` / `@composite` (RFC 0033, spec 1.3.0) / `@flowchart_diagram` (RFC 0055, spec 1.10.0)。
 
 ### 4.x trait (RFC 0034, spec 1.3.0)
 
@@ -463,6 +463,63 @@ seq {
 ```
 
 配列リテラル `[ ... ]` も受理される。object のキーは `fieldNameToken` と同じ規則で予約語を許容 (`type`, `on`, etc.)。
+
+## 9.x Flowchart diagram 本体 (RFC 0055, spec 1.10.0)
+
+`@flowchart_diagram` view では view body の中に **`flow { ... }`**
+ブロックを置き、古典的なフローチャートを記述する。`flow` は文脈
+キーワード — `flow {` の並びだけがフローチャート開始として認識され、
+`namespace flow` / `view payment-flow` / `flow.User` などの識別子
+利用は影響を受けない。
+
+```prisma
+view login-flow @flowchart_diagram {
+  flow {
+    start    begin    "Login start"
+    process  check    "Validate"
+    decision validate "OK?"
+    end      ok
+    end      ng
+
+    begin    -> check -> validate
+    validate -> ok    : "Yes"
+    validate -> ng    : "No"
+  }
+}
+```
+
+文法:
+
+```
+flowchartBody := "flow" "{" flowchartElement* "}"
+
+flowchartElement
+  := flowchartNode
+  |  flowchartEdge
+
+flowchartNode := shape Identifier StringLiteral?
+shape := "start" | "end" | "process" | "decision"
+       | "io" | "document" | "subroutine"
+
+flowchartEdge := Identifier ("->" Identifier)+ (":" StringLiteral)?
+```
+
+ノード: `<shape> <id> "<label>"?`。ラベル省略時は `id` を表示。
+エッジ: `A -> B (-> C)* (: "label")?`。チェイン (`A -> B -> C`) は
+visitor で個別エッジに展開され、ラベルは **最後のホップにのみ** 付く。
+同一 view に `flow { }` を複数置いた場合 IR 上は連結され、lint **L064**
+が「単一の `flow {}` への統合」を勧告する。
+
+専用 lint:
+
+| 規則 | 内容 |
+| --- | --- |
+| **L059** | start / end ノードがそれぞれ少なくとも 1 つ必要 |
+| **L060** | 各ノードは `start` から到達可能 |
+| **L061** | `end` 以外のノードは出力エッジ必須 (行き止まり禁止) |
+| **L062** | エッジが宣言済みノードを参照していること |
+| **L063** | ノード ID は同一 view 内で一意 |
+| **L064** | `flow { }` ブロックは 1 view あたり 1 つを推奨 |
 
 ## 10. View の `layout:` (RFC 0002)
 

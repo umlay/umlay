@@ -2,7 +2,7 @@
 
 > **UML, relaid.** — レガシーUMLを現代のNode/クラウド/AI時代に置き直すモデリングツール。
 
-[![spec](https://img.shields.io/badge/spec-1.9.0-3b82f6)](./packages/spec)
+[![spec](https://img.shields.io/badge/spec-1.10.0-3b82f6)](./packages/spec)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-green.svg)](./LICENSE)
 [![License: MIT (examples)](https://img.shields.io/badge/examples-MIT-blue.svg)](./packages/examples)
 [![GitHub Repo stars](https://img.shields.io/github/stars/umlay/umlay?style=social)](https://github.com/umlay/umlay)
@@ -41,6 +41,10 @@ umlay-oss/
 
 - [`packages/spec/src/grammar.md`](./packages/spec/src/grammar.md) — BNF 文法と予約語一覧
 - [`packages/spec/src/ir.schema.json`](./packages/spec/src/ir.schema.json) — 正規IR の JSON Schema (Draft 2020-12)
+
+最新は **spec 1.10.0** ([RFC 0055](./packages/spec/src/rfcs/0055-flowchart-diagram.md))
+で **`@flowchart_diagram`** 古典フローチャート view kind が加わり、対応 lint
+**L059–L064** が追加されました。view kind は計 12 種をサポートします。
 
 ## サンプル
 
