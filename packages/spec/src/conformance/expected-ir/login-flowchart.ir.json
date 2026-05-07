@@ -1,0 +1,126 @@
+{
+  "version": "1.0",
+  "kind": "UmlModel",
+  "mode": "draft",
+  "specVersion": "1.10.0",
+  "namespaces": {
+    "auth": {
+      "models": {},
+      "types": {},
+      "enums": {},
+      "events": {},
+      "reservedBlocks": [],
+      "cloudPrimitives": [],
+      "protocols": [],
+      "unions": [],
+      "impls": [],
+      "traits": {}
+    }
+  },
+  "views": [
+    {
+      "id": "login-flowchart",
+      "kind": "flowchart_diagram",
+      "include": [],
+      "exclude": [],
+      "docs": [],
+      "attachments": [],
+      "participants": [],
+      "messages": [],
+      "sequenceBodies": [],
+      "ganttTasks": [],
+      "flowchartBody": {
+        "nodes": [
+          {
+            "id": "begin",
+            "shape": "start",
+            "label": "Start"
+          },
+          {
+            "id": "readReq",
+            "shape": "io",
+            "label": "Read login request"
+          },
+          {
+            "id": "parseBody",
+            "shape": "process",
+            "label": "Parse JSON body"
+          },
+          {
+            "id": "validate",
+            "shape": "decision",
+            "label": "Credentials OK?"
+          },
+          {
+            "id": "lookup",
+            "shape": "subroutine",
+            "label": "DB: find user"
+          },
+          {
+            "id": "issueJwt",
+            "shape": "process",
+            "label": "Issue JWT"
+          },
+          {
+            "id": "audit",
+            "shape": "document",
+            "label": "Audit log entry"
+          },
+          {
+            "id": "reject",
+            "shape": "process",
+            "label": "401 Unauthorized"
+          },
+          {
+            "id": "ok",
+            "shape": "end"
+          },
+          {
+            "id": "ng",
+            "shape": "end"
+          }
+        ],
+        "edges": [
+          {
+            "from": "begin",
+            "to": "readReq"
+          },
+          {
+            "from": "readReq",
+            "to": "parseBody"
+          },
+          {
+            "from": "parseBody",
+            "to": "validate"
+          },
+          {
+            "from": "validate",
+            "to": "lookup",
+            "label": "yes"
+          },
+          {
+            "from": "validate",
+            "to": "reject",
+            "label": "no"
+          },
+          {
+            "from": "lookup",
+            "to": "issueJwt"
+          },
+          {
+            "from": "issueJwt",
+            "to": "audit"
+          },
+          {
+            "from": "audit",
+            "to": "ok"
+          },
+          {
+            "from": "reject",
+            "to": "ng"
+          }
+        ]
+      }
+    }
+  ]
+}

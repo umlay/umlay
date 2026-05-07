@@ -797,6 +797,62 @@ view sprint1 @gantt_chart {
 [`packages/spec/src/rfcs/0054-per-view-style-override.md`](../../packages/spec/src/rfcs/0054-per-view-style-override.md)
 を参照。
 
+### 10.x flowchart_diagram — フローチャート図 (RFC 0055 / spec 1.10.0)
+
+`@flowchart_diagram` ビューは古典的なフローチャート (start / end /
+process / decision / io / document / subroutine) を `flow { ... }`
+ブロック内で記述する。各ノードは `<shape> <id> "<label>"?`、エッジは
+`A -> B (-> C)* (: "label")?` の形で書ける。
+
+```umlay
+view login-flowchart @flowchart_diagram {
+  flow {
+    start    begin     "Login start"
+    io       readReq   "Read login request"
+    process  parseBody "Parse JSON body"
+    decision validate  "Credentials OK?"
+    subroutine lookup  "DB: find user"
+    process  issueJwt  "Issue JWT"
+    document audit     "Audit log entry"
+    process  reject    "401 Unauthorized"
+    end      ok
+    end      ng
+
+    begin    -> readReq -> parseBody -> validate
+    validate -> lookup    : "yes"
+    validate -> reject    : "no"
+    lookup   -> issueJwt
+    issueJwt -> audit -> ok
+    reject   -> ng
+  }
+}
+```
+
+シェイプの意味:
+
+| shape | 意味 | 描画 |
+| --- | --- | --- |
+| `start` / `end` | 開始 / 終了端子 | スタジアム形 |
+| `process` | 処理 | 角丸長方形 |
+| `decision` | 分岐 | 菱形 |
+| `io` | 入出力 | 平行四辺形 |
+| `document` | 帳票・出力ドキュメント | 下端波打ち長方形 |
+| `subroutine` | サブルーチン呼び出し | 二重縦罫の長方形 |
+
+`flow` は文脈キーワードのため、`namespace flow` / `view payment-flow`
+/ `flow.User` のように識別子としても引き続き使用できる (パーサが
+`flow {` の続きを見たときだけフローチャートとして解釈する)。
+
+専用 lint:
+
+- **L059** — start / end ノードがそれぞれ少なくとも 1 つ必要。
+- **L060** — 各ノードは start から到達可能でなければならない。
+- **L061** — `end` 以外のノードは出力エッジを持たないと行き止まりとして警告。
+
+詳細は
+[`packages/spec/src/rfcs/0055-flowchart-diagram.md`](../../packages/spec/src/rfcs/0055-flowchart-diagram.md)
+を参照。
+
 ## 11. 参考
 
 - [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) — 文法の正本

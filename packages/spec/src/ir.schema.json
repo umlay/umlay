@@ -1356,7 +1356,8 @@
                   "deployment_diagram",
                   "wbs_diagram",
                   "gantt_chart",
-                  "composite"
+                  "composite",
+                  "flowchart_diagram"
                 ]
               },
               "include": {
@@ -1979,6 +1980,67 @@
                   "additionalProperties": true
                 },
                 "default": []
+              },
+              "flowchartBody": {
+                "type": "object",
+                "properties": {
+                  "nodes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "shape": {
+                          "type": "string",
+                          "enum": [
+                            "start",
+                            "end",
+                            "process",
+                            "decision",
+                            "io",
+                            "document",
+                            "subroutine"
+                          ]
+                        },
+                        "label": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "shape"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "default": []
+                  },
+                  "edges": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "from": {
+                          "type": "string"
+                        },
+                        "to": {
+                          "type": "string"
+                        },
+                        "label": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "from",
+                        "to"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "default": []
+                  }
+                },
+                "additionalProperties": true
               },
               "criticalPath": {
                 "type": "string",

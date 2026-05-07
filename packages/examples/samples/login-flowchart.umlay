@@ -1,0 +1,31 @@
+// login-flowchart.umlay — RFC 0055 demo of `@flowchart_diagram`.
+//
+// A classic flowchart for an HTTP login handler: read credentials, validate,
+// branch on the result, write an audit record, then terminate. Demonstrates
+// every shape the renderer supports — start, process, decision, io, document,
+// subroutine, end — plus chain edges and labelled branches.
+
+namespace auth
+
+view login-flowchart @flowchart_diagram {
+  flow {
+    start    begin     "Start"
+    io       readReq   "Read login request"
+    process  parseBody "Parse JSON body"
+    decision validate  "Credentials OK?"
+    subroutine lookup  "DB: find user"
+    process  issueJwt  "Issue JWT"
+    document audit     "Audit log entry"
+    process  reject    "401 Unauthorized"
+    end      ok
+    end      ng
+
+    begin    -> readReq -> parseBody -> validate
+    validate -> lookup    : "yes"
+    validate -> reject    : "no"
+    lookup   -> issueJwt
+    issueJwt -> audit
+    audit    -> ok
+    reject   -> ng
+  }
+}

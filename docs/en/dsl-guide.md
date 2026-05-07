@@ -805,6 +805,63 @@ reports them as `info` so authors notice typos. See
 [`packages/spec/src/rfcs/0054-per-view-style-override.md`](../../packages/spec/src/rfcs/0054-per-view-style-override.md)
 for the full RFC.
 
+### 10.x flowchart_diagram — Classic flowcharts (RFC 0055 / spec 1.10.0)
+
+A `@flowchart_diagram` view describes a classic flowchart (start / end /
+process / decision / io / document / subroutine) inside a single
+`flow { ... }` block. Each node is written as `<shape> <id> "<label>"?`,
+edges as `A -> B (-> C)* (: "label")?`.
+
+```umlay
+view login-flowchart @flowchart_diagram {
+  flow {
+    start    begin     "Login start"
+    io       readReq   "Read login request"
+    process  parseBody "Parse JSON body"
+    decision validate  "Credentials OK?"
+    subroutine lookup  "DB: find user"
+    process  issueJwt  "Issue JWT"
+    document audit     "Audit log entry"
+    process  reject    "401 Unauthorized"
+    end      ok
+    end      ng
+
+    begin    -> readReq -> parseBody -> validate
+    validate -> lookup    : "yes"
+    validate -> reject    : "no"
+    lookup   -> issueJwt
+    issueJwt -> audit -> ok
+    reject   -> ng
+  }
+}
+```
+
+Shape mapping:
+
+| shape | meaning | rendered as |
+| --- | --- | --- |
+| `start` / `end` | terminator | stadium / pill |
+| `process` | action / step | rounded rectangle |
+| `decision` | branch | diamond |
+| `io` | I/O | parallelogram |
+| `document` | document / report | rectangle with curved bottom |
+| `subroutine` | subroutine call | rectangle with double vertical bars |
+
+`flow` is a contextual keyword — it stays usable as an identifier
+(`namespace flow`, `view payment-flow`, `flow.User`) so existing files
+keep parsing. The parser only treats it as a flowchart marker when it is
+immediately followed by `{` inside a view body.
+
+Dedicated lint rules:
+
+- **L059** — every flowchart needs at least one `start` and one `end`.
+- **L060** — every node must be reachable from a `start` (forward BFS).
+- **L061** — non-`end` nodes without outgoing edges are flagged as dead-ends.
+
+See
+[`packages/spec/src/rfcs/0055-flowchart-diagram.md`](../../packages/spec/src/rfcs/0055-flowchart-diagram.md)
+for the full RFC.
+
 ## 11. References
 
 - [`packages/spec/src/grammar.md`](../../packages/spec/src/grammar.md) — canonical grammar
