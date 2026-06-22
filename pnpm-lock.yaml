@@ -40,8 +40,8 @@ importers:
   packages/tree-sitter-umlay:
     devDependencies:
       tree-sitter-cli:
-        specifier: ^0.26.8
-        version: 0.26.8
+        specifier: ^0.26.9
+        version: 0.26.9
 
 packages:
 
@@ -564,8 +564,8 @@ packages:
     resolution: {integrity: sha512-n1cw8k1k0x4pgA2+9XrOkFydTerNcJ1zWCO5Nn9scWHTD+5tp8dghT2x1uduQePZTZgd3Tupf+x9BxJjeJi77Q==}
     engines: {node: '>=14.0.0'}
 
-  tree-sitter-cli@0.26.8:
-    resolution: {integrity: sha512-teQFMF5V/g8aIdakZ0M/eZoedCM3MuBt1JuDOICLloA2hy7QfeOInb99U6wiML4qXcBHWREwf0U1TWzw7p67YA==}
+  tree-sitter-cli@0.26.9:
+    resolution: {integrity: sha512-7l+U1RmazPVe+yA/JiX80GFOILnL/j24GbawamIzNQC8UlINrcyECbaWGaG1wuq4j/m0DQTx7Uu4r0iW9Ao1BQ==}
     engines: {node: '>=12.0.0'}
     hasBin: true
 
@@ -1032,7 +1032,7 @@ snapshots:
 
   tinyspy@3.0.2: {}
 
-  tree-sitter-cli@0.26.8: {}
+  tree-sitter-cli@0.26.9: {}
 
   typescript@6.0.3: {}
 
